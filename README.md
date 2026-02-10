@@ -25,10 +25,10 @@ D.I.Y.A. is a web app for structured office hours that improves the student help
    - If account exists: **log in** and join the group. :contentReference[oaicite:2]{index=2}
 
 ### Student view (inside a group)
-- Student dashboard shows all groups.
-- If they arrived via invite link, a popup asks to join:
-  - Accept: group is added to dashboard
-  - Reject: popup closes and nothing changes :contentReference[oaicite:3]{index=3}
+- The student dashboard shows all groups.
+- If they arrived via invite link, a pop-up asks to join:
+  - Accept: group is added to the dashboard
+  - Reject: popup closes, and nothing changes:contentReference[oaicite:3]{index=3}
 - Inside a group, the **Forum Page** is the opening page (reddit-style).
   - Post questions (text and optionally an image)
   - Duplicate detection while typing:
@@ -45,7 +45,7 @@ D.I.Y.A. is a web app for structured office hours that improves the student help
 - **Office Hour Request Page (side nav option)**
   - Request a meetup outside normal times
   - Fields include: requesting Prof/TA, what the request is for, proposed dates/times, etc.
-  - Student receives email confirmation after successful submission :contentReference[oaicite:6]{index=6}
+  - Student receives email confirmation after successful submission:contentReference[oaicite:6]{index=6}
 
 ### Prof/TA (Admin) view (inside a group)
 - Admin dashboard shows all groups and includes an **Add Group** option to create new groups :contentReference[oaicite:7]{index=7}
@@ -54,14 +54,14 @@ D.I.Y.A. is a web app for structured office hours that improves the student help
   - Admin actions:
     - add a verified tag if they agree with the AI answer
     - add additional comments to the thread
-    - strike out the AI answer if wrong and provide the correct answer :contentReference[oaicite:8]{index=8}
+    - strike out the AI answer if wrong and provide the correct answer:contentReference[oaicite:8]{index=8}
 - **Analytics Page (side nav option)**
   - AI keyword analysis over posts:
     - most common types of questions
-    - topics that need to be revisited or explained :contentReference[oaicite:9]{index=9}
+    - topics that need to be revisited or explained:contentReference[oaicite:9]{index=9}
 - **Office-Hour Requests Page (side nav option)**
-  - Accept a request and set up online or in-person meeting (invite sent to student via UTD email)
-  - Deny a request and propose alternative dates/times :contentReference[oaicite:10]{index=10}
+  - Accept a request and set up an online or in-person meeting (invite sent to student via UTD email)
+  - Deny a request and propose alternative dates/times:contentReference[oaicite:10]{index=10}
 
 ## 🛠️ MVP Features (10-week, beginner friendly)
 - Group creation + invite-based joining (student + admin)
@@ -70,7 +70,7 @@ D.I.Y.A. is a web app for structured office hours that improves the student help
   - create post (text + optional image)
   - search before posting + duplicate suggestions
   - upvotes
-  - AI suggested answer on post creation
+  - AI-suggested answer on post creation
 - Self-grade page (rubric upload + AI feedback + history)
 - Office-hour request submission + email confirmation
 - Admin moderation of AI answers (verify, comment, correct)
@@ -79,7 +79,7 @@ D.I.Y.A. is a web app for structured office hours that improves the student help
 
 ## 🚀 Stretch Goals
 - Stronger duplicate merging (combine threads + unify upvotes)
-- Realtime live help queue with wait-time estimates and state transitions
+- Real-time live help queue with wait-time estimates and state transitions
 - Notifications (“you’re next”) via email/push
 - Searchable knowledge base generated from verified resolutions
 - Multi-staff assignment + throughput metrics
@@ -150,7 +150,7 @@ D.I.Y.A. is a web app for structured office hours that improves the student help
 
 ## ⚔️ Competition
 - Forms/spreadsheets: fast but not built for duplicate reduction, moderation, or analytics
-- Async forums: great for discussion but not optimized for structured intake and triage
+- Async forums: great for discussion, but not optimized for structured intake and triage
 - Appointment schedulers: good for 1:1 but weak for high-volume bursts
 - Chat-based queues: quick but hard to standardize and analyze  
 D.I.Y.A. differentiates by combining structured intake, duplicate consolidation (search + upvotes), AI-assisted answers with staff verification, and course analytics. :contentReference[oaicite:11]{index=11}
@@ -162,10 +162,12 @@ D.I.Y.A. differentiates by combining structured intake, duplicate consolidation 
    - Keep minimal student data in MVP, then add Supabase Auth + RLS role policies per course/group.
 3) **Adoption friction**  
    - Default presets, very short intake, one-click moderation actions, and fast search-first UX.
+  
+## The Team
 
-## 📄 Ideation PDF
-
-- **Workflow Ideation PDF:** [Open the PDF](D.I.Y.A Workflow Ideation.pdf)
-
-### Option B (link to the uploaded file here)
-- **Workflow Ideation PDF:** [Open the PDF](D.I.Y.A Workflow Ideation.pdf) :contentReference[oaicite:12]{index=12}
+- **Project Manager**: Shreya S Ramani
+- **Industry Mentor**: TBD
+- **Participant 1**: Kevin Arputharaj  
+- **QParticipant 2**: Polina Maidanova
+- **Participant 3**: Madhav Suri
+- **Participant 4**: Diya	Rautela
