@@ -163,13 +163,9 @@ D.I.Y.A. differentiates by combining structured intake, duplicate consolidation 
 3) **Adoption friction**  
    - Default presets, very short intake, one-click moderation actions, and fast search-first UX.
 
-## 📄 Include the PDF in the README
+## 📄 Ideation PDF
 
-### Option A (recommended for GitHub)
-1. Put the PDF in your repo, for example: `docs/DIYA-Workflow-Ideation.pdf`
-2. Add this link:
-
-- **Workflow Ideation PDF:** [Open the PDF](docs/DIYA-Workflow-Ideation.pdf)
+- **Workflow Ideation PDF:** [Open the PDF](D.I.Y.A Workflow Ideation.pdf)
 
 ### Option B (link to the uploaded file here)
 - **Workflow Ideation PDF:** [Open the PDF](sandbox:/mnt/data/D.I.Y.A%20Workflow%20Ideation.pdf) :contentReference[oaicite:12]{index=12}
