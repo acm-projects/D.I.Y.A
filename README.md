@@ -168,4 +168,4 @@ D.I.Y.A. differentiates by combining structured intake, duplicate consolidation 
 - **Workflow Ideation PDF:** [Open the PDF](D.I.Y.A Workflow Ideation.pdf)
 
 ### Option B (link to the uploaded file here)
-- **Workflow Ideation PDF:** [Open the PDF](sandbox:/mnt/data/D.I.Y.A%20Workflow%20Ideation.pdf) :contentReference[oaicite:12]{index=12}
+- **Workflow Ideation PDF:** [Open the PDF](D.I.Y.A Workflow Ideation.pdf) :contentReference[oaicite:12]{index=12}
