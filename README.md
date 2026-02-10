@@ -10,58 +10,58 @@
 </p>
 
 ## 🔍 Summary
-D.I.Y.A. is a web app for structured office hours that improves the student help experience and generates course analytics for professors and TAs. It combines a standardized intake workflow with a live help flow, plus a course forum that reduces duplicate questions using search and upvotes, and adds AI-assisted answers that staff can verify or correct. :contentReference[oaicite:0]{index=0}
+D.I.Y.A. is a web app for structured office hours that improves the student help experience and generates course analytics for professors and TAs. It combines a standardized intake workflow with a live help flow, plus a course forum that reduces duplicate questions using search and upvotes, and adds AI-assisted answers that staff can verify or correct.
 
 ## 🧭 Workflow (from the PDF)
 ### Roles
 - **Student**
-- **Professor / TA (Admin)** :contentReference[oaicite:1]{index=1}
+- **Professor / TA (Admin)** 
 
 ### Group-based onboarding
 1. **Prof/TA creates a group** for the class.
 2. **Invite is sent to students via email.**
 3. Student clicks invite:
    - If no account: **sign up first**, then join the group (using student email).
-   - If account exists: **log in** and join the group. :contentReference[oaicite:2]{index=2}
+   - If account exists: **log in** and join the group. 
 
 ### Student view (inside a group)
 - The student dashboard shows all groups.
 - If they arrived via invite link, a pop-up asks to join:
   - Accept: group is added to the dashboard
-  - Reject: popup closes, and nothing changes:contentReference[oaicite:3]{index=3}
+  - Reject: pop-up closes, and nothing changes
 - Inside a group, the **Forum Page** is the opening page (reddit-style).
   - Post questions (text and optionally an image)
   - Duplicate detection while typing:
     - Suggest similar existing posts
     - Ask student to **upvote existing** or **post anyway**
   - Keyword search existing posts
-  - After posting, **AI attaches a potential answer** to the post :contentReference[oaicite:4]{index=4}
+  - After posting, **AI attaches a potential answer** to the post
 - **Self-Grade Page (side nav option)**
   - Upload assignment rubric + current work
   - AI returns an estimated grade report:
     - potential grade received
     - what to improve and why
-  - History stores past self-checks :contentReference[oaicite:5]{index=5}
+  - History stores past self-checks
 - **Office Hour Request Page (side nav option)**
   - Request a meetup outside normal times
   - Fields include: requesting Prof/TA, what the request is for, proposed dates/times, etc.
-  - Student receives email confirmation after successful submission:contentReference[oaicite:6]{index=6}
+  - Student receives email confirmation after successful submission
 
 ### Prof/TA (Admin) view (inside a group)
-- Admin dashboard shows all groups and includes an **Add Group** option to create new groups :contentReference[oaicite:7]{index=7}
+- Admin dashboard shows all groups and includes an **Add Group** option to create new groups 
 - **Forum Page (opening page)**
   - Admin can see AI answers on posts
   - Admin actions:
     - add a verified tag if they agree with the AI answer
     - add additional comments to the thread
-    - strike out the AI answer if wrong and provide the correct answer:contentReference[oaicite:8]{index=8}
+    - strike out the AI answer if wrong and provide the correct answer
 - **Analytics Page (side nav option)**
   - AI keyword analysis over posts:
     - most common types of questions
-    - topics that need to be revisited or explained:contentReference[oaicite:9]{index=9}
+    - topics that need to be revisited or explained
 - **Office-Hour Requests Page (side nav option)**
   - Accept a request and set up an online or in-person meeting (invite sent to student via UTD email)
-  - Deny a request and propose alternative dates/times:contentReference[oaicite:10]{index=10}
+  - Deny a request and propose alternative dates/times
 
 ## 🛠️ MVP Features (10-week, beginner friendly)
 - Group creation + invite-based joining (student + admin)
@@ -153,7 +153,7 @@ D.I.Y.A. is a web app for structured office hours that improves the student help
 - Async forums: great for discussion, but not optimized for structured intake and triage
 - Appointment schedulers: good for 1:1 but weak for high-volume bursts
 - Chat-based queues: quick but hard to standardize and analyze  
-D.I.Y.A. differentiates by combining structured intake, duplicate consolidation (search + upvotes), AI-assisted answers with staff verification, and course analytics. :contentReference[oaicite:11]{index=11}
+D.I.Y.A. differentiates by combining structured intake, duplicate consolidation (search + upvotes), AI-assisted answers with staff verification, and course analytics. 
 
 ## 🚧 Roadblocks and Potential Solutions
 1) **Realtime correctness and race conditions**  
