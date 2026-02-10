@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="your-demo.gif" alt="D.I.Y.A demo" width="600" height="400">
+  <img src="200.gif" alt="D.I.Y.A demo" width="600" height="400">
 </p>
 
 <h1 align="center">D.I.Y.A</h1>
