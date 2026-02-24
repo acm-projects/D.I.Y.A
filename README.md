@@ -171,3 +171,39 @@ D.I.Y.A. differentiates by combining structured intake, duplicate consolidation 
 - **Participant 2**: Polina Maidanova
 - **Participant 3**: Madhav Suri
 - **Participant 4**: Diya	Rautela
+
+## Setup Instructions
+
+1. Make sure the following are installed: 
+- Node.js
+
+If it is not installed: 
+- Navigate to https://nodejs.org/en/download
+- Download the package and follow the prompts to finalize installation
+  
+2. Clone the repository and navigate to the folder:
+   ```
+   git clone https://github.com/acm-projects/D.I.Y.A.git 
+   cd D.I.Y.A
+   ```
+
+3. Install root dependencies:
+   ```
+   npm install
+   ```
+
+4. From the project root run frontend and backend together:
+   ```
+   npm run dev
+   ```
+  **Frontend** (client/) runs on http://localhost:5173
+
+  **Backend** (server/) runs on http://localhost:3000
+
+5. To run frontend and backend separately:
+   ```
+   npm --prefix client run dev
+   ```
+   ```
+   node server/server.js
+   ```
