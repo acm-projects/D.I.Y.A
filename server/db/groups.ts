@@ -23,7 +23,7 @@ export const createGroup = async (data: Omit<Group, 'id'>): Promise<Group> => {
 }
 
 export const getGroup = async (id: string): Promise<Group | null> => {
-    const doc = await collection.doc(id).get()
+    const doc = await collection.doc(id).get()  // Get group document by id
     return doc.data() ? (doc.data() as Group) : null
 }
 

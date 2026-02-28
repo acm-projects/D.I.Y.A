@@ -16,6 +16,7 @@ export const createUser = async (data: Omit<User, 'id'>): Promise<User> => {   /
         groups: data.groups,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
+        ...(data.avatarUrl ? { avatarUrl: data.avatarUrl } : {}) // Conditionally include avatarUrl if provided
     }
 
     await docRef.set(user)  // Save the user document to Firestore
