@@ -12,7 +12,7 @@ export const createUser = async (data: Omit<User, 'id'>): Promise<User> => {   /
         id: docRef.id,
         name: data.name,
         email: data.email,
-        role: data.role,
+        role: data.role,    // Enumerated type?
         groups: data.groups,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),

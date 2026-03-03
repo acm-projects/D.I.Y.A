@@ -1,4 +1,5 @@
 // Main server file
+import generateFromGemini from '/api/gemini/main.ts'; // Import the Gemini API function
 
 const express = require('express'); // Import Express
 const app = express(); // Create an Express application
