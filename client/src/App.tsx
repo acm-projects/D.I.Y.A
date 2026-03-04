@@ -1,11 +1,13 @@
-// Main code for the application
+// App.tsx
+import { Routes, Route } from "react-router-dom";
+import { LoginPage } from "./LoginPage";
+import { SignUpPage } from "./SignUpPage";
 
-function App() {
+export default function App() {
   return (
-    <div>
-      <h1>D.I.Y.A.</h1>
-    </div>
-  )
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
+    </Routes>
+  );
 }
-
-export default App
