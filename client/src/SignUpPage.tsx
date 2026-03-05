@@ -1,29 +1,51 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react"; // <-- Added Auth0 Import
 
 export function SignUpPage() {
- const [isPressed, setIsPressed] = useState(false);
+  const { loginWithRedirect } = useAuth0(); // <-- Brought in the Teleport tool
+  
+  const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [role, setRole] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleLogin = () => alert(`Logging in as ${role}`);
-  const handleGoogleSignup = () => alert("Sign up with Google clicked!");
-  const handleAppleSignup = () => alert("Sign up with Apple clicked!");
+  // <-- The new Auth0 "Brain" -->
+  const handleSignUp = (connectionName?: string) => {
+    if (!role) {
+      alert("Please select a role before continuing!");
+      return;
+    }
+    
+    // Save role to memory before leaving
+    localStorage.setItem("userRole", role);
+
+    // Set up the VIP pass request AND tell Auth0 to open the Sign Up tab
+    const authParams: any = {
+      audience: "https://api.diya.com",
+      screen_hint: "signup", // <-- Forces Auth0 to the Sign Up screen!
+    };
+
+    // If they clicked Google or Apple
+    if (connectionName) {
+      authParams.connection = connectionName;
+    }
+
+    // Teleport!
+    loginWithRedirect({ authorizationParams: authParams });
+  };
 
   return (
     <div
       style={{
-       minHeight: "100vh",                  // full viewport height
+       minHeight: "100vh",
         display: "flex",
-        justifyContent: "center",            // horizontal center
-        alignItems: "center",                // vertical center
-        backgroundColor: "#5C1E26",          // optional page background
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#5C1E26",
         padding: 24,
-        boxShadow: "0px 4px 12px rgba(0,0,0,0.1)", // optional shadow
+        boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
       }}
     >
-      {/* The login BOX */}
       <div
         style={{
           color: "#7A9B76",
@@ -37,8 +59,7 @@ export function SignUpPage() {
           backgroundColor: "#fff",
         }}
       >
-        {/* Title */}
-        <h1 // start tag
+        <h1
           style={{
             fontFamily: "Italiana",
             fontSize: "78px",
@@ -50,25 +71,19 @@ export function SignUpPage() {
           D.I.Y.A 
         </h1> 
 
-        
-{/* Login title */}
-<h2
-  style={{
-    fontFamily: "Inter",
-    fontWeight: 480,
-    fontSize: "20px",
-    color: "black",
-    marginTop: 0,
-    marginBottom: 10,
-  }}
->
-  Sign up
-  
-</h2>
+        <h2
+          style={{
+            fontFamily: "Inter",
+            fontWeight: 480,
+            fontSize: "20px",
+            color: "black",
+            marginTop: 0,
+            marginBottom: 10,
+          }}
+        >
+          Sign up
+        </h2>
 
-      
-
-        {/* Prompt */}
         <h3
           style={{
             fontFamily: "Inter",
@@ -82,9 +97,8 @@ export function SignUpPage() {
           Please enter your credentials to continue
         </h3>
 
-        {/* Form container */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          {/* Role field */}
+          
           <div
             style={{
               display: "flex",
@@ -118,39 +132,10 @@ export function SignUpPage() {
             </select>
           </div>
 
-          {/* Password field */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              color: "black",
-              fontSize: "15px",
-              fontWeight: "490",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-              fontStyle: "italic",
-              marginBottom: 5,
-            }}
-          >
-            <label style={{ marginBottom: 6 }}>Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                width: 283,
-                padding: 10,
-                borderRadius: 8,
-                border: "1px solid #ccc",
-              }}
-            />
-          </div>
+          {/* NOTE: The password input box was securely removed from here! */}
 
-
-          {/* Sign up button */}
           <button
-            onClick={handleLogin}
+            onClick={() => handleSignUp()} // <-- Wired up!
             onMouseDown={() => setIsPressed(true)}
             onMouseUp={() => setIsPressed(false)}
             onMouseLeave={() => {
@@ -179,7 +164,6 @@ export function SignUpPage() {
             Sign up
           </button>
 
-          {/* OR separator */}
           <div
             style={{
               width: 300,
@@ -194,14 +178,12 @@ export function SignUpPage() {
             ---—------------------- or —----------------------
           </div>
 
-          {/* Sign up with Google */}
           <button
-            onClick={handleGoogleSignup}
+            onClick={() => handleSignUp("google-oauth2")} // <-- Wired for Google!
             style={{
               width: 300,
               padding: 10,
               backgroundColor: "#eeecec",
-              fontWidth: "semi-bold",
               fontSize: "15px",
               fontFamily: "Inter",
               color: "#000",
@@ -220,13 +202,11 @@ export function SignUpPage() {
             Sign up with Google
           </button>
 
-          {/* Sign up with Apple */}
           <button
-            onClick={handleAppleSignup}
+            onClick={() => handleSignUp("apple")} // <-- Wired for Apple!
             style={{
               width: 300,
               padding: 10,
-              fontWidth: "semi-bold",
               fontSize: "15px",
               fontFamily: "Inter",
               backgroundColor: "#eeecec",
@@ -245,7 +225,6 @@ export function SignUpPage() {
             Sign up with Apple
           </button>
 
-          {/* Title */}
           <h1
             style={{
               fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",

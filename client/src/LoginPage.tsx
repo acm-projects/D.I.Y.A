@@ -1,29 +1,49 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"; // imported for page navigation in React
+import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export function LoginPage() {
+  const { loginWithRedirect } = useAuth0();
+  
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [role, setRole] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleLogin = () => alert(`Logging in as ${role}`);
-  const handleGoogleSignup = () => alert("Sign up with Google clicked!");
-  const handleAppleSignup = () => alert("Sign up with Apple clicked!");
+  const handleLogin = (connectionName?: string) => {
+    if (!role) {
+      alert("Please select a role before logging in!");
+      return;
+    }
+    
+    // Save role to memory before leaving
+    localStorage.setItem("userRole", role);
+
+    // Set up the VIP pass request
+    const authParams: any = {
+      audience: "https://api.diya.com",
+    };
+
+    // If they clicked Google or Apple, tell Auth0!
+    if (connectionName) {
+      authParams.connection = connectionName;
+    }
+
+    // Teleport!
+    loginWithRedirect({ authorizationParams: authParams });
+  };
 
   return (
     <div
       style={{
-       minHeight: "100vh",                  // full viewport height
+        minHeight: "100vh",
         display: "flex",
-        justifyContent: "center",            // horizontal center
-        alignItems: "center",                // vertical center
-        backgroundColor: "#5C1E26",          // optional page background
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#5C1E26",
         padding: 24,
-        boxShadow: "0px 4px 12px rgba(0,0,0,0.1)", // optional shadow
+        boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
       }}
     >
-      {/* The login BOX */}
       <div
         style={{
           color: "#7A9B76",
@@ -37,8 +57,7 @@ export function LoginPage() {
           backgroundColor: "#fff",
         }}
       >
-        {/* Title */}
-        <h1 // start tag
+        <h1
           style={{
             fontFamily: "Italiana",
             fontSize: "78px",
@@ -50,31 +69,20 @@ export function LoginPage() {
           D.I.Y.A 
         </h1> 
 
-        
-{/* Login title */}
-<h2
-  style={{
-    fontFamily: "Inter",
-    fontWeight: 480,
-    fontSize: "20px",
-    color: "black",
-    marginTop: 0,
-    marginBottom: 10,
-  }}
->
-  Login or Sign up{" "}
-  <Link
-    to="/signup" // the path to your signup page
-    style={{ color: "#4285F4", textDecoration: "underline", cursor: "pointer" }}
-  >
-  here
-  </Link>{" "}
-  
-</h2>
+        {/* Updated clean Title */}
+        <h2
+          style={{
+            fontFamily: "Inter",
+            fontWeight: 480,
+            fontSize: "20px",
+            color: "black",
+            marginTop: 0,
+            marginBottom: 10,
+          }}
+        >
+          Log in
+        </h2>
 
-      
-
-        {/* Prompt */}
         <h3
           style={{
             fontFamily: "Inter",
@@ -88,9 +96,8 @@ export function LoginPage() {
           Please enter your credentials to continue
         </h3>
 
-        {/* Form container */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          {/* Role field */}
+          
           <div
             style={{
               display: "flex",
@@ -124,60 +131,24 @@ export function LoginPage() {
             </select>
           </div>
 
-          {/* Password field */}
-          <div
+          <h2
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              color: "black",
-              fontSize: "15px",
-              fontWeight: "490",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-              fontStyle: "italic",
-              marginBottom: 5,
+               fontFamily: "inter",
+               fontSize: "12px",
+               fontWeight: 200,
+               marginTop: 10,
+               marginBottom: 0,
+               color: "black",
+               display: "flex",
+               flexDirection: "column",
+               alignItems: "flex-start",
             }}
           >
-            <label style={{ marginBottom: 6 }}>Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                width: 283,
-                padding: 10,
-                borderRadius: 8,
-                border: "1px solid #ccc",
-              }}
-            />
-          </div>
+            Forgot your password?
+          </h2>
 
-          {/* Forgotten password */}
-<h2
-  style={{
-     fontFamily: "inter",
-              fontSize: "12px",
-              fontWeight: 200,
-              marginTop: 10,
-              marginBottom: 0,
-              color: "black",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-  }}
->
-
-  
-  Forgot your password?
-  
-  
-</h2>
-
-
-          {/* Login button */}
           <button
-            onClick={handleLogin}
+            onClick={() => handleLogin()} 
             onMouseDown={() => setIsPressed(true)}
             onMouseUp={() => setIsPressed(false)}
             onMouseLeave={() => {
@@ -206,7 +177,6 @@ export function LoginPage() {
             Log in
           </button>
 
-          {/* OR separator */}
           <div
             style={{
               width: 300,
@@ -221,14 +191,12 @@ export function LoginPage() {
             ---—------------------- or —----------------------
           </div>
 
-          {/* Sign up with Google */}
           <button
-            onClick={handleGoogleSignup}
+            onClick={() => handleLogin("google-oauth2")} 
             style={{
               width: 300,
               padding: 10,
               backgroundColor: "#eeecec",
-              fontWidth: "semi-bold",
               fontSize: "15px",
               fontFamily: "Inter",
               color: "#000",
@@ -247,13 +215,11 @@ export function LoginPage() {
             Log in with Google
           </button>
 
-          {/* Sign up with Apple */}
           <button
-            onClick={handleAppleSignup}
+            onClick={() => handleLogin("apple")} 
             style={{
               width: 300,
               padding: 10,
-              fontWidth: "semi-bold",
               fontSize: "15px",
               fontFamily: "Inter",
               backgroundColor: "#eeecec",
@@ -272,7 +238,6 @@ export function LoginPage() {
             Log in with Apple
           </button>
 
-          {/* Title */}
           <h1
             style={{
               fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
@@ -280,11 +245,21 @@ export function LoginPage() {
               fontWeight: 200,
               marginTop: 20,
               marginBottom: 0,
-              color: "#b0adad"
+              color: "#b0adad",
+              textAlign: "center"
             }}
           >
             By clicking Log in, you agree to our Terms of Service and Privacy Policy
           </h1>
+
+          {/* NEW: Clean Sign Up link shifted to the bottom */}
+          <div style={{ marginTop: 25, fontSize: "14px", fontFamily: "Inter", color: "black" }}>
+             Don't have an account?{" "}
+             <Link to="/signup" style={{ color: "#7A9B76", fontWeight: "bold", textDecoration: "none" }}>
+               Sign up
+             </Link>
+          </div>
+
         </div>
       </div>
     </div>
