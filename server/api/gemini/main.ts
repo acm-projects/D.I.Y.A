@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import * as fs from "fs";
 
 dotenv.config();  // Load environment variables from .env file
 
@@ -13,11 +14,35 @@ const ai = new GoogleGenAI({    // Create an instance of the GoogleGenAI class w
   apiKey,
 });
 
-export async function generateFromGemini(prompt: string) {
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
+export function fileToGenerativePart(filePath: string, mimeType: string) {
+  const buffer = fs.readFileSync(filePath);
+  return {
+    inlineData: {
+      data: buffer.toString("base64"),
+      mimeType
+    }
+  };
+}
+
+export async function run() {
+  const model = "gemini-2.5-flash";
+  const prompt = "";
+  const imageParts = [fileToGenerativePart("path/to/image.png", "image/png")];
+
+  const result = await ai.models.generateContent({
+    model,
+    contents: [prompt, ...imageParts],
   });
 
-  return response.text;
+  const text = await result.text;
+  console.log(text);
 }
+
+// export async function generateFromGemini(prompt: string) {
+//   const response = await ai.models.generateContent({
+//     model: "gemini-2.5-flash",
+//     contents: prompt,
+//   });
+
+//   return response.text;
+// }
