@@ -14,35 +14,11 @@ const ai = new GoogleGenAI({    // Create an instance of the GoogleGenAI class w
   apiKey,
 });
 
-export function fileToGenerativePart(filePath: string, mimeType: string) {
-  const buffer = fs.readFileSync(filePath);
-  return {
-    inlineData: {
-      data: buffer.toString("base64"),
-      mimeType
-    }
-  };
-}
-
-export async function run() {
-  const model = "gemini-2.5-flash";
-  const prompt = "";
-  const imageParts = [fileToGenerativePart("path/to/image.png", "image/png")];
-
-  const result = await ai.models.generateContent({
-    model,
-    contents: [prompt, ...imageParts],
+export async function generateFromGemini(prompt: string) {
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt,
   });
 
-  const text = await result.text;
-  console.log(text);
+  return response.text;
 }
-
-// export async function generateFromGemini(prompt: string) {
-//   const response = await ai.models.generateContent({
-//     model: "gemini-2.5-flash",
-//     contents: prompt,
-//   });
-
-//   return response.text;
-// }
