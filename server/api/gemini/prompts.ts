@@ -14,4 +14,4 @@ export const GRADING_PROMPT = `You are a careful and communicative grader.
                                 Provide an expected grade to the assignment prompt given the rubric. 
                                 Focus on accuracy and completion of each criterion of the rubric. 
                                 Provide feedback without rewriting the student assignment 
-                                and make suggestions for improvements.`
+                                and make suggestions for improvements. Give a grade out of 100 and its breakdown.`

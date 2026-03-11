@@ -14,11 +14,17 @@ const ai = new GoogleGenAI({    // Create an instance of the GoogleGenAI class w
   apiKey,
 });
 
-export async function generateFromGemini(prompt: string) {
+export async function generateFromGemini(prompt: string, 
+  options?: { temperature?: number, maxTokens?: number }): Promise<string> {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: prompt,
+    
+    config: {
+      temperature: options?.temperature ?? 0.5,  // Use provided temperature or default to 0.5
+      maxOutputTokens: options?.maxTokens ?? 300,  // Use provided maxTokens or default to 300
+    },
   });
 
-  return response.text;
+  return response.text ?? "Could not generate a response from Gemini.";
 }

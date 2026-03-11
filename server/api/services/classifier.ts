@@ -2,9 +2,9 @@ import { getGroup } from '../../db/groups.js'
 
 export const classifyBySubject = async (groupId: string) => {
     const stemSubjects = ['science', 'intelligence', 'technology', 'cyber', 
-        'bio', 'engineering', 'farmaceutical', 'pharmacy', 'forensic', 'chem', 
+        'biology', 'bioinformatics', 'informatics', 'engineering', 'pharm', 'forensic', 'chem', 
         'astro', 'medic', 'physic', 'psych', 'research', 'accounting', 'statistic', 
-        'economics', 'architecture', 'math', 'cs', 'algorithm', 'software', 'robotic', 
+        'economics', 'architecture', 'math', 'algorithm', 'software', 'robotic', 
         'geology', 'programming']
 
     const group = await getGroup(groupId)

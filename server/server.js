@@ -1,7 +1,7 @@
 // Main server file
 import dotenv from "dotenv";
 import express from "express";
-import { generateFromGemini } from "./api/gemini/main.ts";
+import ai from './api/routes/ai.js'
 
 dotenv.config();
 
@@ -12,17 +12,10 @@ app.get("/", (req, res) => {    // Basic route to check if the server is running
   res.send("Server is running");
 });
 
-app.post("/api/gemini", async (req, res) => {   // Route to handle Gemini API requests
-  try {
-    const { prompt } = req.body;    // Extract the prompt from the request body
+app.use("/api/ai", ai); // Use the AI routes for any requests to /api/ai
 
-    const result = await generateFromGemini(prompt);    // Call the function to generate a response from Gemini
-
-    res.json({ success: true, result });    // Send the result back to the client as JSON
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Gemini failed" });
-  }
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" }); // Handle 404 errors for undefined routes
 });
 
 const port = 3000;
