@@ -10,6 +10,6 @@ export const getGeminiConfig = async (groupId: string) => {
     return {
         sysPrompt,
         temperature,
-        maxTokens: 250,
+        //maxTokens: 1000,
     }
 }

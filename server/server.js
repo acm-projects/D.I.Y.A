@@ -1,7 +1,7 @@
 // Main server file
 import dotenv from "dotenv";
 import express from "express";
-import ai from './api/routes/ai.js'
+import ai from './api/routes/ai.ts'
 
 dotenv.config();
 

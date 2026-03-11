@@ -1,6 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
-import * as fs from "fs";
 
 dotenv.config();  // Load environment variables from .env file
 
@@ -22,7 +21,7 @@ export async function generateFromGemini(prompt: string,
     
     config: {
       temperature: options?.temperature ?? 0.5,  // Use provided temperature or default to 0.5
-      maxOutputTokens: options?.maxTokens ?? 300,  // Use provided maxTokens or default to 300
+      //maxOutputTokens: options?.maxTokens ?? 1000,  // Use provided maxTokens or default to 800
     },
   });
 

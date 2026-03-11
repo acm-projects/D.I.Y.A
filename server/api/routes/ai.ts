@@ -8,11 +8,19 @@ router.post('/answer', async (req, res) => {
     try {
         const { groupId, prompt } = req.body
 
+        console.log('Received answer request:', { groupId, prompt })
+
         if (!groupId || !prompt) {
             return res.status(400).json({ error: 'Group ID and question prompt are required.' })
         }
 
+        console.log('Generating answer for groupId:', groupId)
+
         const answer = await generateAnswer(groupId, prompt)
+
+        res.json({ success: true, answer })
+
+        console.log('Full response: ', answer)
     }
 
     catch (error) {
@@ -30,6 +38,8 @@ router.post('/grade', async (req, res) => {
         }
 
         const grade = await generateGrade(answer, criteria)
+
+        res.json({ success: true, grade })
     }
 
     catch (error) {
