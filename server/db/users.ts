@@ -1,5 +1,5 @@
-import { db } from '../config/firebase.js'
-import type { User } from '../types.js'
+import { db } from '../config/firebase.ts'
+import type { User } from '../types.ts'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const collection = db.collection('users') // Reference to the 'users' collection in Firestore

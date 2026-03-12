@@ -1,4 +1,4 @@
-import { db } from './firebase.js'
+import { db } from './firebase.ts'
 
 export const test = async () => {
     const docRef = db.collection('test').doc('testDoc')

@@ -1,6 +1,6 @@
 import express from 'express'
-import { generateAnswer } from '../services/answer.js'
-import { generateGrade } from '../services/grade.js'
+import { generateAnswer } from '../services/answer.ts'
+import { generateGrade } from '../services/grade.ts'
 
 const router = express.Router()
 

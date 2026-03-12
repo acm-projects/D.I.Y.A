@@ -1,5 +1,5 @@
-import { db } from '../config/firebase.js'
-import type { GradeAttempt } from '../types.js'
+import { db } from '../config/firebase.ts'
+import type { GradeAttempt } from '../types.ts'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const collection = db.collection('gradeAttempts')

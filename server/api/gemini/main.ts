@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { getGeminiConfig } from "../gemini/config.ts";
 import dotenv from "dotenv";
 
 dotenv.config();  // Load environment variables from .env file
@@ -14,12 +15,15 @@ const ai = new GoogleGenAI({    // Create an instance of the GoogleGenAI class w
 });
 
 export async function generateFromGemini(prompt: string, 
-  options?: { temperature?: number, maxTokens?: number }): Promise<string> {
+  options?: { temperature?: number, maxTokens?: number, systemPrompt?: string }): Promise<string> {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: prompt,
     
     config: {
+      systemInstruction: options?.systemPrompt ?? `You are a helpful assistant that provides clear 
+                                                    and concise answers to student questions based 
+                                                    on the provided prompt.`,
       temperature: options?.temperature ?? 0.5,  // Use provided temperature or default to 0.5
       //maxOutputTokens: options?.maxTokens ?? 1000,  // Use provided maxTokens or default to 800
     },

@@ -1,5 +1,5 @@
-import { db } from '../config/firebase.js'
-import type { Rubric } from '../types.js'
+import { db } from '../config/firebase.ts'
+import type { Rubric } from '../types.ts'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const collection = db.collection('rubrics')

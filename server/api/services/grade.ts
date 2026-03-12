@@ -1,5 +1,5 @@
-import { GRADING_PROMPT } from '../gemini/prompts.js';
-import { generateFromGemini } from '../gemini/main.js';
+import { GRADING_PROMPT } from '../gemini/prompts.ts';
+import { generateFromGemini } from '../gemini/main.ts';
 
 // Need to detect the type of criteria used, and allow to accept images
 export const generateGrade = async (answer: string, criteria: string) => {
@@ -11,7 +11,7 @@ export const generateGrade = async (answer: string, criteria: string) => {
 
     const grade = await generateFromGemini(fullPrompt, {
         temperature: 0.3,
-        maxTokens: 250,
+        //maxTokens: 250,
     })
 
     return grade

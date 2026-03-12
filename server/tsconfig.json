@@ -9,6 +9,7 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
+    "moduleResolution": "node16",
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],
@@ -19,6 +20,13 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+    "noEmit": true,
+
+    // TSX + .ts imports
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,

@@ -192,7 +192,12 @@ If it is not installed:
    npm install
    ```
 
-4. From the project root run frontend and backend together:
+4. Install packages inside client and server:
+   ```
+   npm install --prefix client && npm install --prefix server
+   ```
+
+5. From the project root run frontend and backend together:
    ```
    npm run dev
    ```
@@ -200,10 +205,10 @@ If it is not installed:
 
   **Backend** (server/) runs on http://localhost:3000
 
-5. To run frontend and backend separately:
+6. To run frontend and backend separately:
    ```
    npm --prefix client run dev
    ```
    ```
-   node server/server.js
+   node server/server.ts
    ```

@@ -1,4 +1,4 @@
-import { getGroup } from '../../db/groups.js'
+import { getGroup } from '../../db/groups.ts'
 
 export const classifyBySubject = async (groupId: string) => {
     const stemSubjects = ['science', 'intelligence', 'technology', 'cyber', 
@@ -9,8 +9,8 @@ export const classifyBySubject = async (groupId: string) => {
 
     const group = await getGroup(groupId)
     if (!group) {
-        //throw new Error('Group not found')
-        return 'NON_STEM' // Default to NON_STEM if group not found
+        throw new Error('Group not found')
+        //return 'NON_STEM' // Default to NON_STEM if group not found
     }
 
     const title = group.title.toLowerCase()

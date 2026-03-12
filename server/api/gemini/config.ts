@@ -1,6 +1,6 @@
-import { classifyBySubject } from "../services/classifier.js";
-import { getTemperature } from "../services/temperature.js";
-import { STEM_PROMPT, NON_STEM_PROMPT } from "./prompts.js";
+import { classifyBySubject } from "../services/classifier.ts";
+import { getTemperature } from "../services/temperature.ts";
+import { STEM_PROMPT, NON_STEM_PROMPT } from "./prompts.ts";
 
 export const getGeminiConfig = async (groupId: string) => {
     const type = await classifyBySubject(groupId)
@@ -8,8 +8,8 @@ export const getGeminiConfig = async (groupId: string) => {
     const sysPrompt = type === 'STEM' ? STEM_PROMPT : NON_STEM_PROMPT
 
     return {
-        sysPrompt,
         temperature,
         //maxTokens: 1000,
+        sysPrompt,
     }
 }

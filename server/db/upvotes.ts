@@ -1,7 +1,7 @@
 // No update function, only create and delete
 
-import { db } from '../config/firebase.js'
-import type { Upvote } from '../types.js'
+import { db } from '../config/firebase.ts'
+import type { Upvote } from '../types.ts'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const collection = db.collection('upvotes')
