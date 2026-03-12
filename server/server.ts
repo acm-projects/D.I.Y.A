@@ -18,6 +18,18 @@ app.use((req, res) => {
   res.status(404).json({ error: "Route not found" }); // Handle 404 errors for undefined routes
 });
 
+app.use('/api/analytics', async (req, res) => {
+    try {
+        // Placeholder for analytics endpoint
+        res.json({ success: true, message: 'Analytics endpoint is under development.' })
+    }
+    
+    catch (error) {
+        console.error(error)
+        res.status(500).json({ error: 'Could not generate analytics.' })
+    }
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

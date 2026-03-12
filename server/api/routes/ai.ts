@@ -1,6 +1,7 @@
 import express from 'express'
 import { generateAnswer } from '../services/answer.ts'
 import { generateGrade } from '../services/grade.ts'
+import { generateCourseAnalytics } from '../services/analytics.ts'
 
 const router = express.Router()
 
@@ -47,5 +48,17 @@ router.post('/grade', async (req, res) => {
         res.status(500).json({ error: 'Could not generate grade.' })
     }
 });
+
+router.post('/analytics', async (req, res) => {
+        try {
+            // Placeholder for analytics endpoint
+            res.json({ success: true, message: 'Analytics endpoint is under development.' })
+        }
+        
+        catch (error) {
+            console.error(error)
+            res.status(500).json({ error: 'Could not generate analytics.' })
+        }
+})
 
 export default router
