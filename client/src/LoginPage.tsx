@@ -39,7 +39,7 @@ export function LoginPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#e8e8e8",
+        background: "linear-gradient(to top, #a22237 0%, #5C1E26 25%, #4a1530 45%, #3d1542 65%, #2e1240 80%, #270115 100%)",
         padding: 24,
         position: "relative",
         overflow: "hidden",
@@ -49,56 +49,86 @@ export function LoginPage() {
 
 
 
+    
     >
-      {/* green background circles */}
+
+{/* top wave */}
+<svg
+
+style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "50%", opacity: 0.3 }}
+
+viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true"
+
+>
+
+<defs>
+
+<linearGradient id="wave3" x1="0%" y1="100%" x2="100%" y2="0%">
+
+<stop offset="0%" stopColor="#270115" />
+
+<stop offset="40%" stopColor="#4a1340" />
+
+<stop offset="100%" stopColor="#a22237" />
+
+</linearGradient>
+
+</defs>
+
+<path d="M0 200 C200 60 500 320 720 180 C940 40 1200 280 1440 140 L1440 0 L0 0Z" fill="url(#wave3)" />
+
+</svg>
+
+      {/* middle wave */}
       <svg
-        style={{ position: "absolute", top: -80, left: -120, width: 620, height: 580, opacity: 0.85 }}
-        viewBox="0 0 600 560" aria-hidden="true"
+        style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "55%", opacity: 0.5 }}
+        viewBox="0 0 1440 500" preserveAspectRatio="none" aria-hidden="true"
       >
         <defs>
-          <linearGradient id="blobTL" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6b8e68" />
-            <stop offset="100%" stopColor="#7A9B76" />
+          <linearGradient id="wave2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#c93050" />
+            <stop offset="50%" stopColor="#6b1a30" />
+            <stop offset="100%" stopColor="#42184a" />
           </linearGradient>
         </defs>
-        <path d="M420 40 C540 80 580 220 530 340 C480 460 340 520 200 490 C60 460 -20 340 10 210 C40 80 180 -10 320 10 C360 16 390 24 420 40Z" fill="url(#blobTL)" />
-      </svg>
-
-      <svg
-        style={{ position: "absolute", bottom: -100, right: -140, width: 660, height: 600, opacity: 0.8 }}
-        viewBox="0 0 640 580" aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="blobBR" x1="100%" y1="100%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor="#7A9B76" />
-            <stop offset="100%" stopColor="#8aad86" />
-          </linearGradient>
-        </defs>
-        <path d="M480 60 C600 120 640 280 580 420 C520 540 360 580 220 530 C80 480 10 340 60 200 C110 60 280 -20 400 20 C430 28 460 42 480 60Z" fill="url(#blobBR)" />
-      </svg>
-
-      <svg
-        style={{ position: "absolute", top: -40, right: -60, width: 340, height: 320, opacity: 0.45 }}
-        viewBox="0 0 320 300" aria-hidden="true"
-      >
-        <path d="M240 30 C300 60 320 150 280 230 C240 300 150 310 80 260 C10 210 -10 120 40 60 C90 0 180 0 240 30Z" fill="#7A9B76" />
-      </svg>
-
-      <svg
-        style={{ position: "absolute", bottom: -30, left: -50, width: 300, height: 280, opacity: 0.5 }}
-        viewBox="0 0 280 260" aria-hidden="true"
-      >
-        <path d="M200 20 C260 50 280 140 240 200 C200 260 110 270 50 220 C-10 170 -20 80 30 30 C80 -20 140 -10 200 20Z" fill="#8aad86" />
-      </svg>
-
-      <svg
-        style={{ position: "absolute", top: "40%", left: "55%", width: 260, height: 240, opacity: 0.2 }}
-        viewBox="0 0 240 220" aria-hidden="true"
-      >
-        <path d="M180 20 C230 50 240 120 200 180 C160 230 80 240 30 190 C-20 140 -10 60 40 20 C90 -10 130 -5 180 20Z" fill="#7A9B76" />
+        <path d="M0 280 C360 400 600 160 900 300 C1100 400 1300 220 1440 340 L1440 500 L0 500Z" fill="url(#wave2)" />
       </svg>
 
 
+
+
+
+
+   
+
+
+{/* bottom wave */}
+
+<svg
+
+style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "70%", opacity: 0.3 }}
+
+viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
+
+>
+
+<defs>
+
+<linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
+
+<stop offset="0%" stopColor="#a22237" />
+
+<stop offset="50%" stopColor="#5C1E26" />
+
+<stop offset="100%" stopColor="#3d1542" />
+
+</linearGradient>
+
+</defs>
+
+<path d="M0 320 C240 180 480 480 720 340 C960 200 1200 440 1440 300 L1440 600 L0 600Z" fill="url(#wave1)" />
+
+</svg>
 
 
 
@@ -106,7 +136,7 @@ export function LoginPage() {
       {/* login card */}
       <div
         style={{
-          color: "#7A9B76",
+          color: "#5C1E26",
           padding: 24,
           paddingTop: 25,
           alignItems: "center",
@@ -282,7 +312,7 @@ export function LoginPage() {
             style={{
               width: 300,
               padding: 10,
-              backgroundColor: "#7A9B76",
+              backgroundColor: "#5C1E26",
               borderRadius: 12,
               marginTop: 40,
               color: "white",

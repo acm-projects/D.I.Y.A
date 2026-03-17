@@ -87,6 +87,9 @@ export function StudentGroupsPage({
       ? `Showing ${showingCount} of ${totalCount} groups`
       : `You're a member of ${totalCount} group${totalCount === 1 ? "" : "s"}`;
 
+
+      
+
   return (
     <div
       style={{
@@ -98,6 +101,7 @@ export function StudentGroupsPage({
         display: "flex",
       }}
     >
+
 
 
 
@@ -162,10 +166,11 @@ export function StudentGroupsPage({
         {/* Sidebar navigation buttons */}
         <nav aria-label="Sidebar navigation" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {(
+            /*Creating item ids for each button on the side nav bar that are used throughout other files in order to allow
+            user to navigate to different pages just using the buttons on the side nav bar: */
             [
               { id: "profile", label: "Profile" },
               { id: "groups", label: "Groups" },
-              { id: "activity", label: "Activity" },
               { id: "request", label: "Request Office Hours" },
               { id: "selfcheck", label: "Self-Check" },
             ] as const
@@ -176,8 +181,19 @@ export function StudentGroupsPage({
                 key={item.id}
                 type="button"
                 onClick={() => {
-                  if (item.id === "groups") return; // already on this page
-                  alert(`${item.label} (route not wired yet)`); // placeholder
+                  if (item.id === "groups") {
+                    navigate("/groups");
+                    return;
+                  }
+                  if (item.id === "request") {
+                    navigate("/office-hours");
+                    return;
+                  }
+                  if (item.id === "selfcheck") {
+                    navigate("/self-check");
+                    return;
+                  }
+                  alert(`${item.label} (route not wired yet)`);
                 }}
                 style={{
                   width: "100%",
@@ -198,13 +214,6 @@ export function StudentGroupsPage({
             );
           })}
         </nav>
-
-
-
-
-
-
-
 
 
 
@@ -253,7 +262,7 @@ export function StudentGroupsPage({
 
 
 
-      {/* main content — burgundy background (60%) */}
+      {/* main content — plain background (60%) */}
       <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box" }}>
         <div style={{ maxWidth: 1400 }}>
           {/* Page title */}
@@ -266,7 +275,7 @@ export function StudentGroupsPage({
               lineHeight: 1.1,
             }}
           >
-            Groups
+            Welcome Back Name!
           </div>
 
           {/* small divider under title */}
@@ -332,7 +341,7 @@ export function StudentGroupsPage({
 
 
 
-          {/* showing count text */}
+          {/* showing number of groups (group count) text */}
           <div
             style={{
               marginTop: 12,
@@ -412,42 +421,17 @@ export function StudentGroupsPage({
 
 
 
-                  {/* card header — name + dot indicator */}
+                  {/* card header — group name */}
                   <div
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 12,
+                      fontSize: 15,
+                      fontWeight: 800,
+                      letterSpacing: -0.2,
+                      color: palette.deepBurgundy,
+                      lineHeight: 1.3,
                     }}
                   >
-                    <div
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 800,
-                        letterSpacing: -0.2,
-                        color: palette.deepBurgundy,
-                        lineHeight: 1.3,
-                      }}
-                    >
-                      {g.name}
-                    </div>
-
-
-
-
-
-                    {/* small status dot */}
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: 999,
-                        backgroundColor: palette.sage,
-                        flex: "0 0 auto",
-                      }}
-                      aria-hidden="true"
-                    />
+                    {g.name}
                   </div>
 
 

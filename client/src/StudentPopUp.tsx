@@ -14,7 +14,7 @@ const palette = {
 } as const;
 
 export function StudentPopUp({
-  adminName = "Dr. Smith",
+  adminName = "Prof. A",
   groupName = "CS 1337 — Computer Science I",
   onAccept = () => {},
   onDecline = () => {},
