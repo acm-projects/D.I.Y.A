@@ -103,6 +103,7 @@
     "pidtree": "^0.3.1",
     "pify": "^3.0.0",
     "possible-typed-array-names": "^1.1.0",
+    "react-router-dom": "^7.13.1",
     "read-pkg": "^3.0.0",
     "reflect.getprototypeof": "^1.0.10",
     "regexp.prototype.flags": "^1.5.4",
