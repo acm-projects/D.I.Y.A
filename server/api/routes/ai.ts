@@ -1,4 +1,5 @@
 import express from 'express'
+import type { GeminiImageInput } from '../gemini/main.ts'
 import { generateAnswer } from '../services/answer.ts'
 import { generateGrade } from '../services/grade.ts'
 import { generateCourseAnalytics } from '../services/analytics.ts'
@@ -9,9 +10,51 @@ import type { AnalyticsRequesterContext } from '../services/analytics.ts'
 
 const router = express.Router()
 
-router.post('/answer', async (req, res) => {
+const readOptionalString = (value: unknown): string | null => {
+    if (typeof value !== 'string') {
+        return null
+    }
+
+    const trimmedValue = value.trim()
+    return trimmedValue.length > 0 ? trimmedValue : null
+}
+
+const readImages = (value: unknown): GeminiImageInput[] | null => {
+    if (value === undefined) {
+        return []
+    }
+
+    const rawImages = Array.isArray(value) ? value : [value]
+    const images: GeminiImageInput[] = []
+
+    for (const rawImage of rawImages) {
+        if (!rawImage || typeof rawImage !== 'object') {
+            return null
+        }
+
+        const { data, mimeType } = rawImage as Record<string, unknown>
+
+        if (typeof data !== 'string' || data.trim().length === 0) {
+            return null
+        }
+
+        if (typeof mimeType !== 'string' || mimeType.trim().length === 0) {
+            return null
+        }
+
+        images.push({
+            data: data.trim(),
+            mimeType: mimeType.trim(),
+        })
+    }
+
+    return images
+}
+
+router.post('/answer', async (req: any, res: any) => {
     try {
         const { groupId, prompt } = req.body
+        const images = readImages(req.body?.images ?? req.body?.image)
 
         console.log('Received answer request:', { groupId, prompt })
 
@@ -19,9 +62,13 @@ router.post('/answer', async (req, res) => {
             return res.status(400).json({ error: 'Group ID and question prompt are required.' })
         }
 
+        if (images === null) {
+            return res.status(400).json({ error: 'Images must be sent as objects with string data and mimeType fields.' })
+        }
+
         console.log('Generating answer for groupId:', groupId)
 
-        const answer = await generateAnswer(groupId, prompt)
+        const answer = await generateAnswer(groupId, prompt, images)
 
         res.json({ success: true, answer })
 
@@ -34,12 +81,19 @@ router.post('/answer', async (req, res) => {
     }
 });
 
-router.post('/grade', async (req, res) => {
+router.post('/grade', async (req: any, res: any) => {
     try {
         const { answer, rubricId, studentId, assignmentId } = req.body
+        const images = readImages(req.body?.images ?? req.body?.image)
+        const parsedStudentId = readOptionalString(studentId)
+        const parsedAssignmentId = readOptionalString(assignmentId)
 
-        if (!answer || !rubricId) {
-            return res.status(400).json({ error: 'Student answer and grading rubric are required.' })
+        if (!answer || !rubricId || !parsedStudentId) {
+            return res.status(400).json({ error: 'Student answer, grading rubric, and studentId are required.' })
+        }
+
+        if (images === null) {
+            return res.status(400).json({ error: 'Images must be sent as objects with string data and mimeType fields.' })
         }
 
         const rubric = await getRubric(rubricId)
@@ -52,17 +106,17 @@ router.post('/grade', async (req, res) => {
             return res.status(400).json({ error: 'Grading rubric must have criteria.' })
         }
 
-        const grade = await generateGrade(answer, criteria)
+        const grade = await generateGrade(answer, criteria, images)
 
         const aiGrade = typeof grade === 'object' && 'score' in grade ? grade.score : 0
         const aiFeedback = typeof grade === 'object' && 'feedback' in grade ? grade.feedback : ''
 
         const attempt = await createGradeAttempt({
-            studentId,
+            studentId: parsedStudentId,
             rubricID: rubricId,
             aiGrade: aiGrade,
             feedback: aiFeedback,
-            assignmentId: assignmentId
+            ...(parsedAssignmentId ? { assignmentId: parsedAssignmentId } : {}),
         })
 
         res.json({ success: true, grade, attempt })
