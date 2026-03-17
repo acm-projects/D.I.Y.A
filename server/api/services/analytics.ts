@@ -1,8 +1,8 @@
-import { db } from '../../config/firebase.js'
-import { getGroup } from '../../db/groups.js'
-import { getGeminiConfig } from '../gemini/config.js'
-import { generateFromGemini } from '../gemini/main.js'
-import type { Group, Post } from '../../types.js'
+import { db } from '../../config/firebase.ts'
+import { getGroup } from '../../db/groups.ts'
+import { getGeminiConfig } from '../gemini/config.ts'
+import { generateFromGemini } from '../gemini/main.ts'
+import type { Group, Post } from '../../types.ts'
 
 const postsCollection = db.collection('posts')
 

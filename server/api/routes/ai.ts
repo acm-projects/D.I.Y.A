@@ -2,6 +2,10 @@ import express from 'express'
 import { generateAnswer } from '../services/answer.ts'
 import { generateGrade } from '../services/grade.ts'
 import { generateCourseAnalytics } from '../services/analytics.ts'
+import { formatCriteria } from '../../db/criterions.ts'
+import { getRubric } from '../../db/rubrics.ts'
+import { createGradeAttempt } from '../../db/gradeAttempts.ts'
+import type { AnalyticsRequesterContext } from '../services/analytics.ts'
 
 const router = express.Router()
 
@@ -32,15 +36,36 @@ router.post('/answer', async (req, res) => {
 
 router.post('/grade', async (req, res) => {
     try {
-        const { answer, criteria } = req.body
+        const { answer, rubricId, studentId, assignmentId } = req.body
 
-        if (!answer || !criteria) {
-            return res.status(400).json({ error: 'Student answer and grading criteria are required.' })
+        if (!answer || !rubricId) {
+            return res.status(400).json({ error: 'Student answer and grading rubric are required.' })
+        }
+
+        const rubric = await getRubric(rubricId)
+        if (!rubric) {
+            return res.status(404).json({ error: 'Rubric not found.' })
+        }
+
+        const criteria = formatCriteria(rubric?.criteria || [])
+        if (!criteria) {
+            return res.status(400).json({ error: 'Grading rubric must have criteria.' })
         }
 
         const grade = await generateGrade(answer, criteria)
 
-        res.json({ success: true, grade })
+        const aiGrade = typeof grade === 'object' && 'score' in grade ? grade.score : 0
+        const aiFeedback = typeof grade === 'object' && 'feedback' in grade ? grade.feedback : ''
+
+        const attempt = await createGradeAttempt({
+            studentId,
+            rubricID: rubricId,
+            aiGrade: aiGrade,
+            feedback: aiFeedback,
+            assignmentId: assignmentId
+        })
+
+        res.json({ success: true, grade, attempt })
     }
 
     catch (error) {
@@ -51,8 +76,22 @@ router.post('/grade', async (req, res) => {
 
 router.post('/analytics', async (req, res) => {
         try {
-            // Placeholder for analytics endpoint
-            res.json({ success: true, message: 'Analytics endpoint is under development.' })
+            const { groupId, requester } = req.body
+
+            console.log('Received analytics request:', { groupId })
+
+            if (!groupId || !requester) {
+                return res.status(400).json({ error: 'Group ID and requester are required.' })
+            }
+
+            const requesterObject: AnalyticsRequesterContext = {
+                userId: requester.userId,
+                role: requester.role
+            }
+
+            const analytics = await generateCourseAnalytics(groupId, requesterObject)
+
+            res.json({ success: true, analytics })
         }
         
         catch (error) {

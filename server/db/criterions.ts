@@ -4,7 +4,7 @@ import { Timestamp } from 'firebase-admin/firestore'
 
 const collection = db.collection('criterions')
 
-export const createCriterion = async (data: Omit<Criterion, 'id'>): Promise<Criterion> => {
+export const createCriterion = async (data: Omit<Criterion, 'id' | 'createdAt' | 'updatedAt'>): Promise<Criterion> => {
     const docRef = collection.doc()
 
     const criterion: Criterion = {
@@ -19,7 +19,7 @@ export const createCriterion = async (data: Omit<Criterion, 'id'>): Promise<Crit
     return criterion
 }
 
-export const getGriterion = async (id: string): Promise<Criterion | null> => {
+export const getCriterion = async (id: string): Promise<Criterion | null> => {
     const doc = await collection.doc(id).get()
     return doc.data() ? ( doc.data() as Criterion ) : null
 }
@@ -32,4 +32,12 @@ export const updateCriterion = async (id: string, updates: Partial<Criterion>): 
 
 export const deleteCriterion = async (id: string): Promise<void> => {
     await collection.doc(id).delete()
+}
+
+// Helper function to format criteria for AI prompts
+export const formatCriteria = (criteria: Criterion[]): string => {
+    return criteria.map(c => {
+        const pointsText = c.points ? ` (${c.points} points)` : ''
+        return `-${c.description}${pointsText}`
+    }).join('\n')
 }

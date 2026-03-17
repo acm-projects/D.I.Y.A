@@ -4,7 +4,7 @@ import { Timestamp } from 'firebase-admin/firestore'
 
 const collection = db.collection('gradeAttempts')
 
-export const createGradeAttempt = async (data: Omit<GradeAttempt, 'id'>): Promise<GradeAttempt> => {
+export const createGradeAttempt = async (data: Omit<GradeAttempt, 'id' | 'createdAt' | 'updatedAt'>): Promise<GradeAttempt> => {
     const docRef = collection.doc()
 
     const gradeAttempt: GradeAttempt = {
