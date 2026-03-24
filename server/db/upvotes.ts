@@ -25,6 +25,15 @@ export const getUpvote = async (id: string): Promise<Upvote | null> => {
     return doc.data() ? (doc.data() as Upvote) : null
 }
 
+export const getUpvotesByPost = async (postId: string): Promise<Upvote[]> => {
+    const snapshot = await collection.where('postId', '==', postId).get()
+    const upvotes: Upvote[] = [];
+    snapshot.forEach((doc) => {
+        upvotes.push(doc.data() as Upvote);
+    })
+    return upvotes;
+}
+
 export const deleteUpvote = async (id: string): Promise<void> => {
     await collection.doc(id).delete()
 }

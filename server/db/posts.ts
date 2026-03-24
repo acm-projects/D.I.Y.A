@@ -30,6 +30,15 @@ export const getPost = async (id: string): Promise<Post | null> => {
     return doc.data() ? (doc.data() as Post) : null
 }
 
+export const getPostsbyGroup = async (groupId: string): Promise<Post[]> => {
+    const snapshot = await collection.where('groupId', '==', groupId).get()
+    const posts: Post[] = [];
+    snapshot.forEach((doc) => {
+        posts.push(doc.data() as Post)
+    });
+    return posts
+}
+
 export const updatePost = async (id: string, updates: Partial<Post>): Promise<void> => {
     const docRef = collection.doc(id)
     await docRef.update(updates)
