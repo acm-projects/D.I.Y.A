@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.get('groups/:groupId', async (req, res) => {
+router.get('/groups/:groupId', async (req, res) => {
     try {
         const posts = await getPostsbyGroup(req.params.groupId)
         res.json(posts)

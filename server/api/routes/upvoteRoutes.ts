@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.get('posts/:postId', async (req, res) => {
+router.get('/posts/:postId', async (req, res) => {
     try {
         const upvotes = await getUpvotesByPost(req.params.postId)
         res.json(upvotes)

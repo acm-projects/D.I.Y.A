@@ -1,12 +1,16 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getGroups } from "../src/api/groups.ts";
+import { getPostsByGroup } from "../src/api/posts.ts"
 
 // Defining the shape of a group object
 type StudentGroup = {
   id: string;
-  name: string;
-  membersCount: number;
-  forumPostsCount: number;
+  title: string;
+  members: string[];
+  // Calculate from arrays
+  membersCount?: number
+  forumPostsCount?: number;
 };
 
 // Creating a constant pallete to help when styling how pages are going to look
@@ -19,17 +23,7 @@ const palette = {
   lightGray: "#D6D6D6",
 } as const;
 
-// Demo data to help simulate what the group homepage looks like
-const demoGroups: StudentGroup[] = [
-  { id: "cs1337", name: "CS 1337 — Computer Science I", membersCount: 128, forumPostsCount: 42 },
-  { id: "cs2305", name: "CS 2305 — Discrete Mathematics", membersCount: 96, forumPostsCount: 31 },
-  { id: "math2413", name: "MATH 2413 — Differential Calculus", membersCount: 211, forumPostsCount: 58 },
-  { id: "phys2325", name: "PHYS 2325 — Mechanics", membersCount: 144, forumPostsCount: 19 },
-  { id: "ecs1100", name: "ECS 1100 — Intro to Engineering", membersCount: 310, forumPostsCount: 67 },
-  { id: "cs3341", name: "CS 3341 — Probability & Statistics", membersCount: 88, forumPostsCount: 24 },
-];
-
-// For the group name search bar: magnifying glass icon
+// For the group title search bar: magnifying glass icon
 function SearchIcon({ color }: { color: string }) {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -63,20 +57,42 @@ function ForumIcon({ color }: { color: string }) {
 }
 
 // Main page component for displaying student groups
-export function StudentGroupsPage({
-  groups = demoGroups,
-}: {
-  groups?: StudentGroup[];
-}) {
-  const navigate = useNavigate(); // for navigating to other pages
-  const [query, setQuery] = useState(""); // search input state
-  const [hoveredId, setHoveredId] = useState<string | null>(null); // for hover effects on group cards
+export function StudentGroupsPage(){
+  const navigate = useNavigate()
+  const [groups, setGroups] = useState<StudentGroup[]>([])
+  const [query, setQuery] = useState("") // search input state
+  const [hoveredId, setHoveredId] = useState<string | null>(null) // for hover effects on group cards
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const data: StudentGroup[] = await getGroups()
+
+      const transformedData = await Promise.all(
+        data.map(async (g) => {
+          const posts = await getPostsByGroup(g.id) // fetch posts for this group
+          return {
+            ...g,
+            membersCount: g.members?.length || 0,
+            forumPostsCount: posts.length, // set the post count
+          }
+        })
+      )
+
+        setGroups(transformedData)
+      } catch (error) {
+        console.error('Failed to fetch groups', error)
+      }
+    };
+
+    fetchGroups();
+  }, []);
 
   // Filter groups based on search query
   const filteredGroups = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return groups; // if no query, return all
-    return groups.filter((g) => g.name.toLowerCase().includes(q));
+    return groups.filter((g) => g.title.toLowerCase().includes(q));
   }, [groups, query]);
 
   // Helper vars for showing counts
@@ -320,8 +336,8 @@ export function StudentGroupsPage({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               type="search"
-              placeholder="Search your groups by name..."
-              aria-label="Search groups by name"
+              placeholder="Search your groups by title..."
+              aria-label="Search groups by title"
               style={{
                 width: "100%",
                 border: "none",
@@ -421,7 +437,7 @@ export function StudentGroupsPage({
 
 
 
-                  {/* card header — group name */}
+                  {/* card header — group title */}
                   <div
                     style={{
                       fontSize: 15,
@@ -431,7 +447,7 @@ export function StudentGroupsPage({
                       lineHeight: 1.3,
                     }}
                   >
-                    {g.name}
+                    {g.title}
                   </div>
 
 
