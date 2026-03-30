@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import { ProfessorSidebar } from "./ProfessorSidebar";
 
-// Color palette
 const palette = {
   darkest: "#270115",
   crimson: "#a22237",
@@ -26,19 +26,18 @@ export function QuestionDetailPage() {
   const [manualAnswer, setManualAnswer] = useState("");
   const [showManualInput, setShowManualInput] = useState(false);
 
-  // Mock question data
   const questions = [
     {
       id: 1,
       author: "Sarah Johnson",
       question: "Can someone explain the difference between recursion and iteration?",
-      aiAnswer: "recursion is when a function calls itself to solve smaller instances of the same problem, while iteration uses loops to repeat a process. recursion has a base case to stop, iteration has a condition. recursion can be more elegant but uses more memory due to call stack.",
+      aiAnswer: "Recursion is when a function calls itself to solve smaller instances of the same problem, while iteration uses loops to repeat a process. Recursion has a base case to stop, iteration has a condition. Recursion can be more elegant but uses more memory due to call stack.",
     },
     {
       id: 2,
       author: "Michael Chen",
       question: "What's the best way to approach the final project?",
-      aiAnswer: "start by breaking down the requirements into smaller tasks. create a timeline with milestones. begin with core functionality before adding features. test frequently and don't wait until the last minute. use version control and commit regularly.",
+      aiAnswer: "Start by breaking down the requirements into smaller tasks. Create a timeline with milestones. Begin with core functionality before adding features. Test frequently and don't wait until the last minute. Use version control and commit regularly.",
     },
   ];
 
@@ -66,13 +65,8 @@ export function QuestionDetailPage() {
     },
   ]);
 
-  const handleRejectAI = () => {
-    setShowManualInput(true);
-  };
-
   const handleSubmitManualAnswer = () => {
     if (!manualAnswer.trim()) return;
-    
     const newReply: Reply = {
       id: replies.length + 1,
       author: "Professor",
@@ -80,7 +74,6 @@ export function QuestionDetailPage() {
       timestamp: "Just now",
       isProfessor: true,
     };
-    
     setReplies([...replies, newReply]);
     setManualAnswer("");
     setShowManualInput(false);
@@ -95,244 +88,272 @@ export function QuestionDetailPage() {
         display: "flex",
       }}
     >
-      {/* Sidebar */}
-      <aside
-        style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <ProfessorSidebar activeId="analysis" groupName={groupName} />
+
+      <main style={{ flex: 1, overflow: "auto" }}>
+        {/* Hero Section */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontFamily: "Italiana, serif",
-            fontSize: 30,
-            letterSpacing: 1.5,
-            color: "#fff",
-            padding: "6px 4px 10px 4px",
+            backgroundColor: "#fff",
+            padding: "56px 64px 52px",
+            borderBottom: "1px solid rgba(214,214,214,0.2)",
           }}
         >
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
-        </div>
-
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.25)", margin: "0 0 10px 0" }} />
-
-        <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          {/* Back button */}
           <button
-            type="button"
             onClick={() => navigate(`/forum/${groupName}`)}
             style={{
-              width: "100%",
-              textAlign: "left",
-              padding: "8px 10px",
-              borderRadius: 10,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              background: "transparent",
               border: "none",
-              backgroundColor: "transparent",
-              color: "rgba(255,255,255,0.85)",
+              cursor: "pointer",
+              padding: 0,
+              marginBottom: 24,
               fontSize: 13,
               fontWeight: 600,
-              cursor: "pointer",
+              color: "rgba(92,30,38,0.5)",
             }}
           >
-            ← Back to Forum
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Back to Forum
           </button>
-        </nav>
-      </aside>
 
-      {/* Main content */}
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box" }}>
-        <div style={{ maxWidth: 900 }}>
-          {/* Header */}
-          <div style={{ marginBottom: 24 }}>
-            <div
-              style={{
-                color: palette.crimson,
-                fontSize: 28,
-                fontWeight: 800,
-                letterSpacing: -0.5,
-                marginBottom: 8,
-              }}
-            >
-              Question Discussion
-            </div>
-            <div
-              style={{
-                color: palette.deepBurgundy,
-                fontSize: 14,
-                fontWeight: 600,
-              }}
-            >
-              {decodeURIComponent(groupName || "")}
-            </div>
-          </div>
-
-          {/* Original Question Card */}
           <div
             style={{
-              backgroundColor: "#fff",
-              border: "2px solid " + palette.crimson,
-              borderRadius: 14,
-              padding: "20px 24px",
-              marginBottom: 24,
-              boxShadow: "0 4px 18px rgba(0,0,0,0.12)",
+              fontSize: 11,
+              fontWeight: 700,
+              color: palette.crimson,
+              textTransform: "uppercase",
+              letterSpacing: 2,
+              marginBottom: 16,
             }}
           >
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                color: palette.crimson,
-                textTransform: "uppercase",
-                letterSpacing: 0.5,
-                marginBottom: 8,
-              }}
-            >
-              Original Question
-            </div>
-            <div
-              style={{
-                fontSize: 18,
-                fontWeight: 700,
-                color: palette.deepBurgundy,
-                marginBottom: 12,
-                lineHeight: 1.4,
-              }}
-            >
-              {currentQuestion.question}
-            </div>
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: palette.sage,
-              }}
-            >
-              Asked by {currentQuestion.author}
-            </div>
+            Question Discussion
           </div>
-
-          {/* Chat Container */}
           <div
             style={{
-              backgroundColor: "#fff",
-              border: "1px solid rgba(214,214,214,0.4)",
-              borderRadius: 14,
-              padding: "20px",
-              marginBottom: 20,
-              boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
-              minHeight: 400,
-              maxHeight: 600,
-              overflowY: "auto",
+              fontSize: 52,
+              fontWeight: 900,
+              color: palette.darkest,
+              letterSpacing: -2,
+              lineHeight: 1.1,
+              marginBottom: 12,
+              maxWidth: 900,
             }}
           >
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 700,
-                color: palette.crimson,
-                marginBottom: 16,
-                textTransform: "uppercase",
-                letterSpacing: 0.5,
-              }}
-            >
-              Discussion ({replies.length} replies)
-            </div>
+            {currentQuestion.question}
+          </div>
+          <div style={{ fontSize: 16, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>
+            Asked by {currentQuestion.author} · {decodeURIComponent(groupName || "")}
+          </div>
+        </div>
 
-            {/* Replies */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {replies.map((reply) => (
-                <div
-                  key={reply.id}
-                  style={{
-                    padding: "14px 16px",
-                    backgroundColor: reply.isAI
-                      ? "rgba(162,34,55,0.04)"
-                      : reply.isProfessor
-                      ? "rgba(122,155,118,0.08)"
-                      : "rgba(214,214,214,0.15)",
-                    borderLeft: `3px solid ${
-                      reply.isAI
-                        ? palette.crimson
-                        : reply.isProfessor
-                        ? palette.sage
-                        : palette.lightGray
-                    }`,
-                    borderRadius: 10,
-                  }}
-                >
+        {/* Discussion Content */}
+        <div style={{ padding: "48px 64px" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 360px",
+              gap: 32,
+              alignItems: "start",
+            }}
+          >
+            {/* Left: Replies */}
+            <div>
+              <div
+                style={{
+                  fontSize: 24,
+                  fontWeight: 900,
+                  color: palette.darkest,
+                  letterSpacing: -0.8,
+                  marginBottom: 24,
+                }}
+              >
+                Discussion ({replies.length} {replies.length === 1 ? "reply" : "replies"})
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {replies.map((reply) => (
                   <div
+                    key={reply.id}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      marginBottom: 6,
+                      backgroundColor: "#fff",
+                      borderRadius: 18,
+                      overflow: "hidden",
+                      boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
                     }}
                   >
                     <div
                       style={{
-                        fontSize: 12,
-                        fontWeight: 700,
-                        color: reply.isAI
-                          ? palette.crimson
-                          : reply.isProfessor
-                          ? palette.sage
-                          : palette.deepBurgundy,
+                        height: 4,
+                        backgroundColor: reply.isAI ? palette.crimson : reply.isProfessor ? palette.sage : palette.lightGray,
                       }}
-                    >
-                      {reply.isAI ? "🤖 " : reply.isProfessor ? "👨‍🏫 " : "👤 "}
-                      {reply.author}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 600,
-                        color: "rgba(92,30,38,0.5)",
-                      }}
-                    >
-                      {reply.timestamp}
-                    </div>
-                    {reply.isAI && (
-                      <button
-                        onClick={handleRejectAI}
+                    />
+                    <div style={{ padding: "20px 24px" }}>
+                      <div
                         style={{
-                          marginLeft: "auto",
-                          padding: "4px 10px",
-                          background: "transparent",
-                          color: "#DC3545",
-                          border: "1px solid #DC3545",
-                          borderRadius: 6,
-                          fontSize: 10,
-                          fontWeight: 700,
-                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          marginBottom: 12,
                         }}
                       >
-                        ✗ Reject & Reply
-                      </button>
-                    )}
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <div
+                            style={{
+                              width: 36,
+                              height: 36,
+                              borderRadius: 10,
+                              backgroundColor: reply.isAI
+                                ? "rgba(162,34,55,0.1)"
+                                : reply.isProfessor
+                                ? "rgba(122,155,118,0.15)"
+                                : "rgba(214,214,214,0.3)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontSize: 16,
+                            }}
+                          >
+                            {reply.isAI ? "🤖" : reply.isProfessor ? "👨‍🏫" : "👤"}
+                          </div>
+                          <div>
+                            <div
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 800,
+                                color: reply.isAI ? palette.crimson : reply.isProfessor ? palette.sage : palette.darkest,
+                              }}
+                            >
+                              {reply.author}
+                            </div>
+                            <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(92,30,38,0.4)" }}>
+                              {reply.timestamp}
+                            </div>
+                          </div>
+                        </div>
+
+                        {reply.isAI && (
+                          <button
+                            onClick={() => setShowManualInput(true)}
+                            style={{
+                              padding: "6px 14px",
+                              background: "transparent",
+                              color: "#DC3545",
+                              border: "1.5px solid #DC3545",
+                              borderRadius: 8,
+                              fontSize: 11,
+                              fontWeight: 700,
+                              cursor: "pointer",
+                            }}
+                          >
+                            ✗ Reject & Reply
+                          </button>
+                        )}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 15,
+                          fontWeight: 500,
+                          color: palette.deepBurgundy,
+                          lineHeight: 1.65,
+                        }}
+                      >
+                        {reply.message}
+                      </div>
+                    </div>
                   </div>
-                  <div
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Professor Action Panel */}
+            <div style={{ position: "sticky", top: 32 }}>
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 20,
+                  overflow: "hidden",
+                  boxShadow: "0 2px 24px rgba(0,0,0,0.08)",
+                  marginBottom: 16,
+                }}
+              >
+                <div style={{ height: 5, background: `linear-gradient(90deg, ${palette.crimson}, ${palette.sage})` }} />
+                <div style={{ padding: "24px" }}>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: palette.darkest, marginBottom: 16 }}>
+                    Professor Actions
+                  </div>
+                  <button
+                    onClick={() => setShowManualInput(true)}
                     style={{
+                      width: "100%",
+                      padding: "12px",
+                      background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`,
+                      color: "white",
+                      border: "none",
+                      borderRadius: 12,
                       fontSize: 14,
-                      fontWeight: 500,
-                      color: palette.deepBurgundy,
-                      lineHeight: 1.5,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      marginBottom: 10,
                     }}
                   >
-                    {reply.message}
+                    ✏️ Write Custom Answer
+                  </button>
+                  <button
+                    onClick={() => navigate(`/forum/${groupName}`)}
+                    style={{
+                      width: "100%",
+                      padding: "12px",
+                      background: "transparent",
+                      color: palette.deepBurgundy,
+                      border: "1.5px solid rgba(92,30,38,0.2)",
+                      borderRadius: 12,
+                      fontSize: 14,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    ← Back to Forum
+                  </button>
+                </div>
+              </div>
+
+              {/* Thread stats */}
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 20,
+                  padding: "20px 24px",
+                  boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
+                }}
+              >
+                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>
+                  Thread Stats
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>Total replies</span>
+                    <span style={{ fontSize: 20, fontWeight: 900, color: palette.crimson }}>{replies.length}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>AI responses</span>
+                    <span style={{ fontSize: 20, fontWeight: 900, color: palette.sage }}>
+                      {replies.filter(r => r.isAI).length}
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>Professor</span>
+                    <span style={{ fontSize: 20, fontWeight: 900, color: palette.deepBurgundy }}>
+                      {replies.filter(r => r.isProfessor).length}
+                    </span>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
 
@@ -340,75 +361,94 @@ export function QuestionDetailPage() {
           {showManualInput && (
             <div
               style={{
+                marginTop: 32,
                 backgroundColor: "#fff",
-                border: "2px solid " + palette.sage,
-                borderRadius: 14,
-                padding: "20px",
-                boxShadow: "0 4px 18px rgba(0,0,0,0.12)",
+                borderRadius: 20,
+                overflow: "hidden",
+                boxShadow: "0 4px 32px rgba(0,0,0,0.12)",
               }}
             >
-              <div
-                style={{
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: palette.sage,
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 12,
-                }}
-              >
-                👨‍🏫 Professor's Manual Response
-              </div>
-              <textarea
-                value={manualAnswer}
-                onChange={(e) => setManualAnswer(e.target.value)}
-                placeholder="Type your answer here..."
-                style={{
-                  width: "100%",
-                  minHeight: 120,
-                  padding: "12px 14px",
-                  border: "1px solid rgba(214,214,214,0.5)",
-                  borderRadius: 10,
-                  fontSize: 14,
-                  fontFamily: "inherit",
-                  resize: "vertical",
-                  boxSizing: "border-box",
-                }}
-              />
-              <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-                <button
-                  onClick={handleSubmitManualAnswer}
+              <div style={{ height: 5, backgroundColor: palette.sage }} />
+              <div style={{ padding: "28px 32px" }}>
+                <div
                   style={{
-                    padding: "10px 20px",
-                    background: palette.sage,
-                    color: "white",
-                    border: "none",
-                    borderRadius: 8,
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: "pointer",
+                    fontSize: 18,
+                    fontWeight: 800,
+                    color: palette.darkest,
+                    marginBottom: 16,
                   }}
                 >
-                  Submit Answer
-                </button>
-                <button
-                  onClick={() => setShowManualInput(false)}
+                  👨‍🏫 Your Manual Response
+                </div>
+                <textarea
+                  value={manualAnswer}
+                  onChange={(e) => setManualAnswer(e.target.value)}
+                  placeholder="Type your answer here..."
                   style={{
-                    padding: "10px 20px",
-                    background: "transparent",
+                    width: "100%",
+                    minHeight: 140,
+                    padding: "14px 16px",
+                    border: "1.5px solid rgba(214,214,214,0.5)",
+                    borderRadius: 12,
+                    fontSize: 15,
+                    fontFamily: "inherit",
+                    resize: "vertical",
+                    boxSizing: "border-box",
+                    outline: "none",
                     color: palette.deepBurgundy,
-                    border: "1px solid rgba(92,30,38,0.3)",
-                    borderRadius: 8,
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: "pointer",
+                    lineHeight: 1.6,
                   }}
-                >
-                  Cancel
-                </button>
+                />
+                <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
+                  <button
+                    onClick={handleSubmitManualAnswer}
+                    style={{
+                      padding: "12px 24px",
+                      background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`,
+                      color: "white",
+                      border: "none",
+                      borderRadius: 12,
+                      fontSize: 14,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Submit Answer
+                  </button>
+                  <button
+                    onClick={() => setShowManualInput(false)}
+                    style={{
+                      padding: "12px 24px",
+                      background: "transparent",
+                      color: palette.deepBurgundy,
+                      border: "1.5px solid rgba(92,30,38,0.2)",
+                      borderRadius: 12,
+                      fontSize: 14,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
           )}
+        </div>
+
+        {/* Bottom Banner */}
+        <div
+          style={{
+            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            padding: "36px 64px",
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 6 }}>
+            {decodeURIComponent(groupName || "")}
+          </div>
+          <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>
+            Keep the conversation going — students are watching.
+          </div>
         </div>
       </main>
     </div>

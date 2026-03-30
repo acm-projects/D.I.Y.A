@@ -5,6 +5,7 @@ import { QuestionDetailPage } from "./components/QuestionDetailPage";
 import { EditGroupPage } from "./components/EditGroupPage";
 import { RequestsPage } from "./components/RequestsPage";
 import { AnalysisPage } from "./components/AnalysisPage";
+import { TopicDetailPage } from "./components/TopicDetailPage";
 import { CalendarPage } from "./components/CalendarPage";
 
 export const router = createBrowserRouter([
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
   {
     path: "/analysis/:groupName",
     Component: AnalysisPage,
+  },
+  {
+    path: "/analysis/:groupName/topic/:topicId",
+    Component: TopicDetailPage,
   },
   {
     path: "/calendar/:groupName",

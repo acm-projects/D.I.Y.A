@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import { ProfessorSidebar } from "./ProfessorSidebar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const palette = {
@@ -22,84 +23,20 @@ interface Appointment {
 }
 
 const appointments: Appointment[] = [
-  {
-    id: 1,
-    studentName: "Sarah Johnson",
-    email: "sarah.j@university.edu",
-    date: "2026-03-20",
-    time: "2:00 PM",
-    reason: "Discuss final project requirements",
-    status: "confirmed",
-  },
-  {
-    id: 2,
-    studentName: "Michael Chen",
-    email: "m.chen@university.edu",
-    date: "2026-03-22",
-    time: "10:00 AM",
-    reason: "Questions about midterm exam",
-    status: "confirmed",
-  },
-  {
-    id: 3,
-    studentName: "Emily Rodriguez",
-    email: "emily.r@university.edu",
-    date: "2026-03-21",
-    time: "3:30 PM",
-    reason: "Help with recursion concepts",
-    status: "pending",
-  },
-  {
-    id: 4,
-    studentName: "David Kim",
-    email: "david.kim@university.edu",
-    date: "2026-03-23",
-    time: "11:00 AM",
-    reason: "Career opportunities discussion",
-    status: "confirmed",
-  },
-  {
-    id: 5,
-    studentName: "Jessica Lee",
-    email: "jessica.l@university.edu",
-    date: "2026-03-24",
-    time: "1:00 PM",
-    reason: "Assignment 3 clarification",
-    status: "pending",
-  },
-  {
-    id: 6,
-    studentName: "Ryan Martinez",
-    email: "ryan.m@university.edu",
-    date: "2026-03-25",
-    time: "4:00 PM",
-    reason: "Resume review and internship advice",
-    status: "confirmed",
-  },
-  {
-    id: 7,
-    studentName: "Olivia Brown",
-    email: "olivia.b@university.edu",
-    date: "2026-03-19",
-    time: "9:30 AM",
-    reason: "Data structures extra help",
-    status: "completed",
-  },
-  {
-    id: 8,
-    studentName: "James Wilson",
-    email: "j.wilson@university.edu",
-    date: "2026-03-27",
-    time: "2:30 PM",
-    reason: "Research opportunities in AI",
-    status: "confirmed",
-  },
+  { id: 1, studentName: "Sarah Johnson", email: "sarah.j@university.edu", date: "2026-03-20", time: "2:00 PM", reason: "Discuss final project requirements", status: "confirmed" },
+  { id: 2, studentName: "Michael Chen", email: "m.chen@university.edu", date: "2026-03-22", time: "10:00 AM", reason: "Questions about midterm exam", status: "confirmed" },
+  { id: 3, studentName: "Emily Rodriguez", email: "emily.r@university.edu", date: "2026-03-21", time: "3:30 PM", reason: "Help with recursion concepts", status: "pending" },
+  { id: 4, studentName: "David Kim", email: "david.kim@university.edu", date: "2026-03-23", time: "11:00 AM", reason: "Career opportunities discussion", status: "confirmed" },
+  { id: 5, studentName: "Jessica Lee", email: "jessica.l@university.edu", date: "2026-03-24", time: "1:00 PM", reason: "Assignment 3 clarification", status: "pending" },
+  { id: 6, studentName: "Ryan Martinez", email: "ryan.m@university.edu", date: "2026-03-25", time: "4:00 PM", reason: "Resume review and internship advice", status: "confirmed" },
+  { id: 7, studentName: "Olivia Brown", email: "olivia.b@university.edu", date: "2026-03-19", time: "9:30 AM", reason: "Data structures extra help", status: "completed" },
+  { id: 8, studentName: "James Wilson", email: "j.wilson@university.edu", date: "2026-03-27", time: "2:30 PM", reason: "Research opportunities in AI", status: "confirmed" },
 ];
 
 export function CalendarPage() {
   const { groupName } = useParams<{ groupName: string }>();
   const navigate = useNavigate();
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 17)); // March 17, 2026
+  const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 17));
   const [view, setView] = useState<"month" | "week" | "day">("month");
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
 
@@ -108,13 +45,11 @@ export function CalendarPage() {
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  const previousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-  };
+  const confirmedCount = appointments.filter(a => a.status === "confirmed").length;
+  const pendingCount = appointments.filter(a => a.status === "pending").length;
 
-  const nextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-  };
+  const previousMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
 
   const getAppointmentsForDate = (date: Date) => {
     const dateStr = date.toISOString().split("T")[0];
@@ -123,14 +58,10 @@ export function CalendarPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "confirmed":
-        return palette.sage;
-      case "pending":
-        return "#FFA500";
-      case "completed":
-        return "#6C757D";
-      default:
-        return palette.crimson;
+      case "confirmed": return palette.sage;
+      case "pending": return "#FFA500";
+      case "completed": return "#6C757D";
+      default: return palette.crimson;
     }
   };
 
@@ -143,17 +74,16 @@ export function CalendarPage() {
       const isCurrentMonth = dayNumber > 0 && dayNumber <= daysInMonth;
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayNumber);
       const dayAppointments = isCurrentMonth ? getAppointmentsForDate(date) : [];
-      const isToday = isCurrentMonth && dayNumber === 17; // Current day in our scenario
+      const isToday = isCurrentMonth && dayNumber === 17;
 
       days.push(
         <div
           key={i}
           style={{
-            minHeight: 120,
-            border: "1px solid rgba(214,214,214,0.3)",
-            padding: "8px",
-            backgroundColor: isCurrentMonth ? "#fff" : "rgba(214,214,214,0.1)",
-            position: "relative",
+            minHeight: 110,
+            border: "1px solid rgba(214,214,214,0.25)",
+            padding: "10px",
+            backgroundColor: isCurrentMonth ? (isToday ? "rgba(162,34,55,0.03)" : "#fff") : "rgba(214,214,214,0.06)",
             cursor: isCurrentMonth ? "pointer" : "default",
           }}
         >
@@ -162,29 +92,32 @@ export function CalendarPage() {
               <div
                 style={{
                   fontSize: 14,
-                  fontWeight: isToday ? 800 : 600,
+                  fontWeight: isToday ? 900 : 600,
                   color: isToday ? palette.crimson : palette.deepBurgundy,
                   marginBottom: 6,
                   display: "flex",
                   alignItems: "center",
-                  gap: 4,
+                  gap: 6,
                 }}
               >
-                {dayNumber}
-                {isToday && (
+                {isToday ? (
                   <span
                     style={{
-                      fontSize: 8,
-                      fontWeight: 700,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 26,
+                      height: 26,
+                      borderRadius: "50%",
                       backgroundColor: palette.crimson,
                       color: "white",
-                      padding: "2px 6px",
-                      borderRadius: 4,
+                      fontSize: 13,
+                      fontWeight: 800,
                     }}
                   >
-                    TODAY
+                    {dayNumber}
                   </span>
-                )}
+                ) : dayNumber}
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 {dayAppointments.slice(0, 2).map((apt) => (
@@ -193,29 +126,22 @@ export function CalendarPage() {
                     onClick={() => setSelectedAppointment(apt)}
                     style={{
                       fontSize: 10,
-                      fontWeight: 600,
-                      padding: "4px 6px",
+                      fontWeight: 700,
+                      padding: "4px 8px",
                       backgroundColor: getStatusColor(apt.status),
                       color: "white",
-                      borderRadius: 4,
+                      borderRadius: 6,
                       cursor: "pointer",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {apt.time} - {apt.studentName}
+                    {apt.time} · {apt.studentName.split(" ")[0]}
                   </div>
                 ))}
                 {dayAppointments.length > 2 && (
-                  <div
-                    style={{
-                      fontSize: 9,
-                      fontWeight: 700,
-                      color: palette.crimson,
-                      textAlign: "center",
-                    }}
-                  >
+                  <div style={{ fontSize: 10, fontWeight: 700, color: palette.crimson }}>
                     +{dayAppointments.length - 2} more
                   </div>
                 )}
@@ -233,23 +159,24 @@ export function CalendarPage() {
           gridTemplateColumns: "repeat(7, 1fr)",
           gap: 0,
           backgroundColor: "#fff",
-          borderRadius: 12,
+          borderRadius: 20,
           overflow: "hidden",
-          border: "1px solid rgba(214,214,214,0.4)",
-          boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
+          border: "1px solid rgba(214,214,214,0.3)",
+          boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
         }}
       >
         {dayNames.map((day) => (
           <div
             key={day}
             style={{
-              padding: "12px",
-              backgroundColor: palette.deepBurgundy,
+              padding: "14px",
+              backgroundColor: palette.darkest,
               color: "white",
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: 700,
               textAlign: "center",
               textTransform: "uppercase",
+              letterSpacing: 1,
             }}
           >
             {day}
@@ -261,7 +188,7 @@ export function CalendarPage() {
   };
 
   const renderWeekView = () => {
-    const startOfWeek = new Date(2026, 2, 16); // Week starting March 16, 2026
+    const startOfWeek = new Date(2026, 2, 16);
     const weekDays = [];
 
     for (let i = 0; i < 7; i++) {
@@ -274,26 +201,26 @@ export function CalendarPage() {
         <div key={i} style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
-              padding: "12px",
-              backgroundColor: isToday ? palette.crimson : palette.deepBurgundy,
+              padding: "14px",
+              backgroundColor: isToday ? palette.crimson : palette.darkest,
               color: "white",
-              fontSize: 11,
-              fontWeight: 700,
               textAlign: "center",
-              borderRadius: "8px 8px 0 0",
+              borderRadius: "12px 12px 0 0",
             }}
           >
-            <div style={{ fontSize: 10, opacity: 0.9 }}>{dayNames[date.getDay()]}</div>
-            <div style={{ fontSize: 18, marginTop: 2 }}>{date.getDate()}</div>
+            <div style={{ fontSize: 10, fontWeight: 700, opacity: 0.8, textTransform: "uppercase", letterSpacing: 1 }}>
+              {dayNames[date.getDay()]}
+            </div>
+            <div style={{ fontSize: 22, fontWeight: 900, marginTop: 2 }}>{date.getDate()}</div>
           </div>
           <div
             style={{
               backgroundColor: "#fff",
-              border: "1px solid rgba(214,214,214,0.4)",
+              border: "1px solid rgba(214,214,214,0.3)",
               borderTop: "none",
-              borderRadius: "0 0 8px 8px",
+              borderRadius: "0 0 12px 12px",
               padding: "12px 8px",
-              minHeight: 300,
+              minHeight: 280,
               display: "flex",
               flexDirection: "column",
               gap: 6,
@@ -304,17 +231,17 @@ export function CalendarPage() {
                 key={apt.id}
                 onClick={() => setSelectedAppointment(apt)}
                 style={{
-                  padding: "8px",
+                  padding: "10px",
                   backgroundColor: getStatusColor(apt.status),
                   color: "white",
-                  borderRadius: 6,
+                  borderRadius: 8,
                   fontSize: 11,
-                  fontWeight: 600,
+                  fontWeight: 700,
                   cursor: "pointer",
                 }}
               >
-                <div style={{ fontWeight: 700, marginBottom: 2 }}>{apt.time}</div>
-                <div style={{ fontSize: 10 }}>{apt.studentName}</div>
+                <div style={{ fontWeight: 800, marginBottom: 2 }}>{apt.time}</div>
+                <div style={{ opacity: 0.9, fontSize: 10 }}>{apt.studentName}</div>
               </div>
             ))}
           </div>
@@ -323,13 +250,7 @@ export function CalendarPage() {
     }
 
     return (
-      <div
-        style={{
-          display: "flex",
-          gap: 12,
-          backgroundColor: palette.cream,
-        }}
-      >
+      <div style={{ display: "flex", gap: 10 }}>
         {weekDays}
       </div>
     );
@@ -338,33 +259,33 @@ export function CalendarPage() {
   const renderDayView = () => {
     const today = new Date(2026, 2, 17);
     const todayAppointments = getAppointmentsForDate(today);
-    const hours = Array.from({ length: 12 }, (_, i) => i + 8); // 8 AM to 7 PM
+    const hours = Array.from({ length: 12 }, (_, i) => i + 8);
 
     return (
       <div
         style={{
           backgroundColor: "#fff",
-          borderRadius: 12,
-          border: "1px solid rgba(214,214,214,0.4)",
-          boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
+          borderRadius: 20,
           overflow: "hidden",
+          border: "1px solid rgba(214,214,214,0.3)",
+          boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
         }}
       >
         <div
           style={{
-            padding: "20px 24px",
-            backgroundColor: palette.crimson,
+            padding: "24px 32px",
+            background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`,
             color: "white",
           }}
         >
-          <div style={{ fontSize: 28, fontWeight: 800 }}>
+          <div style={{ fontSize: 32, fontWeight: 900, letterSpacing: -1 }}>
             {dayNames[today.getDay()]}, March {today.getDate()}
           </div>
-          <div style={{ fontSize: 14, fontWeight: 600, marginTop: 4, opacity: 0.9 }}>
+          <div style={{ fontSize: 15, fontWeight: 500, marginTop: 4, opacity: 0.85 }}>
             {todayAppointments.length} appointment{todayAppointments.length !== 1 ? "s" : ""} scheduled
           </div>
         </div>
-        <div style={{ padding: "16px" }}>
+        <div style={{ padding: "16px 24px" }}>
           {hours.map((hour) => {
             const timeStr = hour > 12 ? `${hour - 12}:00 PM` : hour === 12 ? "12:00 PM" : `${hour}:00 AM`;
             const hourAppointments = todayAppointments.filter((apt) => {
@@ -379,19 +300,13 @@ export function CalendarPage() {
                 key={hour}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "100px 1fr",
+                  gridTemplateColumns: "90px 1fr",
                   gap: 16,
                   padding: "12px 0",
-                  borderBottom: "1px solid rgba(214,214,214,0.3)",
+                  borderBottom: "1px solid rgba(214,214,214,0.2)",
                 }}
               >
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: palette.deepBurgundy,
-                  }}
-                >
+                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(92,30,38,0.45)", paddingTop: 4 }}>
                   {timeStr}
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -400,21 +315,19 @@ export function CalendarPage() {
                       key={apt.id}
                       onClick={() => setSelectedAppointment(apt)}
                       style={{
-                        padding: "12px 16px",
+                        padding: "14px 18px",
                         backgroundColor: getStatusColor(apt.status),
                         color: "white",
-                        borderRadius: 8,
+                        borderRadius: 12,
                         cursor: "pointer",
                         boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                       }}
                     >
-                      <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
-                        {apt.time} - {apt.studentName}
+                      <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 4 }}>
+                        {apt.time} · {apt.studentName}
                       </div>
-                      <div style={{ fontSize: 12, fontWeight: 500, opacity: 0.95 }}>{apt.reason}</div>
-                      <div style={{ fontSize: 10, fontWeight: 600, marginTop: 6, opacity: 0.8 }}>
-                        {apt.email}
-                      </div>
+                      <div style={{ fontSize: 13, fontWeight: 500, opacity: 0.9 }}>{apt.reason}</div>
+                      <div style={{ fontSize: 11, fontWeight: 600, marginTop: 6, opacity: 0.75 }}>{apt.email}</div>
                     </div>
                   ))}
                 </div>
@@ -435,147 +348,133 @@ export function CalendarPage() {
         display: "flex",
       }}
     >
-      {/* Sidebar */}
-      <aside
-        style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <ProfessorSidebar activeId="calendar" groupName={groupName} />
+
+      <main style={{ flex: 1, overflow: "auto" }}>
+        {/* Hero Section */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontFamily: "Italiana, serif",
-            fontSize: 30,
-            letterSpacing: 1.5,
-            color: "#fff",
-            padding: "6px 4px 10px 4px",
+            backgroundColor: "#fff",
+            padding: "56px 64px 52px",
+            borderBottom: "1px solid rgba(214,214,214,0.2)",
           }}
         >
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
-        </div>
-
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.25)", margin: "0 0 10px 0" }} />
-
-        <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button
-            type="button"
-            onClick={() => navigate(`/forum/${groupName}`)}
+          <div
             style={{
-              width: "100%",
-              textAlign: "left",
-              padding: "8px 10px",
-              borderRadius: 10,
-              border: "none",
-              backgroundColor: "transparent",
-              color: "rgba(255,255,255,0.85)",
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: "pointer",
+              fontSize: 11,
+              fontWeight: 700,
+              color: palette.crimson,
+              textTransform: "uppercase",
+              letterSpacing: 2,
+              marginBottom: 16,
             }}
           >
-            ← Back to Forum
-          </button>
-          {[
-            { id: "calendar", label: "Calendar", path: `/calendar/${groupName}` },
-            { id: "analysis", label: "Analysis", path: `/analysis/${groupName}` },
-            { id: "requests", label: "Requests", path: `/requests/${groupName}` },
-            { id: "editgroup", label: "Edit Group", path: `/edit-group/${groupName}` },
-          ].map((item) => {
-            const isActive = item.id === "calendar";
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => navigate(item.path)}
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "8px 10px",
-                  borderRadius: 10,
-                  border: "none",
-                  backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent",
-                  color: isActive ? palette.darkest : "rgba(255,255,255,0.85)",
-                  fontSize: 13,
-                  fontWeight: isActive ? 800 : 600,
-                  cursor: "pointer",
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-      </aside>
-
-      {/* Main content */}
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box", overflow: "auto" }}>
-        <div style={{ maxWidth: 1400 }}>
-          {/* Header */}
-          <div style={{ marginBottom: 32 }}>
-            <div
-              style={{
-                color: palette.crimson,
-                fontSize: 44,
-                fontWeight: 850,
-                letterSpacing: -1,
-                lineHeight: 1.1,
-              }}
-            >
-              Appointment Calendar
-            </div>
-            <div
-              style={{
-                marginTop: 8,
-                color: palette.deepBurgundy,
-                fontSize: 16,
-                fontWeight: 600,
-              }}
-            >
-              Manage your student appointments and schedule
-            </div>
+            Schedule
+          </div>
+          <div
+            style={{
+              fontSize: 64,
+              fontWeight: 900,
+              color: palette.darkest,
+              letterSpacing: -2.5,
+              lineHeight: 1,
+              marginBottom: 12,
+            }}
+          >
+            Appointment Calendar
+          </div>
+          <div
+            style={{
+              fontSize: 20,
+              fontWeight: 400,
+              color: "rgba(92,30,38,0.55)",
+              marginBottom: 52,
+            }}
+          >
+            Manage your student meetings and schedule
           </div>
 
-          {/* Calendar Controls */}
+          {/* Stats Row */}
+          <div style={{ display: "flex", gap: 0, alignItems: "stretch" }}>
+            {[
+              { label: "Total Appointments", value: appointments.length, color: palette.crimson },
+              { label: "Confirmed", value: confirmedCount, color: palette.sage },
+              { label: "Pending", value: pendingCount, color: "#FFA500" },
+              { label: "Completed", value: appointments.filter(a => a.status === "completed").length, color: "#6C757D" },
+            ].map((stat, i) => (
+              <div
+                key={stat.label}
+                style={{
+                  flex: 1,
+                  paddingRight: i < 3 ? 40 : 0,
+                  marginRight: i < 3 ? 40 : 0,
+                  borderRight: i < 3 ? "1px solid rgba(214,214,214,0.5)" : "none",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 48,
+                    fontWeight: 900,
+                    color: stat.color,
+                    letterSpacing: -1.5,
+                    lineHeight: 1,
+                    marginBottom: 8,
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: "rgba(92,30,38,0.5)",
+                    textTransform: "uppercase",
+                    letterSpacing: 1,
+                  }}
+                >
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Calendar Controls */}
+        <div style={{ padding: "32px 64px 24px" }}>
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              marginBottom: 24,
+              marginBottom: 20,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            {/* Month nav */}
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
               <button
                 onClick={previousMonth}
                 style={{
-                  padding: "8px 12px",
+                  width: 40,
+                  height: 40,
                   backgroundColor: "#fff",
-                  border: "1px solid rgba(214,214,214,0.5)",
-                  borderRadius: 8,
+                  border: "1.5px solid rgba(214,214,214,0.5)",
+                  borderRadius: 12,
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
                 }}
               >
-                <ChevronLeft size={20} color={palette.deepBurgundy} />
+                <ChevronLeft size={18} color={palette.deepBurgundy} />
               </button>
               <div
                 style={{
-                  fontSize: 24,
-                  fontWeight: 800,
-                  color: palette.deepBurgundy,
+                  fontSize: 28,
+                  fontWeight: 900,
+                  color: palette.darkest,
+                  letterSpacing: -0.8,
+                  minWidth: 240,
                 }}
               >
                 {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
@@ -583,16 +482,19 @@ export function CalendarPage() {
               <button
                 onClick={nextMonth}
                 style={{
-                  padding: "8px 12px",
+                  width: 40,
+                  height: 40,
                   backgroundColor: "#fff",
-                  border: "1px solid rgba(214,214,214,0.5)",
-                  borderRadius: 8,
+                  border: "1.5px solid rgba(214,214,214,0.5)",
+                  borderRadius: 12,
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
                 }}
               >
-                <ChevronRight size={20} color={palette.deepBurgundy} />
+                <ChevronRight size={18} color={palette.deepBurgundy} />
               </button>
             </div>
 
@@ -600,11 +502,12 @@ export function CalendarPage() {
             <div
               style={{
                 display: "flex",
-                gap: 8,
                 backgroundColor: "#fff",
                 padding: 4,
-                borderRadius: 10,
-                border: "1px solid rgba(214,214,214,0.4)",
+                borderRadius: 14,
+                border: "1.5px solid rgba(214,214,214,0.4)",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                gap: 4,
               }}
             >
               {(["month", "week", "day"] as const).map((v) => (
@@ -612,15 +515,16 @@ export function CalendarPage() {
                   key={v}
                   onClick={() => setView(v)}
                   style={{
-                    padding: "8px 20px",
+                    padding: "8px 22px",
                     backgroundColor: view === v ? palette.crimson : "transparent",
                     color: view === v ? "white" : palette.deepBurgundy,
                     border: "none",
-                    borderRadius: 7,
+                    borderRadius: 10,
                     fontSize: 13,
                     fontWeight: 700,
                     cursor: "pointer",
                     textTransform: "capitalize",
+                    transition: "all 150ms ease",
                   }}
                 >
                   {v}
@@ -633,53 +537,47 @@ export function CalendarPage() {
           <div
             style={{
               display: "flex",
-              gap: 20,
+              gap: 24,
               marginBottom: 20,
-              padding: "12px 16px",
+              padding: "12px 20px",
               backgroundColor: "#fff",
-              borderRadius: 8,
-              border: "1px solid rgba(214,214,214,0.3)",
+              borderRadius: 12,
+              border: "1px solid rgba(214,214,214,0.25)",
+              boxShadow: "0 1px 6px rgba(0,0,0,0.04)",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <div
-                style={{
-                  width: 16,
-                  height: 16,
-                  backgroundColor: palette.sage,
-                  borderRadius: 4,
-                }}
-              />
-              <span style={{ fontSize: 12, fontWeight: 600, color: palette.deepBurgundy }}>Confirmed</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <div
-                style={{
-                  width: 16,
-                  height: 16,
-                  backgroundColor: "#FFA500",
-                  borderRadius: 4,
-                }}
-              />
-              <span style={{ fontSize: 12, fontWeight: 600, color: palette.deepBurgundy }}>Pending</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <div
-                style={{
-                  width: 16,
-                  height: 16,
-                  backgroundColor: "#6C757D",
-                  borderRadius: 4,
-                }}
-              />
-              <span style={{ fontSize: 12, fontWeight: 600, color: palette.deepBurgundy }}>Completed</span>
-            </div>
+            {[
+              { label: "Confirmed", color: palette.sage },
+              { label: "Pending", color: "#FFA500" },
+              { label: "Completed", color: "#6C757D" },
+            ].map((item) => (
+              <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: 4 }} />
+                <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>{item.label}</span>
+              </div>
+            ))}
           </div>
 
           {/* Calendar Views */}
           {view === "month" && renderMonthView()}
           {view === "week" && renderWeekView()}
           {view === "day" && renderDayView()}
+        </div>
+
+        {/* Bottom Banner */}
+        <div
+          style={{
+            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            padding: "40px 64px",
+            marginTop: 8,
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+            {decodeURIComponent(groupName || "")}
+          </div>
+          <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>
+            {confirmedCount} confirmed meetings this month.
+          </div>
         </div>
       </main>
 
@@ -689,135 +587,90 @@ export function CalendarPage() {
           onClick={() => setSelectedAppointment(null)}
           style={{
             position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            inset: 0,
             backgroundColor: "rgba(0,0,0,0.5)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             zIndex: 1000,
+            backdropFilter: "blur(4px)",
           }}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
               backgroundColor: "#fff",
-              borderRadius: 16,
-              padding: "32px",
-              maxWidth: 500,
+              borderRadius: 24,
+              overflow: "hidden",
+              maxWidth: 480,
               width: "90%",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+              boxShadow: "0 24px 80px rgba(0,0,0,0.25)",
             }}
           >
-            <div
-              style={{
-                fontSize: 24,
-                fontWeight: 800,
-                color: palette.crimson,
-                marginBottom: 16,
-              }}
-            >
-              Appointment Details
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: "rgba(92,30,38,0.5)",
-                    textTransform: "uppercase",
-                    marginBottom: 4,
-                  }}
-                >
-                  Student
+            <div style={{ height: 6, backgroundColor: getStatusColor(selectedAppointment.status) }} />
+            <div style={{ padding: "32px" }}>
+              <div style={{ fontSize: 24, fontWeight: 900, color: palette.darkest, letterSpacing: -0.8, marginBottom: 24 }}>
+                Appointment Details
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>
+                    Student
+                  </div>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: palette.darkest, marginBottom: 2 }}>
+                    {selectedAppointment.studentName}
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>
+                    {selectedAppointment.email}
+                  </div>
                 </div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: palette.deepBurgundy }}>
-                  {selectedAppointment.studentName}
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>
+                    Date & Time
+                  </div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: palette.deepBurgundy }}>
+                    {new Date(selectedAppointment.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })} at {selectedAppointment.time}
+                  </div>
                 </div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.6)" }}>
-                  {selectedAppointment.email}
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>
+                    Reason
+                  </div>
+                  <div style={{ fontSize: 15, fontWeight: 500, color: palette.deepBurgundy, fontStyle: "italic" }}>
+                    "{selectedAppointment.reason}"
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>
+                    Status
+                  </div>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      padding: "6px 14px",
+                      backgroundColor: getStatusColor(selectedAppointment.status),
+                      color: "white",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      borderRadius: 8,
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {selectedAppointment.status}
+                  </span>
                 </div>
               </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: "rgba(92,30,38,0.5)",
-                    textTransform: "uppercase",
-                    marginBottom: 4,
-                  }}
-                >
-                  Date & Time
-                </div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: palette.deepBurgundy }}>
-                  {new Date(selectedAppointment.date).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}{" "}
-                  at {selectedAppointment.time}
-                </div>
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: "rgba(92,30,38,0.5)",
-                    textTransform: "uppercase",
-                    marginBottom: 4,
-                  }}
-                >
-                  Reason
-                </div>
-                <div style={{ fontSize: 14, fontWeight: 500, color: palette.deepBurgundy, fontStyle: "italic" }}>
-                  "{selectedAppointment.reason}"
-                </div>
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: "rgba(92,30,38,0.5)",
-                    textTransform: "uppercase",
-                    marginBottom: 4,
-                  }}
-                >
-                  Status
-                </div>
-                <span
-                  style={{
-                    display: "inline-block",
-                    padding: "6px 12px",
-                    backgroundColor: getStatusColor(selectedAppointment.status),
-                    color: "white",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    borderRadius: 6,
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {selectedAppointment.status}
-                </span>
-              </div>
-            </div>
-            <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
               <button
                 onClick={() => setSelectedAppointment(null)}
                 style={{
-                  flex: 1,
-                  padding: "12px",
-                  backgroundColor: palette.sage,
+                  marginTop: 24,
+                  width: "100%",
+                  padding: "14px",
+                  background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`,
                   color: "white",
                   border: "none",
-                  borderRadius: 8,
-                  fontSize: 14,
+                  borderRadius: 14,
+                  fontSize: 15,
                   fontWeight: 700,
                   cursor: "pointer",
                 }}

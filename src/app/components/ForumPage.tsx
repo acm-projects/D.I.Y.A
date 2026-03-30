@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import { ProfessorSidebar } from "./ProfessorSidebar";
 
 interface Question {
   id: number;
@@ -10,13 +11,11 @@ interface Question {
   aiAnswerStatus?: "pending" | "verified" | "rejected";
 }
 
-// Helper function to get time ago
 function getTimeAgo(id: number): string {
   const times = ["2 hours ago", "5 hours ago", "1 day ago", "2 days ago", "3 days ago", "1 week ago"];
   return times[id % times.length];
 }
 
-// Color palette matching the new UI
 const palette = {
   darkest: "#270115",
   crimson: "#a22237",
@@ -26,23 +25,11 @@ const palette = {
   lightGray: "#D6D6D6",
 } as const;
 
-// SVG Icons
 function UsersIcon({ color }: { color: string }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z" stroke={color} strokeWidth="2" />
       <path d="M4 20.5c1.6-3.2 4.5-5 8-5s6.4 1.8 8 5" stroke={color} strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function ForumIcon({ color }: { color: string }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M6 7.5A4.5 4.5 0 0 1 10.5 3h3A4.5 4.5 0 0 1 18 7.5v3A4.5 4.5 0 0 1 13.5 15H11l-4.5 3V15A4.5 4.5 0 0 1 6 10.5v-3Z"
-        stroke={color} strokeWidth="2" strokeLinejoin="round"
-      />
     </svg>
   );
 }
@@ -52,14 +39,13 @@ export function ForumPage() {
   const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
-  // Mock student questions data with AI answers
   const [questions, setQuestions] = useState<Question[]>([
     {
       id: 1,
       author: "Sarah Johnson",
       question: "Can someone explain the difference between recursion and iteration?",
       replies: 12,
-      aiAnswer: "recursion is when a function calls itself to solve smaller instances of the same problem, while iteration uses loops to repeat a process. recursion has a base case to stop, iteration has a condition. recursion can be more elegant but uses more memory due to call stack.",
+      aiAnswer: "Recursion is when a function calls itself to solve smaller instances of the same problem, while iteration uses loops to repeat a process. Recursion has a base case to stop, iteration has a condition. Recursion can be more elegant but uses more memory due to call stack.",
       aiAnswerStatus: "pending",
     },
     {
@@ -67,7 +53,7 @@ export function ForumPage() {
       author: "Michael Chen",
       question: "What's the best way to approach the final project?",
       replies: 8,
-      aiAnswer: "start by breaking down the requirements into smaller tasks. create a timeline with milestones. begin with core functionality before adding features. test frequently and don't wait until the last minute. use version control and commit regularly.",
+      aiAnswer: "Start by breaking down the requirements into smaller tasks. Create a timeline with milestones. Begin with core functionality before adding features. Test frequently and don't wait until the last minute. Use version control and commit regularly.",
       aiAnswerStatus: "pending",
     },
     {
@@ -75,7 +61,7 @@ export function ForumPage() {
       author: "Emily Rodriguez",
       question: "Are we allowed to use external libraries for the assignment?",
       replies: 5,
-      aiAnswer: "check the assignment rubric for specific restrictions. generally, you can use standard libraries but should avoid libraries that solve the core problem for you. when in doubt, ask the professor before submission to ensure compliance.",
+      aiAnswer: "Check the assignment rubric for specific restrictions. Generally, you can use standard libraries but should avoid libraries that solve the core problem for you. When in doubt, ask the professor before submission to ensure compliance.",
       aiAnswerStatus: "pending",
     },
     {
@@ -83,7 +69,7 @@ export function ForumPage() {
       author: "David Kim",
       question: "When is the deadline for submitting the lab report?",
       replies: 3,
-      aiAnswer: "the lab report deadline is typically listed in the syllabus and course calendar. check the course management system for the exact date and time. if you need an extension, contact the professor at least 48 hours before the deadline.",
+      aiAnswer: "The lab report deadline is typically listed in the syllabus and course calendar. Check the course management system for the exact date and time. If you need an extension, contact the professor at least 48 hours before the deadline.",
       aiAnswerStatus: "pending",
     },
     {
@@ -91,7 +77,7 @@ export function ForumPage() {
       author: "Jessica Lee",
       question: "How do I set up the development environment for this project?",
       replies: 15,
-      aiAnswer: "install the required ide and compiler/interpreter. set up version control with git. install project dependencies using the package manager. configure environment variables if needed. refer to the setup guide provided in the project documentation.",
+      aiAnswer: "Install the required IDE and compiler/interpreter. Set up version control with git. Install project dependencies using the package manager. Configure environment variables if needed. Refer to the setup guide provided in the project documentation.",
       aiAnswerStatus: "pending",
     },
     {
@@ -99,728 +85,376 @@ export function ForumPage() {
       author: "Ryan Martinez",
       question: "Is there a study guide available for the midterm exam?",
       replies: 0,
-      aiAnswer: "study guides are usually posted 1-2 weeks before the exam. review lecture notes, homework assignments, and practice problems. focus on key concepts covered in class. attend review sessions if offered. form study groups with classmates.",
+      aiAnswer: "Study guides are usually posted 1-2 weeks before the exam. Review lecture notes, homework assignments, and practice problems. Focus on key concepts covered in class. Attend review sessions if offered. Form study groups with classmates.",
       aiAnswerStatus: "pending",
     },
   ]);
 
   const handleAIResponse = (questionId: number, action: "verify" | "reject") => {
-    setQuestions(questions.map(q => 
-      q.id === questionId 
+    setQuestions(questions.map(q =>
+      q.id === questionId
         ? { ...q, aiAnswerStatus: action === "verify" ? "verified" : "rejected" }
         : q
     ));
   };
+
+  const pendingCount = questions.filter(q => q.aiAnswerStatus === "pending").length;
+  const verifiedCount = questions.filter(q => q.aiAnswerStatus === "verified").length;
+  const totalReplies = questions.reduce((sum, q) => sum + q.replies, 0);
 
   return (
     <div
       style={{
         minHeight: "100vh",
         backgroundColor: palette.cream,
-        textAlign: "left",
         fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
-        color: "#111",
         display: "flex",
       }}
     >
-      {/* Sidebar */}
-      <aside
-        style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {/* Logo area */}
+      <ProfessorSidebar activeId="analysis" groupName={groupName} />
+
+      <main style={{ flex: 1, overflow: "auto" }}>
+        {/* Hero Section */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontFamily: "Italiana, serif",
-            fontSize: 30,
-            letterSpacing: 1.5,
-            color: "#fff",
-            padding: "6px 4px 10px 4px",
-          }}
-        >
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
-        </div>
-
-        {/* Divider line */}
-        <div
-          style={{
-            height: 1,
-            backgroundColor: "rgba(255,255,255,0.25)",
-            margin: "0 0 10px 0",
-          }}
-        />
-
-        {/* Sidebar navigation buttons */}
-        <nav aria-label="Sidebar navigation" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button
-            type="button"
-            onClick={() => navigate("/")}
-            style={{
-              width: "100%",
-              textAlign: "left",
-              padding: "8px 10px",
-              borderRadius: 10,
-              border: "none",
-              backgroundColor: "transparent",
-              color: "rgba(255,255,255,0.85)",
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "background-color 120ms ease",
-            }}
-          >
-            ← Back to Groups
-          </button>
-          {[
-            { id: "calendar", label: "Calendar", path: `/calendar/${groupName}` },
-            { id: "analysis", label: "Analysis", path: `/analysis/${groupName}` },
-            { id: "requests", label: "Requests", path: `/requests/${groupName}` },
-            { id: "editgroup", label: "Edit Group", path: `/edit-group/${groupName}` },
-          ].map((item) => {
-            const isActive = false;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => navigate(item.path)}
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "8px 10px",
-                  borderRadius: 10,
-                  border: "none",
-                  backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent",
-                  color: isActive ? palette.darkest : "rgba(255,255,255,0.85)",
-                  fontSize: 13,
-                  fontWeight: isActive ? 800 : 600,
-                  cursor: "pointer",
-                  transition: "background-color 120ms ease",
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-
-        <div style={{ flex: 1 }} />
-
-        {/* Bottom divider */}
-        <div
-          style={{
-            height: 1,
-            backgroundColor: "rgba(255,255,255,0.2)",
-            margin: "10px 0 8px 0",
-          }}
-        />
-
-        {/* Quick Stats */}
-        <div
-          style={{
-            padding: "10px 10px",
-            backgroundColor: "rgba(255,255,255,0.08)",
-            borderRadius: 10,
-            marginBottom: 8,
+            backgroundColor: "#fff",
+            padding: "56px 64px 52px",
+            borderBottom: "1px solid rgba(214,214,214,0.2)",
           }}
         >
           <div
             style={{
-              fontSize: 10,
+              fontSize: 11,
               fontWeight: 700,
-              color: "rgba(255,255,255,0.5)",
+              color: palette.crimson,
               textTransform: "uppercase",
-              letterSpacing: 0.5,
-              marginBottom: 6,
+              letterSpacing: 2,
+              marginBottom: 16,
             }}
           >
-            Forum Stats
+            Student Forum
           </div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)", marginBottom: 4 }}>
-            📊 {questions.length} Questions
-          </div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>
-            ✅ {questions.filter(q => q.replies > 0).length} Answered
-          </div>
-        </div>
-
-        {/* New Post button */}
-        <button
-          type="button"
-          onClick={() => alert("Create new announcement (feature coming soon)")}
-          style={{
-            width: "100%",
-            textAlign: "center",
-            padding: "10px 10px",
-            borderRadius: 10,
-            border: "none",
-            backgroundColor: palette.sage,
-            color: "white",
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-            transition: "all 120ms ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#699066";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = palette.sage;
-          }}
-        >
-          ✏️ New Announcement
-        </button>
-      </aside>
-
-      {/* Main content */}
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box" }}>
-        <div style={{ maxWidth: 1400 }}>
-          {/* Welcome Header */}
-          <div style={{ marginBottom: 20 }}>
-            <div
-              style={{
-                color: palette.crimson,
-                fontSize: 44,
-                fontWeight: 850,
-                letterSpacing: -1,
-                lineHeight: 1.1,
-              }}
-            >
-              {decodeURIComponent(groupName || "")}
-            </div>
-
-            {/* Subtitle */}
-            <div
-              style={{
-                marginTop: 8,
-                color: palette.deepBurgundy,
-                fontSize: 16,
-                fontWeight: 600,
-                letterSpacing: -0.2,
-              }}
-            >
-              Student Forum & Discussion Board
-            </div>
-          </div>
-
-          {/* Stats Cards Row */}
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: 12,
-              marginBottom: 20,
-            }}
-          >
-            <div
-              style={{
-                padding: "14px 16px",
-                backgroundColor: "#fff",
-                borderRadius: 12,
-                border: "1px solid rgba(214,214,214,0.4)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  color: "rgba(92,30,38,0.5)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 4,
-                }}
-              >
-                Total Questions
-              </div>
-              <div
-                style={{
-                  fontSize: 28,
-                  fontWeight: 800,
-                  color: palette.crimson,
-                  lineHeight: 1,
-                }}
-              >
-                {questions.length}
-              </div>
-            </div>
-
-            <div
-              style={{
-                padding: "14px 16px",
-                backgroundColor: "#fff",
-                borderRadius: 12,
-                border: "1px solid rgba(214,214,214,0.4)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  color: "rgba(92,30,38,0.5)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 4,
-                }}
-              >
-                AI Verified
-              </div>
-              <div
-                style={{
-                  fontSize: 28,
-                  fontWeight: 800,
-                  color: palette.sage,
-                  lineHeight: 1,
-                }}
-              >
-                {questions.filter(q => q.aiAnswerStatus === "verified").length}
-              </div>
-            </div>
-
-            <div
-              style={{
-                padding: "14px 16px",
-                backgroundColor: "#fff",
-                borderRadius: 12,
-                border: "1px solid rgba(214,214,214,0.4)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  color: "rgba(92,30,38,0.5)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 4,
-                }}
-              >
-                Pending Review
-              </div>
-              <div
-                style={{
-                  fontSize: 28,
-                  fontWeight: 800,
-                  color: "#DC3545",
-                  lineHeight: 1,
-                }}
-              >
-                {questions.filter(q => q.aiAnswerStatus === "pending").length}
-              </div>
-            </div>
-
-            <div
-              style={{
-                padding: "14px 16px",
-                backgroundColor: "#fff",
-                borderRadius: 12,
-                border: "1px solid rgba(214,214,214,0.4)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  color: "rgba(92,30,38,0.5)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 4,
-                }}
-              >
-                Student Replies
-              </div>
-              <div
-                style={{
-                  fontSize: 28,
-                  fontWeight: 800,
-                  color: palette.deepBurgundy,
-                  lineHeight: 1,
-                }}
-              >
-                {questions.reduce((sum, q) => sum + q.replies, 0)}
-              </div>
-            </div>
-          </div>
-
-          {/* Small divider under title */}
-          <div
-            style={{
-              height: 1,
-              backgroundColor: "rgba(39,1,21,0.12)",
-              marginTop: 14,
-              marginBottom: 18,
-            }}
-          />
-
-          {/* Showing count text */}
-          <div
-            style={{
-              marginTop: 12,
-              marginBottom: 8,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div
-              style={{
-                color: palette.crimson,
-                fontSize: 20,
-                fontWeight: 800,
-              }}
-            >
-              Recent Student Questions
-            </div>
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: palette.deepBurgundy,
-                opacity: 0.7,
-              }}
-            >
-              Last updated: Today at {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-            </div>
-          </div>
-
-          {/* Filter/Sort Bar */}
-          <div
-            style={{
-              display: "flex",
-              gap: 8,
+              fontSize: 64,
+              fontWeight: 900,
+              color: palette.darkest,
+              letterSpacing: -2.5,
+              lineHeight: 1,
               marginBottom: 12,
             }}
           >
-            <button
-              style={{
-                padding: "6px 12px",
-                borderRadius: 8,
-                border: `1px solid ${palette.crimson}`,
-                backgroundColor: palette.crimson,
-                color: "white",
-                fontSize: 12,
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              All Questions
-            </button>
-            <button
-              style={{
-                padding: "6px 12px",
-                borderRadius: 8,
-                border: `1px solid rgba(39,1,21,0.2)`,
-                backgroundColor: "transparent",
-                color: palette.deepBurgundy,
-                fontSize: 12,
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-              onClick={() => alert("Filter: Unanswered (feature coming soon)")}
-            >
-              Unanswered
-            </button>
-            <button
-              style={{
-                padding: "6px 12px",
-                borderRadius: 8,
-                border: `1px solid rgba(39,1,21,0.2)`,
-                backgroundColor: "transparent",
-                color: palette.deepBurgundy,
-                fontSize: 12,
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-              onClick={() => alert("Sort: Recent (feature coming soon)")}
-            >
-              Recent
-            </button>
+            {decodeURIComponent(groupName || "")}
           </div>
-
-          {/* Questions container */}
           <div
             style={{
-              marginTop: 20,
-              display: "flex",
-              flexDirection: "column",
-              gap: 18,
+              fontSize: 20,
+              fontWeight: 400,
+              color: "rgba(92,30,38,0.55)",
+              marginBottom: 52,
             }}
           >
-            {/* Render each question card */}
+            Discussion board & AI answer management
+          </div>
+
+          {/* Stats Row */}
+          <div style={{ display: "flex", gap: 0, alignItems: "stretch" }}>
+            {[
+              { label: "Total Questions", value: questions.length, color: palette.crimson },
+              { label: "AI Verified", value: verifiedCount, color: palette.sage },
+              { label: "Pending Review", value: pendingCount, color: "#DC3545" },
+              { label: "Student Replies", value: totalReplies, color: palette.deepBurgundy },
+            ].map((stat, i) => (
+              <div
+                key={stat.label}
+                style={{
+                  flex: 1,
+                  paddingRight: i < 3 ? 40 : 0,
+                  marginRight: i < 3 ? 40 : 0,
+                  borderRight: i < 3 ? "1px solid rgba(214,214,214,0.5)" : "none",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 48,
+                    fontWeight: 900,
+                    color: stat.color,
+                    letterSpacing: -1.5,
+                    lineHeight: 1,
+                    marginBottom: 8,
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: "rgba(92,30,38,0.5)",
+                    textTransform: "uppercase",
+                    letterSpacing: 1,
+                  }}
+                >
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Questions Section */}
+        <div style={{ padding: "48px 64px" }}>
+          {/* Section Header */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 32,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 32,
+                fontWeight: 900,
+                color: palette.darkest,
+                letterSpacing: -1,
+              }}
+            >
+              Recent Questions
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              {["All", "Pending", "Verified"].map((label) => (
+                <button
+                  key={label}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: 10,
+                    border: label === "All" ? "none" : "1.5px solid rgba(39,1,21,0.12)",
+                    backgroundColor: label === "All" ? palette.crimson : "transparent",
+                    color: label === "All" ? "white" : palette.deepBurgundy,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Question Cards */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             {questions.map((q) => {
               const isHovered = hoveredId === q.id;
+              const statusColor = q.aiAnswerStatus === "verified" ? palette.sage : q.aiAnswerStatus === "rejected" ? "#DC3545" : palette.crimson;
               return (
                 <div
                   key={q.id}
                   onMouseEnter={() => setHoveredId(q.id)}
                   onMouseLeave={() => setHoveredId(null)}
                   style={{
-                    textAlign: "left",
                     backgroundColor: "#fff",
-                    border: isHovered ? `1px solid ${palette.crimson}` : "1px solid rgba(214,214,214,0.4)",
-                    borderRadius: 14,
-                    padding: "18px 20px",
-                    cursor: "pointer",
-                    boxShadow: isHovered
-                      ? "0 12px 36px rgba(0,0,0,0.22)"
-                      : "0 4px 18px rgba(0,0,0,0.12)",
-                    transform: isHovered ? "translateY(-2px)" : "translateY(0px)",
-                    transition: "transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease",
+                    borderRadius: 20,
+                    overflow: "hidden",
+                    boxShadow: isHovered ? "0 20px 60px rgba(0,0,0,0.14)" : "0 2px 24px rgba(0,0,0,0.06)",
+                    transform: isHovered ? "translateY(-3px)" : "translateY(0)",
+                    transition: "transform 200ms ease, box-shadow 200ms ease",
                   }}
                 >
-                  {/* Question header */}
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 12,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 800,
-                        letterSpacing: -0.2,
-                        color: palette.deepBurgundy,
-                        lineHeight: 1.3,
-                        flex: 1,
-                      }}
-                    >
-                      {q.question}
+                  {/* Top accent */}
+                  <div style={{ height: 4, backgroundColor: statusColor }} />
+
+                  <div style={{ padding: "28px 32px 24px" }}>
+                    {/* Header row */}
+                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
+                      <div style={{ flex: 1, paddingRight: 24 }}>
+                        <div
+                          style={{
+                            fontSize: 18,
+                            fontWeight: 800,
+                            color: palette.darkest,
+                            letterSpacing: -0.4,
+                            lineHeight: 1.35,
+                            marginBottom: 10,
+                          }}
+                        >
+                          {q.question}
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 6,
+                              padding: "5px 10px",
+                              borderRadius: 8,
+                              backgroundColor: "rgba(122,155,118,0.1)",
+                            }}
+                          >
+                            <UsersIcon color={palette.sage} />
+                            <span style={{ fontSize: 12, fontWeight: 700, color: palette.deepBurgundy }}>{q.author}</span>
+                          </div>
+                          <div
+                            style={{
+                              padding: "5px 10px",
+                              borderRadius: 8,
+                              backgroundColor: q.replies === 0 ? "rgba(220,53,69,0.08)" : "rgba(92,30,38,0.06)",
+                              fontSize: 12,
+                              fontWeight: 700,
+                              color: q.replies === 0 ? "#DC3545" : palette.deepBurgundy,
+                            }}
+                          >
+                            {q.replies} {q.replies === 1 ? "reply" : "replies"}
+                          </div>
+                          <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(92,30,38,0.4)" }}>
+                            {getTimeAgo(q.id)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Status badge */}
+                      <div
+                        style={{
+                          padding: "6px 14px",
+                          borderRadius: 10,
+                          backgroundColor: q.aiAnswerStatus === "verified"
+                            ? "rgba(122,155,118,0.12)"
+                            : q.aiAnswerStatus === "rejected"
+                            ? "rgba(220,53,69,0.1)"
+                            : "rgba(162,34,55,0.08)",
+                          fontSize: 11,
+                          fontWeight: 800,
+                          color: statusColor,
+                          textTransform: "uppercase",
+                          letterSpacing: 0.5,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {q.aiAnswerStatus === "verified" ? "✓ Verified" : q.aiAnswerStatus === "rejected" ? "✗ Rejected" : "⏳ Pending"}
+                      </div>
                     </div>
 
-                    {/* Small status dot */}
+                    {/* AI Answer */}
                     <div
                       style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: 999,
-                        backgroundColor: palette.sage,
-                        flex: "0 0 auto",
-                      }}
-                      aria-hidden="true"
-                    />
-                  </div>
-
-                  {/* Question stats */}
-                  <div
-                    style={{
-                      marginTop: 14,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 8,
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: palette.deepBurgundy,
-                      alignItems: "center",
-                    }}
-                  >
-                    {/* Author */}
-                    <div
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        padding: "6px 10px",
-                        borderRadius: 8,
-                        backgroundColor: "rgba(122,155,118,0.12)",
-                      }}
-                    >
-                      <UsersIcon color={palette.sage} />
-                      <span>{q.author}</span>
-                    </div>
-
-                    {/* Replies */}
-                    <div
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        padding: "6px 10px",
-                        borderRadius: 8,
-                        backgroundColor: q.replies === 0 ? "rgba(220,53,69,0.1)" : "rgba(92,30,38,0.08)",
-                      }}
-                    >
-                      <ForumIcon color={q.replies === 0 ? "#DC3545" : palette.deepBurgundy} />
-                      <span>{q.replies} {q.replies === 1 ? "reply" : "replies"}</span>
-                    </div>
-
-                    {/* Time ago */}
-                    <div
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 600,
-                        color: "rgba(92,30,38,0.5)",
-                        marginLeft: "auto",
-                      }}
-                    >
-                      🕐 {getTimeAgo(q.id)}
-                    </div>
-                  </div>
-
-                  {/* AI Generated Answer Section */}
-                  <div
-                    style={{
-                      marginTop: 16,
-                      padding: "12px 14px",
-                      backgroundColor: 
-                        q.aiAnswerStatus === "verified" 
-                          ? "rgba(122,155,118,0.08)" 
+                        padding: "16px 20px",
+                        backgroundColor: q.aiAnswerStatus === "verified"
+                          ? "rgba(122,155,118,0.06)"
                           : q.aiAnswerStatus === "rejected"
-                          ? "rgba(220,53,69,0.05)"
-                          : "rgba(162,34,55,0.04)",
-                      borderLeft: `3px solid ${
-                        q.aiAnswerStatus === "verified"
-                          ? palette.sage
-                          : q.aiAnswerStatus === "rejected"
-                          ? "#DC3545"
-                          : palette.crimson
-                      }`,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 700,
-                        color: palette.crimson,
-                        textTransform: "uppercase",
-                        letterSpacing: 0.5,
-                        marginBottom: 6,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
+                          ? "rgba(220,53,69,0.04)"
+                          : "rgba(162,34,55,0.03)",
+                        borderRadius: 14,
+                        borderLeft: `4px solid ${statusColor}`,
+                        marginBottom: 16,
                       }}
                     >
-                      🤖 AI Generated Answer
-                      {q.aiAnswerStatus === "verified" && (
-                        <span style={{ color: palette.sage }}>✓ Verified</span>
-                      )}
-                      {q.aiAnswerStatus === "rejected" && (
-                        <span style={{ color: "#DC3545" }}>✗ Rejected</span>
-                      )}
+                      <div
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 800,
+                          color: palette.crimson,
+                          textTransform: "uppercase",
+                          letterSpacing: 1,
+                          marginBottom: 8,
+                        }}
+                      >
+                        AI Generated Answer
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 500,
+                          color: palette.deepBurgundy,
+                          lineHeight: 1.65,
+                        }}
+                      >
+                        {q.aiAnswer}
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 500,
-                        color: palette.deepBurgundy,
-                        lineHeight: 1.5,
-                        marginBottom: 10,
-                      }}
-                    >
-                      {q.aiAnswer}
-                    </div>
-                    
-                    {/* Verify/Reject Buttons */}
-                    {q.aiAnswerStatus === "pending" && (
+
+                    {/* Actions row */}
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                       <div style={{ display: "flex", gap: 8 }}>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAIResponse(q.id, "verify");
-                          }}
-                          style={{
-                            padding: "6px 12px",
-                            background: palette.sage,
-                            color: "white",
-                            border: "none",
-                            borderRadius: 6,
-                            fontSize: 11,
-                            fontWeight: 700,
-                            cursor: "pointer",
-                            transition: "all 120ms ease",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "#699066";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = palette.sage;
-                          }}
-                        >
-                          ✓ Verify
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAIResponse(q.id, "reject");
-                          }}
-                          style={{
-                            padding: "6px 12px",
-                            background: "transparent",
-                            color: "#DC3545",
-                            border: "1px solid #DC3545",
-                            borderRadius: 6,
-                            fontSize: 11,
-                            fontWeight: 700,
-                            cursor: "pointer",
-                            transition: "all 120ms ease",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "#DC3545";
-                            e.currentTarget.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "transparent";
-                            e.currentTarget.style.color = "#DC3545";
-                          }}
-                        >
-                          ✗ Reject
-                        </button>
+                        {q.aiAnswerStatus === "pending" && (
+                          <>
+                            <button
+                              onClick={() => handleAIResponse(q.id, "verify")}
+                              style={{
+                                padding: "8px 16px",
+                                background: palette.sage,
+                                color: "white",
+                                border: "none",
+                                borderRadius: 10,
+                                fontSize: 12,
+                                fontWeight: 700,
+                                cursor: "pointer",
+                              }}
+                            >
+                              ✓ Verify Answer
+                            </button>
+                            <button
+                              onClick={() => handleAIResponse(q.id, "reject")}
+                              style={{
+                                padding: "8px 16px",
+                                background: "transparent",
+                                color: "#DC3545",
+                                border: "1.5px solid #DC3545",
+                                borderRadius: 10,
+                                fontSize: 12,
+                                fontWeight: 700,
+                                cursor: "pointer",
+                              }}
+                            >
+                              ✗ Reject
+                            </button>
+                          </>
+                        )}
                       </div>
-                    )}
-                  </div>
-
-                  {/* View question + arrow */}
-                  <div
-                    style={{
-                      marginTop: 14,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 12,
-                    }}
-                  >
-                    <button
-                      onClick={() => navigate(`/forum/${groupName}/question/${q.id}`)}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        background: "transparent",
-                        border: "none",
-                        cursor: "pointer",
-                        padding: 0,
-                      }}
-                    >
-                      <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>
-                        View all replies
-                      </div>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
+                      <button
+                        onClick={() => navigate(`/forum/${groupName}/question/${q.id}`)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                          background: "transparent",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: 0,
+                          fontSize: 13,
+                          fontWeight: 700,
+                          color: palette.crimson,
+                        }}
+                      >
+                        View Discussion
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                          <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Bottom Banner */}
+        <div
+          style={{
+            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            padding: "40px 64px",
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+            AI Forum Management
+          </div>
+          <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 4 }}>
+            {pendingCount > 0 ? `${pendingCount} answers awaiting your review.` : "All AI answers reviewed. Great work."}
+          </div>
+          <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.65)" }}>
+            Verify or override AI-generated responses to keep students informed.
           </div>
         </div>
       </main>
