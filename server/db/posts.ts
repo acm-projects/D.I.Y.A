@@ -1,0 +1,60 @@
+import { db } from '../config/firebase.ts'
+import type { Post } from '../types.ts'
+import { Timestamp } from 'firebase-admin/firestore'
+
+const collection = db.collection('posts')
+
+export const getPosts = async (): Promise<Post[]> => {
+    const snapshot = await collection.get()
+    const posts: Post[] = []
+    snapshot.forEach((doc) => {
+        posts.push(doc.data() as Post)
+    })
+    return posts
+}
+
+export const createPost = async (data: Omit<Post, 'id'>): Promise<Post> => {
+    const docRef = collection.doc()
+    
+    const post: Post = {
+        id: docRef.id,
+        title: data.title,
+        upvotes: data.upvotes || 0,
+        authorId: data.authorId,
+        groupId: data.groupId,
+        content: data.content,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+        ...(data.imageUrl ? { imageUrl: data.imageUrl } : {}), // Conditionally include imageUrl if provided
+        ...(data.aiAnswer ? { aiAnswer: data.aiAnswer } : {}), // Conditionally include aiAanswer if provided
+        ...(data.isVerified !== undefined ? { isVerified: data.isVerified } : {}), // Conditionally include isVerified if provided
+        ...(data.aiReviewStatus ? { aiReviewStatus: data.aiReviewStatus } : {}),
+    }
+
+    await docRef.set(post)
+    return post
+}
+
+export const getPost = async (id: string): Promise<Post | null> => {
+    const doc = await collection.doc(id).get()
+    return doc.data() ? (doc.data() as Post) : null
+}
+
+export const getPostsbyGroup = async (groupId: string): Promise<Post[]> => {
+    const snapshot = await collection.where('groupId', '==', groupId).get()
+    const posts: Post[] = [];
+    snapshot.forEach((doc) => {
+        posts.push(doc.data() as Post)
+    });
+    return posts
+}
+
+export const updatePost = async (id: string, updates: Partial<Post>): Promise<void> => {
+    const docRef = collection.doc(id)
+    await docRef.update(updates)
+    await docRef.update({ updatedAt: Timestamp.now() })
+}
+
+export const deletePost = async (id: string): Promise<void> => {
+    await collection.doc(id).delete()
+}
