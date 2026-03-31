@@ -187,7 +187,11 @@ export function StudentOfficeHours() {
                   if (item.id === "groups") { navigate("/groups"); return; }
                   if (item.id === "request") { navigate("/office-hours"); return; }
                   if (item.id === "selfcheck") { navigate("/self-check"); return; }
-                  alert(`${item.label} (route not wired yet)`);
+                  if (item.id === "profile") {
+                    navigate("/profile");
+                    return;
+                  }
+      
                 }}
                 style={{
                   width: "100%",
@@ -331,14 +335,22 @@ export function StudentOfficeHours() {
                     style={{ ...inputStyle, cursor: "pointer" }}
                   />
                 </div>
+              {/* meeting duration dropdown menu */}
                 <div style={{ flex: 1 }}>
                   <label style={labelStyle}>End Time *</label>
-                  <input
-                    type="time"
+                  <select
                     value={endTime}
                     onChange={(e) => setEndTime(e.target.value)}
                     style={{ ...inputStyle, cursor: "pointer" }}
-                  />
+                  >
+                    <option value="">Select duration</option>
+                    <option value="15 min">15 min</option>
+                    <option value="30 min">30 min</option>
+                    <option value="45 min">45 min</option>
+                    <option value="60 min">60 min</option>
+                    <option value="60+ min">60+ min</option>
+                  </select>
+                
                 </div>
               </div>
 
@@ -387,19 +399,7 @@ export function StudentOfficeHours() {
                 </div>
               </div>
 
-              {/* meeting link (only for online) */}
-              {meetingType === "online" && (
-                <div style={{ marginBottom: 18 }}>
-                  <label style={labelStyle}>Meeting Link (optional)</label>
-                  <input
-                    type="url"
-                    value={meetingLink}
-                    onChange={(e) => setMeetingLink(e.target.value)}
-                    placeholder="https://zoom.us/j/..."
-                    style={inputStyle}
-                  />
-                </div>
-              )}
+   
 
               {/* submit */}
               <button

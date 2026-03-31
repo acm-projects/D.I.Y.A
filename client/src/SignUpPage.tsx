@@ -16,8 +16,11 @@ export function SignUpPage() {
     if (role === "student") {
       navigate("/groups");
       return;
+    }if(role === "admin"){
+      // Default group route for now (until admin selects/creates a group)
+      navigate("/edit-group/CS1337");
     }
-    alert(`Signed up as ${role} (admin routes not wired yet)`);
+
   };
 
   const handleGoogleSignup = () => alert("Sign up with Google clicked!");

@@ -21,9 +21,11 @@ export function LoginPage() {
     if (role === "student") {
       navigate("/groups");
       return;
+    }if(role === "admin"){
+      // Default group route for now (until admin selects/creates a group)
+      navigate("/edit-group/CS1337");
     }
-    // Otherwise if a different role is chosen then an alternate output is given
-    alert(`Logging in as ${role} (admin routes not wired yet)`);
+   
   };
 
   // Runs when Google/Apple button is clicked

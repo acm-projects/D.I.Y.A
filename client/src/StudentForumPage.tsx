@@ -210,6 +210,10 @@ export function StudentForumPage() {
                 key={item.id}
                 type="button"
                 onClick={() => {
+                  if (item.id === "profile") {
+                    navigate("/profile");
+                    return;
+                  }
                   if (item.id === "groups") {
                     navigate("/groups");
                     return;
@@ -222,7 +226,7 @@ export function StudentForumPage() {
                     navigate("/self-check");
                     return;
                   }
-                  alert(`${item.label} (route not wired yet)`);
+                
                 }}
                 style={{
                   width: "100%",
@@ -364,7 +368,7 @@ export function StudentForumPage() {
             />
           </div>
 
-          <div style={{ height: 1, backgroundColor: "rgba(39,1,21,0.12)" }} />
+          <div style={{ height: 1, backgroundColor: "rgba(391,21,0.12)" }} />
 
           <div
             style={{
@@ -378,7 +382,10 @@ export function StudentForumPage() {
               : `${questions.length} question${questions.length !== 1 ? "s" : ""} asked by your peers`}
           </div>
 
-          {/* question cards — new ones first, outlined in green */}
+          {/* question cards — new ones first, outlined in green 
+            // Will navigate to the Forum Page of the group
+            // q.id become groupId in Apps
+          */}
           {sorted.map((q) => {
             const isQHovered = hoveredId === q.id;
             const borderColor = q.isNew

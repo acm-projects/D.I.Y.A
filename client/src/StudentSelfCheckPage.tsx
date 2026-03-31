@@ -175,6 +175,10 @@ export function StudentSelfCheckPage() {
                 key={item.id}
                 type="button"
                 onClick={() => {
+                  if (item.id === "profile") {
+                    navigate("/profile");
+                    return;
+                  }
                   if (item.id === "groups") {
                     navigate("/groups");
                     return;
@@ -187,7 +191,7 @@ export function StudentSelfCheckPage() {
                     navigate("/self-check");
                     return;
                   }
-                  alert(`${item.label} (route not wired yet)`);
+              
                 }}
                 style={{
                   width: "100%",

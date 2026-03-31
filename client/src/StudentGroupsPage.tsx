@@ -111,7 +111,7 @@ export function StudentGroupsPage({
       {/* sidebar — (30%) color*/}
       <aside
         style={{
-          width: 180,
+          width: 250,
           background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
           padding: 12,
           boxSizing: "border-box",
@@ -181,6 +181,10 @@ export function StudentGroupsPage({
                 key={item.id}
                 type="button"
                 onClick={() => {
+                  if (item.id === "profile") {
+                    navigate("/profile");
+                    return;
+                  }
                   if (item.id === "groups") {
                     navigate("/groups");
                     return;
@@ -193,7 +197,7 @@ export function StudentGroupsPage({
                     navigate("/self-check");
                     return;
                   }
-                  alert(`${item.label} (route not wired yet)`);
+            
                 }}
                 style={{
                   width: "100%",
@@ -393,6 +397,8 @@ export function StudentGroupsPage({
                 <button
                   key={g.id}
                   type="button"
+                  // Will navigate to the Forum Page of the group
+                  // g.id become groupId in Apps
                   onClick={() => navigate(`/groups/${g.id}/forum`)}
                   onMouseEnter={() => setHoveredId(g.id)}
                   onMouseLeave={() => setHoveredId(null)}
@@ -526,25 +532,9 @@ export function StudentGroupsPage({
 
 
             {/* fallback if no groups match search */}
-            {filteredGroups.length === 0 && (
-              <div
-                style={{
-                  gridColumn: "1 / -1",
-                  backgroundColor: "#fff",
-                  border: "1px solid rgba(214,214,214,0.3)",
-                  borderRadius: 14,
-                  padding: 22,
-                  boxShadow: "0 4px 18px rgba(0,0,0,0.1)",
-                }}
-              >
-                <div style={{ color: palette.deepBurgundy, fontWeight: 900, fontSize: 16 }}>
-                  No groups match "{query.trim()}"
-                </div>
-                <div style={{ marginTop: 8, color: "rgba(17,17,17,0.6)", fontSize: 13, fontWeight: 600 }}>
-                  Try a shorter name, course code, or remove extra spaces.
-                </div>
-              </div>
-            )}
+            
+            
+           
           </div>
         </div>
       </main>
