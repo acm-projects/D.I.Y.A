@@ -5,9 +5,30 @@ const palette = {
   darkest: "#270115",
   crimson: "#a22237",
   deepBurgundy: "#5C1E26",
+  sage: "#7A9B76",
 } as const;
 
-export type ProfSidebarActiveId = "calendar" | "analysis" | "requests" | "editgroup";
+export type SidebarActiveId = "profile" | "groups" | "request" | "selfcheck";
+
+function ProfileIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function GroupsIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+      <rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+      <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+      <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  );
+}
 
 function CalendarIcon() {
   return (
@@ -18,50 +39,33 @@ function CalendarIcon() {
   );
 }
 
-function AnalysisIcon() {
+function CheckDocIcon() {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-      <path d="M3 3v18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M18 9l-5 5-2-2-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function RequestsIcon() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
-      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <path d="M16 13l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function EditIcon() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-interface ProfessorSidebarProps {
-  activeId: ProfSidebarActiveId;
-  groupName: string | undefined;
-}
-
-export function ProfessorSidebar({ activeId, groupName }: ProfessorSidebarProps) {
+export function Sidebar({ activeId }: { activeId: SidebarActiveId }) {
   const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
-    { id: "calendar" as ProfSidebarActiveId, label: "Calendar", icon: <CalendarIcon />, path: `/calendar/${groupName}` },
-    { id: "analysis" as ProfSidebarActiveId, label: "Analysis", icon: <AnalysisIcon />, path: `/analysis/${groupName}` },
-    { id: "requests" as ProfSidebarActiveId, label: "Requests", icon: <RequestsIcon />, path: `/requests/${groupName}` },
-    { id: "editgroup" as ProfSidebarActiveId, label: "Edit Group", icon: <EditIcon />, path: `/edit-group/${groupName}` },
+    { id: "profile" as SidebarActiveId, label: "Profile", icon: <ProfileIcon /> },
+    { id: "groups" as SidebarActiveId, label: "Groups", icon: <GroupsIcon /> },
+    { id: "request" as SidebarActiveId, label: "Office Hours", icon: <CalendarIcon /> },
+    { id: "selfcheck" as SidebarActiveId, label: "Self-Check", icon: <CheckDocIcon /> },
   ];
+
+  const handleNav = (id: SidebarActiveId) => {
+    if (id === "profile") { navigate("/profile"); return; }
+    if (id === "groups") { navigate("/groups"); return; }
+    if (id === "request") { navigate("/office-hours"); return; }
+    if (id === "selfcheck") { navigate("/self-check"); return; }
+  };
 
   const handleSignOut = () => {
     navigate("/");
@@ -102,6 +106,7 @@ export function ProfessorSidebar({ activeId, groupName }: ProfessorSidebarProps)
           marginBottom: 16,
         }}
       >
+        {/* Logo icon (always visible) */}
         <div
           style={{
             width: 40,
@@ -118,17 +123,19 @@ export function ProfessorSidebar({ activeId, groupName }: ProfessorSidebarProps)
           <img src="/logo.png" alt="logo" style={{ height: 22, objectFit: "contain" }} />
         </div>
 
+        {/* Text — hidden when collapsed */}
         {!collapsed && (
           <div style={{ flex: 1 }}>
             <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>
               D.I.Y.A
             </div>
             <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>
-              Professor View
+              Student Portal
             </div>
           </div>
         )}
 
+        {/* Collapse toggle */}
         <button
           type="button"
           onClick={() => setCollapsed(!collapsed)}
@@ -158,36 +165,6 @@ export function ProfessorSidebar({ activeId, groupName }: ProfessorSidebarProps)
         </button>
       </div>
 
-      {/* Back to Forum */}
-      <button
-        type="button"
-        onClick={() => navigate(`/forum/${groupName}`)}
-        title={collapsed ? "Back to Forum" : undefined}
-        style={{
-          width: "100%",
-          textAlign: collapsed ? "center" : "left",
-          padding: collapsed ? "10px 0" : "10px 14px",
-          borderRadius: 10,
-          border: "none",
-          backgroundColor: "transparent",
-          color: "rgba(255,255,255,0.5)",
-          fontSize: 13,
-          fontWeight: 600,
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: collapsed ? "center" : "flex-start",
-          gap: 9,
-          marginBottom: 10,
-          outline: "none",
-        }}
-      >
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        {!collapsed && "Back to Forum"}
-      </button>
-
       {/* Section label */}
       {!collapsed && (
         <div
@@ -214,7 +191,7 @@ export function ProfessorSidebar({ activeId, groupName }: ProfessorSidebarProps)
             <button
               key={item.id}
               type="button"
-              onClick={() => navigate(item.path)}
+              onClick={() => handleNav(item.id)}
               onMouseEnter={() => setHoveredId(item.id)}
               onMouseLeave={() => setHoveredId(null)}
               title={collapsed ? item.label : undefined}
@@ -265,26 +242,48 @@ export function ProfessorSidebar({ activeId, groupName }: ProfessorSidebarProps)
 
       <div style={{ flex: 1 }} />
 
-      {/* Group name badge + sign out */}
+      {/* User + sign out */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 14 }}>
-        {groupName && !collapsed && (
+        {/* Avatar row */}
+        <div
+          style={{
+            padding: collapsed ? "6px 0" : "8px 10px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: collapsed ? "center" : "flex-start",
+            gap: 10,
+            marginBottom: 8,
+          }}
+        >
           <div
             style={{
-              padding: "10px 12px",
-              borderRadius: 10,
-              backgroundColor: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.07)",
-              marginBottom: 10,
+              width: 34,
+              height: 34,
+              borderRadius: 999,
+              background: "linear-gradient(135deg, rgba(162,34,55,0.7) 0%, rgba(92,30,38,0.7) 100%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 13,
+              fontWeight: 700,
+              color: "#fff",
+              flexShrink: 0,
+              border: "1px solid rgba(255,255,255,0.12)",
             }}
           >
-            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 4 }}>
-              Current Group
-            </div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)", lineHeight: 1.3 }}>
-              {decodeURIComponent(groupName)}
-            </div>
+            S
           </div>
-        )}
+          {!collapsed && (
+            <div style={{ overflow: "hidden" }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.88)", whiteSpace: "nowrap" }}>
+                Student
+              </div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.38)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                student@university.edu
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Sign out */}
         <button

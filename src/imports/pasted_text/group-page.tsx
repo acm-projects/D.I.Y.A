@@ -91,15 +91,6 @@ export function GroupPage() {
     { id: "groups", label: "Groups", icon: (
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z" stroke="currentColor" strokeWidth="2" /><path d="M4 20.5c1.6-3.2 4.5-5 8-5s6.4 1.8 8 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
     )},
-    { id: "analysis", label: "Analysis", icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 3v18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M18 9l-5 5-2-2-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-    )},
-    { id: "requests", label: "Requests", icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-    )},
-    { id: "settings", label: "Settings", icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" /><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-    )},
   ];
 
   return (
@@ -189,9 +180,7 @@ export function GroupPage() {
               <button
                 key={item.id}
                 type="button"
-                onClick={() => {
-                  if (item.id !== "groups") alert(`${item.label} (feature coming soon)`);
-                }}
+                onClick={() => { /* groups is the only item */ }}
                 onMouseEnter={() => setSidebarHoveredId(item.id)}
                 onMouseLeave={() => setSidebarHoveredId(null)}
                 style={{
@@ -264,7 +253,7 @@ export function GroupPage() {
           </div>
           <button
             type="button"
-            onClick={() => alert("Signed out (auth not wired yet)")}
+            onClick={() => navigate("/")}
             style={{
               width: "100%",
               padding: "9px 12px",

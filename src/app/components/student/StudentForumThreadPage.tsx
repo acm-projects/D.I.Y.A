@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
+import { Sidebar } from "./Sidebar";
 
 const palette = {
   darkest: "#270115",
@@ -37,7 +38,6 @@ const demoReplies: Reply[] = [
 export function StudentForumThreadPage() {
   const { groupId, questionId } = useParams<{ groupId: string; questionId: string }>();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [replies, setReplies] = useState<Reply[]>(questionId && parseInt(questionId) <= 6 ? demoReplies : []);
   const [draft, setDraft] = useState("");
   const [imagePreview, setImagePreview] = useState<string | undefined>();
@@ -82,189 +82,60 @@ export function StudentForumThreadPage() {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
-      {/* collapsible sidebar */}
-      <aside
-        style={{
-          width: sidebarOpen ? 220 : 0,
-          overflow: "hidden",
-          transition: "width 200ms ease",
-          background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)",
-          padding: sidebarOpen ? "0 10px 16px" : 0,
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          flexShrink: 0,
-          borderRight: "1px solid rgba(255,255,255,0.05)",
-          boxShadow: sidebarOpen ? "4px 0 32px rgba(0,0,0,0.25)" : "none",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            padding: "18px 8px 16px",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
-            marginBottom: 16,
-          }}
-        >
-          <div style={{ width: 38, height: 38, borderRadius: 10, background: "linear-gradient(135deg, #a22237 0%, #5C1E26 100%)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 10px rgba(162,34,55,0.45)" }}>
-            <img src="/logo.png" alt="logo" style={{ height: 22, objectFit: "contain" }} />
-          </div>
-          <div>
-            <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>D.I.Y.A</div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>Student Portal</div>
-          </div>
-        </div>
-
-        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>Menu</div>
-
-        <nav aria-label="Sidebar navigation" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          {(
-            [
-              { id: "profile", label: "Profile" },
-              { id: "groups", label: "Groups" },
-              { id: "activity", label: "Activity" },
-              { id: "request", label: "Request Office Hours" },
-              { id: "selfcheck", label: "Self-Check" },
-            ] as const
-          ).map((item) => {
-            const isActive = false; // only highlight Groups on the main groups list page, not on forum thread
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => {
-                  if (item.id === "groups") {
-                    navigate("/groups");
-                    return;
-                  }
-                  if (item.id === "request") {
-                    navigate("/office-hours");
-                    return;
-                  }
-                  if (item.id === "selfcheck") {
-                    navigate("/self-check");
-                    return;
-                  }
-                  alert(`${item.label} (route not wired yet)`);
-                }}
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "none",
-                  backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent",
-                  color: isActive ? "#fff" : "rgba(255,255,255,0.6)",
-                  fontSize: 13,
-                  fontWeight: isActive ? 700 : 500,
-                  cursor: "pointer",
-                  transition: "all 130ms ease",
-                  outline: "none",
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-
-        <div style={{ flex: 1 }} />
-
-        <div
-          style={{
-            height: 1,
-            backgroundColor: "rgba(255,255,255,0.2)",
-            margin: "10px 0 8px 0",
-          }}
-        />
-
-        <div style={{ flex: 1 }} />
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 12 }}>
-          <div style={{ padding: "8px 10px", display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 999, background: "linear-gradient(135deg, rgba(162,34,55,0.7), rgba(92,30,38,0.7))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: "#fff", flexShrink: 0, border: "1px solid rgba(255,255,255,0.12)" }}>S</div>
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.88)" }}>Student</div>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.38)" }}>student@university.edu</div>
-            </div>
-          </div>
-          <button type="button" onClick={() => alert("Signed out (auth not wired yet)")} style={{ width: "100%", textAlign: "left", padding: "9px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 600, cursor: "pointer", outline: "none" }}>
-            Sign out
-          </button>
-        </div>
-      </aside>
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: palette.cream,
+        fontFamily: "Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+        display: "flex",
+        height: "100vh",
+      }}
+    >
+      <Sidebar activeId="groups" />
 
       {/* main column */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        {/* top bar */}
-        <header
+        {/* Hero / question banner */}
+        <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            padding: "10px 16px",
-            borderBottom: "1px solid #e0e0e0",
+            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            padding: "32px 48px",
             flexShrink: 0,
           }}
         >
-          <button
-            type="button"
-            onClick={() => setSidebarOpen((v) => !v)}
-            aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
-            style={{
-              background: "none",
-              border: "1px solid #ccc",
-              borderRadius: 6,
-              padding: "6px 8px",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M3 6h18M3 12h18M3 18h18" />
-            </svg>
-          </button>
-
           <button
             type="button"
             onClick={() => navigate(`/groups/${groupId}/forum`)}
             style={{
               background: "none",
               border: "none",
-              color: palette.crimson,
+              color: "rgba(255,255,255,0.75)",
               fontSize: 13,
               fontWeight: 700,
               cursor: "pointer",
               padding: 0,
+              marginBottom: 16,
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
             }}
           >
-            ← Back to Forum
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Back to Forum
           </button>
-        </header>
 
-        {/* question banner */}
-        <div
-          style={{
-            padding: "18px 24px",
-            borderBottom: `2px solid ${palette.sage}`,
-            backgroundColor: "rgba(122,155,118,0.06)",
-          }}
-        >
-          <div style={{ fontSize: 11, fontWeight: 700, color: palette.sage, marginBottom: 4 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
             Asked by {questionAuthor}
           </div>
           <div
             style={{
-              fontSize: 18,
-              fontWeight: 800,
-              color: palette.deepBurgundy,
-              lineHeight: 1.35,
+              fontSize: 28,
+              fontWeight: 900,
+              color: "#fff",
+              lineHeight: 1.25,
+              letterSpacing: -0.5,
             }}
           >
             {questionTitle}
@@ -276,14 +147,25 @@ export function StudentForumThreadPage() {
           style={{
             flex: 1,
             overflowY: "auto",
-            padding: "20px 24px",
+            padding: "28px 48px",
             display: "flex",
             flexDirection: "column",
             gap: 14,
           }}
         >
           {replies.length === 0 && (
-            <div style={{ textAlign: "center", color: "rgba(92,30,38,0.4)", fontSize: 14, fontWeight: 600, marginTop: 40 }}>
+            <div
+              style={{
+                backgroundColor: "#fff",
+                borderRadius: 20,
+                padding: "32px",
+                textAlign: "center",
+                boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
+                color: "rgba(92,30,38,0.4)",
+                fontSize: 14,
+                fontWeight: 600,
+              }}
+            >
               No replies yet — be the first to respond!
             </div>
           )}
@@ -302,10 +184,10 @@ export function StudentForumThreadPage() {
                 <div
                   style={{
                     maxWidth: "65%",
-                    padding: "10px 14px",
-                    borderRadius: 14,
-                    borderBottomRightRadius: isSelf ? 4 : 14,
-                    borderBottomLeftRadius: isSelf ? 14 : 4,
+                    padding: "12px 16px",
+                    borderRadius: 16,
+                    borderBottomRightRadius: isSelf ? 4 : 16,
+                    borderBottomLeftRadius: isSelf ? 16 : 4,
                     backgroundColor: isSelf
                       ? "rgba(162,34,55,0.08)"
                       : isProf
@@ -316,6 +198,7 @@ export function StudentForumThreadPage() {
                       : isSelf
                         ? `1px solid rgba(162,34,55,0.2)`
                         : "1px solid #ddd",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
                   }}
                 >
                   <div
@@ -335,7 +218,7 @@ export function StudentForumThreadPage() {
                       style={{ maxWidth: "100%", borderRadius: 8, marginBottom: 6 }}
                     />
                   )}
-                  <div style={{ fontSize: 14, lineHeight: 1.45, color: "#111" }}>{r.text}</div>
+                  <div style={{ fontSize: 14, lineHeight: 1.5, color: "#111" }}>{r.text}</div>
                   <div style={{ fontSize: 10, marginTop: 6, opacity: 0.5, textAlign: "right" }}>
                     {r.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
@@ -348,7 +231,7 @@ export function StudentForumThreadPage() {
 
         {/* image preview strip */}
         {imagePreview && (
-          <div style={{ padding: "6px 16px 0", display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ padding: "6px 48px 0", display: "flex", alignItems: "center", gap: 8 }}>
             <img src={imagePreview} alt="preview" style={{ height: 48, borderRadius: 6 }} />
             <button
               type="button"
@@ -370,12 +253,13 @@ export function StudentForumThreadPage() {
         {/* input bar */}
         <div
           style={{
-            borderTop: "1px solid #e0e0e0",
-            padding: "10px 16px",
+            borderTop: "1px solid rgba(214,214,214,0.4)",
+            padding: "14px 48px",
             display: "flex",
             alignItems: "center",
             gap: 10,
             flexShrink: 0,
+            backgroundColor: "#fff",
           }}
         >
           <input

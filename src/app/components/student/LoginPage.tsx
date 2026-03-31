@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 
 export function LoginPage() {
   const [isPressed, setIsPressed] = useState(false);
@@ -8,29 +8,22 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-
-
-  // handleLogin will run when the Login button gets clicked
   const handleLogin = () => {
-    //If no role is chosen, will prompt you to choose a role
     if (!role) {
       alert("Please select a role to continue.");
       return;
     }
-    // If student rols is chosen, you will be directed to the student groups page 
     if (role === "student") {
       navigate("/groups");
       return;
     }
-    // Otherwise if a different role is chosen then an alternate output is given
-    alert(`Logging in as ${role} (admin routes not wired yet)`);
+    if (role === "admin") {
+      navigate("/professor");
+    }
   };
 
-  // Runs when Google button is clicked
   const handleGoogleSignup = () => alert("Sign up with Google clicked!");
 
-
-  // Creating the main background.
   return (
     <div
       style={{
@@ -43,40 +36,21 @@ export function LoginPage() {
         position: "relative",
         overflow: "hidden",
       }}
-
-
-
-
-
-    
     >
-
-{/* top wave */}
-<svg
-
-style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "50%", opacity: 0.3 }}
-
-viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true"
-
->
-
-<defs>
-
-<linearGradient id="wave3" x1="0%" y1="100%" x2="100%" y2="0%">
-
-<stop offset="0%" stopColor="#270115" />
-
-<stop offset="40%" stopColor="#4a1340" />
-
-<stop offset="100%" stopColor="#a22237" />
-
-</linearGradient>
-
-</defs>
-
-<path d="M0 200 C200 60 500 320 720 180 C940 40 1200 280 1440 140 L1440 0 L0 0Z" fill="url(#wave3)" />
-
-</svg>
+      {/* top wave */}
+      <svg
+        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "50%", opacity: 0.3 }}
+        viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="wave3" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#270115" />
+            <stop offset="40%" stopColor="#4a1340" />
+            <stop offset="100%" stopColor="#a22237" />
+          </linearGradient>
+        </defs>
+        <path d="M0 200 C200 60 500 320 720 180 C940 40 1200 280 1440 140 L1440 0 L0 0Z" fill="url(#wave3)" />
+      </svg>
 
       {/* middle wave */}
       <svg
@@ -93,45 +67,21 @@ viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true"
         <path d="M0 280 C360 400 600 160 900 300 C1100 400 1300 220 1440 340 L1440 500 L0 500Z" fill="url(#wave2)" />
       </svg>
 
+      {/* bottom wave */}
+      <svg
+        style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "70%", opacity: 0.3 }}
+        viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#a22237" />
+            <stop offset="50%" stopColor="#5C1E26" />
+            <stop offset="100%" stopColor="#3d1542" />
+          </linearGradient>
+        </defs>
+        <path d="M0 320 C240 180 480 480 720 340 C960 200 1200 440 1440 300 L1440 600 L0 600Z" fill="url(#wave1)" />
+      </svg>
 
-
-
-
-
-   
-
-
-{/* bottom wave */}
-
-<svg
-
-style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "70%", opacity: 0.3 }}
-
-viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
-
->
-
-<defs>
-
-<linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
-
-<stop offset="0%" stopColor="#a22237" />
-
-<stop offset="50%" stopColor="#5C1E26" />
-
-<stop offset="100%" stopColor="#3d1542" />
-
-</linearGradient>
-
-</defs>
-
-<path d="M0 320 C240 180 480 480 720 340 C960 200 1200 440 1440 300 L1440 600 L0 600Z" fill="url(#wave1)" />
-
-</svg>
-
-
-
-      
       {/* login card */}
       <div
         style={{
@@ -147,12 +97,7 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
           position: "relative",
           zIndex: 1,
         }}
-
-
-
-     
       >
-        {/* D.I.Y.A title within Login card */}
         <h1 style={{
           fontFamily: "Italiana",
           fontSize: "78px",
@@ -160,16 +105,9 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
           marginTop: 0,
           marginBottom: 0,
         }}>
-          
-          D.I.Y.A 
+          D.I.Y.A
         </h1>
 
-
-
-
-
-
-        {/* Login or sign up option */}
         <h2 style={{
           fontFamily: "Inter",
           fontWeight: 480,
@@ -184,10 +122,6 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
           </Link>
         </h2>
 
-
-
-
-        {/* Prompting user to enter their information */}
         <h3 style={{
           fontFamily: "Inter",
           fontWeight: 300,
@@ -197,26 +131,8 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
           marginBottom: 20,
         }}>
           Please enter your credentials to continue
-
-
-
-
-
-
-
-
-
         </h3>
 
-
-
-
-
-
-
-
-
-        {/* Aligning role selection area within the Login box, Customizing Role title */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div style={{
             display: "flex",
@@ -227,29 +143,20 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
             fontWeight: "490",
             marginBottom: 40,
             color: "black",
-            fontFamily: "Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           }}>
-            {/*Displayes Role label */}
             <label style={{ marginBottom: 6 }}>Role</label>
-            {/* Dropdown menu: */}
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
               style={{ width: 300, padding: 10, borderRadius: 8, border: "1px solid #ccc" }}
             >
-              {/*Drop down menu with options */}
               <option value="" style={{ color: "#9C2727" }}>Select your role</option>
               <option value="student">Student</option>
               <option value="admin">Admin</option>
             </select>
           </div>
 
-
-
-
-
-
-          {/* Password section: Password title and enter password box   */}
           <div style={{
             display: "flex",
             flexDirection: "column",
@@ -257,14 +164,11 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
             color: "black",
             fontSize: "15px",
             fontWeight: "490",
-            fontFamily: "Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
             fontStyle: "italic",
             marginBottom: 5,
           }}>
             <label style={{ marginBottom: 6 }}>Password</label>
-            {/* Input area for password. 
-            Setting placeholder and assigning text inside input box to variable: password
-            setPassword changes what resides in password variable */}
             <input
               type="password"
               placeholder="••••••••"
@@ -273,14 +177,6 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
               style={{ width: 283, padding: 10, borderRadius: 8, border: "1px solid #ccc" }}
             />
           </div>
-
-
-
-
-
-
-
-          {/* Creates Forgot password text. Will later link to Forgot passwword page */}
 
           <h2 style={{
             fontFamily: "Inter",
@@ -294,14 +190,8 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
             alignItems: "flex-start",
           }}>
             Forgot your password?
-
-
-
-
-
           </h2>
 
-          {/* Handles what happens when user hovers over, or clicks on Login button. what changes and what happens */}
           <button
             onClick={handleLogin}
             onMouseDown={() => setIsPressed(true)}
@@ -329,12 +219,6 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
             Log in
           </button>
 
-
-
-
-
-
-
           <div style={{
             width: 300,
             fontSize: "12px",
@@ -347,7 +231,6 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
             ---—------------------- or —----------------------
           </div>
 
-          {/* Handles what happens when login to Google is pressed. */}
           <button
             onClick={handleGoogleSignup}
             style={{
@@ -371,12 +254,6 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
             <img src="/google.svg" alt="Google" style={{ width: 18, height: 18 }} />
             Log in with Google
           </button>
-
-
-
-
-
-
 
         </div>
       </div>

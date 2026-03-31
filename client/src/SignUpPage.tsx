@@ -21,7 +21,6 @@ export function SignUpPage() {
   };
 
   const handleGoogleSignup = () => alert("Sign up with Google clicked!");
-  const handleAppleSignup = () => alert("Sign up with Apple clicked!");
 
 
 
@@ -205,7 +204,7 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
             fontWeight: "490",
             marginBottom: 40,
             color: "black",
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontFamily: "Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           }}>
             <label style={{ marginBottom: 6 }}>Role</label>
             <select
@@ -230,7 +229,7 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
             color: "black",
             fontSize: "15px",
             fontWeight: "490",
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontFamily: "Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
             fontStyle: "italic",
             marginBottom: 5,
           }}>
@@ -323,28 +322,6 @@ viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"
 
 
 
-          <button
-            onClick={handleAppleSignup}
-            style={{
-              width: 300,
-              padding: 10,
-              fontSize: "15px",
-              fontFamily: "Inter",
-              backgroundColor: "#eeecec",
-              color: "black",
-              borderRadius: 12,
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-              fontWeight: 500,
-            }}
-          >
-            <img src="/apple.svg" alt="Apple" style={{ width: 18, height: 18 }} />
-            Sign up with Apple
-          </button>
         </div>
       </div>
     </div>

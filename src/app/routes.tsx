@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { GroupPage } from "../imports/pasted_text/group-page";
 import { ForumPage } from "./components/ForumPage";
 import { QuestionDetailPage } from "./components/QuestionDetailPage";
@@ -8,9 +8,79 @@ import { AnalysisPage } from "./components/AnalysisPage";
 import { TopicDetailPage } from "./components/TopicDetailPage";
 import { CalendarPage } from "./components/CalendarPage";
 
+// Student pages
+import { LandingPage } from "./components/student/LandingPage";
+import { LoginPage } from "./components/student/LoginPage";
+import { SignUpPage } from "./components/student/SignUpPage";
+import { StudentProfilePage } from "./components/student/StudentProfilePage";
+import { StudentGroupsPage } from "./components/student/StudentGroupsPage";
+import { StudentForumPage } from "./components/student/StudentForumPage";
+import { StudentForumThreadPage } from "./components/student/StudentForumThreadPage";
+import { StudentOfficeHours } from "./components/student/StudentOfficeHours";
+import { StudentSelfCheckPage } from "./components/student/StudentSelfCheckPage";
+import { StudentPopUp } from "./components/student/StudentPopUp";
+import { TopicAnalysisPage } from "./components/student/TopicAnalysisPage";
+
 export const router = createBrowserRouter([
+  // Landing / auth
   {
     path: "/",
+    element: <LandingPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignUpPage />,
+  },
+
+  // Student pages
+  {
+    path: "/profile",
+    element: <StudentProfilePage />,
+  },
+  {
+    path: "/groups",
+    element: <StudentGroupsPage />,
+  },
+  {
+    path: "/groups/:groupId/forum",
+    element: <StudentForumPage />,
+  },
+  {
+    path: "/groups/:groupId/forum/:questionId",
+    element: <StudentForumThreadPage />,
+  },
+  {
+    path: "/office-hours",
+    element: <StudentOfficeHours />,
+  },
+  {
+    path: "/self-check",
+    element: <StudentSelfCheckPage />,
+  },
+  {
+    path: "/invite",
+    element: (
+      <StudentPopUp
+        adminName="Prof. A"
+        groupName="CS 1337 — Computer Science I"
+        onAccept={() => {}}
+        onDecline={() => {}}
+      />
+    ),
+  },
+
+  {
+    path: "/analysis/topic/:topicId",
+    element: <TopicAnalysisPage />,
+  },
+
+  // Professor pages
+  {
+    path: "/professor",
     Component: GroupPage,
   },
   {
@@ -40,5 +110,11 @@ export const router = createBrowserRouter([
   {
     path: "/calendar/:groupName",
     Component: CalendarPage,
+  },
+
+  // Catch-all redirect
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
   },
 ]);

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import { Sidebar } from "./Sidebar";
 
 const palette = {
@@ -89,6 +89,7 @@ export function StudentForumPage() {
   const studentLabelByIndex: Record<number, string> = {
     1: "Student A", 2: "Student B", 3: "Student C", 4: "Student D", 5: "Student E", 6: "Student F",
   };
+
   const [questions, setQuestions] = useState<Question[]>(() => {
     const saved = localStorage.getItem(`forum-questions-${groupId}`);
     if (saved) {
@@ -157,79 +158,120 @@ export function StudentForumPage() {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", fontFamily: "Inter, system-ui, sans-serif", backgroundColor: palette.cream }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: palette.cream,
+        fontFamily: "Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+        display: "flex",
+      }}
+    >
       <Sidebar activeId="groups" />
 
-      {/* main column */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        {/* top bar */}
-        <header
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            padding: "32px 36px 14px 24px",
-            borderBottom: "1px solid #e0e0e0",
-            flexShrink: 0,
-          }}
-        >
-          <span style={{ fontWeight: 850, fontSize: 44, color: palette.deepBurgundy, letterSpacing: -1, lineHeight: 1.1 }}>
-            {groupName} Forum Page
-          </span>
-
-          <div style={{ flex: 1 }} />
-
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 13, fontWeight: 700, color: palette.crimson }}>
-              Ask a new question
-            </span>
-            <button
-              type="button"
-              onClick={() => setShowPopup(true)}
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 8,
-                border: "none",
-                backgroundColor: palette.crimson,
-                color: palette.cream,
-                fontSize: 22,
-                fontWeight: 700,
-                lineHeight: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-              }}
-              aria-label="Create new question"
-            >
-              +
-            </button>
-          </div>
-        </header>
-
-        {/* content area */}
+      <main style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        {/* Hero Section */}
         <div
           style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "20px 24px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 14,
+            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            padding: "56px 64px 52px",
           }}
         >
-          {/* search bar */}
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: "rgba(255,255,255,0.55)",
+              textTransform: "uppercase",
+              letterSpacing: 2,
+              marginBottom: 16,
+            }}
+          >
+            Student Forum
+          </div>
+          <div
+            style={{
+              fontSize: 56,
+              fontWeight: 900,
+              color: "#fff",
+              letterSpacing: -2,
+              lineHeight: 1,
+              marginBottom: 12,
+            }}
+          >
+            {groupName}
+          </div>
+          <div
+            style={{
+              fontSize: 18,
+              fontWeight: 400,
+              color: "rgba(255,255,255,0.7)",
+              marginBottom: 40,
+            }}
+          >
+            Ask questions, share insights, and collaborate with your peers.
+          </div>
+
+          {/* Stats + action row */}
+          <div style={{ display: "flex", gap: 0, alignItems: "center" }}>
+            <div style={{ flex: 1, paddingRight: 40, marginRight: 40, borderRight: "1px solid rgba(255,255,255,0.2)" }}>
+              <div style={{ fontSize: 48, fontWeight: 900, color: "#fff", letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+                {questions.length}
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: 1 }}>
+                Questions Posted
+              </div>
+            </div>
+            <div style={{ flex: 1, paddingRight: 40, marginRight: 40, borderRight: "1px solid rgba(255,255,255,0.2)" }}>
+              <div style={{ fontSize: 48, fontWeight: 900, color: "#fff", letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+                {questions.filter(q => q.isNew).length}
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: 1 }}>
+                New This Week
+              </div>
+            </div>
+            <div style={{ flex: 1 }}>
+              <button
+                type="button"
+                onClick={() => setShowPopup(true)}
+                style={{
+                  padding: "14px 28px",
+                  borderRadius: 12,
+                  border: "2px solid rgba(255,255,255,0.4)",
+                  backgroundColor: "rgba(255,255,255,0.12)",
+                  color: "#fff",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+                aria-label="Ask a new question"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 5v14M5 12h14" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
+                </svg>
+                Ask a Question
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div style={{ padding: "48px 64px 56px", flex: 1 }}>
+          {/* Search bar */}
           <div
             style={{
               width: "min(560px, 100%)",
               display: "flex",
               alignItems: "center",
               gap: 10,
-              padding: "10px 16px",
-              borderRadius: 12,
+              padding: "12px 18px",
+              borderRadius: 14,
               border: "1px solid rgba(39,1,21,0.15)",
-              backgroundColor: "rgba(39,1,21,0.05)",
+              backgroundColor: "#fff",
+              boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+              marginBottom: 12,
             }}
           >
             <SearchIcon color={palette.deepBurgundy} />
@@ -251,222 +293,213 @@ export function StudentForumPage() {
             />
           </div>
 
-          <div style={{ height: 1, backgroundColor: "rgba(39,1,21,0.12)" }} />
-
-          <div
-            style={{
-              color: palette.crimson,
-              fontSize: 18,
-              fontWeight: 800,
-            }}
-          >
+          <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.55)", marginBottom: 24 }}>
             {query.trim() && filtered.length !== questions.length
               ? `Showing ${filtered.length} of ${questions.length} questions`
               : `${questions.length} question${questions.length !== 1 ? "s" : ""} asked by your peers`}
           </div>
 
-          {/* question cards — new ones first, outlined in green */}
-          {sorted.map((q) => {
-            const isQHovered = hoveredId === q.id;
-            const borderColor = q.isNew
-              ? palette.sage
-              : isQHovered
-                ? palette.crimson
-                : "rgba(214,214,214,0.4)";
-            return (
-              <div
-                key={q.id}
-                onClick={() => navigate(`/groups/${groupId}/forum/${q.id}`)}
-                onMouseEnter={() => setHoveredId(q.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                style={{
-                  position: "relative",
-                  textAlign: "left",
-                  backgroundColor: "#fff",
-                  border: `2px solid ${borderColor}`,
-                  borderRadius: 14,
-                  padding: "18px 20px",
-                  cursor: "pointer",
-                  boxShadow: isQHovered
-                    ? "0 12px 36px rgba(0,0,0,0.22)"
-                    : "0 4px 18px rgba(0,0,0,0.12)",
-                  transform: isQHovered ? "translateY(-2px)" : "translateY(0px)",
-                  transition: "transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease",
-                }}
-              >
-                {/* NEW badge */}
-                {q.isNew && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      right: 14,
-                      backgroundColor: palette.sage,
-                      color: "#fff",
-                      fontSize: 10,
-                      fontWeight: 800,
-                      padding: "3px 8px",
-                      borderRadius: 6,
-                      letterSpacing: 0.5,
-                    }}
-                  >
-                    NEW
-                  </div>
-                )}
-
+          {/* Question cards */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {sorted.map((q) => {
+              const isQHovered = hoveredId === q.id;
+              return (
                 <div
+                  key={q.id}
+                  onClick={() => navigate(`/groups/${groupId}/forum/${q.id}`)}
+                  onMouseEnter={() => setHoveredId(q.id)}
+                  onMouseLeave={() => setHoveredId(null)}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
-                    paddingRight: q.isNew ? 50 : 0,
+                    position: "relative",
+                    backgroundColor: "#fff",
+                    border: isQHovered ? `1px solid ${palette.crimson}` : "1px solid rgba(214,214,214,0.4)",
+                    borderRadius: 20,
+                    padding: "22px 24px",
+                    cursor: "pointer",
+                    boxShadow: isQHovered
+                      ? "0 12px 36px rgba(0,0,0,0.16)"
+                      : "0 2px 24px rgba(0,0,0,0.06)",
+                    transform: isQHovered ? "translateY(-2px)" : "translateY(0px)",
+                    transition: "transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease",
+                    overflow: "hidden",
                   }}
                 >
+                  {q.isNew && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: 4,
+                        backgroundColor: palette.sage,
+                      }}
+                    />
+                  )}
+
+                  {/* NEW badge */}
+                  {q.isNew && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 14,
+                        right: 16,
+                        backgroundColor: palette.sage,
+                        color: "#fff",
+                        fontSize: 10,
+                        fontWeight: 800,
+                        padding: "3px 8px",
+                        borderRadius: 6,
+                        letterSpacing: 0.5,
+                      }}
+                    >
+                      NEW
+                    </div>
+                  )}
+
                   <div
                     style={{
                       fontSize: 15,
                       fontWeight: 800,
                       letterSpacing: -0.2,
-                      color: palette.deepBurgundy,
+                      color: palette.darkest,
                       lineHeight: 1.3,
-                      flex: 1,
+                      marginBottom: 16,
+                      paddingRight: q.isNew ? 60 : 0,
                     }}
                   >
                     {q.question}
                   </div>
-                </div>
 
-                <div
-                  style={{
-                    marginTop: 14,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 8,
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: palette.deepBurgundy,
-                    alignItems: "center",
-                  }}
-                >
                   <div
                     style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                      padding: "6px 10px",
-                      borderRadius: 8,
-                      backgroundColor: "rgba(122,155,118,0.12)",
-                    }}
-                  >
-                    <UsersIcon color={palette.sage} />
-                    <span>{q.author}</span>
-                  </div>
-                  <div
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                      padding: "6px 10px",
-                      borderRadius: 8,
-                      backgroundColor: q.replies === 0 ? "rgba(220,53,69,0.1)" : "rgba(92,30,38,0.08)",
-                    }}
-                  >
-                    <ForumIcon color={q.replies === 0 ? "#DC3545" : palette.deepBurgundy} />
-                    <span>{q.replies} {q.replies === 1 ? "reply" : "replies"}</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const alreadyVoted = upvotedIds.has(q.id);
-                      setQuestions((prev) =>
-                        prev.map((item) =>
-                          item.id === q.id
-                            ? { ...item, upvotes: item.upvotes + (alreadyVoted ? -1 : 1) }
-                            : item
-                        )
-                      );
-                      setUpvotedIds((prev) => {
-                        const next = new Set(prev);
-                        if (alreadyVoted) next.delete(q.id);
-                        else next.add(q.id);
-                        return next;
-                      });
-                    }}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 5,
-                      padding: "6px 10px",
-                      borderRadius: 8,
-                      border: upvotedIds.has(q.id) ? `1px solid ${palette.crimson}` : "none",
-                      backgroundColor: upvotedIds.has(q.id) ? "rgba(162,34,55,0.18)" : "rgba(162,34,55,0.08)",
-                      color: palette.crimson,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 8,
                       fontSize: 12,
                       fontWeight: 700,
-                      cursor: "pointer",
+                      color: palette.deepBurgundy,
+                      alignItems: "center",
+                      marginBottom: 14,
                     }}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M12 4l-7 8h4v8h6v-8h4L12 4z" fill={palette.crimson} />
-                    </svg>
-                    {q.upvotes}
-                  </button>
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        padding: "6px 10px",
+                        borderRadius: 8,
+                        backgroundColor: "rgba(122,155,118,0.12)",
+                      }}
+                    >
+                      <UsersIcon color={palette.sage} />
+                      <span>{q.author}</span>
+                    </div>
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        padding: "6px 10px",
+                        borderRadius: 8,
+                        backgroundColor: q.replies === 0 ? "rgba(220,53,69,0.1)" : "rgba(92,30,38,0.08)",
+                      }}
+                    >
+                      <ForumIcon color={q.replies === 0 ? "#DC3545" : palette.deepBurgundy} />
+                      <span>{q.replies} {q.replies === 1 ? "reply" : "replies"}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const alreadyVoted = upvotedIds.has(q.id);
+                        setQuestions((prev) =>
+                          prev.map((item) =>
+                            item.id === q.id
+                              ? { ...item, upvotes: item.upvotes + (alreadyVoted ? -1 : 1) }
+                              : item
+                          )
+                        );
+                        setUpvotedIds((prev) => {
+                          const next = new Set(prev);
+                          if (alreadyVoted) next.delete(q.id);
+                          else next.add(q.id);
+                          return next;
+                        });
+                      }}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 5,
+                        padding: "6px 10px",
+                        borderRadius: 8,
+                        border: upvotedIds.has(q.id) ? `1px solid ${palette.crimson}` : "none",
+                        backgroundColor: upvotedIds.has(q.id) ? "rgba(162,34,55,0.18)" : "rgba(162,34,55,0.08)",
+                        color: palette.crimson,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 4l-7 8h4v8h6v-8h4L12 4z" fill={palette.crimson} />
+                      </svg>
+                      {q.upvotes}
+                    </button>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 600,
+                        color: "rgba(92,30,38,0.5)",
+                        marginLeft: "auto",
+                      }}
+                    >
+                      {getTimeAgo(q.id)}
+                    </div>
+                  </div>
+
                   <div
                     style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      color: "rgba(92,30,38,0.5)",
-                      marginLeft: "auto",
-                    }}
-                  >
-                    {getTimeAgo(q.id)}
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    marginTop: 14,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                    gap: 6,
-                  }}
-                >
-                  <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>
-                    View replies
-                  </div>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-
-                {q.aiVerified && (
-                  <div
-                    style={{
-                      marginTop: 12,
                       display: "flex",
                       alignItems: "center",
-                      gap: 6,
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: palette.sage,
+                      justifyContent: "space-between",
                     }}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M20 6L9 17l-5-5" stroke={palette.sage} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>
+                      View replies
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    This question's AI answer has been verified by the professor.
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
 
-      {/* new question popup */}
+                  {q.aiVerified && (
+                    <div
+                      style={{
+                        marginTop: 12,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                        fontSize: 11,
+                        fontWeight: 700,
+                        color: palette.sage,
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5" stroke={palette.sage} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      This question's AI answer has been verified by the professor.
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </main>
+
+      {/* New question popup */}
       {showPopup && (
         <div
           style={{
@@ -484,7 +517,7 @@ export function StudentForumPage() {
             onClick={(e) => e.stopPropagation()}
             style={{
               backgroundColor: "#fff",
-              borderRadius: 16,
+              borderRadius: 20,
               padding: "28px 28px 22px",
               width: 420,
               maxWidth: "90vw",
@@ -495,7 +528,6 @@ export function StudentForumPage() {
               Ask a Question
             </div>
 
-            
             <input
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}

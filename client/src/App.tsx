@@ -6,8 +6,9 @@ import { StudentGroupsPage } from "./StudentGroupsPage";
 import { StudentPopUp } from "./StudentPopUp";
 import { StudentForumPage } from "./StudentForumPage";
 import { StudentForumThreadPage } from "./StudentForumThreadPage";
-import {StudentOfficeHours } from "./StudentOfficeHours";
-import {StudentSelfCheckPage} from "./StudentSelfCheckPage.tsx";
+import { StudentOfficeHours } from "./StudentOfficeHours";
+import { StudentSelfCheckPage } from "./StudentSelfCheckPage";
+import { TopicAnalysisPage } from "./TopicAnalysisPage";
 
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
       <Route path="/groups/:groupId/forum/:questionId" element={<StudentForumThreadPage />} />
       <Route path="/office-hours" element={<StudentOfficeHours/>}/>
       <Route path="/self-check" element={<StudentSelfCheckPage/>}/>
+      <Route path="/analysis/topic/:topicId" element={<TopicAnalysisPage />}/>
       <Route path="/invite" element={
         <StudentPopUp
           adminName="Prof. A"

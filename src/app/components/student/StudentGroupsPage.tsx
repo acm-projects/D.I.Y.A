@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { Sidebar } from "./Sidebar";
 
-// Defining the shape of a group object
 type StudentGroup = {
   id: string;
   name: string;
@@ -10,7 +9,6 @@ type StudentGroup = {
   forumPostsCount: number;
 };
 
-// Creating a constant pallete to help when styling how pages are going to look
 const palette = {
   darkest: "#270115",
   crimson: "#a22237",
@@ -20,7 +18,6 @@ const palette = {
   lightGray: "#D6D6D6",
 } as const;
 
-// Demo data to help simulate what the group homepage looks like
 const demoGroups: StudentGroup[] = [
   { id: "cs1337", name: "CS 1337 — Computer Science I", membersCount: 128, forumPostsCount: 42 },
   { id: "cs2305", name: "CS 2305 — Discrete Mathematics", membersCount: 96, forumPostsCount: 31 },
@@ -30,7 +27,6 @@ const demoGroups: StudentGroup[] = [
   { id: "cs3341", name: "CS 3341 — Probability & Statistics", membersCount: 88, forumPostsCount: 24 },
 ];
 
-// For the group name search bar: magnifying glass icon
 function SearchIcon({ color }: { color: string }) {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -40,8 +36,6 @@ function SearchIcon({ color }: { color: string }) {
   );
 }
 
-// For the SVG images, paths used to draw out the images like the logo in the Groups page.
-// This is the users/members icon used in the group cards
 function UsersIcon({ color }: { color: string }) {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -51,7 +45,6 @@ function UsersIcon({ color }: { color: string }) {
   );
 }
 
-// This is the forum/posts icon used in the group cards
 function ForumIcon({ color }: { color: string }) {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -63,24 +56,21 @@ function ForumIcon({ color }: { color: string }) {
   );
 }
 
-// Main page component for displaying student groups
 export function StudentGroupsPage({
   groups = demoGroups,
 }: {
   groups?: StudentGroup[];
 }) {
-  const navigate = useNavigate(); // for navigating to other pages
-  const [query, setQuery] = useState(""); // search input state
-  const [hoveredId, setHoveredId] = useState<string | null>(null); // for hover effects on group cards
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  // Filter groups based on search query
   const filteredGroups = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return groups; // if no query, return all
+    if (!q) return groups;
     return groups.filter((g) => g.name.toLowerCase().includes(q));
   }, [groups, query]);
 
-  // Helper vars for showing counts
   const totalCount = groups.length;
   const showingCount = filteredGroups.length;
   const showingLabel =
@@ -88,94 +78,124 @@ export function StudentGroupsPage({
       ? `Showing ${showingCount} of ${totalCount} groups`
       : `You're a member of ${totalCount} group${totalCount === 1 ? "" : "s"}`;
 
-
-      
+  const totalMembers = groups.reduce((s, g) => s + g.membersCount, 0);
+  const totalPosts = groups.reduce((s, g) => s + g.forumPostsCount, 0);
 
   return (
     <div
       style={{
         minHeight: "100vh",
         backgroundColor: palette.cream,
-        textAlign: "left",
-        fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
-        color: "#111",
+        fontFamily: "Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
         display: "flex",
       }}
     >
-
-
-
-
-
-
-
       <Sidebar activeId="groups" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-      {/* main content — plain background (60%) */}
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box" }}>
-        <div style={{ maxWidth: 1400 }}>
-          {/* Page title */}
+      <main style={{ flex: 1, overflow: "auto" }}>
+        {/* Hero Section */}
+        <div
+          style={{
+            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            padding: "56px 64px 52px",
+          }}
+        >
           <div
             style={{
-              color: palette.crimson,
-              fontSize: 44,
-              fontWeight: 850,
-              letterSpacing: -1,
-              lineHeight: 1.1,
+              fontSize: 11,
+              fontWeight: 700,
+              color: "rgba(255,255,255,0.55)",
+              textTransform: "uppercase",
+              letterSpacing: 2,
+              marginBottom: 16,
             }}
           >
-            Welcome Back Name!
+            Student Portal
           </div>
-
-          {/* small divider under title */}
           <div
             style={{
-              height: 1,
-              backgroundColor: "rgba(39,1,21,0.12)",
-              marginTop: 14,
-              marginBottom: 18,
+              fontSize: 64,
+              fontWeight: 900,
+              color: "#fff",
+              letterSpacing: -2.5,
+              lineHeight: 1,
+              marginBottom: 12,
             }}
-          />
+          >
+            My Groups
+          </div>
+          <div
+            style={{
+              fontSize: 20,
+              fontWeight: 400,
+              color: "rgba(255,255,255,0.7)",
+              marginBottom: 52,
+            }}
+          >
+            Welcome back! Browse and access your enrolled course groups.
+          </div>
 
-          {/* search bar — light gray accent (10%) */}
+          {/* Stats Row */}
+          <div style={{ display: "flex", gap: 0, alignItems: "stretch" }}>
+            {[
+              { label: "Groups Enrolled", value: totalCount, color: "#fff" },
+              { label: "Total Members", value: totalMembers, color: "rgba(255,255,255,0.9)" },
+              { label: "Forum Posts", value: totalPosts, color: "rgba(255,255,255,0.9)" },
+            ].map((stat, i) => (
+              <div
+                key={stat.label}
+                style={{
+                  flex: 1,
+                  paddingRight: i < 2 ? 40 : 0,
+                  marginRight: i < 2 ? 40 : 0,
+                  borderRight: i < 2 ? "1px solid rgba(255,255,255,0.2)" : "none",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 48,
+                    fontWeight: 900,
+                    color: stat.color,
+                    letterSpacing: -1.5,
+                    lineHeight: 1,
+                    marginBottom: 8,
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: "rgba(255,255,255,0.55)",
+                    textTransform: "uppercase",
+                    letterSpacing: 1,
+                  }}
+                >
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div style={{ padding: "48px 64px 56px" }}>
+          {/* Search bar */}
           <div
             style={{
               width: "min(560px, 100%)",
               display: "flex",
               alignItems: "center",
               gap: 10,
-              padding: "10px 16px",
-              borderRadius: 12,
-              border: `1px solid rgba(39,1,21,0.15)`,
-              backgroundColor: "rgba(39,1,21,0.05)",
+              padding: "12px 18px",
+              borderRadius: 14,
+              border: "1px solid rgba(39,1,21,0.15)",
+              backgroundColor: "#fff",
+              boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+              marginBottom: 20,
             }}
           >
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <SearchIcon color={palette.deepBurgundy} />
             <input
               value={query}
@@ -195,61 +215,28 @@ export function StudentGroupsPage({
             />
           </div>
 
-
-
-
-
-
-
-
-          {/* showing number of groups (group count) text */}
           <div
             style={{
-              marginTop: 12,
-              color: palette.crimson,
-              fontSize: 18,
-              fontWeight: 800,
+              fontSize: 13,
+              fontWeight: 600,
+              color: "rgba(92,30,38,0.55)",
+              marginBottom: 24,
             }}
           >
             {showingLabel}
           </div>
 
-
-
-
-
-
-
-
-
-
-
-
-          {/* group cards container */}
+          {/* Group cards */}
           <div
             style={{
-              marginTop: 20,
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 18,
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gap: 20,
               alignItems: "stretch",
             }}
           >
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* render each group card */}
             {filteredGroups.map((g) => {
-              const isHovered = hoveredId === g.id; // handle hover effects
+              const isHovered = hoveredId === g.id;
               return (
                 <button
                   key={g.id}
@@ -261,62 +248,52 @@ export function StudentGroupsPage({
                     textAlign: "left",
                     backgroundColor: "#fff",
                     border: isHovered ? `1px solid ${palette.crimson}` : "1px solid rgba(214,214,214,0.4)",
-                    borderRadius: 14,
-                    padding: "18px 20px",
+                    borderRadius: 20,
+                    padding: "22px 24px",
                     cursor: "pointer",
                     boxShadow: isHovered
-                      ? "0 12px 36px rgba(0,0,0,0.22)"
-                      : "0 4px 18px rgba(0,0,0,0.12)",
+                      ? "0 12px 36px rgba(0,0,0,0.16)"
+                      : "0 2px 24px rgba(0,0,0,0.06)",
                     transform: isHovered ? "translateY(-2px)" : "translateY(0px)",
                     transition: "transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease",
+                    overflow: "hidden",
+                    position: "relative",
                   }}
                 >
-
-
-
-
-
-
-
-
-
-
-
-                  {/* card header — group name */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 4,
+                      backgroundColor: palette.crimson,
+                    }}
+                  />
                   <div
                     style={{
                       fontSize: 15,
                       fontWeight: 800,
                       letterSpacing: -0.2,
-                      color: palette.deepBurgundy,
+                      color: palette.darkest,
                       lineHeight: 1.3,
+                      marginBottom: 16,
                     }}
                   >
                     {g.name}
                   </div>
 
-
-
-
-
-                  {/* card stats — members & posts */}
                   <div
                     style={{
-                      marginTop: 14,
                       display: "flex",
                       flexWrap: "wrap",
                       gap: 8,
                       fontSize: 12,
                       fontWeight: 700,
                       color: palette.deepBurgundy,
+                      marginBottom: 16,
                     }}
                   >
-
-
-
-
-
-                    {/* members */}
                     <div
                       style={{
                         display: "inline-flex",
@@ -330,12 +307,6 @@ export function StudentGroupsPage({
                       <UsersIcon color={palette.sage} />
                       <span>{g.membersCount} members</span>
                     </div>
-
-
-
-
-
-                    {/* forum posts */}
                     <div
                       style={{
                         display: "inline-flex",
@@ -351,16 +322,8 @@ export function StudentGroupsPage({
                     </div>
                   </div>
 
-
-
-
-
-
-
-                  {/* view group + arrow */}
                   <div
                     style={{
-                      marginTop: 14,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
@@ -377,33 +340,21 @@ export function StudentGroupsPage({
               );
             })}
 
-
-
-
-
-
-
-
-
-
-            {/* fallback if no groups match search */}
             {filteredGroups.length === 0 && (
               <div
                 style={{
                   gridColumn: "1 / -1",
                   backgroundColor: "#fff",
-                  border: "1px solid rgba(214,214,214,0.3)",
-                  borderRadius: 14,
-                  padding: 22,
-                  boxShadow: "0 4px 18px rgba(0,0,0,0.1)",
+                  borderRadius: 20,
+                  padding: "40px 32px",
+                  textAlign: "center",
+                  boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
+                  color: "rgba(92,30,38,0.5)",
+                  fontSize: 15,
+                  fontWeight: 600,
                 }}
               >
-                <div style={{ color: palette.deepBurgundy, fontWeight: 900, fontSize: 16 }}>
-                  No groups match "{query.trim()}"
-                </div>
-                <div style={{ marginTop: 8, color: "rgba(17,17,17,0.6)", fontSize: 13, fontWeight: 600 }}>
-                  Try a shorter name, course code, or remove extra spaces.
-                </div>
+                No groups match your search.
               </div>
             )}
           </div>

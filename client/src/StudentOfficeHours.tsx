@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Sidebar } from "./Sidebar";
 
 const palette = {
   darkest: "#270115",
@@ -76,6 +77,34 @@ const demoPastRequests: PastRequest[] = [
   },
 ];
 
+function toGCalDate(dateStr: string, timeStr: string): string {
+  return `${dateStr.replace(/-/g, "")}T${timeStr.replace(":", "")}00`;
+}
+
+function buildGoogleCalendarUrl(req: PastRequest): string {
+  const prof = professors.find((p) => p.name === req.professorName);
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: `Office Hours with ${req.professorName}`,
+    dates: `${toGCalDate(req.date, req.startTime)}/${toGCalDate(req.date, req.endTime)}`,
+    details: req.reason + (req.meetingLink ? `\n\nMeeting Link: ${req.meetingLink}` : ""),
+    location: req.meetingType === "online" ? (req.meetingLink ?? "Online") : "Campus",
+  });
+  if (prof?.email) params.set("add", prof.email);
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+function buildOutlookUrl(req: PastRequest): string {
+  const params = new URLSearchParams({
+    subject: `Office Hours with ${req.professorName}`,
+    startdt: `${req.date}T${req.startTime}:00`,
+    enddt: `${req.date}T${req.endTime}:00`,
+    body: req.reason,
+    location: req.meetingType === "online" ? (req.meetingLink ?? "Online") : "Campus",
+  });
+  return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;
+}
+
 export function StudentOfficeHours() {
   const navigate = useNavigate();
 
@@ -137,103 +166,9 @@ export function StudentOfficeHours() {
         display: "flex",
       }}
     >
-      <aside
-        style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontFamily: "Italiana, serif",
-            fontSize: 30,
-            letterSpacing: 1.5,
-            color: "#fff",
-            padding: "6px 4px 10px 4px",
-          }}
-        >
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
-        </div>
+      <Sidebar activeId="request" />
 
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.25)", margin: "0 0 10px 0" }} />
-
-        <nav aria-label="Sidebar navigation" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          {(
-            [
-              { id: "profile", label: "Profile" },
-              { id: "groups", label: "Groups" },
-              { id: "request", label: "Request Office Hours" },
-              { id: "selfcheck", label: "Self-Check" },
-            ] as const
-          ).map((item) => {
-            const isActive = item.id === "request";
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => {
-                  if (item.id === "groups") { navigate("/groups"); return; }
-                  if (item.id === "request") { navigate("/office-hours"); return; }
-                  if (item.id === "selfcheck") { navigate("/self-check"); return; }
-                  alert(`${item.label} (route not wired yet)`);
-                }}
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "8px 10px",
-                  borderRadius: 10,
-                  border: "none",
-                  backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent",
-                  color: isActive ? palette.darkest : "rgba(255,255,255,0.85)",
-                  fontSize: 13,
-                  fontWeight: isActive ? 800 : 600,
-                  cursor: "pointer",
-                  transition: "background-color 120ms ease",
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-
-        <div style={{ flex: 1 }} />
-
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.2)", margin: "10px 0 8px 0" }} />
-
-        <button
-          type="button"
-          onClick={() => alert("Signed out (auth not wired yet)")}
-          style={{
-            width: "100%",
-            textAlign: "left",
-            padding: "8px 10px",
-            borderRadius: 10,
-            border: "1px solid rgba(255,255,255,0.2)",
-            backgroundColor: "rgba(255,255,255,0.1)",
-            color: "rgba(255,255,255,0.9)",
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
-          Sign out
-        </button>
-      </aside>
-
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box", overflowY: "auto" }}>
+      <main style={{ flex: 1, padding: "32px 36px 56px 28px", boxSizing: "border-box", overflowY: "auto" }}>
         <div style={{ maxWidth: 1400 }}>
           <div
             style={{
@@ -252,11 +187,15 @@ export function StudentOfficeHours() {
               height: 1,
               backgroundColor: "rgba(39,1,21,0.12)",
               marginTop: 14,
-              marginBottom: 24,
+              marginBottom: 28,
             }}
           />
 
-          {/* request form card */}
+          {/* two-column layout */}
+          <div style={{ display: "flex", gap: 28, alignItems: "flex-start", flexWrap: "wrap" }}>
+
+          {/* LEFT: request form card */}
+          <div style={{ flex: "1 1 400px", minWidth: 320 }}>
           {!submitted ? (
             <div
               style={{
@@ -480,8 +419,10 @@ export function StudentOfficeHours() {
             </div>
           )}
 
-          {/* past requests */}
-          <div style={{ marginTop: 8 }}>
+          </div>{/* end left column */}
+
+          {/* RIGHT: past requests */}
+          <div style={{ flex: "1 1 380px", minWidth: 320 }}>
             <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 14 }}>
               Your Requests
             </div>
@@ -587,11 +528,95 @@ export function StudentOfficeHours() {
                         Meeting link: {req.meetingLink}
                       </div>
                     )}
+
+                    {/* Calendar / Meet integration buttons */}
+                    {req.status === "confirmed" && (
+                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
+                        <a
+                          href={buildGoogleCalendarUrl(req)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            padding: "7px 12px",
+                            borderRadius: 8,
+                            backgroundColor: "rgba(66,133,244,0.08)",
+                            border: "1px solid rgba(66,133,244,0.25)",
+                            color: "#4285F4",
+                            fontSize: 12,
+                            fontWeight: 700,
+                            textDecoration: "none",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                            <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                          </svg>
+                          Add to Google Calendar
+                        </a>
+                        <a
+                          href={buildOutlookUrl(req)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            padding: "7px 12px",
+                            borderRadius: 8,
+                            backgroundColor: "rgba(0,120,212,0.07)",
+                            border: "1px solid rgba(0,120,212,0.22)",
+                            color: "#0078D4",
+                            fontSize: 12,
+                            fontWeight: 700,
+                            textDecoration: "none",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                            <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                          </svg>
+                          Add to Outlook
+                        </a>
+                        {req.meetingType === "online" && (
+                          <a
+                            href="https://meet.google.com/new"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 6,
+                              padding: "7px 12px",
+                              borderRadius: 8,
+                              backgroundColor: "rgba(52,168,83,0.08)",
+                              border: "1px solid rgba(52,168,83,0.25)",
+                              color: "#34A853",
+                              fontSize: 12,
+                              fontWeight: 700,
+                              textDecoration: "none",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                              <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                            Join Google Meet
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
-          </div>
+          </div>{/* end right column */}
+
+          </div>{/* end two-column layout */}
         </div>
       </main>
     </div>

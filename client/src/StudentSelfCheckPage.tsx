@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Sidebar } from "./Sidebar";
 
 const palette = {
   darkest: "#270115",
@@ -86,6 +87,152 @@ const demoHistory: GradeReport[] = [
   },
 ];
 
+const topicDistributionData = [
+  { id: "data-structures", label: "Data Structures", count: 24, trend: "rising" as const },
+  { id: "projects", label: "Projects & Assignments", count: 22, trend: "rising" as const },
+  { id: "oop", label: "Object-Oriented Programming", count: 19, trend: "steady" as const },
+  { id: "recursion", label: "Recursion", count: 18, trend: "rising" as const },
+  { id: "debugging", label: "Debugging & Testing", count: 15, trend: "rising" as const },
+  { id: "algorithms", label: "Algorithms", count: 13, trend: "declining" as const },
+  { id: "iteration", label: "Iteration", count: 11, trend: "steady" as const },
+];
+
+const trendDot = {
+  rising: palette.sage,
+  steady: "#8B7355",
+  declining: palette.crimson,
+};
+
+function TopicDistribution() {
+  const navigate = useNavigate();
+  const maxCount = Math.max(...topicDistributionData.map((t) => t.count));
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  return (
+    <div style={{ marginTop: 32, marginBottom: 32 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy }}>
+            Question Distribution by Topic
+          </div>
+          <div style={{ fontSize: 12, fontWeight: 500, color: "rgba(92,30,38,0.55)", marginTop: 2 }}>
+            Click a topic to view positives, concerns, and recommendations
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: 14,
+            fontSize: 11,
+            fontWeight: 700,
+            color: "rgba(92,30,38,0.5)",
+          }}
+        >
+          {(["rising", "steady", "declining"] as const).map((t) => (
+            <span key={t} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <span style={{ width: 7, height: 7, borderRadius: 999, backgroundColor: trendDot[t], display: "inline-block" }} />
+              {t.charAt(0).toUpperCase() + t.slice(1)}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div
+        style={{
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          padding: "20px 24px",
+          border: "1px solid rgba(214,214,214,0.4)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.07)",
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+        }}
+      >
+        {topicDistributionData.map((topic) => {
+          const isHovered = hoveredId === topic.id;
+          const pct = Math.round((topic.count / maxCount) * 100);
+          return (
+            <button
+              key={topic.id}
+              type="button"
+              onClick={() => navigate(`/analysis/topic/${topic.id}`)}
+              onMouseEnter={() => setHoveredId(topic.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
+                textAlign: "left",
+                width: "100%",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 5 }}>
+                <span
+                  style={{
+                    fontSize: 13,
+                    fontWeight: isHovered ? 800 : 700,
+                    color: isHovered ? palette.crimson : palette.deepBurgundy,
+                    transition: "color 120ms ease",
+                    minWidth: 210,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    textDecoration: isHovered ? "underline" : "none",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: 999,
+                      backgroundColor: trendDot[topic.trend],
+                      flexShrink: 0,
+                    }}
+                  />
+                  {topic.label}
+                </span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(92,30,38,0.45)", marginLeft: "auto", whiteSpace: "nowrap" }}>
+                  {topic.count} questions
+                </span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  style={{ opacity: isHovered ? 1 : 0.3, transition: "opacity 120ms ease", flexShrink: 0 }}
+                >
+                  <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div
+                style={{
+                  height: 8,
+                  borderRadius: 4,
+                  backgroundColor: "rgba(39,1,21,0.06)",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${pct}%`,
+                    height: "100%",
+                    borderRadius: 4,
+                    backgroundColor: isHovered ? palette.crimson : trendDot[topic.trend],
+                    transition: "background-color 120ms ease",
+                    opacity: isHovered ? 1 : 0.7,
+                  }}
+                />
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function StudentSelfCheckPage() {
   const navigate = useNavigate();
   const rubricInputRef = useRef<HTMLInputElement>(null);
@@ -122,122 +269,7 @@ export function StudentSelfCheckPage() {
         display: "flex",
       }}
     >
-      <aside
-        style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontFamily: "Italiana, serif",
-            fontSize: 30,
-            letterSpacing: 1.5,
-            color: "#fff",
-            padding: "6px 4px 10px 4px",
-          }}
-        >
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
-        </div>
-
-        <div
-          style={{
-            height: 1,
-            backgroundColor: "rgba(255,255,255,0.25)",
-            margin: "0 0 10px 0",
-          }}
-        />
-
-        <nav aria-label="Sidebar navigation" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          {(
-            [
-              { id: "profile", label: "Profile" },
-              { id: "groups", label: "Groups" },
-              { id: "request", label: "Request Office Hours" },
-              { id: "selfcheck", label: "Self-Check" },
-            ] as const
-          ).map((item) => {
-            const isActive = item.id === "selfcheck";
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => {
-                  if (item.id === "groups") {
-                    navigate("/groups");
-                    return;
-                  }
-                  if (item.id === "request") {
-                    navigate("/office-hours");
-                    return;
-                  }
-                  if (item.id === "selfcheck") {
-                    navigate("/self-check");
-                    return;
-                  }
-                  alert(`${item.label} (route not wired yet)`);
-                }}
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "8px 10px",
-                  borderRadius: 10,
-                  border: "none",
-                  backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent",
-                  color: isActive ? palette.darkest : "rgba(255,255,255,0.85)",
-                  fontSize: 13,
-                  fontWeight: isActive ? 800 : 600,
-                  cursor: "pointer",
-                  transition: "background-color 120ms ease",
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-
-        <div style={{ flex: 1 }} />
-
-        <div
-          style={{
-            height: 1,
-            backgroundColor: "rgba(255,255,255,0.2)",
-            margin: "10px 0 8px 0",
-          }}
-        />
-
-        <button
-          type="button"
-          onClick={() => alert("Signed out (auth not wired yet)")}
-          style={{
-            width: "100%",
-            textAlign: "left",
-            padding: "8px 10px",
-            borderRadius: 10,
-            border: "1px solid rgba(255,255,255,0.2)",
-            backgroundColor: "rgba(255,255,255,0.1)",
-            color: "rgba(255,255,255,0.9)",
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
-          Sign out
-        </button>
-      </aside>
+      <Sidebar activeId="selfcheck" />
 
       <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box", overflowY: "auto" }}>
         <div style={{ maxWidth: 1400 }}>
@@ -532,6 +564,9 @@ export function StudentSelfCheckPage() {
               </div>
             </div>
           )}
+
+          {/* topic distribution section */}
+          <TopicDistribution />
 
           {/* history section */}
           <div style={{ marginTop: 8 }}>
