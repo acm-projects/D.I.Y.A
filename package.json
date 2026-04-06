@@ -10,6 +10,7 @@
   "description": "<p align=\"center\">   <img src=\"200.gif\" alt=\"D.I.Y.A demo\" width=\"600\" height=\"400\"> </p>",
   "main": "index.js",
   "dependencies": {
+    "@auth0/auth0-react": "^2.16.1",
     "@google/genai": "^1.43.0",
     "ansi-styles": "^3.2.1",
     "array-buffer-byte-length": "^1.0.2",

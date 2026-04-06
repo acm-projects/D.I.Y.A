@@ -25,6 +25,15 @@ export const createPost = async (data: Omit<Post, 'id'>): Promise<Post> => {
     return post
 }
 
+export const getPosts = async (): Promise<Post[]> => {
+    const snapshot = await collection.get()
+    const posts: Post[] = []
+    snapshot.forEach((doc) => {
+        posts.push(doc.data() as Post)
+    })
+    return posts
+}
+
 export const getPost = async (id: string): Promise<Post | null> => {
     const doc = await collection.doc(id).get()
     return doc.data() ? (doc.data() as Post) : null

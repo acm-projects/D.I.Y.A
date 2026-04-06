@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { getPostsByGroup, createPost } from "./api/posts";
+import { createUpvote, deleteUpvote } from "./api/upvotes";
+import { getGroups } from "./api/groups";
+import type { Post, Group } from "../../server/types";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const palette = {
   darkest: "#270115",
@@ -11,7 +16,7 @@ const palette = {
 } as const;
 
 interface Question {
-  id: number;
+  id: string;
   author: string;
   question: string;
   replies: number;
@@ -21,9 +26,22 @@ interface Question {
   upvotes: number;
 }
 
-function getTimeAgo(id: number): string {
+const mapPostToQuestion = (post: Post, currentUserId?: string) => ({
+  id: post.id,
+  author: post.authorId,
+  question: post.title,
+  replies: 0, // need to fetch replies count separately
+  isNew: (Date.now() - post.createdAt.toMillis()) < 24 * 60 * 60 * 1000, // consider new if created within last 24 hours
+  image: post.imageUrl,
+  aiVerified: post.isVerified ?? false,
+  upvotes: post.upvotes?.length || 0,
+  hasUpvoted: currentUserId ? post.upvotes.some(u => u.userId === currentUserId) : false,
+});
+
+function getTimeAgo(id: string): string {
   const times = ["2 hours ago", "5 hours ago", "1 day ago", "2 days ago", "3 days ago", "1 week ago"];
-  return times[id % times.length];
+  const num = Array.from(id).reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return times[num % times.length];
 }
 
 function SearchIcon({ color }: { color: string }) {
@@ -55,58 +73,86 @@ function ForumIcon({ color }: { color: string }) {
   );
 }
 
-const groupNames: Record<string, string> = {
-  cs1337: "CS 1337 — Computer Science I",
-  cs2305: "CS 2305 — Discrete Mathematics",
-  math2413: "MATH 2413 — Differential Calculus",
-  phys2325: "PHYS 2325 — Mechanics",
-  ecs1100: "ECS 1100 — Intro to Engineering",
-  cs3341: "CS 3341 — Probability & Statistics",
-};
+// const groupNames: Record<string, string> = {
+//   cs1337: "CS 1337 — Computer Science I",
+//   cs2305: "CS 2305 — Discrete Mathematics",
+//   math2413: "MATH 2413 — Differential Calculus",
+//   phys2325: "PHYS 2325 — Mechanics",
+//   ecs1100: "ECS 1100 — Intro to Engineering",
+//   cs3341: "CS 3341 — Probability & Statistics",
+// };
 
 export function StudentForumPage() {
   const { groupId } = useParams<{ groupId: string }>();
+  const [ groupName, setGroupName ] = useState("Forum");
+  const { user, isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    if (!groupId) return;
+    getGroups()
+      .then((groups: Group[]) => {
+        const group = groups.find((g) => g.id === groupId);
+        if (group) {
+          setGroupName(group.title);
+        }
+      })
+      .catch((error) => console.error("Failed to fetch group info", error));
+  }, [groupId]);
+
   const navigate = useNavigate();
-  const groupName = groupId ? (groupNames[groupId] ?? groupId) : "Forum";
   const [query, setQuery] = useState("");
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newImage, setNewImage] = useState<string | undefined>();
-  const [upvotedIds, setUpvotedIds] = useState<Set<number>>(new Set());
+  const [upvotedIds, setUpvotedIds] = useState<Set<string>>(new Set());
+
+  
   const popupFileRef = useRef<HTMLInputElement>(null);
 
-  const defaultQuestions: Question[] = [
-    { id: 1, author: "Student A", question: "Can someone explain the difference between recursion and iteration?", replies: 12, isNew: true, aiVerified: true, upvotes: 24 },
-    { id: 2, author: "Student B", question: "What's the best way to approach the final project?", replies: 8, isNew: true, aiVerified: false, upvotes: 18 },
-    { id: 3, author: "Student C", question: "Are we allowed to use external libraries for the assignment?", replies: 5, isNew: false, aiVerified: true, upvotes: 11 },
-    { id: 4, author: "Student D", question: "When is the deadline for submitting the lab report?", replies: 3, isNew: false, aiVerified: false, upvotes: 7 },
-    { id: 5, author: "Student E", question: "How do I set up the development environment for this project?", replies: 15, isNew: false, aiVerified: true, upvotes: 31 },
-    { id: 6, author: "Student F", question: "Is there a study guide available for the midterm exam?", replies: 0, isNew: false, aiVerified: false, upvotes: 2 },
-  ];
+  // const defaultQuestions: Question[] = [
+  //   { id: 1, author: "Student A", question: "Can someone explain the difference between recursion and iteration?", replies: 12, isNew: true, aiVerified: true, upvotes: 24 },
+  //   { id: 2, author: "Student B", question: "What's the best way to approach the final project?", replies: 8, isNew: true, aiVerified: false, upvotes: 18 },
+  //   { id: 3, author: "Student C", question: "Are we allowed to use external libraries for the assignment?", replies: 5, isNew: false, aiVerified: true, upvotes: 11 },
+  //   { id: 4, author: "Student D", question: "When is the deadline for submitting the lab report?", replies: 3, isNew: false, aiVerified: false, upvotes: 7 },
+  //   { id: 5, author: "Student E", question: "How do I set up the development environment for this project?", replies: 15, isNew: false, aiVerified: true, upvotes: 31 },
+  //   { id: 6, author: "Student F", question: "Is there a study guide available for the midterm exam?", replies: 0, isNew: false, aiVerified: false, upvotes: 2 },
+  // ];
 
-  const studentLabelByIndex: Record<number, string> = {
-    1: "Student A", 2: "Student B", 3: "Student C", 4: "Student D", 5: "Student E", 6: "Student F",
-  };
-  const [questions, setQuestions] = useState<Question[]>(() => {
-    const saved = localStorage.getItem(`forum-questions-${groupId}`);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved) as Question[];
-        return parsed.map((q) => {
-          if (q.author === "You") return q;
-          const label = studentLabelByIndex[q.id];
-          if (label) return { ...q, author: label };
-          return q;
-        });
-      } catch { /* ignore */ }
-    }
-    return defaultQuestions;
-  });
+  // const studentLabelByIndex: Record<number, string> = {
+  //   1: "Student A", 2: "Student B", 3: "Student C", 4: "Student D", 5: "Student E", 6: "Student F",
+  // };
+  // const [questions, setQuestions] = useState<Question[]>(() => {
+  //   const saved = localStorage.getItem(`forum-questions-${groupId}`);
+  //   if (saved) {
+  //     try {
+  //       const parsed = JSON.parse(saved) as Question[];
+  //       return parsed.map((q) => {
+  //         if (q.author === "You") return q;
+  //         const label = studentLabelByIndex[q.id];
+  //         if (label) return { ...q, author: label };
+  //         return q;
+  //       });
+  //     } catch { /* ignore */ }
+  //   }
+  //   return defaultQuestions;
+  // });
+
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
-    localStorage.setItem(`forum-questions-${groupId}`, JSON.stringify(questions));
-  }, [questions, groupId]);
+    if (!groupId) return;
+    getPostsByGroup(groupId)
+      .then((posts) => {
+        const mapped = posts.map(mapPostToQuestion);
+        setQuestions(mapped);
+      })
+      .catch((error) => console.error("Failed to fetch posts for group", error));
+  }, [groupId]);
+
+  // useEffect(() => {
+  //   localStorage.setItem(`forum-questions-${groupId}`, JSON.stringify(questions));
+  // }, [questions, groupId]);
 
   const filtered = (() => {
     const q = query.trim().toLowerCase();
@@ -124,28 +170,66 @@ export function StudentForumPage() {
     return b.upvotes - a.upvotes;
   });
 
-  const handleCreateQuestion = () => {
+  // const handleCreateQuestion = () => {
+  //   const title = newTitle.trim();
+  //   if (!title) return;
+  //   const newQ: Question = {
+  //     id: Date.now(),
+  //     author: "You",
+  //     question: title,
+  //     replies: 0,
+  //     isNew: false,
+  //     image: newImage,
+  //     aiVerified: false,
+  //     upvotes: 0,
+  //   };
+  //   setQuestions((prev) => {
+  //     const updated = [newQ, ...prev];
+  //     localStorage.setItem(`forum-questions-${groupId}`, JSON.stringify(updated));
+  //     return updated;
+  //   });
+  //   setNewTitle("");
+  //   setNewImage(undefined);
+  //   setShowPopup(false);
+  //   navigate(`/groups/${groupId}/forum/${newQ.id}`);
+  // };
+
+  const handleCreateQuestion = async () => {
+    if (!isAuthenticated || !user?.sub) {
+      alert("You must be logged in to create a question.");
+      return;
+    }
+
+    if (!groupId) {
+      alert("No group selected.");
+      return;
+    }
+
     const title = newTitle.trim();
     if (!title) return;
-    const newQ: Question = {
-      id: Date.now(),
-      author: "You",
-      question: title,
-      replies: 0,
-      isNew: false,
-      image: newImage,
-      aiVerified: false,
-      upvotes: 0,
-    };
-    setQuestions((prev) => {
-      const updated = [newQ, ...prev];
-      localStorage.setItem(`forum-questions-${groupId}`, JSON.stringify(updated));
-      return updated;
-    });
-    setNewTitle("");
-    setNewImage(undefined);
-    setShowPopup(false);
-    navigate(`/groups/${groupId}/forum/${newQ.id}`);
+
+    try {
+      const payload = { 
+        title,
+        content: "",
+        groupId,
+        authorId: user.sub,
+        imageUrl: newImage, 
+      };
+      const savedPost = await createPost(payload);
+
+      const newQ = mapPostToQuestion(savedPost);
+      setQuestions((prev) => [newQ, ...prev]);
+
+      setNewTitle("");
+      setNewImage(undefined);
+      setShowPopup(false);
+
+      navigate(`/groups/${groupId}/forum/${newQ.id}`);
+    } catch (error) {
+      console.error("Failed to create post", error);
+      alert("Failed to create question. Please try again.");
+    }
   };
 
   const handlePopupImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -490,22 +574,46 @@ export function StudentForumPage() {
                   </div>
                   <button
                     type="button"
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.stopPropagation();
+
+                      if (!isAuthenticated || !user?.sub) {
+                        alert("You must be logged in to upvote a question.");
+                        return;
+                      }
+
                       const alreadyVoted = upvotedIds.has(q.id);
-                      setQuestions((prev) =>
-                        prev.map((item) =>
-                          item.id === q.id
-                            ? { ...item, upvotes: item.upvotes + (alreadyVoted ? -1 : 1) }
-                            : item
-                        )
-                      );
-                      setUpvotedIds((prev) => {
-                        const next = new Set(prev);
-                        if (alreadyVoted) next.delete(q.id);
-                        else next.add(q.id);
-                        return next;
-                      });
+
+                      try {
+                        if (alreadyVoted) {
+                          await deleteUpvote(q.id);
+                          setQuestions((prev) =>
+                            prev.map((item) =>
+                              item.id === q.id
+                                ? { ...item, upvotes: item.upvotes - 1 }
+                                : item
+                            )
+                          );
+                          setUpvotedIds((prev) => {
+                            const next = new Set(prev);
+                            next.delete(q.id);
+                            return next;
+                          });
+                        } else {
+                          await createUpvote(q.id, user.sub);
+                          setQuestions((prev) =>
+                            prev.map((item) =>
+                              item.id === q.id
+                                ? { ...item, upvotes: item.upvotes + 1 }
+                                : item
+                            )
+                          );
+                          setUpvotedIds((prev) => new Set(prev).add(q.id));
+                        }
+                      } catch (error) {
+                        console.error("Failed to toggle upvote", error);
+                        alert("Failed to register your vote. Please try again.");
+                      }
                     }}
                     style={{
                       display: "inline-flex",
