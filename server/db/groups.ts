@@ -1,6 +1,7 @@
 import { db } from '../config/firebase.ts'
 import type { Group } from '../types.ts'
 import { Timestamp } from 'firebase-admin/firestore'
+import { QueryDocumentSnapshot } from 'firebase-admin/firestore'
 
 const collection = db.collection('groups')
 
@@ -20,6 +21,11 @@ export const createGroup = async (data: Omit<Group, 'id'>): Promise<Group> => {
 
     await docRef.set(group)
     return group
+}
+
+export const getGroups = async (): Promise<Group[]> => {
+    const snapshot = await collection.get()
+    return snapshot.docs.map((doc: QueryDocumentSnapshot) => doc.data() as Group)
 }
 
 export const getGroup = async (id: string): Promise<Group | null> => {

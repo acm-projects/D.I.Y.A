@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createGroup, getGroup, updateGroup, deleteGroup } from '../../db/groups.ts'
+import { createGroup, getGroup, getGroups, updateGroup, deleteGroup } from '../../db/groups.ts'
 
 const router = Router()
 
@@ -10,6 +10,16 @@ router.post('/', async (req, res) => {
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: 'Could not create group.' })
+    }
+})
+
+router.get('/', async (req, res) => {
+    try {
+        const groups = await getGroups()
+        res.json(groups)
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: 'Could not retrieve groups.' })
     }
 })
 
