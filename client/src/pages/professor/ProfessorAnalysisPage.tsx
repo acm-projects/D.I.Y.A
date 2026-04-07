@@ -253,6 +253,11 @@ export function ProfessorAnalysisPage() {
     [topicData],
   );
 
+  const proficientTopics = useMemo(
+    () => topicData.filter((topic) => topic.status === "proficient"),
+    [topicData],
+  );
+
   const topTopic = topicData[0] ?? null;
 
   return (
@@ -267,9 +272,9 @@ export function ProfessorAnalysisPage() {
       {/* Sidebar */}
       <aside
         style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
+          width: 220,
+          background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)",
+          padding: "0 10px 16px",
           boxSizing: "border-box",
           position: "sticky",
           top: 0,
@@ -277,25 +282,48 @@ export function ProfessorAnalysisPage() {
           overflowY: "auto",
           display: "flex",
           flexDirection: "column",
+          borderRight: "1px solid rgba(255,255,255,0.05)",
+          boxShadow: "4px 0 32px rgba(0,0,0,0.25)",
         }}
       >
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
-            fontFamily: "Italiana, serif",
-            fontSize: 30,
-            letterSpacing: 1.5,
-            color: "#fff",
-            padding: "6px 4px 10px 4px",
+            gap: 12,
+            padding: "18px 8px 16px",
+            borderBottom: "1px solid rgba(255,255,255,0.08)",
+            marginBottom: 16,
           }}
         >
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              background: "linear-gradient(135deg, #a22237 0%, #5C1E26 100%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              boxShadow: "0 2px 10px rgba(162,34,55,0.45)",
+            }}
+          >
+            <img src="/logo.png" alt="logo" style={{ height: 22, objectFit: "contain" }} />
+          </div>
+          <div>
+            <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>
+              D.I.Y.A
+            </div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>
+              Professor View
+            </div>
+          </div>
         </div>
 
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.25)", margin: "0 0 10px 0" }} />
+        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>
+          Navigation
+        </div>
 
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           <button
@@ -304,13 +332,13 @@ export function ProfessorAnalysisPage() {
             style={{
               width: "100%",
               textAlign: "left",
-              padding: "8px 10px",
+              padding: "10px 12px",
               borderRadius: 10,
               border: "none",
-              backgroundColor: "transparent",
-              color: "rgba(255,255,255,0.85)",
+              backgroundColor: "rgba(255,255,255,0.04)",
+              color: "rgba(255,255,255,0.88)",
               fontSize: 13,
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: "pointer",
             }}
           >
@@ -331,13 +359,13 @@ export function ProfessorAnalysisPage() {
                 style={{
                   width: "100%",
                   textAlign: "left",
-                  padding: "8px 10px",
+                  padding: "10px 12px",
                   borderRadius: 10,
                   border: "none",
-                  backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent",
-                  color: isActive ? palette.darkest : "rgba(255,255,255,0.85)",
+                  backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent",
+                  color: isActive ? "#fff" : "rgba(255,255,255,0.65)",
                   fontSize: 13,
-                  fontWeight: isActive ? 800 : 600,
+                  fontWeight: isActive ? 700 : 600,
                   cursor: "pointer",
                 }}
               >
@@ -347,227 +375,99 @@ export function ProfessorAnalysisPage() {
           })}
         </nav>
         <div style={{ flex: 1 }} />
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.2)", margin: "10px 0 8px 0" }} />
+        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)", margin: "12px 0 10px 0" }} />
         <button
           type="button"
           onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-          style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.2)", backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.9)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}
+          style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
         >
           Sign out
         </button>
       </aside>
 
       {/* Main content */}
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box", overflow: "auto" }}>
-        <div style={{ maxWidth: 1400 }}>
-          {/* Header */}
-          <div style={{ marginBottom: 32 }}>
-            <div
-              style={{
-                color: palette.crimson,
-                fontSize: 44,
-                fontWeight: 850,
-                letterSpacing: -1,
-                lineHeight: 1.1,
-              }}
-            >
-              AI-Powered Course Analysis
+      <main style={{ flex: 1, overflow: "auto" }}>
+        <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
+          <div style={{ maxWidth: 1400 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>
+              AI-Powered Insights
             </div>
-            <div
-              style={{
-                marginTop: 8,
-                color: palette.deepBurgundy,
-                fontSize: 16,
-                fontWeight: 600,
-              }}
-            >
+            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>
+              Course Analysis
+            </div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>
               Insights derived from student questions and engagement patterns
             </div>
-          </div>
 
-          {error && (
-            <div style={{ marginBottom: 20, padding: "16px 18px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(220,53,69,0.2)", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", color: palette.crimson, fontSize: 13, fontWeight: 700 }}>
-              {error}
-            </div>
-          )}
-
-          {/* Stats Overview */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: 16,
-              marginBottom: 32,
-            }}
-          >
-            <div
-              style={{
-                padding: "18px 20px",
-                backgroundColor: "#fff",
-                borderRadius: 12,
-                border: "1px solid rgba(214,214,214,0.4)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "rgba(92,30,38,0.5)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 6,
-                }}
-              >
-                Total Posts Analyzed
-              </div>
-              <div
-                style={{
-                  fontSize: 36,
-                  fontWeight: 800,
-                  color: palette.crimson,
-                  lineHeight: 1,
-                }}
-              >
-                {analyzedPostCount}
-              </div>
-            </div>
-
-            <div
-              style={{
-                padding: "18px 20px",
-                backgroundColor: "#fff",
-                borderRadius: 12,
-                border: "1px solid rgba(214,214,214,0.4)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "rgba(92,30,38,0.5)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 6,
-                }}
-              >
-                Groups Included
-              </div>
-              <div
-                style={{
-                  fontSize: 36,
-                  fontWeight: 800,
-                  color: palette.sage,
-                  lineHeight: 1,
-                }}
-              >
-                {analyzedGroupCount}
-              </div>
-            </div>
-
-            <div
-              style={{
-                padding: "18px 20px",
-                backgroundColor: "#fff",
-                borderRadius: 12,
-                border: "1px solid rgba(214,214,214,0.4)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "rgba(92,30,38,0.5)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 6,
-                }}
-              >
-                Topics Identified
-              </div>
-              <div
-                style={{
-                  fontSize: 36,
-                  fontWeight: 800,
-                  color: palette.deepBurgundy,
-                  lineHeight: 1,
-                }}
-              >
-                {topicData.length}
-              </div>
-            </div>
-
-            <div
-              style={{
-                padding: "18px 20px",
-                backgroundColor: "#fff",
-                borderRadius: 12,
-                border: "1px solid rgba(214,214,214,0.4)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "rgba(92,30,38,0.5)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.5,
-                  marginBottom: 6,
-                }}
-              >
-                Areas Needing Attention
-              </div>
-              <div
-                style={{
-                  fontSize: 36,
-                  fontWeight: 800,
-                  color: "#DC3545",
-                  lineHeight: 1,
-                }}
-              >
-                {attentionTopics.length}
-              </div>
+            <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
+              {[
+                { label: "Posts Analyzed", value: analyzedPostCount, color: palette.crimson },
+                { label: "Groups Included", value: analyzedGroupCount, color: palette.sage },
+                { label: "Topics Identified", value: topicData.length, color: palette.deepBurgundy },
+                { label: "Need Attention", value: attentionTopics.length, color: "#DC3545" },
+              ].map((stat, i) => (
+                <div
+                  key={stat.label}
+                  style={{
+                    flex: "1 1 220px",
+                    minWidth: 180,
+                    paddingRight: i < 3 ? 40 : 0,
+                    marginRight: i < 3 ? 40 : 0,
+                    borderRight: i < 3 ? "1px solid rgba(214,214,214,0.5)" : "none",
+                  }}
+                >
+                  <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+                    {stat.value}
+                  </div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+        </div>
 
-          {/* Main Analysis Grid */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: 24,
-              marginBottom: 32,
-            }}
-          >
+        <div style={{ padding: "48px 64px 40px" }}>
+          <div style={{ maxWidth: 1400 }}>
+            {error && (
+              <div style={{ marginBottom: 20, padding: "16px 18px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(220,53,69,0.2)", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", color: palette.crimson, fontSize: 13, fontWeight: 700 }}>
+                {error}
+              </div>
+            )}
+
+            {/* Main Analysis Grid */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+                gap: 28,
+                marginBottom: 40,
+              }}
+            >
             {/* Pie Chart */}
             <div
               style={{
                 backgroundColor: "#fff",
-                border: "1px solid rgba(214,214,214,0.4)",
-                borderRadius: 14,
-                padding: "28px",
-                boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
+                borderRadius: 20,
+                overflow: "hidden",
+                boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
               }}
             >
-              <div
-                style={{
-                  fontSize: 20,
-                  fontWeight: 800,
-                  color: palette.crimson,
-                  marginBottom: 20,
-                }}
-              >
-                Question Distribution by Topic
-              </div>
+              <div style={{ height: 5, backgroundColor: palette.crimson }} />
+              <div style={{ padding: "28px 32px 32px" }}>
+                <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 8 }}>
+                  Question Distribution
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(92,30,38,0.5)", marginBottom: 24 }}>
+                  Topic volume detected from live professor forum activity
+                </div>
               {isLoading ? (
-                <div style={{ minHeight: 420, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(92,30,38,0.6)", fontSize: 14, fontWeight: 700 }}>
+                <div style={{ minHeight: 320, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(92,30,38,0.6)", fontSize: 14, fontWeight: 700 }}>
                   Analyzing current professor groups...
                 </div>
               ) : topicData.length === 0 ? (
-                <div style={{ minHeight: 420, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 10, color: "rgba(92,30,38,0.6)" }}>
+                <div style={{ minHeight: 320, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 10, color: "rgba(92,30,38,0.6)" }}>
                   <div style={{ fontSize: 20, fontWeight: 800, color: palette.crimson }}>Not enough data to analyze yet.</div>
                   <div style={{ fontSize: 14, fontWeight: 600, maxWidth: 360, lineHeight: 1.6 }}>
                     Once students start posting questions in your groups, this dashboard will summarize the most discussed topics automatically.
@@ -575,15 +475,15 @@ export function ProfessorAnalysisPage() {
                 </div>
               ) : (
                 <>
-                  <ResponsiveContainer width="100%" height={420}>
-                    <PieChart margin={{ top: 36, right: 96, bottom: 36, left: 96 }}>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart margin={{ top: 20, right: 40, bottom: 20, left: 40 }}>
                       <Pie
                         data={topicData}
                         cx="50%"
                         cy="50%"
                         labelLine={{ stroke: "rgba(92,30,38,0.3)", strokeWidth: 1 }}
                         label={renderTopicLabel}
-                        outerRadius={88}
+                        outerRadius={96}
                         fill="#8884d8"
                         dataKey="value"
                         nameKey="name"
@@ -602,7 +502,7 @@ export function ProfessorAnalysisPage() {
                       />
                     </PieChart>
                   </ResponsiveContainer>
-                  <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 10 }}>
+                  <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 10 }}>
                     {topicData.map((topic) => (
                       <div key={topic.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px", borderRadius: 10, backgroundColor: "rgba(214,214,214,0.14)" }}>
                         <div style={{ width: 10, height: 10, borderRadius: 999, backgroundColor: COLORS[topic.status], flexShrink: 0 }} />
@@ -625,39 +525,34 @@ export function ProfessorAnalysisPage() {
                   </div>
                 </>
               )}
+              </div>
             </div>
 
             {/* Live Summary */}
             <div
               style={{
                 backgroundColor: "#fff",
-                border: "1px solid rgba(214,214,214,0.4)",
-                borderRadius: 14,
-                padding: "28px",
-                boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
+                borderRadius: 20,
+                overflow: "hidden",
+                boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
               }}
             >
-              <div
-                style={{
-                  fontSize: 20,
-                  fontWeight: 800,
-                  color: palette.crimson,
-                  marginBottom: 20,
-                }}
-              >
-                Live Summary
-              </div>
+              <div style={{ height: 5, backgroundColor: palette.sage }} />
+              <div style={{ padding: "28px 32px 32px" }}>
+                <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>
+                  AI Summary
+                </div>
               {isLoading ? (
                 <div style={{ fontSize: 14, fontWeight: 600, color: "rgba(92,30,38,0.55)", lineHeight: 1.6 }}>
                   Calculating topic activity from live posts...
                 </div>
               ) : topicData.length === 0 ? (
-                <div style={{ padding: "16px 18px", backgroundColor: "rgba(214,214,214,0.14)", borderRadius: 8, fontSize: 14, fontWeight: 600, color: "rgba(92,30,38,0.6)", lineHeight: 1.6 }}>
+                <div style={{ padding: "16px 18px", backgroundColor: "rgba(214,214,214,0.14)", borderRadius: 12, fontSize: 14, fontWeight: 600, color: "rgba(92,30,38,0.6)", lineHeight: 1.6 }}>
                   Not enough data to analyze yet.
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                  <div style={{ padding: "16px 18px", backgroundColor: "rgba(162,34,55,0.04)", borderLeft: `3px solid ${palette.crimson}`, borderRadius: 8 }}>
+                  <div style={{ padding: "18px 20px", backgroundColor: "rgba(162,34,55,0.04)", borderLeft: `4px solid ${palette.crimson}`, borderRadius: 12 }}>
                     <div style={{ fontSize: 14, fontWeight: 700, color: palette.deepBurgundy, lineHeight: 1.6, marginBottom: 8 }}>
                       {analyzedPostCount} posts across {analyzedGroupCount} group{analyzedGroupCount === 1 ? "" : "s"} generated {totalTopicQuestions} topic mention{totalTopicQuestions === 1 ? "" : "s"}.
                     </div>
@@ -667,24 +562,36 @@ export function ProfessorAnalysisPage() {
                       </div>
                     )}
                   </div>
-                  <div style={{ padding: "16px 18px", backgroundColor: "rgba(122,155,118,0.08)", borderLeft: `3px solid ${palette.sage}`, borderRadius: 8 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: palette.deepBurgundy, lineHeight: 1.5, marginBottom: 8 }}>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>
                       Priority topics
                     </div>
                     {attentionTopics.length > 0 ? (
-                      <ul style={{ margin: 0, paddingLeft: 20, fontSize: 12, color: palette.deepBurgundy, lineHeight: 1.7 }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
                         {attentionTopics.slice(0, 3).map((topic) => (
-                          <li key={topic.id}>{topic.name} ({topic.value} mentions)</li>
+                          <div key={topic.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                            <span style={{ fontSize: 14, fontWeight: 600, color: palette.deepBurgundy }}>{topic.name}</span>
+                            <span style={{ fontSize: 16, fontWeight: 800, color: "#DC3545" }}>{topic.value}</span>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     ) : (
-                      <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.6)" }}>
+                      <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.6)", marginBottom: 20 }}>
                         No topics currently exceed the attention threshold.
                       </div>
                     )}
                   </div>
+                  <div style={{ padding: "14px 16px", backgroundColor: "rgba(122,155,118,0.08)", borderLeft: `4px solid ${palette.sage}`, borderRadius: 12 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: palette.sage, marginBottom: 6 }}>✓ Positive Indicators</div>
+                    <div style={{ fontSize: 13, fontWeight: 500, color: palette.deepBurgundy, lineHeight: 1.6 }}>
+                      {proficientTopics.length > 0
+                        ? `${proficientTopics.slice(0, 2).map((topic) => topic.name).join(" and ")} show comparatively lower question volume, suggesting the current support materials are working well there.`
+                        : "Current discussion is concentrated in higher-attention topics, so consider reinforcing core materials before the next checkpoint."}
+                    </div>
+                  </div>
                 </div>
               )}
+              </div>
             </div>
           </div>
 
@@ -692,13 +599,14 @@ export function ProfessorAnalysisPage() {
           <div>
             <div
               style={{
-                fontSize: 24,
-                fontWeight: 800,
-                color: palette.crimson,
-                marginBottom: 16,
+                fontSize: 32,
+                fontWeight: 900,
+                color: palette.darkest,
+                letterSpacing: -1,
+                marginBottom: 24,
               }}
             >
-              Detailed Topic Insights
+              Topic Insights
             </div>
 
             {isLoading ? (
@@ -710,34 +618,43 @@ export function ProfessorAnalysisPage() {
                 Not enough data to analyze yet.
               </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 20 }}>
                 {topicData.map((topic) => (
                   <div
                     key={topic.id}
                     style={{
                       backgroundColor: "#fff",
-                      border: `2px solid ${topic.status === "needs-attention" ? "#DC3545" : palette.sage}`,
-                      borderRadius: 14,
-                      padding: "20px 24px",
-                      boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
+                      borderRadius: 20,
+                      overflow: "hidden",
+                      boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, flexWrap: "wrap" }}>
-                      <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy }}>{topic.name}</div>
-                      <span style={{ padding: "4px 12px", backgroundColor: topic.status === "needs-attention" ? "#DC3545" : palette.sage, color: "white", fontSize: 11, fontWeight: 700, borderRadius: 6, textTransform: "uppercase" }}>
-                        {topic.status === "needs-attention" ? "Needs Attention" : "Lower Volume"}
-                      </span>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(92,30,38,0.55)" }}>
-                        {topic.value} mention{topic.value === 1 ? "" : "s"} ({Math.round(topic.share * 100)}%)
-                      </span>
-                    </div>
-                    <div style={{ fontSize: 14, fontWeight: 500, color: palette.deepBurgundy, lineHeight: 1.6, marginBottom: 12 }}>
-                      <strong>Insight:</strong> {getTopicInsight(topic)}
-                    </div>
-                    <div style={{ padding: "12px 14px", backgroundColor: topic.status === "needs-attention" ? "rgba(220,53,69,0.05)" : "rgba(122,155,118,0.08)", borderRadius: 8 }}>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: palette.crimson, marginBottom: 4 }}>Recommended Action</div>
-                      <div style={{ fontSize: 13, fontWeight: 500, color: palette.deepBurgundy }}>
-                        {getTopicRecommendation(topic)}
+                    <div style={{ height: 5, backgroundColor: topic.status === "needs-attention" ? "#DC3545" : palette.sage }} />
+                    <div style={{ padding: "24px 28px 28px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
+                        <div style={{ fontSize: 17, fontWeight: 800, color: palette.darkest, letterSpacing: -0.3 }}>{topic.name}</div>
+                        <span style={{ padding: "4px 12px", backgroundColor: topic.status === "needs-attention" ? "rgba(220,53,69,0.1)" : "rgba(122,155,118,0.12)", color: topic.status === "needs-attention" ? "#DC3545" : palette.sage, fontSize: 11, fontWeight: 700, borderRadius: 8, textTransform: "uppercase", letterSpacing: 0.5, whiteSpace: "nowrap" }}>
+                          {topic.status === "needs-attention" ? "⚠ Attention" : "✓ Strong"}
+                        </span>
+                        <span style={{ marginLeft: "auto", fontSize: 20, fontWeight: 900, color: topic.status === "needs-attention" ? "#DC3545" : palette.sage }}>
+                          {topic.value}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: 14, fontWeight: 500, color: palette.deepBurgundy, lineHeight: 1.65, marginBottom: 16 }}>
+                        {getTopicInsight(topic)}
+                      </div>
+                      <div style={{ padding: "12px 16px", backgroundColor: topic.status === "needs-attention" ? "rgba(220,53,69,0.04)" : "rgba(122,155,118,0.06)", borderRadius: 12 }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 6 }}>
+                          Recommended Action
+                        </div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>
+                          {getTopicRecommendation(topic)}
+                        </div>
+                      </div>
+                      <div style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(92,30,38,0.55)" }}>
+                          {Math.round(topic.share * 100)}% of discussion volume
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -745,6 +662,19 @@ export function ProfessorAnalysisPage() {
               </div>
             )}
           </div>
+
+          <div style={{ marginTop: 40, background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 48px", borderRadius: 24 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+              D.I.Y.A Analysis Engine
+            </div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>
+              {attentionTopics.length} topic{attentionTopics.length !== 1 ? "s" : ""} need your attention.
+            </div>
+            <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.65)" }}>
+              Review the highlighted topics above to decide where extra clarification, announcements, or office-hours emphasis will help most.
+            </div>
+          </div>
+        </div>
         </div>
       </main>
     </div>

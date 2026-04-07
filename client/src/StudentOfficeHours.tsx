@@ -87,6 +87,32 @@ interface PastRequest {
   status: "pending" | "confirmed" | "declined";
 }
 
+function toCalendarDate(dateStr: string, timeStr: string): string {
+  return `${dateStr.replace(/-/g, "")}T${timeStr.replace(":", "")}00`;
+}
+
+function buildGoogleCalendarUrl(req: PastRequest): string {
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: `Office Hours with ${req.professorName}`,
+    dates: `${toCalendarDate(req.date, req.startTime)}/${toCalendarDate(req.date, req.endTime)}`,
+    details: req.reason + (req.meetingLink ? `\n\nMeeting Link: ${req.meetingLink}` : ""),
+    location: req.meetingType === "online" ? req.meetingLink ?? "Online" : req.groupName ?? "Campus",
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+function buildOutlookUrl(req: PastRequest): string {
+  const params = new URLSearchParams({
+    subject: `Office Hours with ${req.professorName}`,
+    startdt: `${req.date}T${req.startTime}:00`,
+    enddt: `${req.date}T${req.endTime}:00`,
+    body: req.reason + (req.meetingLink ? `\n\nMeeting Link: ${req.meetingLink}` : ""),
+    location: req.meetingType === "online" ? req.meetingLink ?? "Online" : req.groupName ?? "Campus",
+  });
+  return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;
+}
+
 export function StudentOfficeHours() {
   const { user } = useAuth0();
   const [selectedGroupId, setSelectedGroupId] = useState("");
@@ -283,9 +309,9 @@ export function StudentOfficeHours() {
     >
       <aside
         style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
+          width: 220,
+          background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)",
+          padding: "0 10px 16px",
           boxSizing: "border-box",
           position: "sticky",
           top: 0,
@@ -293,12 +319,14 @@ export function StudentOfficeHours() {
           overflowY: "auto",
           display: "flex",
           flexDirection: "column",
+          borderRight: "1px solid rgba(255,255,255,0.05)",
+          boxShadow: "4px 0 32px rgba(0,0,0,0.25)",
         }}
       >
         <StudentSidebar activeItem="request" />
       </aside>
 
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box", overflowY: "auto" }}>
+      <main style={{ flex: 1, padding: "32px 36px 56px 28px", boxSizing: "border-box", overflowY: "auto" }}>
         <div style={{ maxWidth: 1400 }}>
           <div
             style={{
@@ -339,6 +367,9 @@ export function StudentOfficeHours() {
               {error}
             </div>
           )}
+
+          <div style={{ display: "flex", gap: 28, alignItems: "flex-start", flexWrap: "wrap" }}>
+            <div style={{ flex: "1 1 400px", minWidth: 320 }}>
 
           {/* request form card */}
           {!submitted ? (
@@ -591,6 +622,10 @@ export function StudentOfficeHours() {
             </div>
           )}
 
+            </div>
+
+            <div style={{ flex: "1 1 380px", minWidth: 320 }}>
+
           {/* past requests */}
           <div style={{ marginTop: 8 }}>
             <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 14 }}>
@@ -698,9 +733,93 @@ export function StudentOfficeHours() {
                         Meeting link: {req.meetingLink}
                       </div>
                     )}
+
+                    {req.status === "confirmed" && (
+                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
+                        <a
+                          href={buildGoogleCalendarUrl(req)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            padding: "7px 12px",
+                            borderRadius: 8,
+                            backgroundColor: "rgba(66,133,244,0.08)",
+                            border: "1px solid rgba(66,133,244,0.25)",
+                            color: "#4285F4",
+                            fontSize: 12,
+                            fontWeight: 700,
+                            textDecoration: "none",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                            <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                          </svg>
+                          Add to Google Calendar
+                        </a>
+                        <a
+                          href={buildOutlookUrl(req)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            padding: "7px 12px",
+                            borderRadius: 8,
+                            backgroundColor: "rgba(0,120,212,0.07)",
+                            border: "1px solid rgba(0,120,212,0.22)",
+                            color: "#0078D4",
+                            fontSize: 12,
+                            fontWeight: 700,
+                            textDecoration: "none",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                            <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                          </svg>
+                          Add to Outlook
+                        </a>
+                        {req.meetingType === "online" && req.meetingLink && (
+                          <a
+                            href={req.meetingLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 6,
+                              padding: "7px 12px",
+                              borderRadius: 8,
+                              backgroundColor: "rgba(52,168,83,0.08)",
+                              border: "1px solid rgba(52,168,83,0.25)",
+                              color: "#34A853",
+                              fontSize: 12,
+                              fontWeight: 700,
+                              textDecoration: "none",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                              <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                            Join Meeting
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
+            </div>
+          </div>
+
             </div>
           </div>
         </div>

@@ -26,6 +26,52 @@ interface AppointmentRequest {
   timestamp: number;
 }
 
+function formatCalendarStamp(date: string, time: string) {
+  const [hourText, minuteText] = time.split(":");
+  const hours = Number(hourText);
+  const minutes = Number(minuteText ?? "0");
+
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+    return null;
+  }
+
+  return `${date.replace(/-/g, "")}T${`${hours}`.padStart(2, "0")}${`${minutes}`.padStart(2, "0")}00`;
+}
+
+function buildGoogleCalendarUrl(request: AppointmentRequest) {
+  const startStamp = formatCalendarStamp(request.requestedDate, request.requestedTime);
+  const endStamp = formatCalendarStamp(request.requestedDate, request.requestedEndTime || request.requestedTime);
+
+  if (!startStamp || !endStamp) {
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE";
+  }
+
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: `Office Hours — ${request.studentName || "Student"}`,
+    dates: `${startStamp}/${endStamp}`,
+    details: request.reason,
+    add: request.email,
+  });
+
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+function buildOutlookUrl(request: AppointmentRequest) {
+  const startISO = `${request.requestedDate}T${request.requestedTime}:00`;
+  const endISO = `${request.requestedDate}T${request.requestedEndTime || request.requestedTime}:00`;
+
+  const params = new URLSearchParams({
+    subject: `Office Hours — ${request.studentName || "Student"}`,
+    startdt: startISO,
+    enddt: endISO,
+    body: request.reason,
+    to: request.email,
+  });
+
+  return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;
+}
+
 export function ProfessorRequestsPage() {
   const navigate = useNavigate();
   const { user, logout } = useAuth0();
@@ -173,6 +219,39 @@ export function ProfessorRequestsPage() {
 
   const pendingCount = useMemo(() => appointmentRequests.length, [appointmentRequests]);
 
+  const { thisWeekCount, nextWeekCount } = useMemo(() => {
+    const today = new Date();
+    const startOfWeek = new Date(today);
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(today.getDate() - today.getDay());
+
+    const startOfNextWeek = new Date(startOfWeek);
+    startOfNextWeek.setDate(startOfWeek.getDate() + 7);
+
+    const startOfWeekAfterNext = new Date(startOfNextWeek);
+    startOfWeekAfterNext.setDate(startOfNextWeek.getDate() + 7);
+
+    return appointmentRequests.reduce(
+      (counts, request) => {
+        const requestDate = new Date(request.requestedDate);
+        if (Number.isNaN(requestDate.getTime())) {
+          return counts;
+        }
+
+        requestDate.setHours(0, 0, 0, 0);
+
+        if (requestDate >= startOfWeek && requestDate < startOfNextWeek) {
+          counts.thisWeekCount += 1;
+        } else if (requestDate >= startOfNextWeek && requestDate < startOfWeekAfterNext) {
+          counts.nextWeekCount += 1;
+        }
+
+        return counts;
+      },
+      { thisWeekCount: 0, nextWeekCount: 0 },
+    );
+  }, [appointmentRequests]);
+
   const formatTimeAgo = (timestamp: number) => {
     const diffMs = Date.now() - timestamp;
     const minutes = Math.max(1, Math.floor(diffMs / 60000));
@@ -185,14 +264,19 @@ export function ProfessorRequestsPage() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: palette.cream, fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", display: "flex" }}>
-      <aside style={{ width: 180, background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`, padding: 12, boxSizing: "border-box", position: "sticky", top: 0, height: "100vh", overflowY: "auto", display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "Italiana, serif", fontSize: 30, letterSpacing: 1.5, color: "#fff", padding: "6px 4px 10px 4px" }}>
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
+      <aside style={{ width: 220, background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)", padding: "0 10px 16px", boxSizing: "border-box", position: "sticky", top: 0, height: "100vh", overflowY: "auto", display: "flex", flexDirection: "column", borderRight: "1px solid rgba(255,255,255,0.05)", boxShadow: "4px 0 32px rgba(0,0,0,0.25)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "18px 8px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginBottom: 16 }}>
+          <div style={{ width: 40, height: 40, borderRadius: 10, background: "linear-gradient(135deg, #a22237 0%, #5C1E26 100%)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 10px rgba(162,34,55,0.45)" }}>
+            <img src="/logo.png" alt="logo" style={{ height: 22, objectFit: "contain" }} />
+          </div>
+          <div>
+            <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>D.I.Y.A</div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>Professor View</div>
+          </div>
         </div>
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.25)", margin: "0 0 10px 0" }} />
+        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>Navigation</div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "none", backgroundColor: "transparent", color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>← Back to Forum</button>
+          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>← Back to Forum</button>
           {[
             { id: "calendar", label: "Calendar", path: "/professor/calendar" },
             { id: "analysis", label: "Analysis", path: "/professor/analysis" },
@@ -200,27 +284,38 @@ export function ProfessorRequestsPage() {
             { id: "editgroup", label: "Edit Group", path: "/professor/edit-group" },
           ].map((item) => {
             const isActive = item.id === "requests";
-            return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent", color: isActive ? palette.darkest : "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: isActive ? 800 : 600, cursor: "pointer" }}>{item.label}</button>;
+            return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent", color: isActive ? "#fff" : "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: isActive ? 700 : 600, cursor: "pointer" }}>{item.label}</button>;
           })}
         </nav>
         <div style={{ flex: 1 }} />
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.2)", margin: "10px 0 8px 0" }} />
-        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.2)", backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.9)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Sign out</button>
+        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)", margin: "12px 0 10px 0" }} />
+        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Sign out</button>
       </aside>
 
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box" }}>
-        <div style={{ maxWidth: 1200 }}>
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ color: palette.crimson, fontSize: 44, fontWeight: 850, letterSpacing: -1, lineHeight: 1.1 }}>Student Appointments</div>
-            <div style={{ marginTop: 8, color: palette.deepBurgundy, fontSize: 16, fontWeight: 600 }}>Review and manage student meeting requests</div>
-          </div>
+      <main style={{ flex: 1, overflow: "auto" }}>
+        <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
+          <div style={{ maxWidth: 1200 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Office Hours</div>
+            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>Appointment Requests</div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>Review and schedule student meetings</div>
 
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ padding: "20px 24px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", display: "inline-block" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>Pending Appointment Requests</div>
-              <div style={{ fontSize: 36, fontWeight: 800, color: palette.crimson, lineHeight: 1 }}>{pendingCount}</div>
+            <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
+              {[
+                { label: "Pending Requests", value: pendingCount, color: palette.crimson },
+                { label: "This Week", value: thisWeekCount, color: palette.sage },
+                { label: "Next Week", value: nextWeekCount, color: palette.deepBurgundy },
+              ].map((stat, i) => (
+                <div key={stat.label} style={{ flex: "1 1 220px", minWidth: 180, paddingRight: i < 2 ? 40 : 0, marginRight: i < 2 ? 40 : 0, borderRight: i < 2 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
+                  <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
+        </div>
+
+        <div style={{ padding: "48px 64px" }}>
+          <div style={{ maxWidth: 1200 }}>
 
           {error && (
             <div style={{ marginBottom: 20, padding: "14px 16px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(220,53,69,0.2)", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", color: palette.crimson, fontSize: 13, fontWeight: 700 }}>
@@ -229,7 +324,7 @@ export function ProfessorRequestsPage() {
           )}
 
           <div>
-            <div style={{ fontSize: 24, fontWeight: 800, color: palette.crimson, marginBottom: 16 }}>Appointment Requests</div>
+            <div style={{ fontSize: 32, fontWeight: 900, color: palette.darkest, letterSpacing: -1, marginBottom: 28 }}>Incoming Requests</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {isLoading && (
                 <div style={{ backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.3)", borderRadius: 14, padding: "20px 24px", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: palette.deepBurgundy, fontSize: 14, fontWeight: 700 }}>
@@ -245,45 +340,87 @@ export function ProfessorRequestsPage() {
 
               {appointmentRequests.map((req) => (
                 <div key={req.id}>
-                  <div style={{ backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.4)", borderRadius: 14, padding: "20px 24px", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", display: "grid", gridTemplateColumns: "1fr auto", gap: 20, alignItems: "center" }}>
-                    <div>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 4 }}>{req.studentName || "Student"}</div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.6)", marginBottom: req.groupName ? 6 : 8 }}>{req.email}</div>
-                      {req.groupName && (
-                        <div style={{ display: "inline-flex", alignItems: "center", padding: "4px 10px", borderRadius: 999, backgroundColor: "rgba(122,155,118,0.12)", color: palette.sage, fontSize: 11, fontWeight: 700, marginBottom: 8 }}>
-                          {req.groupName}
+                  <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}>
+                    <div style={{ height: 4, background: `linear-gradient(90deg, ${palette.crimson}, ${palette.sage})` }} />
+                    <div style={{ padding: "24px 32px", display: "grid", gridTemplateColumns: "1fr auto", gap: 24, alignItems: "start" }}>
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                          <div style={{ width: 44, height: 44, borderRadius: 12, background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`, display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 18, fontWeight: 800, flexShrink: 0 }}>
+                            {(req.studentName || "S").charAt(0)}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: 17, fontWeight: 800, color: palette.darkest, letterSpacing: -0.3 }}>{req.studentName || "Student"}</div>
+                            <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>{req.email}</div>
+                          </div>
                         </div>
-                      )}
-                      <div style={{ fontSize: 14, fontWeight: 600, color: palette.crimson, marginBottom: 6 }}>📅 {new Date(req.requestedDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })} at {formatTimeRangeToCST(req.requestedTime, req.requestedEndTime)}</div>
-                      <div style={{ fontSize: 13, fontWeight: 500, color: palette.deepBurgundy, fontStyle: "italic" }}>&quot;{req.reason}&quot;</div>
-                      <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(92,30,38,0.5)", marginTop: 8 }}>Requested {formatTimeAgo(req.timestamp)}</div>
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                      <button onClick={() => void handleApproveAppointment(req.id)} style={{ padding: "10px 18px", background: palette.sage, color: "white", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>✓ Accept</button>
-                      <button onClick={() => void handleRejectAppointment(req.id)} style={{ padding: "10px 18px", background: "transparent", color: "#DC3545", border: "1px solid #DC3545", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>✗ Reject</button>
-                      <button onClick={() => setShowReschedule(showReschedule === req.id ? null : req.id)} style={{ padding: "10px 18px", background: "transparent", color: palette.crimson, border: `1px solid ${palette.crimson}`, borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>🔄 Reschedule</button>
+                        {req.groupName && (
+                          <div style={{ display: "inline-flex", alignItems: "center", padding: "4px 10px", borderRadius: 999, backgroundColor: "rgba(122,155,118,0.12)", color: palette.sage, fontSize: 11, fontWeight: 700, marginBottom: 8 }}>
+                            {req.groupName}
+                          </div>
+                        )}
+                        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", backgroundColor: "rgba(162,34,55,0.06)", borderRadius: 10, marginBottom: 12 }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke={palette.crimson} strokeWidth="2" />
+                            <path d="M16 2v4M8 2v4M3 10h18" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" />
+                          </svg>
+                          <span style={{ fontSize: 14, fontWeight: 700, color: palette.crimson }}>
+                            {new Date(req.requestedDate).toLocaleDateString("en-US", { weekday: "short", month: "long", day: "numeric" })} · {formatTimeRangeToCST(req.requestedTime, req.requestedEndTime)}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: 15, fontWeight: 500, color: palette.deepBurgundy, lineHeight: 1.6, fontStyle: "italic", marginBottom: 8 }}>&quot;{req.reason}&quot;</div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.4)" }}>Requested {formatTimeAgo(req.timestamp)}</div>
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 140 }}>
+                        <button onClick={() => void handleApproveAppointment(req.id)} style={{ padding: "11px 16px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(122,155,118,0.3)" }}>✓ Accept</button>
+                        <a href={buildGoogleCalendarUrl(req)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 12px", borderRadius: 12, backgroundColor: "rgba(66,133,244,0.08)", border: "1.5px solid rgba(66,133,244,0.25)", color: "#4285F4", fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" /><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                          Google Cal
+                        </a>
+                        <a href={buildOutlookUrl(req)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 12px", borderRadius: 12, backgroundColor: "rgba(0,120,212,0.07)", border: "1.5px solid rgba(0,120,212,0.22)", color: "#0078D4", fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" /><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                          Outlook
+                        </a>
+                        <a href="https://meet.google.com/new" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 12px", borderRadius: 12, backgroundColor: "rgba(52,168,83,0.08)", border: "1.5px solid rgba(52,168,83,0.25)", color: "#34A853", fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                          Meet
+                        </a>
+                        <button onClick={() => setShowReschedule(showReschedule === req.id ? null : req.id)} style={{ padding: "9px 16px", background: "transparent", color: palette.crimson, border: "1.5px solid rgba(162,34,55,0.3)", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>🔄 Reschedule</button>
+                        <button onClick={() => void handleRejectAppointment(req.id)} style={{ padding: "9px 16px", background: "transparent", color: "#DC3545", border: "1.5px solid rgba(220,53,69,0.35)", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>✗ Reject</button>
+                      </div>
                     </div>
                   </div>
 
                   {showReschedule === req.id && (
-                    <div style={{ marginTop: 12, backgroundColor: "#fff", border: `2px solid ${palette.crimson}`, borderRadius: 14, padding: 20, boxShadow: "0 4px 18px rgba(0,0,0,0.08)" }}>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: palette.crimson, marginBottom: 12, textTransform: "uppercase", letterSpacing: 0.5 }}>Propose New Time</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 12, alignItems: "end" }}>
-                        <div>
-                          <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 4 }}>Date</label>
-                          <input type="date" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} style={{ width: "100%", padding: "8px 10px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 6, fontSize: 13, fontFamily: "inherit" }} />
+                    <div style={{ marginTop: 12, backgroundColor: "#fff", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.1)" }}>
+                      <div style={{ height: 4, backgroundColor: palette.crimson }} />
+                      <div style={{ padding: "20px 32px" }}>
+                        <div style={{ fontSize: 15, fontWeight: 800, color: palette.darkest, marginBottom: 16 }}>Propose New Time</div>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 14, alignItems: "end" }}>
+                          <div>
+                            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Date</label>
+                            <input type="date" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} style={{ width: "100%", padding: "10px 14px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+                          </div>
+                          <div>
+                            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Time</label>
+                            <input type="time" value={rescheduleTime} onChange={(e) => setRescheduleTime(e.target.value)} style={{ width: "100%", padding: "10px 14px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+                          </div>
+                          <button onClick={() => void handleReschedule(req.id)} style={{ padding: "10px 20px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Send Proposal</button>
                         </div>
-                        <div>
-                          <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 4 }}>Time</label>
-                          <input type="time" value={rescheduleTime} onChange={(e) => setRescheduleTime(e.target.value)} style={{ width: "100%", padding: "8px 10px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 6, fontSize: 13, fontFamily: "inherit" }} />
-                        </div>
-                        <button onClick={() => void handleReschedule(req.id)} style={{ padding: "8px 16px", background: palette.sage, color: "white", border: "none", borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>Send Proposal</button>
                       </div>
                     </div>
                   )}
                 </div>
               ))}
             </div>
+          </div>
+          </div>
+        </div>
+
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px" }}>
+          <div style={{ maxWidth: 1200 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>Office Hours Queue</div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>{appointmentRequests.length} students waiting to meet with you.</div>
+            <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.65)" }}>Review each request and confirm the best time for student support.</div>
           </div>
         </div>
       </main>

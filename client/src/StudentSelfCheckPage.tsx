@@ -16,6 +16,13 @@ interface Improvement {
   suggestion: string;
 }
 
+type BackendImprovement = {
+  section?: string;
+  suggestion?: string;
+  title?: string;
+  description?: string;
+};
+
 interface GradeReport {
   id: string;
   assignmentName: string;
@@ -32,8 +39,14 @@ type BackendSelfCheck = {
   rubricName: string;
   potentialGrade: string;
   letterGrade: string;
-  improvements: Improvement[];
+  improvements: BackendImprovement[];
   createdAt?: { _seconds?: number; seconds?: number } | string;
+};
+
+type UploadedSelfCheckFile = {
+  name: string;
+  mimeType: string;
+  base64Data: string;
 };
 
 const SELF_CHECK_API_BASE_URL = "/api/self-check";
@@ -56,8 +69,27 @@ function toGradeReport(record: BackendSelfCheck): GradeReport {
     rubricName: record.rubricName,
     potentialGrade: record.potentialGrade,
     letterGrade: record.letterGrade,
-    improvements: record.improvements,
+    improvements: record.improvements.map((improvement, index) => ({
+      section: improvement.section || improvement.title || `Improvement ${index + 1}`,
+      suggestion: improvement.suggestion || improvement.description || "No suggestion provided.",
+    })),
     timestamp: new Date(getTimestampMs(record.createdAt)),
+  };
+}
+
+async function fileToUploadedPayload(file: File): Promise<UploadedSelfCheckFile> {
+  const buffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+
+  for (let i = 0; i < bytes.length; i += 1) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+
+  return {
+    name: file.name,
+    mimeType: file.type || "application/octet-stream",
+    base64Data: btoa(binary),
   };
 }
 
@@ -127,7 +159,11 @@ export function StudentSelfCheckPage() {
     setError(null);
 
     try {
-      const [rubricText, workText] = await Promise.all([rubricFile.text(), workFile.text()]);
+      const [rubricPayload, workPayload] = await Promise.all([
+        fileToUploadedPayload(rubricFile),
+        fileToUploadedPayload(workFile),
+      ]);
+
       const response = await fetch(`${SELF_CHECK_API_BASE_URL}/analyze`, {
         method: "POST",
         headers: {
@@ -137,8 +173,8 @@ export function StudentSelfCheckPage() {
           studentId: user.sub,
           assignmentName: workFile.name,
           rubricName: rubricFile.name,
-          workText,
-          rubricText,
+          workFile: workPayload,
+          rubricFile: rubricPayload,
         }),
       });
 
@@ -173,9 +209,9 @@ export function StudentSelfCheckPage() {
     >
       <aside
         style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
+          width: 220,
+          background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)",
+          padding: "0 10px 16px",
           boxSizing: "border-box",
           position: "sticky",
           top: 0,
@@ -183,6 +219,8 @@ export function StudentSelfCheckPage() {
           overflowY: "auto",
           display: "flex",
           flexDirection: "column",
+          borderRight: "1px solid rgba(255,255,255,0.05)",
+          boxShadow: "4px 0 32px rgba(0,0,0,0.25)",
         }}
       >
         <StudentSidebar activeItem="selfcheck" />

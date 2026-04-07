@@ -76,6 +76,7 @@ export default function App() {
       setIsRoleLoading(true);
 
       try {
+        const pendingSignupRole = window.sessionStorage.getItem("pendingSignupRole");
         const params = new URLSearchParams();
 
         if (email) {
@@ -90,6 +91,10 @@ export default function App() {
           params.set("name", name);
         }
 
+        if (pendingSignupRole === "student" || pendingSignupRole === "professor") {
+          params.set("selectedRole", pendingSignupRole);
+        }
+
         const response = await fetch(`/api/users/role?${params.toString()}`, {
           signal: controller.signal,
         });
@@ -99,6 +104,9 @@ export default function App() {
         }
 
         const data = (await response.json()) as { role?: string };
+        if (pendingSignupRole === "student" || pendingSignupRole === "professor") {
+          window.sessionStorage.removeItem("pendingSignupRole");
+        }
         setRole(data.role === "professor" ? "professor" : "student");
       } catch (error) {
         if (!controller.signal.aborted) {

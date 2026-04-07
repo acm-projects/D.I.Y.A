@@ -125,10 +125,12 @@ export const syncUserFromAuth = async ({
     email,
     id,
     name,
+    role,
 }: {
     email?: string | null
     id?: string | null
     name?: string | null
+    role?: 'student' | 'professor'
 }): Promise<User> => {
     const normalizedEmail = normalizeLookupValue(email)
     const normalizedId = normalizeLookupValue(id)
@@ -149,6 +151,10 @@ export const syncUserFromAuth = async ({
         const resolvedName = getFallbackName(normalizedEmail, name)
         if (resolvedName && existingUser.name !== resolvedName) {
             updates.name = resolvedName
+        }
+
+        if (role && existingUser.role !== role) {
+            updates.role = role
         }
 
         if (Object.keys(updates).length > 0) {
@@ -178,7 +184,7 @@ export const syncUserFromAuth = async ({
         ...(normalizedId ? { authId: normalizedId } : {}),
         name: getFallbackName(normalizedEmail, name),
         email: normalizedEmail || `${docId}@auth.local`,
-        role: 'student',
+        role: role || 'student',
         groups: [],
         createdAt: now,
         updatedAt: now,

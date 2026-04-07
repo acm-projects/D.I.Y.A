@@ -148,6 +148,9 @@ export function ProfessorCalendarPage() {
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const confirmedCount = appointments.filter((appointment) => appointment.status === "confirmed").length;
+  const pendingCount = appointments.filter((appointment) => appointment.status === "pending").length;
+  const declinedCount = appointments.filter((appointment) => appointment.status === "declined").length;
 
   const previousMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
@@ -183,31 +186,110 @@ export function ProfessorCalendarPage() {
       const isToday = isCurrentMonth && date.toDateString() === today.toDateString();
 
       days.push(
-        <div key={i} style={{ minHeight: 120, border: "1px solid rgba(214,214,214,0.3)", padding: 8, backgroundColor: isCurrentMonth ? "#fff" : "rgba(214,214,214,0.1)", position: "relative", cursor: isCurrentMonth ? "pointer" : "default" }}>
+        <div
+          key={i}
+          style={{
+            minHeight: 110,
+            border: "1px solid rgba(214,214,214,0.25)",
+            padding: "10px",
+            backgroundColor: isCurrentMonth ? (isToday ? "rgba(162,34,55,0.03)" : "#fff") : "rgba(214,214,214,0.06)",
+            cursor: isCurrentMonth ? "pointer" : "default",
+          }}
+        >
           {isCurrentMonth && (
             <>
-              <div style={{ fontSize: 14, fontWeight: isToday ? 800 : 600, color: isToday ? palette.crimson : palette.deepBurgundy, marginBottom: 6, display: "flex", alignItems: "center", gap: 4 }}>
-                {dayNumber}
-                {isToday && <span style={{ fontSize: 8, fontWeight: 700, backgroundColor: palette.crimson, color: "white", padding: "2px 6px", borderRadius: 4 }}>TODAY</span>}
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: isToday ? 900 : 600,
+                  color: isToday ? palette.crimson : palette.deepBurgundy,
+                  marginBottom: 6,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                }}
+              >
+                {isToday ? (
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 26,
+                      height: 26,
+                      borderRadius: "50%",
+                      backgroundColor: palette.crimson,
+                      color: "white",
+                      fontSize: 13,
+                      fontWeight: 800,
+                    }}
+                  >
+                    {dayNumber}
+                  </span>
+                ) : dayNumber}
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 {dayAppointments.slice(0, 2).map((apt) => (
-                  <div key={apt.id} onClick={() => setSelectedAppointment(apt)} style={{ fontSize: 10, fontWeight: 600, padding: "4px 6px", backgroundColor: getStatusColor(apt.status), color: "white", borderRadius: 4, cursor: "pointer", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {apt.time} - {apt.studentName}
+                  <div
+                    key={apt.id}
+                    onClick={() => setSelectedAppointment(apt)}
+                    style={{
+                      fontSize: 10,
+                      fontWeight: 700,
+                      padding: "4px 8px",
+                      backgroundColor: getStatusColor(apt.status),
+                      color: "white",
+                      borderRadius: 6,
+                      cursor: "pointer",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {apt.time} · {apt.studentName.split(" ")[0]}
                   </div>
                 ))}
-                {dayAppointments.length > 2 && <div style={{ fontSize: 9, fontWeight: 700, color: palette.crimson, textAlign: "center" }}>+{dayAppointments.length - 2} more</div>}
+                {dayAppointments.length > 2 && (
+                  <div style={{ fontSize: 10, fontWeight: 700, color: palette.crimson }}>
+                    +{dayAppointments.length - 2} more
+                  </div>
+                )}
               </div>
             </>
           )}
-        </div>,
+        </div>
       );
     }
 
     return (
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 0, backgroundColor: "#fff", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: 0,
+          backgroundColor: "#fff",
+          borderRadius: 20,
+          overflow: "hidden",
+          border: "1px solid rgba(214,214,214,0.3)",
+          boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
+        }}
+      >
         {dayNames.map((day) => (
-          <div key={day} style={{ padding: 12, backgroundColor: palette.deepBurgundy, color: "white", fontSize: 12, fontWeight: 700, textAlign: "center", textTransform: "uppercase" }}>{day}</div>
+          <div
+            key={day}
+            style={{
+              padding: "14px",
+              backgroundColor: palette.darkest,
+              color: "white",
+              fontSize: 11,
+              fontWeight: 700,
+              textAlign: "center",
+              textTransform: "uppercase",
+              letterSpacing: 1,
+            }}
+          >
+            {day}
+          </div>
         ))}
         {days}
       </div>
@@ -223,52 +305,132 @@ export function ProfessorCalendarPage() {
       date.setDate(startOfWeek.getDate() + i);
       const dayAppointments = getAppointmentsForDate(date);
       const isToday = date.toDateString() === new Date().toDateString();
+
       weekDays.push(
         <div key={i} style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ padding: 12, backgroundColor: isToday ? palette.crimson : palette.deepBurgundy, color: "white", fontSize: 11, fontWeight: 700, textAlign: "center", borderRadius: "8px 8px 0 0" }}>
-            <div style={{ fontSize: 10, opacity: 0.9 }}>{dayNames[date.getDay()]}</div>
-            <div style={{ fontSize: 18, marginTop: 2 }}>{date.getDate()}</div>
+          <div
+            style={{
+              padding: "14px",
+              backgroundColor: isToday ? palette.crimson : palette.darkest,
+              color: "white",
+              textAlign: "center",
+              borderRadius: "12px 12px 0 0",
+            }}
+          >
+            <div style={{ fontSize: 10, fontWeight: 700, opacity: 0.8, textTransform: "uppercase", letterSpacing: 1 }}>
+              {dayNames[date.getDay()]}
+            </div>
+            <div style={{ fontSize: 22, fontWeight: 900, marginTop: 2 }}>{date.getDate()}</div>
           </div>
-          <div style={{ backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.4)", borderTop: "none", borderRadius: "0 0 8px 8px", padding: "12px 8px", minHeight: 300, display: "flex", flexDirection: "column", gap: 6 }}>
+          <div
+            style={{
+              backgroundColor: "#fff",
+              border: "1px solid rgba(214,214,214,0.3)",
+              borderTop: "none",
+              borderRadius: "0 0 12px 12px",
+              padding: "12px 8px",
+              minHeight: 280,
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+            }}
+          >
             {dayAppointments.map((apt) => (
-              <div key={apt.id} onClick={() => setSelectedAppointment(apt)} style={{ padding: 8, backgroundColor: getStatusColor(apt.status), color: "white", borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
-                <div style={{ fontWeight: 700, marginBottom: 2 }}>{apt.time}</div>
-                <div style={{ fontSize: 10 }}>{apt.studentName}</div>
+              <div
+                key={apt.id}
+                onClick={() => setSelectedAppointment(apt)}
+                style={{
+                  padding: "10px",
+                  backgroundColor: getStatusColor(apt.status),
+                  color: "white",
+                  borderRadius: 8,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                <div style={{ fontWeight: 800, marginBottom: 2 }}>{apt.time}</div>
+                <div style={{ opacity: 0.9, fontSize: 10 }}>{apt.studentName}</div>
               </div>
             ))}
           </div>
-        </div>,
+        </div>
       );
     }
-    return <div style={{ display: "flex", gap: 12, backgroundColor: palette.cream }}>{weekDays}</div>;
+
+    return <div style={{ display: "flex", gap: 10 }}>{weekDays}</div>;
   };
 
   const renderDayView = () => {
     const selectedDay = new Date(currentDate);
     const todayAppointments = getAppointmentsForDate(selectedDay);
     const hours = Array.from({ length: 12 }, (_, i) => i + 8);
+
     return (
-      <div style={{ backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", overflow: "hidden" }}>
-        <div style={{ padding: "20px 24px", backgroundColor: palette.crimson, color: "white" }}>
-          <div style={{ fontSize: 28, fontWeight: 800 }}>{dayNames[selectedDay.getDay()]}, {monthNames[selectedDay.getMonth()]} {selectedDay.getDate()}</div>
-          <div style={{ fontSize: 14, fontWeight: 600, marginTop: 4, opacity: 0.9 }}>{todayAppointments.length} appointment{todayAppointments.length !== 1 ? "s" : ""} scheduled</div>
+      <div
+        style={{
+          backgroundColor: "#fff",
+          borderRadius: 20,
+          overflow: "hidden",
+          border: "1px solid rgba(214,214,214,0.3)",
+          boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
+        }}
+      >
+        <div
+          style={{
+            padding: "24px 32px",
+            background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`,
+            color: "white",
+          }}
+        >
+          <div style={{ fontSize: 32, fontWeight: 900, letterSpacing: -1 }}>
+            {dayNames[selectedDay.getDay()]}, {monthNames[selectedDay.getMonth()]} {selectedDay.getDate()}
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 500, marginTop: 4, opacity: 0.85 }}>
+            {todayAppointments.length} appointment{todayAppointments.length !== 1 ? "s" : ""} scheduled
+          </div>
         </div>
-        <div style={{ padding: 16 }}>
+        <div style={{ padding: "16px 24px" }}>
           {hours.map((hour) => {
             const timeStr = hour > 12 ? `${hour - 12}:00 PM` : hour === 12 ? "12:00 PM" : `${hour}:00 AM`;
             const hourAppointments = todayAppointments.filter((apt) => {
               const hourValue = getHourValue(apt.startTimeRaw);
               return hourValue === hour;
             });
+
             return (
-              <div key={hour} style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: 16, padding: "12px 0", borderBottom: "1px solid rgba(214,214,214,0.3)" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: palette.deepBurgundy }}>{timeStr}</div>
+              <div
+                key={hour}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "90px 1fr",
+                  gap: 16,
+                  padding: "12px 0",
+                  borderBottom: "1px solid rgba(214,214,214,0.2)",
+                }}
+              >
+                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(92,30,38,0.45)", paddingTop: 4 }}>
+                  {timeStr}
+                </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {hourAppointments.map((apt) => (
-                    <div key={apt.id} onClick={() => setSelectedAppointment(apt)} style={{ padding: "12px 16px", backgroundColor: getStatusColor(apt.status), color: "white", borderRadius: 8, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
-                      <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{apt.time} - {apt.studentName}</div>
-                      <div style={{ fontSize: 12, fontWeight: 500, opacity: 0.95 }}>{apt.reason}</div>
-                      <div style={{ fontSize: 10, fontWeight: 600, marginTop: 6, opacity: 0.8 }}>{apt.email}</div>
+                    <div
+                      key={apt.id}
+                      onClick={() => setSelectedAppointment(apt)}
+                      style={{
+                        padding: "14px 18px",
+                        backgroundColor: getStatusColor(apt.status),
+                        color: "white",
+                        borderRadius: 12,
+                        cursor: "pointer",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                      }}
+                    >
+                      <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 4 }}>
+                        {apt.time} · {apt.studentName}
+                      </div>
+                      <div style={{ fontSize: 13, fontWeight: 500, opacity: 0.9 }}>{apt.reason}</div>
+                      <div style={{ fontSize: 11, fontWeight: 600, marginTop: 6, opacity: 0.75 }}>{apt.email}</div>
                     </div>
                   ))}
                 </div>
@@ -282,14 +444,19 @@ export function ProfessorCalendarPage() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: palette.cream, fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", display: "flex" }}>
-      <aside style={{ width: 180, background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`, padding: 12, boxSizing: "border-box", position: "sticky", top: 0, height: "100vh", overflowY: "auto", display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "Italiana, serif", fontSize: 30, letterSpacing: 1.5, color: "#fff", padding: "6px 4px 10px 4px" }}>
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
+      <aside style={{ width: 220, background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)", padding: "0 10px 16px", boxSizing: "border-box", position: "sticky", top: 0, height: "100vh", overflowY: "auto", display: "flex", flexDirection: "column", borderRight: "1px solid rgba(255,255,255,0.05)", boxShadow: "4px 0 32px rgba(0,0,0,0.25)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "18px 8px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginBottom: 16 }}>
+          <div style={{ width: 40, height: 40, borderRadius: 10, background: "linear-gradient(135deg, #a22237 0%, #5C1E26 100%)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 10px rgba(162,34,55,0.45)" }}>
+            <img src="/logo.png" alt="logo" style={{ height: 22, objectFit: "contain" }} />
+          </div>
+          <div>
+            <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>D.I.Y.A</div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>Professor View</div>
+          </div>
         </div>
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.25)", margin: "0 0 10px 0" }} />
+        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>Navigation</div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "none", backgroundColor: "transparent", color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>← Back to Forum</button>
+          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>← Back to Forum</button>
           {[
             { id: "calendar", label: "Calendar", path: "/professor/calendar" },
             { id: "analysis", label: "Analysis", path: "/professor/analysis" },
@@ -297,91 +464,127 @@ export function ProfessorCalendarPage() {
             { id: "editgroup", label: "Edit Group", path: "/professor/edit-group" },
           ].map((item) => {
             const isActive = item.id === "calendar";
-            return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent", color: isActive ? palette.darkest : "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: isActive ? 800 : 600, cursor: "pointer" }}>{item.label}</button>;
+            return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent", color: isActive ? "#fff" : "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: isActive ? 700 : 600, cursor: "pointer" }}>{item.label}</button>;
           })}
         </nav>
         <div style={{ flex: 1 }} />
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.2)", margin: "10px 0 8px 0" }} />
-        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.2)", backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.9)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Sign out</button>
+        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)", margin: "12px 0 10px 0" }} />
+        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Sign out</button>
       </aside>
 
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box", overflow: "auto" }}>
-        <div style={{ maxWidth: 1400 }}>
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ color: palette.crimson, fontSize: 44, fontWeight: 850, letterSpacing: -1, lineHeight: 1.1 }}>Appointment Calendar</div>
-            <div style={{ marginTop: 8, color: palette.deepBurgundy, fontSize: 16, fontWeight: 600 }}>Manage your student appointments and schedule</div>
-          </div>
+      <main style={{ flex: 1, overflow: "auto" }}>
+        <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
+          <div style={{ maxWidth: 1400 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Schedule</div>
+            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>Appointment Calendar</div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>Manage your student meetings and schedule</div>
 
-          {error && (
-            <div style={{ marginBottom: 20, padding: "14px 16px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(220,53,69,0.2)", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", color: palette.crimson, fontSize: 13, fontWeight: 700 }}>
-              {error}
-            </div>
-          )}
-
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <button onClick={previousMonth} style={{ padding: "8px 12px", backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 8, cursor: "pointer", display: "flex", alignItems: "center" }}><ChevronLeft size={20} color={palette.deepBurgundy} /></button>
-              <div style={{ fontSize: 24, fontWeight: 800, color: palette.deepBurgundy }}>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</div>
-              <button onClick={nextMonth} style={{ padding: "8px 12px", backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 8, cursor: "pointer", display: "flex", alignItems: "center" }}><ChevronRight size={20} color={palette.deepBurgundy} /></button>
-            </div>
-            <div style={{ display: "flex", gap: 8, backgroundColor: "#fff", padding: 4, borderRadius: 10, border: "1px solid rgba(214,214,214,0.4)" }}>
-              {(["month", "week", "day"] as const).map((v) => (
-                <button key={v} onClick={() => setView(v)} style={{ padding: "8px 20px", backgroundColor: view === v ? palette.crimson : "transparent", color: view === v ? "white" : palette.deepBurgundy, border: "none", borderRadius: 7, fontSize: 13, fontWeight: 700, cursor: "pointer", textTransform: "capitalize" }}>{v}</button>
+            <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
+              {[
+                { label: "Total Appointments", value: appointments.length, color: palette.crimson },
+                { label: "Confirmed", value: confirmedCount, color: palette.sage },
+                { label: "Pending", value: pendingCount, color: "#FFA500" },
+                { label: "Declined", value: declinedCount, color: "#DC3545" },
+              ].map((stat, i) => (
+                <div key={stat.label} style={{ flex: "1 1 220px", minWidth: 180, paddingRight: i < 3 ? 40 : 0, marginRight: i < 3 ? 40 : 0, borderRight: i < 3 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
+                  <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>{stat.label}</div>
+                </div>
               ))}
             </div>
           </div>
+        </div>
 
-          <div style={{ display: "flex", gap: 20, marginBottom: 20, padding: "12px 16px", backgroundColor: "#fff", borderRadius: 8, border: "1px solid rgba(214,214,214,0.3)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 16, height: 16, backgroundColor: palette.sage, borderRadius: 4 }} /><span style={{ fontSize: 12, fontWeight: 600, color: palette.deepBurgundy }}>Confirmed</span></div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 16, height: 16, backgroundColor: "#FFA500", borderRadius: 4 }} /><span style={{ fontSize: 12, fontWeight: 600, color: palette.deepBurgundy }}>Pending</span></div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 16, height: 16, backgroundColor: "#DC3545", borderRadius: 4 }} /><span style={{ fontSize: 12, fontWeight: 600, color: palette.deepBurgundy }}>Declined</span></div>
+        <div style={{ padding: "32px 64px 24px" }}>
+          <div style={{ maxWidth: 1400 }}>
+            {error && (
+              <div style={{ marginBottom: 20, padding: "14px 16px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(220,53,69,0.2)", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", color: palette.crimson, fontSize: 13, fontWeight: 700 }}>
+                {error}
+              </div>
+            )}
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, gap: 16, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <button onClick={previousMonth} style={{ width: 40, height: 40, backgroundColor: "#fff", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 12, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}><ChevronLeft size={18} color={palette.deepBurgundy} /></button>
+                <div style={{ fontSize: 28, fontWeight: 900, color: palette.darkest, letterSpacing: -0.8, minWidth: 240 }}>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</div>
+                <button onClick={nextMonth} style={{ width: 40, height: 40, backgroundColor: "#fff", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 12, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}><ChevronRight size={18} color={palette.deepBurgundy} /></button>
+              </div>
+              <div style={{ display: "flex", backgroundColor: "#fff", padding: 4, borderRadius: 14, border: "1.5px solid rgba(214,214,214,0.4)", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", gap: 4 }}>
+                {(["month", "week", "day"] as const).map((v) => (
+                  <button key={v} onClick={() => setView(v)} style={{ padding: "8px 22px", backgroundColor: view === v ? palette.crimson : "transparent", color: view === v ? "white" : palette.deepBurgundy, border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", textTransform: "capitalize", transition: "all 150ms ease" }}>{v}</button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: 24, marginBottom: 20, padding: "12px 20px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.25)", boxShadow: "0 1px 6px rgba(0,0,0,0.04)", flexWrap: "wrap" }}>
+              {[
+                { label: "Confirmed", color: palette.sage },
+                { label: "Pending", color: "#FFA500" },
+                { label: "Declined", color: "#DC3545" },
+              ].map((item) => (
+                <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: 4 }} />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>{item.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {isLoading && (
+              <div style={{ marginBottom: 20, padding: "20px 24px", backgroundColor: "#fff", borderRadius: 14, border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: palette.deepBurgundy, fontSize: 14, fontWeight: 700 }}>
+                Loading office hour calendar...
+              </div>
+            )}
+
+            {!isLoading && appointments.length === 0 && (
+              <div style={{ marginBottom: 20, padding: "20px 24px", backgroundColor: "#fff", borderRadius: 14, border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 700 }}>
+                No office hour requests are scheduled yet.
+              </div>
+            )}
+
+            {view === "month" && renderMonthView()}
+            {view === "week" && renderWeekView()}
+            {view === "day" && renderDayView()}
           </div>
+        </div>
 
-          {isLoading && (
-            <div style={{ marginBottom: 20, padding: "20px 24px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: palette.deepBurgundy, fontSize: 14, fontWeight: 700 }}>
-              Loading office hour calendar...
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px", marginTop: 8 }}>
+          <div style={{ maxWidth: 1400 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>Office Hours Overview</div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>
+              {confirmedCount} confirmed meeting{confirmedCount !== 1 ? "s" : ""} currently on your calendar.
             </div>
-          )}
-
-          {!isLoading && appointments.length === 0 && (
-            <div style={{ marginBottom: 20, padding: "20px 24px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 700 }}>
-              No office hour requests are scheduled yet.
-            </div>
-          )}
-
-          {view === "month" && renderMonthView()}
-          {view === "week" && renderWeekView()}
-          {view === "day" && renderDayView()}
+          </div>
         </div>
       </main>
 
       {selectedAppointment && (
-        <div onClick={() => setSelectedAppointment(null)} style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div onClick={(e) => e.stopPropagation()} style={{ backgroundColor: "#fff", borderRadius: 16, padding: 32, maxWidth: 500, width: "90%", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}>
-            <div style={{ fontSize: 24, fontWeight: 800, color: palette.crimson, marginBottom: 16 }}>Appointment Details</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div onClick={() => setSelectedAppointment(null)} style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, backdropFilter: "blur(4px)" }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ backgroundColor: "#fff", borderRadius: 24, overflow: "hidden", maxWidth: 480, width: "90%", boxShadow: "0 24px 80px rgba(0,0,0,0.25)" }}>
+            <div style={{ height: 6, backgroundColor: getStatusColor(selectedAppointment.status) }} />
+            <div style={{ padding: "32px" }}>
+            <div style={{ fontSize: 24, fontWeight: 900, color: palette.darkest, letterSpacing: -0.8, marginBottom: 24 }}>Appointment Details</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", marginBottom: 4 }}>Student</div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: palette.deepBurgundy }}>{selectedAppointment.studentName}</div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.6)" }}>{selectedAppointment.email}</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Student</div>
+                <div style={{ fontSize: 18, fontWeight: 800, color: palette.darkest, marginBottom: 2 }}>{selectedAppointment.studentName}</div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>{selectedAppointment.email}</div>
               </div>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", marginBottom: 4 }}>Date & Time</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: palette.deepBurgundy }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Date & Time</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: palette.deepBurgundy }}>
                   {new Date(selectedAppointment.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })} at {selectedAppointment.time}
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", marginBottom: 4 }}>Reason</div>
-                <div style={{ fontSize: 14, fontWeight: 500, color: palette.deepBurgundy, fontStyle: "italic" }}>&quot;{selectedAppointment.reason}&quot;</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Reason</div>
+                <div style={{ fontSize: 15, fontWeight: 500, color: palette.deepBurgundy, fontStyle: "italic" }}>&quot;{selectedAppointment.reason}&quot;</div>
               </div>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", marginBottom: 4 }}>Status</div>
-                <span style={{ display: "inline-block", padding: "6px 12px", backgroundColor: getStatusColor(selectedAppointment.status), color: "white", fontSize: 12, fontWeight: 700, borderRadius: 6, textTransform: "capitalize" }}>{selectedAppointment.status}</span>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Status</div>
+                <span style={{ display: "inline-block", padding: "6px 14px", backgroundColor: getStatusColor(selectedAppointment.status), color: "white", fontSize: 12, fontWeight: 700, borderRadius: 8, textTransform: "capitalize" }}>{selectedAppointment.status}</span>
               </div>
             </div>
-            <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
-              <button onClick={() => setSelectedAppointment(null)} style={{ flex: 1, padding: 12, backgroundColor: palette.sage, color: "white", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Close</button>
+            <button onClick={() => setSelectedAppointment(null)} style={{ marginTop: 24, width: "100%", padding: "14px", background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`, color: "white", border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Close</button>
             </div>
           </div>
         </div>

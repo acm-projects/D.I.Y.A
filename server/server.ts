@@ -14,7 +14,7 @@ import userRoutes from './api/routes/userRoutes.ts'
 dotenv.config();
 
 const app = express();  // Create an Express application
-app.use(express.json({ limit: "10mb" }));    // Middleware to parse JSON bodies
+app.use(express.json({ limit: "25mb" }));    // Middleware to parse JSON bodies
 
 app.get("/", (req, res) => {    // Basic route to check if the server is running
   res.send("Server is running");

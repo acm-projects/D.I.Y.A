@@ -76,6 +76,16 @@ export function ProfessorEditGroupPage() {
     }) ?? null;
   }, [allUsers, user?.email, user?.name, user?.sub]);
 
+  const activeCount = useMemo(
+    () => students.filter((student) => student.status === "active").length,
+    [students],
+  );
+
+  const pendingCount = useMemo(
+    () => students.filter((student) => student.status === "pending").length,
+    [students],
+  );
+
   useEffect(() => {
     let isMounted = true;
 
@@ -413,14 +423,19 @@ export function ProfessorEditGroupPage() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: palette.cream, fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", display: "flex" }}>
-      <aside style={{ width: 180, background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`, padding: 12, boxSizing: "border-box", position: "sticky", top: 0, height: "100vh", overflowY: "auto", display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "Italiana, serif", fontSize: 30, letterSpacing: 1.5, color: "#fff", padding: "6px 4px 10px 4px" }}>
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
+      <aside style={{ width: 220, background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)", padding: "0 10px 16px", boxSizing: "border-box", position: "sticky", top: 0, height: "100vh", overflowY: "auto", display: "flex", flexDirection: "column", borderRight: "1px solid rgba(255,255,255,0.05)", boxShadow: "4px 0 32px rgba(0,0,0,0.25)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "18px 8px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginBottom: 16 }}>
+          <div style={{ width: 40, height: 40, borderRadius: 10, background: "linear-gradient(135deg, #a22237 0%, #5C1E26 100%)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 10px rgba(162,34,55,0.45)" }}>
+            <img src="/logo.png" alt="logo" style={{ height: 22, objectFit: "contain" }} />
+          </div>
+          <div>
+            <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>D.I.Y.A</div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>Professor View</div>
+          </div>
         </div>
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.25)", margin: "0 0 10px 0" }} />
+        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>Navigation</div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "none", backgroundColor: "transparent", color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>← Back to Forum</button>
+          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>← Back to Forum</button>
           {[
             { id: "calendar", label: "Calendar", path: "/professor/calendar" },
             { id: "analysis", label: "Analysis", path: "/professor/analysis" },
@@ -428,20 +443,38 @@ export function ProfessorEditGroupPage() {
             { id: "editgroup", label: "Edit Group", path: "/professor/edit-group" },
           ].map((item) => {
             const isActive = item.id === "editgroup";
-            return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent", color: isActive ? palette.darkest : "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: isActive ? 800 : 600, cursor: "pointer" }}>{item.label}</button>;
+            return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent", color: isActive ? "#fff" : "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: isActive ? 700 : 600, cursor: "pointer" }}>{item.label}</button>;
           })}
         </nav>
         <div style={{ flex: 1 }} />
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.2)", margin: "10px 0 8px 0" }} />
-        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.2)", backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.9)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Sign out</button>
+        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)", margin: "12px 0 10px 0" }} />
+        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Sign out</button>
       </aside>
 
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box" }}>
-        <div style={{ maxWidth: 1200 }}>
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ color: palette.crimson, fontSize: 44, fontWeight: 850, letterSpacing: -1, lineHeight: 1.1 }}>Edit Group Settings</div>
-            <div style={{ marginTop: 8, color: palette.deepBurgundy, fontSize: 16, fontWeight: 600 }}>Manage students, settings, and group information</div>
+      <main style={{ flex: 1, overflow: "auto" }}>
+        <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
+          <div style={{ maxWidth: 1200 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Group Management</div>
+            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>Edit Group</div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>Manage students and group settings</div>
+
+            <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
+              {[
+                { label: "Total Students", value: students.length, color: palette.crimson },
+                { label: "Active", value: activeCount, color: palette.sage },
+                { label: "Pending", value: pendingCount, color: "#FFA500" },
+              ].map((stat, i) => (
+                <div key={stat.label} style={{ flex: "1 1 220px", minWidth: 180, paddingRight: i < 2 ? 40 : 0, marginRight: i < 2 ? 40 : 0, borderRight: i < 2 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
+                  <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+
+        <div style={{ padding: "48px 64px" }}>
+        <div style={{ maxWidth: 1200 }}>
 
           {error && (
             <div style={{ marginBottom: 20, padding: "14px 16px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(220,53,69,0.2)", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", color: palette.crimson, fontSize: 13, fontWeight: 700 }}>
@@ -476,55 +509,42 @@ export function ProfessorEditGroupPage() {
 
           {!isLoading && groupId && (
             <>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16, marginBottom: 32 }}>
-                <button
-                  onClick={() => setShowAddStudent(true)}
-                  disabled={isLoading}
-                  style={{ padding: "18px 20px", backgroundColor: palette.sage, color: "white", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 2px 12px rgba(0,0,0,0.15)", transition: "transform 120ms ease" }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                  }}
-                >
-                  ➕ Add Students
-                </button>
-                <button
-                  onClick={() => setShowArchiveModal(true)}
-                  disabled={isSaving}
-                  style={{ padding: "18px 20px", backgroundColor: "transparent", color: "#DC3545", border: "2px solid #DC3545", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 120ms ease" }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#DC3545";
-                    e.currentTarget.style.color = "white";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.color = "#DC3545";
-                  }}
-                >
-                  🗄️ Archive Group
-                </button>
-              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 32, marginBottom: 32 }}>
+                <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}>
+                  <div style={{ height: 5, backgroundColor: palette.crimson }} />
+                  <div style={{ padding: "28px 32px 32px" }}>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>Group Information</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                      <div>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Group Name</label>
+                        <input type="text" value={groupNameEdit} onChange={(e) => setGroupNameEdit(e.target.value)} style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 12, fontSize: 15, fontFamily: "inherit", boxSizing: "border-box", outline: "none", color: palette.darkest }} />
+                      </div>
+                      <div>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Description</label>
+                        <textarea value={groupDescription} onChange={(e) => setGroupDescription(e.target.value)} style={{ width: "100%", minHeight: 90, padding: "12px 16px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 12, fontSize: 15, fontFamily: "inherit", resize: "vertical", boxSizing: "border-box", outline: "none", color: palette.darkest }} />
+                      </div>
+                      <button onClick={() => void handleSaveChanges()} disabled={isSaving} style={{ alignSelf: "flex-start", padding: "12px 24px", background: isSaving ? "rgba(122,155,118,0.35)" : `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer" }}>{isSaving ? "Saving..." : "Save Changes"}</button>
+                    </div>
+                  </div>
+                </div>
 
-              <div style={{ backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.4)", borderRadius: 14, padding: 24, marginBottom: 24, boxShadow: "0 4px 18px rgba(0,0,0,0.08)" }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: palette.crimson, marginBottom: 20 }}>Group Information</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>Group Name</label>
-                    <input type="text" value={groupNameEdit} onChange={(e) => setGroupNameEdit(e.target.value)} style={{ width: "100%", padding: "10px 14px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 8, fontSize: 14, fontFamily: "inherit", boxSizing: "border-box" }} />
+                <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}>
+                  <div style={{ height: 5, backgroundColor: palette.sage }} />
+                  <div style={{ padding: "28px 32px 32px" }}>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>Group Actions</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <button onClick={() => setShowAddStudent(true)} disabled={isLoading} style={{ padding: "16px 20px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: isLoading ? "not-allowed" : "pointer", textAlign: "left", boxShadow: "0 2px 12px rgba(122,155,118,0.3)" }}>➕ Add Students</button>
+                      <button onClick={() => setShowArchiveModal(true)} disabled={isSaving} style={{ padding: "16px 20px", backgroundColor: "transparent", color: "#DC3545", border: "2px solid #DC3545", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer", textAlign: "left" }}>🗄️ Archive Group</button>
+                    </div>
                   </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>Description</label>
-                    <textarea value={groupDescription} onChange={(e) => setGroupDescription(e.target.value)} style={{ width: "100%", minHeight: 80, padding: "10px 14px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 8, fontSize: 14, fontFamily: "inherit", resize: "vertical", boxSizing: "border-box" }} />
-                  </div>
-                  <button onClick={() => void handleSaveChanges()} disabled={isSaving} style={{ alignSelf: "flex-start", padding: "10px 20px", background: isSaving ? "rgba(122,155,118,0.35)" : palette.sage, color: "white", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer" }}>{isSaving ? "Saving..." : "Save Changes"}</button>
                 </div>
               </div>
 
-              <div style={{ backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.4)", borderRadius: 14, padding: 24, boxShadow: "0 4px 18px rgba(0,0,0,0.08)" }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: palette.crimson, marginBottom: 16 }}>Student List ({students.length})</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}>
+                <div style={{ height: 5, background: `linear-gradient(90deg, ${palette.crimson}, ${palette.sage})` }} />
+                <div style={{ padding: "28px 32px 32px" }}>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>Student Roster ({students.length})</div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {!isLoading && students.length === 0 && (
                     <div style={{ padding: "14px 16px", backgroundColor: "rgba(214,214,214,0.15)", borderRadius: 10, color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 700 }}>
                       No students are assigned to this group yet.
@@ -532,21 +552,30 @@ export function ProfessorEditGroupPage() {
                   )}
 
                   {students.map((student) => (
-                    <div key={student.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", backgroundColor: student.status === "active" ? "rgba(122,155,118,0.08)" : "rgba(214,214,214,0.2)", borderRadius: 10, border: "1px solid rgba(214,214,214,0.3)" }}>
+                    <div key={student.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", backgroundColor: student.status === "active" ? "rgba(122,155,118,0.06)" : "rgba(255,165,0,0.05)", borderRadius: 14, border: `1px solid ${student.status === "active" ? "rgba(122,155,118,0.15)" : "rgba(255,165,0,0.2)"}` }}>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 2 }}>{student.name}</div>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.6)" }}>{student.email}</div>
+                        <div style={{ fontSize: 15, fontWeight: 700, color: palette.darkest, marginBottom: 3 }}>{student.name}</div>
+                        <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>{student.email}</div>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <span style={{ padding: "4px 10px", backgroundColor: student.status === "active" ? palette.sage : palette.lightGray, color: "white", fontSize: 11, fontWeight: 700, borderRadius: 6, textTransform: "uppercase" }}>{student.status}</span>
-                        <button onClick={() => handleRemoveStudent(student.id)} style={{ padding: "6px 12px", background: "transparent", color: "#DC3545", border: "1px solid #DC3545", borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: "pointer" }}>Remove</button>
+                        <span style={{ padding: "5px 12px", backgroundColor: student.status === "active" ? palette.sage : "#FFA500", color: "white", fontSize: 11, fontWeight: 700, borderRadius: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>{student.status}</span>
+                        <button onClick={() => handleRemoveStudent(student.id)} style={{ padding: "7px 14px", background: "transparent", color: "#DC3545", border: "1.5px solid rgba(220,53,69,0.4)", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>Remove</button>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
+              </div>
             </>
           )}
+        </div>
+        </div>
+
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px" }}>
+          <div style={{ maxWidth: 1200 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>{groupNameEdit || courseTitle}</div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>{students.length} students enrolled and counting.</div>
+          </div>
         </div>
       </main>
 

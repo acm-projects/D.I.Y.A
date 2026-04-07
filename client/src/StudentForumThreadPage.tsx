@@ -219,18 +219,21 @@ export function StudentForumThreadPage() {
       {/* collapsible sidebar */}
       <aside
         style={{
-          width: sidebarOpen ? 180 : 0,
+          width: sidebarOpen ? 220 : 0,
           overflow: "hidden",
           transition: "width 200ms ease",
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: sidebarOpen ? 12 : 0,
+          background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)",
+          padding: sidebarOpen ? "0 10px 16px" : 0,
           boxSizing: "border-box",
           position: "sticky",
           top: 0,
           height: "100vh",
+          overflowY: "auto",
           display: "flex",
           flexDirection: "column",
           flexShrink: 0,
+          borderRight: "1px solid rgba(255,255,255,0.05)",
+          boxShadow: sidebarOpen ? "4px 0 32px rgba(0,0,0,0.25)" : "none",
         }}
       >
         <StudentSidebar activeItem="groups" />

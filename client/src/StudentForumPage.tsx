@@ -378,9 +378,9 @@ export function StudentForumPage() {
     <div style={{ display: "flex", height: "100vh", fontFamily: "Inter, system-ui, sans-serif", backgroundColor: palette.cream }}>
       <aside
         style={{
-          width: 180,
-          background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`,
-          padding: 12,
+          width: 220,
+          background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)",
+          padding: "0 10px 16px",
           boxSizing: "border-box",
           position: "sticky",
           top: 0,
@@ -388,6 +388,8 @@ export function StudentForumPage() {
           overflowY: "auto",
           display: "flex",
           flexDirection: "column",
+          borderRight: "1px solid rgba(255,255,255,0.05)",
+          boxShadow: "4px 0 32px rgba(0,0,0,0.25)",
         }}
       >
         <StudentSidebar activeItem="groups" />

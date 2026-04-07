@@ -22,6 +22,14 @@ const normalizeRole = (value: string | null | undefined): 'student' | 'professor
     return 'student'
 }
 
+const normalizeRequestedRole = (value: string | null | undefined): 'student' | 'professor' | undefined => {
+    if (!value) {
+        return undefined
+    }
+
+    return normalizeRole(value)
+}
+
 router.get('/', async (_req, res) => {
     try {
         const role = normalizeParam(_req.query.role)?.toLowerCase()
@@ -42,12 +50,18 @@ router.get('/role', async (req, res) => {
         const email = normalizeParam(req.query.email)
         const id = normalizeParam(req.query.id) || normalizeParam(req.query.sub)
         const name = normalizeParam(req.query.name)
+        const selectedRole = normalizeRequestedRole(normalizeParam(req.query.selectedRole))
 
         if (!email && !id) {
             return res.status(400).json({ error: 'Either email or Auth0 id/sub is required.' })
         }
 
-        const user = await syncUserFromAuth({ email, id, name })
+        const user = await syncUserFromAuth({
+            email,
+            id,
+            name,
+            ...(selectedRole ? { role: selectedRole } : {}),
+        })
 
         return res.json({
             role: normalizeRole(user.role),

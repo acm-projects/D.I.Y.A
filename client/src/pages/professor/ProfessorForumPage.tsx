@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { ProfessorSidebar } from "../../ProfessorSidebar";
 
 interface Question {
   id: string;
@@ -16,11 +17,18 @@ type BackendPost = {
   id: string;
   title?: string;
   content?: string;
+  groupId?: string;
   authorId?: string;
   aiAnswer?: string;
   aiReviewStatus?: "pending" | "verified" | "rejected";
   isVerified?: boolean;
   createdAt?: { _seconds?: number; seconds?: number } | string;
+};
+
+type BackendGroup = {
+  id: string;
+  professor?: string;
+  title?: string;
 };
 
 type BackendReply = {
@@ -52,7 +60,7 @@ const palette = {
   lightGray: "#D6D6D6",
 } as const;
 
-const courseTitle = "CS 1337 — Computer Science I";
+const GROUPS_API_BASE_URL = "/api/groups";
 const POSTS_API_BASE_URL = "/api/posts";
 const REPLIES_API_BASE_URL = "/api/replies";
 const USERS_API_BASE_URL = "/api/users";
@@ -120,6 +128,7 @@ export function ProfessorForumPage() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [announcements, setAnnouncements] = useState<AnnouncementRecord[]>([]);
+  const [groupTitle, setGroupTitle] = useState("Professor Forum");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showOnlyUnanswered, setShowOnlyUnanswered] = useState(false);
@@ -137,21 +146,43 @@ export function ProfessorForumPage() {
       setError(null);
 
       try {
-        const [postsResponse, usersResponse, announcementsResponse] = await Promise.all([
+        const [groupsResponse, postsResponse, usersResponse, announcementsResponse] = await Promise.all([
+          fetch(GROUPS_API_BASE_URL),
           fetch(POSTS_API_BASE_URL),
           fetch(USERS_API_BASE_URL),
           fetch(ANNOUNCEMENTS_API_BASE_URL),
         ]);
 
+        if (!groupsResponse.ok) {
+          throw new Error("Failed to load professor forum groups.");
+        }
+
         if (!postsResponse.ok) {
           throw new Error("Failed to load professor forum posts.");
         }
 
+        const groups = (await groupsResponse.json()) as BackendGroup[];
         const posts = (await postsResponse.json()) as BackendPost[];
         const users = usersResponse.ok ? ((await usersResponse.json()) as BackendUser[]) : [];
         const liveAnnouncements = announcementsResponse.ok
           ? ((await announcementsResponse.json()) as AnnouncementRecord[])
           : [];
+
+        const currentProfessor = users.find((liveUser) => {
+          const candidateValues = [liveUser.id, liveUser.authId, liveUser.email, liveUser.name].filter(
+            (value): value is string => Boolean(value),
+          );
+
+          return candidateValues.some((value) =>
+            [user?.sub, user?.email, user?.name].filter((item): item is string => Boolean(item)).includes(value),
+          );
+        }) ?? null;
+
+        const professorIdentifiers = [user?.sub, user?.email, user?.name, currentProfessor?.id, currentProfessor?.authId].filter(
+          (value): value is string => Boolean(value),
+        );
+
+        const selectedGroup = groups.find((group) => professorIdentifiers.includes(group.professor ?? "")) ?? null;
 
         const repliesByPost = await Promise.all(
           posts.map(async (post) => {
@@ -173,12 +204,29 @@ export function ProfessorForumPage() {
           }
         });
 
-        const mappedQuestions = posts
+        const groupScopedPosts = selectedGroup
+          ? posts.filter((post) => post.groupId === selectedGroup.id)
+          : posts;
+
+        const groupScopedRepliesByPost = selectedGroup
+          ? posts.reduce<BackendReply[][]>((accumulator, post, index) => {
+              if (post.groupId === selectedGroup.id) {
+                accumulator.push(repliesByPost[index] ?? []);
+              }
+
+              return accumulator;
+            }, [])
+          : repliesByPost;
+
+        const relevantPosts = groupScopedPosts.length > 0 ? groupScopedPosts : posts;
+        const relevantRepliesByPost = groupScopedPosts.length > 0 ? groupScopedRepliesByPost : repliesByPost;
+
+        const mappedQuestions = relevantPosts
           .map((post, index) => ({
             id: post.id,
             author: userNameById.get(post.authorId ?? "") || "Student",
             question: post.title ?? post.content ?? "Untitled question",
-            replies: repliesByPost[index]?.length ?? 0,
+            replies: relevantRepliesByPost[index]?.length ?? 0,
             aiAnswer: post.aiAnswer ?? "No AI answer available yet.",
             aiAnswerStatus: post.aiReviewStatus ?? (post.isVerified ? "verified" : "pending"),
             createdAtMs: getTimestampMs(post.createdAt),
@@ -192,12 +240,14 @@ export function ProfessorForumPage() {
         if (isMounted) {
           setQuestions(mappedQuestions);
           setAnnouncements(sortedAnnouncements);
+          setGroupTitle(selectedGroup?.title?.trim() || "Professor Forum");
         }
       } catch (err) {
         if (isMounted) {
           setError(err instanceof Error ? err.message : "Failed to load professor forum data.");
           setQuestions([]);
           setAnnouncements([]);
+          setGroupTitle("Professor Forum");
         }
       } finally {
         if (isMounted) {
@@ -211,7 +261,7 @@ export function ProfessorForumPage() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [user?.email, user?.name, user?.sub]);
 
   const visibleQuestions = useMemo(() => {
     const filteredQuestions = showOnlyUnanswered
@@ -226,6 +276,26 @@ export function ProfessorForumPage() {
       return b.createdAtMs - a.createdAtMs;
     });
   }, [questions, showOnlyUnanswered, sortMode]);
+
+  const pendingCount = useMemo(
+    () => questions.filter((question) => question.aiAnswerStatus === "pending").length,
+    [questions],
+  );
+
+  const verifiedCount = useMemo(
+    () => questions.filter((question) => question.aiAnswerStatus === "verified").length,
+    [questions],
+  );
+
+  const totalReplies = useMemo(
+    () => questions.reduce((sum, question) => sum + question.replies, 0),
+    [questions],
+  );
+
+  const answeredCount = useMemo(
+    () => questions.filter((question) => question.replies > 0).length,
+    [questions],
+  );
 
   const handleAIResponse = async (questionId: string, action: "verify" | "reject") => {
     try {
@@ -305,62 +375,52 @@ export function ProfessorForumPage() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: palette.cream, textAlign: "left", fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", color: "#111", display: "flex" }}>
-      <aside style={{ width: 180, background: `linear-gradient(180deg, #3d1542 0%, ${palette.darkest} 100%)`, padding: 12, boxSizing: "border-box", position: "sticky", top: 0, height: "100vh", overflowY: "auto", display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "Italiana, serif", fontSize: 30, letterSpacing: 1.5, color: "#fff", padding: "6px 4px 10px 4px" }}>
-          <img src="/logo.png" alt="logo" style={{ height: 48, objectFit: "contain", marginBottom: 4 }} />
-          <span style={{ lineHeight: 1 }}>D.I.Y.A</span>
-        </div>
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.25)", margin: "0 0 10px 0" }} />
-        <nav aria-label="Sidebar navigation" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button type="button" onClick={() => navigate("/professor/analysis")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "none", backgroundColor: "transparent", color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "background-color 120ms ease" }}>← Back to Dashboard</button>
-          {[
-            { id: "calendar", label: "Calendar", path: "/professor/calendar" },
-            { id: "analysis", label: "Analysis", path: "/professor/analysis" },
-            { id: "requests", label: "Requests", path: "/professor/requests" },
-            { id: "editgroup", label: "Edit Group", path: "/professor/edit-group" },
-          ].map((item) => {
-            const isActive = false;
-            return (
-              <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.88)" : "transparent", color: isActive ? palette.darkest : "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: isActive ? 800 : 600, cursor: "pointer", transition: "background-color 120ms ease" }}>{item.label}</button>
-            );
-          })}
-        </nav>
-        <div style={{ flex: 1 }} />
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.2)", margin: "10px 0 8px 0" }} />
-        <div style={{ padding: "10px 10px", backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 10, marginBottom: 8 }}>
+      <ProfessorSidebar activeItem="forum" onSignOut={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+        <div style={{ padding: "12px 12px", backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", marginBottom: 8 }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>Forum Stats</div>
           <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)", marginBottom: 4 }}>📊 {questions.length} Questions</div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>✅ {questions.filter((q) => q.replies > 0).length} Answered</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>✅ {answeredCount} Answered</div>
         </div>
         <button
           type="button"
           onClick={() => setShowAnnouncementModal(true)}
-          style={{ width: "100%", textAlign: "center", padding: "10px 10px", borderRadius: 10, border: "none", backgroundColor: palette.sage, color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 120ms ease" }}
+          style={{ width: "100%", textAlign: "center", padding: "11px 10px", borderRadius: 12, border: "none", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 120ms ease", boxShadow: "0 2px 12px rgba(122,155,118,0.3)" }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = "#699066";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = palette.sage;
+            e.currentTarget.style.background = `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`;
           }}
         >
           ✏️ New Announcement
         </button>
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.2)", margin: "10px 0 8px 0" }} />
-        <button
-          type="button"
-          onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-          style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.2)", backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.9)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}
-        >
-          Sign out
-        </button>
-      </aside>
+      </ProfessorSidebar>
 
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box" }}>
-        <div style={{ maxWidth: 1400 }}>
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ color: palette.crimson, fontSize: 44, fontWeight: 850, letterSpacing: -1, lineHeight: 1.1 }}>{courseTitle}</div>
-            <div style={{ marginTop: 8, color: palette.deepBurgundy, fontSize: 16, fontWeight: 600, letterSpacing: -0.2 }}>Professor Forum & Discussion Board</div>
+      <main style={{ flex: 1, overflow: "auto" }}>
+        <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
+          <div style={{ maxWidth: 1400 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Forum Management</div>
+            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>{groupTitle}</div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>Discussion board & AI answer management</div>
+
+            <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
+              {[
+                { label: "Total Questions", value: questions.length, color: palette.crimson },
+                { label: "AI Verified", value: verifiedCount, color: palette.sage },
+                { label: "Pending Review", value: pendingCount, color: "#DC3545" },
+                { label: "Discussion Replies", value: totalReplies, color: palette.deepBurgundy },
+              ].map((stat, i) => (
+                <div key={stat.label} style={{ flex: "1 1 220px", minWidth: 180, paddingRight: i < 3 ? 40 : 0, marginRight: i < 3 ? 40 : 0, borderRight: i < 3 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
+                  <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+
+        <div style={{ padding: "48px 64px" }}>
+        <div style={{ maxWidth: 1400 }}>
 
           {error && (
             <div style={{ marginBottom: 18, padding: "14px 16px", backgroundColor: "#fff", border: "1px solid rgba(220,53,69,0.2)", borderRadius: 12, boxShadow: "0 2px 12px rgba(0,0,0,0.06)", color: palette.crimson, fontSize: 13, fontWeight: 700 }}>
@@ -388,28 +448,8 @@ export function ProfessorForumPage() {
             )}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 20 }}>
-            <div style={{ padding: "14px 16px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Total Questions</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: palette.crimson, lineHeight: 1 }}>{questions.length}</div>
-            </div>
-            <div style={{ padding: "14px 16px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>AI Verified</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: palette.sage, lineHeight: 1 }}>{questions.filter((q) => q.aiAnswerStatus === "verified").length}</div>
-            </div>
-            <div style={{ padding: "14px 16px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Pending Review</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: "#DC3545", lineHeight: 1 }}>{questions.filter((q) => q.aiAnswerStatus === "pending").length}</div>
-            </div>
-            <div style={{ padding: "14px 16px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Student Replies</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: palette.deepBurgundy, lineHeight: 1 }}>{questions.reduce((sum, q) => sum + q.replies, 0)}</div>
-            </div>
-          </div>
-
-          <div style={{ height: 1, backgroundColor: "rgba(39,1,21,0.12)", marginTop: 14, marginBottom: 18 }} />
           <div style={{ marginTop: 12, marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ color: palette.crimson, fontSize: 20, fontWeight: 800 }}>Recent Student Questions</div>
+            <div style={{ color: palette.darkest, fontSize: 32, fontWeight: 900, letterSpacing: -1 }}>Recent Questions</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy, opacity: 0.7 }}>Last updated: {questions[0] ? getTimeAgo(questions[0].createdAtMs) : "No posts yet"}</div>
           </div>
 
@@ -522,6 +562,19 @@ export function ProfessorForumPage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+        </div>
+
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px" }}>
+          <div style={{ maxWidth: 1400 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>AI Forum Management</div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 4 }}>
+              {pendingCount > 0 ? `${pendingCount} answers awaiting your review.` : "All AI answers reviewed. Great work."}
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.65)" }}>
+              Verify or override AI-generated responses to keep students informed.
+            </div>
           </div>
         </div>
       </main>
