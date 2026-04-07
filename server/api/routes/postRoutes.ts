@@ -2,6 +2,8 @@ import { Router } from 'express'
 import { Timestamp } from 'firebase-admin/firestore'
 import { createPost, getPost, getPosts, getPostsbyGroup, updatePost, deletePost } from '../../db/posts.ts'
 import { generateAnswer } from '../services/answer.ts'
+import { cosineSimilarity } from '../services/embedding.ts'
+import * as admin from 'firebase-admin'
 
 const router = Router()
 
@@ -83,5 +85,32 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json('Could not delete post.')
     }
 })
+
+export const getRelatedPosts = async (req, res) => {
+    const { postId } = req.params
+
+    const db = admin.firestore()
+
+    const currentDoc = await db.collection('posts').doc(postId).get()
+    const currentData = currentDoc.data()
+
+    if (!currentData?.embedding) {
+        return res.json({ relatedPosts: [] })
+    }
+
+    const snapshot = await db.collection('posts').where('groupId', '==', currentData.groupId).limit(50).get()
+
+    const relatedPosts = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(post => post.id !== postId)
+        .map(post => ({
+            ...post,
+            similarity: cosineSimilarity(currentData.embedding, post.embedding)
+        }))
+        .sort((a, b) => b.similarity - a.similarity)
+        .slice(0, 5)
+
+    res.json({ relatedPosts })
+}
 
 export default router
