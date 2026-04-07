@@ -1,4 +1,4 @@
-# D.I.Y.A — Dynamic Intelligent Youth Assistant
+# D.I.Y.A — Digital Intake Yielding Answers
 
 An AI-powered academic platform connecting students and professors. Students can join class groups, post forum questions, request office hours, and self-check assignments. Professors can manage groups, review student requests, analyze engagement, and schedule events.
 
