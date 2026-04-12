@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { adminEditGroupPath } from "./adminRoutes";
 
 export function LoginPage() {
   const [isPressed, setIsPressed] = useState(false);
@@ -22,8 +23,10 @@ export function LoginPage() {
       navigate("/groups");
       return;
     }
-    // Otherwise if a different role is chosen then an alternate output is given
-    alert(`Logging in as ${role} (admin routes not wired yet)`);
+    if (role === "admin") {
+      navigate(adminEditGroupPath);
+      return;
+    }
   };
 
   // Runs when Google/Apple button is clicked

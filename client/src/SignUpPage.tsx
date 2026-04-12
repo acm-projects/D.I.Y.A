@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { adminEditGroupPath } from "./adminRoutes";
 
 export function SignUpPage() {
   const [isPressed, setIsPressed] = useState(false);
@@ -17,7 +18,10 @@ export function SignUpPage() {
       navigate("/groups");
       return;
     }
-    alert(`Signed up as ${role} (admin routes not wired yet)`);
+    if (role === "admin") {
+      navigate(adminEditGroupPath);
+      return;
+    }
   };
 
   const handleGoogleSignup = () => alert("Sign up with Google clicked!");

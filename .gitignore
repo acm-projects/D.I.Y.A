@@ -1,4 +1,12 @@
-<<<<<<< HEAD
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+build
+*.local
+
 # Logs
 logs
 *.log
@@ -8,13 +16,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Environment and secrets (do not commit real keys)
+.env
+.env.*
+!.env.example
+
+# Firebase / cloud keys (paths may vary — add more if your team uses them)
 server/config/firebaseKey.json
 
-# Editor directories and files
+# Editor / OS
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -24,6 +34,7 @@ server/config/firebaseKey.json
 *.njsproj
 *.sln
 *.sw?
-=======
-node_modules
->>>>>>> MadhavProfessorPages
+
+# TypeScript / tooling caches
+*.tsbuildinfo
+.turbo

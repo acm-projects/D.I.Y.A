@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type StudentPopUpProps = {
   adminName: string;
@@ -31,7 +32,7 @@ export function StudentPopUp({
         justifyContent: "center",
         alignItems: "center",
         zIndex: 1000,
-        fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+        fontFamily: "Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
       }}
     >
       <div
