@@ -51,8 +51,8 @@ const ADMIN_FEATURE_IMAGES = [
 
 const STUDENT_FEATURES_SLIDE_COPY = [
   "Students have access to group forum pages where they can ask questions and get answers from their peers, professors, and AI.",
-  "Sometimes asking questions remotely may not be enough. This is why we want to give students the ability to request an office hour meet up with either the Professor or TA outside of normal times. Based on the start time and meeting duration chosen by the student, the professor can choose to accept or decline their request.",
-  "Using our Self-Check feature, students can upload the provided rubric and the work they've already done in order to receive an estimated grade report. The report includes a potential grade for their assignment and suggestions for further improvement on their work.",
+  "Sometimes asking questions may not be enough. This is why we want to give students the ability to request a one-on-one office hour meet up with either the Professor or TA outside of normal times. Based on the start time and meeting duration chosen by the student, the professor can choose to accept or decline their request. Pending and approved requests will be shown to the student at the bottom of the page.",
+  "Using our Self-Check feature, students can upload the provided rubric and the work they've already done in order to receive an estimated grade report. The report includes a potential grade for their assignment and suggestions for further improvement on their work. Past homework checks will be listed at the bottom of the page.",
 ] as const;
 
 const ADMIN_FEATURES_SLIDE_COPY = [
