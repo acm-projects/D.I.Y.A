@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { Timestamp } from 'firebase-admin/firestore'
-import { createPost, getPost, getPosts, getPostsbyGroup, updatePost, deletePost } from '../../db/posts.ts'
+import { createPost, getPost, getPosts, getPostsbyGroup, updatePost, deletePost, getRelatedPosts } from '../../db/posts.ts'
 import { generateAnswer } from '../services/answer.ts'
 
 const router = Router()
@@ -49,6 +49,8 @@ router.get('/group/:groupId', async (req, res) => {
         res.status(500).json('Could not retrieve posts.')
     }
 })
+
+router.get('/:postId/related', getRelatedPosts)
 
 router.get('/:id', async (req, res) => {
     try {

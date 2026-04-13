@@ -61,6 +61,7 @@ export interface Post {
     content: string
     createdAt: Timestamp
     updatedAt: Timestamp
+    embedding?: number[]  // Optional embedding for semantic search
     aiAnswer?: string  // Optional AI-generated answer for the post
     isVerified?: boolean   // Optional field to indicate if the AI-generated answer has been verified by a human
     aiReviewStatus?: 'pending' | 'verified' | 'rejected'

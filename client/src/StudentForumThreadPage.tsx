@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams, useNavigate } from "react-router-dom";
 import { StudentSidebar } from "./StudentSidebar";
+import { useRelatedPosts } from "./api/useRelatedPosts";
 
 const palette = {
   darkest: "#270115",
@@ -59,6 +60,7 @@ export function StudentForumThreadPage() {
   const { user } = useAuth0();
   const { groupId, questionId } = useParams<{ groupId: string; questionId: string }>();
   const navigate = useNavigate();
+  const { relatedPosts, loading: relatedLoading } = useRelatedPosts(questionId ?? null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [replies, setReplies] = useState<Reply[]>([]);
   const [draft, setDraft] = useState("");
@@ -311,91 +313,110 @@ export function StudentForumThreadPage() {
           </div>
         </div>
 
-        {/* replies area */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "20px 24px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 14,
-          }}
-        >
-          {isLoading && (
-            <div style={{ textAlign: "center", color: "rgba(92,30,38,0.4)", fontSize: 14, fontWeight: 600, marginTop: 40 }}>
-              Loading thread...
-            </div>
-          )}
+        <div style={{ display: "flex", flex: 1, flexDirection: "row", overflow: "hidden" }}>
+          
+          {/* Replies area*/}
+          <div
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              padding: "20px 24px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+            }}
+          >
+            {isLoading && (
+              <div style={{ textAlign: "center", color: "rgba(92,30,38,0.4)", fontSize: 14, fontWeight: 600, marginTop: 40 }}>
+                Loading thread...
+              </div>
+            )}
 
-          {!isLoading && error && (
-            <div style={{ textAlign: "center", color: palette.crimson, fontSize: 14, fontWeight: 700, marginTop: 40 }}>
-              {error}
-            </div>
-          )}
+            {!isLoading && error && (
+              <div style={{ textAlign: "center", color: palette.crimson, fontSize: 14, fontWeight: 700, marginTop: 40 }}>
+                {error}
+              </div>
+            )}
 
-          {!isLoading && !error && replies.length === 0 && (
-            <div style={{ textAlign: "center", color: "rgba(92,30,38,0.4)", fontSize: 14, fontWeight: 600, marginTop: 40 }}>
-              No replies yet — be the first to respond!
-            </div>
-          )}
+            {!isLoading && !error && replies.length === 0 && (
+              <div style={{ textAlign: "center", color: "rgba(92,30,38,0.4)", fontSize: 14, fontWeight: 600, marginTop: 40 }}>
+                No replies yet — be the first to respond!
+              </div>
+            )}
 
-          {!isLoading && !error && replies.map((r) => {
-            const isSelf = r.author === "You";
-            const isProf = r.role === "professor";
-            return (
-              <div
-                key={r.id}
-                style={{
-                  display: "flex",
-                  justifyContent: isSelf ? "flex-end" : "flex-start",
-                }}
-              >
-                <div
-                  style={{
-                    maxWidth: "65%",
-                    padding: "10px 14px",
-                    borderRadius: 14,
-                    borderBottomRightRadius: isSelf ? 4 : 14,
-                    borderBottomLeftRadius: isSelf ? 14 : 4,
-                    backgroundColor: isSelf
-                      ? "rgba(162,34,55,0.08)"
-                      : isProf
-                        ? "rgba(122,155,118,0.1)"
-                        : "#fff",
-                    border: isProf
-                      ? `1px solid ${palette.sage}`
-                      : isSelf
-                        ? `1px solid rgba(162,34,55,0.2)`
-                        : "1px solid #ddd",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      marginBottom: 4,
-                      color: isProf ? palette.sage : palette.deepBurgundy,
-                    }}
-                  >
-                    {r.author} {isProf && "(Professor)"}
-                  </div>
-                  {r.image && (
-                    <img
-                      src={r.image}
-                      alt="attachment"
-                      style={{ maxWidth: "100%", borderRadius: 8, marginBottom: 6 }}
-                    />
-                  )}
-                  <div style={{ fontSize: 14, lineHeight: 1.45, color: "#111" }}>{r.text}</div>
-                  <div style={{ fontSize: 10, marginTop: 6, opacity: 0.5, textAlign: "right" }}>
-                    {r.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {!isLoading && !error && replies.map((r) => {
+              const isSelf = r.author === "You";
+              const isProf = r.role === "professor";
+              return (
+                <div key={r.id} style={{ display: "flex", justifyContent: isSelf ? "flex-end" : "flex-start" }}>
+                  <div style={{
+                      maxWidth: "65%",
+                      padding: "10px 14px",
+                      borderRadius: 14,
+                      backgroundColor: isSelf ? "rgba(162,34,55,0.08)" : isProf ? "rgba(122,155,118,0.1)" : "#fff",
+                      border: isProf ? `1px solid ${palette.sage}` : isSelf ? `1px solid rgba(162,34,55,0.2)` : "1px solid #ddd",
+                    }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, marginBottom: 4, color: isProf ? palette.sage : palette.deepBurgundy }}>
+                      {r.author} {isProf && "(Professor)"}
+                    </div>
+                    {r.image && <img src={r.image} alt="attachment" style={{ maxWidth: "100%", borderRadius: 8, marginBottom: 6 }} />}
+                    <div style={{ fontSize: 14, lineHeight: 1.45, color: "#111" }}>{r.text}</div>
+                    <div style={{ fontSize: 10, marginTop: 6, opacity: 0.5, textAlign: "right" }}>
+                      {r.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </div>
                   </div>
                 </div>
+              );
+            })}
+            <div ref={bottomRef} />
+          </div>
+
+          {/* Side bar with related questions */}
+          <aside
+            style={{
+              width: 260,
+              borderLeft: "1px solid #e0e0e0",
+              backgroundColor: palette.cream,
+              display: "flex",
+              flexDirection: "column",
+              padding: "20px 16px",
+              overflowY: "auto",
+              flexShrink: 0,
+            }}
+          >
+            <h3 style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: palette.deepBurgundy, marginBottom: 16, fontWeight: 800 }}>
+              Related Discussions
+            </h3>
+
+            {relatedLoading ? (
+              <div style={{ fontSize: 13, color: "#666", fontStyle: "italic" }}>Finding similar topics...</div>
+            ) : relatedPosts && relatedPosts.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {relatedPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    onClick={() => navigate(`/groups/${groupId}/forum/${post.id}`)}
+                    style={{
+                      padding: "12px",
+                      backgroundColor: "#fff",
+                      border: `1px solid ${palette.lightGray}`,
+                      borderRadius: 8,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <div style={{ fontSize: 13, fontWeight: 700, color: palette.darkest, lineHeight: 1.4 }}>
+                      {post.title || "Untitled Post"}
+                    </div>
+                    <div style={{ fontSize: 11, color: palette.sage, marginTop: 4, fontWeight: 600 }}>
+                      View Thread →
+                    </div>
+                  </div>
+                ))}
               </div>
-            );
-          })}
-          <div ref={bottomRef} />
+            ) : (
+              <div style={{ fontSize: 13, color: "#999" }}>No similar posts found.</div>
+            )}
+          </aside>
         </div>
 
         {/* image preview strip */}
