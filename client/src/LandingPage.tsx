@@ -33,8 +33,8 @@ const wavePalette = {
 } as const;
 
 
-const FEATURES_POPOUT_ANCHOR_NUDGE_X_PX = 40;
-const FEATURES_POPOUT_ANCHOR_NUDGE_Y_PX = 36;
+const FEATURES_POPOUT_ANCHOR_NUDGE_X_PX = 0;
+const FEATURES_POPOUT_ANCHOR_NUDGE_Y_PX = 0;
 
 const STUDENT_FEATURE_IMAGES = [
   { src: "/diya-images/student-chat.png", alt: "Student chat" },
@@ -50,15 +50,15 @@ const ADMIN_FEATURE_IMAGES = [
 
 
 const STUDENT_FEATURES_SLIDE_COPY = [
-  "Student view — chat (text for slide 1).",
-  "Student view — office hours (text for slide 2).",
-  "Student view — self check (text for slide 3).",
+  "Students have access to group forum pages where they can ask questions and get answers from their peers, professors, and AI.",
+  "Sometimes asking questions remotely may not be enough. This is why we want to give students the ability to request an office hour meet up with either the Professor or TA outside of normal times. Based on the start time and meeting duration chosen by the student, the professor can choose to accept or decline their request.",
+  "Using our Self-Check feature, students can upload the provided rubric and the work they've already done in order to receive an estimated grade report. The report includes a potential grade for their assignment and suggestions for further improvement on their work.",
 ] as const;
 
 const ADMIN_FEATURES_SLIDE_COPY = [
-  "Admin view — groups (text for slide 1).",
-  "Admin view — analytics (text for slide 2).",
-  "Admin view — office requests (text for slide 3).",
+  "Professors have the ability to create a group for any of their classes. They can input any information about the group, give the group a name, and invite their students. Once a student accepts the invitation to join, they have access to all the group's forum pages. The professor has the ability to answer forum page questions, and verify if an AI generated answer to a student's question is correct. Both the Professor and TA are considered admin within the group.",
+  "Based on key word analysis, AI is used to provide analytics to group admins about the forum posts. The analysis includes the most common types of questions, topics that professors could reconsider revisiting or re-explaining, and other AI generated information on their students.",
+  "Depending on whether the student requested to meet with the TA or Professor, either one has the ability to deny a request to meet and provide an alternate date and time instead. They also have the ability to accept the request. If the student requested to meet online, they receive a meeting invitation created by the admin through their email.",
 ] as const;
 
 /**
@@ -627,32 +627,30 @@ export function LandingPage() {
                   aria-hidden
                 />
               ) : null}
+              {secondScreenPanel === "features" ? (
+                <FeaturesPopoutMockup
+                  featuresAudience={featuresAudience}
+                  setFeaturesAudience={setFeaturesAudience}
+                  onClose={() => setSecondScreenPanel("mission")}
+                  studentCarouselStripRef={studentCarouselStripRef}
+                  adminCarouselStripRef={adminCarouselStripRef}
+                  onStudentFeaturesCarouselScroll={onStudentFeaturesCarouselScroll}
+                  onAdminFeaturesCarouselScroll={onAdminFeaturesCarouselScroll}
+                  studentFeaturesSlideIdx={studentFeaturesSlideIdx}
+                  adminFeaturesSlideIdx={adminFeaturesSlideIdx}
+                  frameStyle={{
+                    position: "absolute",
+                    left: `calc(50% + ${FEATURES_POPOUT_ANCHOR_NUDGE_X_PX + featuresPopoutOffset.x}px)`,
+                    top: `calc(50% + ${FEATURES_POPOUT_ANCHOR_NUDGE_Y_PX + featuresPopoutOffset.y}px)`,
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 20,
+                    pointerEvents: "auto",
+                  }}
+                  onPopoutHeaderPointerDown={onFeaturesPopoutHeaderPointerDown}
+                />
+              ) : null}
               </div>
             </div>
-            {}
-            {secondScreenPanel === "features" ? (
-              <FeaturesPopoutMockup
-                featuresAudience={featuresAudience}
-                setFeaturesAudience={setFeaturesAudience}
-                onClose={() => setSecondScreenPanel("mission")}
-                studentCarouselStripRef={studentCarouselStripRef}
-                adminCarouselStripRef={adminCarouselStripRef}
-                onStudentFeaturesCarouselScroll={onStudentFeaturesCarouselScroll}
-                onAdminFeaturesCarouselScroll={onAdminFeaturesCarouselScroll}
-                studentFeaturesSlideIdx={studentFeaturesSlideIdx}
-                adminFeaturesSlideIdx={adminFeaturesSlideIdx}
-                frameStyle={{
-                  position: "absolute",
-          
-                  left: `calc(50% + ${FEATURES_POPOUT_ANCHOR_NUDGE_X_PX + featuresPopoutOffset.x}px)`,
-                  top: `calc(50% + ${FEATURES_POPOUT_ANCHOR_NUDGE_Y_PX + featuresPopoutOffset.y}px)`,
-                  transform: "translate(-50%, -50%)",
-                  zIndex: 20,
-                  pointerEvents: "auto",
-                }}
-                onPopoutHeaderPointerDown={onFeaturesPopoutHeaderPointerDown}
-              />
-            ) : null}
           </div>
 
           

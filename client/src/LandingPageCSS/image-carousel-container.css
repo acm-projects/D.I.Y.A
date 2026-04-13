@@ -7,13 +7,15 @@
   margin: 0 auto;
 }
 
-/* Features mockup: use the full left column width + taller viewport so images render larger */
+/* Features mockup: full panel width, grows with column height so images render larger */
 .carousel-container--in-panel {
   margin-left: 0;
   margin-right: auto;
   width: 100%;
   max-width: 100%;
-  height: clamp(288px, 62vmin, 520px);
+  flex: 1;
+  min-height: clamp(340px, 58vmin, 640px);
+  height: 100%;
 }
 
 .carousel-slide {
@@ -31,8 +33,9 @@
   height: 100%;
   min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 2px;
   scroll-snap-align: start;
   box-sizing: border-box;
 }

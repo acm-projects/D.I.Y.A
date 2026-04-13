@@ -8,7 +8,7 @@ const palette = {
   sage: "#7A9B76",
 } as const;
 
-export type SidebarActiveId = "profile" | "groups" | "request" | "selfcheck" | "study-groups";
+export type SidebarActiveId = "profile" | "groups" | "request" | "selfcheck";
 
 function ProfileIcon() {
   return (
@@ -30,30 +30,6 @@ function GroupsIcon() {
   );
 }
 
-/* Icon from `public/pencil.svg` (URL `/pencil.svg`). Mask + currentColor matches other nav icons; plain <img> would ignore sidebar color. */
-function PencilIcon() {
-  return (
-    <span
-      aria-hidden
-      style={{
-        display: "inline-block",
-        width: 17,
-        height: 17,
-        flexShrink: 0,
-        backgroundColor: "currentColor",
-        WebkitMaskImage: "url(/pencil.svg)",
-        WebkitMaskSize: "contain",
-        WebkitMaskRepeat: "no-repeat",
-        WebkitMaskPosition: "center",
-        maskImage: "url(/pencil.svg)",
-        maskSize: "contain",
-        maskRepeat: "no-repeat",
-        maskPosition: "center",
-      }}
-    />
-  );
-}
-
 function CalendarIcon() {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
@@ -72,7 +48,7 @@ function CheckDocIcon() {
   );
 }
 
-export function Sidebar({ activeId }: { activeId: SidebarActiveId }) {
+export function Sidebar({ activeId }: { activeId: SidebarActiveId | null }) {
   const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState(false);
@@ -82,7 +58,6 @@ export function Sidebar({ activeId }: { activeId: SidebarActiveId }) {
     { id: "groups" as SidebarActiveId, label: "Groups", icon: <GroupsIcon /> },
     { id: "request" as SidebarActiveId, label: "Office Hours", icon: <CalendarIcon /> },
     { id: "selfcheck" as SidebarActiveId, label: "Self-Check", icon: <CheckDocIcon /> },
-    { id: "study-groups", label: "Study Groups", icon: <PencilIcon /> },
   ];
 
   const handleNav = (id: SidebarActiveId) => {
@@ -90,7 +65,6 @@ export function Sidebar({ activeId }: { activeId: SidebarActiveId }) {
     if (id === "groups") { navigate("/groups"); return; }
     if (id === "request") { navigate("/office-hours"); return; }
     if (id === "selfcheck") { navigate("/self-check"); return; }
-    if (id === "study-groups") { navigate("/study-groups"); return; }
   };
 
   const handleSignOut = () => {
@@ -228,7 +202,7 @@ export function Sidebar({ activeId }: { activeId: SidebarActiveId }) {
       {/* Nav: padding/gap/active strip styling matches ProfessorSidebar for one pattern */}
       <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {navItems.map((item) => {
-          const isActive = item.id === activeId;
+          const isActive = activeId !== null && item.id === activeId;
           const isHovered = hoveredId === item.id;
           return (
             <button

@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 
 const palette = {
@@ -62,66 +61,6 @@ const demoHistory: GradeReport[] = [
   { id: 1, assignmentName: "Essay_Draft_1.pdf", rubricName: "Essay_Rubric.pdf", potentialGrade: "82/100", letterGrade: "B-", improvements: mockImprovements[0], timestamp: new Date("2026-03-08T10:30:00") },
   { id: 2, assignmentName: "Lab3_Code.py", rubricName: "Lab3_Grading_Guide.pdf", potentialGrade: "91/100", letterGrade: "A-", improvements: mockImprovements[1], timestamp: new Date("2026-03-05T14:15:00") },
 ];
-
-const topicDistributionData = [
-  { id: "data-structures", label: "Data Structures", count: 24, trend: "rising" as const },
-  { id: "projects", label: "Projects & Assignments", count: 22, trend: "rising" as const },
-  { id: "oop", label: "Object-Oriented Programming", count: 19, trend: "steady" as const },
-  { id: "recursion", label: "Recursion", count: 18, trend: "rising" as const },
-  { id: "debugging", label: "Debugging & Testing", count: 15, trend: "rising" as const },
-  { id: "algorithms", label: "Algorithms", count: 13, trend: "declining" as const },
-  { id: "iteration", label: "Iteration", count: 11, trend: "steady" as const },
-];
-
-const trendDot = { rising: palette.sage, steady: "#8B7355", declining: palette.crimson };
-
-function TopicDistribution() {
-  const navigate = useNavigate();
-  const maxCount = Math.max(...topicDistributionData.map((t) => t.count));
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-
-  return (
-    <div style={{ marginTop: 32, marginBottom: 32 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-        <div>
-          <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy }}>Question Distribution by Topic</div>
-          <div style={{ fontSize: 12, fontWeight: 500, color: "rgba(92,30,38,0.55)", marginTop: 2 }}>Click a topic to view positives, concerns, and recommendations</div>
-        </div>
-        <div style={{ display: "flex", gap: 14, fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)" }}>
-          {(["rising", "steady", "declining"] as const).map((t) => (
-            <span key={t} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <span style={{ width: 7, height: 7, borderRadius: 999, backgroundColor: trendDot[t], display: "inline-block" }} />
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-            </span>
-          ))}
-        </div>
-      </div>
-      <div style={{ backgroundColor: "#fff", borderRadius: 16, padding: "20px 24px", border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 4px 18px rgba(0,0,0,0.07)", display: "flex", flexDirection: "column", gap: 10 }}>
-        {topicDistributionData.map((topic) => {
-          const isHovered = hoveredId === topic.id;
-          const pct = Math.round((topic.count / maxCount) * 100);
-          return (
-            <button key={topic.id} type="button" onClick={() => navigate(`/analysis/topic/${topic.id}`)} onMouseEnter={() => setHoveredId(topic.id)} onMouseLeave={() => setHoveredId(null)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left", width: "100%" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 5 }}>
-                <span style={{ fontSize: 13, fontWeight: isHovered ? 800 : 700, color: isHovered ? palette.crimson : palette.deepBurgundy, transition: "color 120ms ease", minWidth: 210, display: "flex", alignItems: "center", gap: 6, textDecoration: isHovered ? "underline" : "none" }}>
-                  <span style={{ width: 7, height: 7, borderRadius: 999, backgroundColor: trendDot[topic.trend], flexShrink: 0 }} />
-                  {topic.label}
-                </span>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(92,30,38,0.45)", marginLeft: "auto", whiteSpace: "nowrap" }}>{topic.count} questions</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ opacity: isHovered ? 1 : 0.3, transition: "opacity 120ms ease", flexShrink: 0 }}>
-                  <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <div style={{ height: 8, borderRadius: 4, backgroundColor: "rgba(39,1,21,0.06)", overflow: "hidden" }}>
-                <div style={{ width: `${pct}%`, height: "100%", borderRadius: 4, backgroundColor: isHovered ? palette.crimson : trendDot[topic.trend], transition: "background-color 120ms ease", opacity: isHovered ? 1 : 0.7 }} />
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
 
 export function StudentSelfCheckPage() {
   const rubricInputRef = useRef<HTMLInputElement>(null);
@@ -214,8 +153,6 @@ export function StudentSelfCheckPage() {
               </div>
             </div>
           )}
-
-          <TopicDistribution />
 
           <div style={{ marginTop: 8 }}>
             <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 14 }}>Past Checks</div>

@@ -11,7 +11,6 @@ import { StudentOfficeHours } from "./StudentOfficeHours";
 import { StudentSelfCheckPage } from "./StudentSelfCheckPage.tsx";
 import { StudentProfilePage } from "./StudentProfilePage";
 import { TopicAnalysisPage } from "./TopicAnalysisPage";
-import { StudentStudyGroups } from "./StudentStudyGroups";
 import { AnalysisPage } from "./professor-pages/AnalysisPage.tsx";
 import { CalendarPage } from "./professor-pages/CalendarPage.tsx";
 import { EditGroupPage } from "./professor-pages/EditGroupPage.tsx";
@@ -40,7 +39,6 @@ export default function App() {
       <Route path="/selfcheck" element={<Navigate to="/self-check" replace />} />
       <Route path="/self-check" element={<StudentSelfCheckPage />} />
       <Route path="/profile" element={<StudentProfilePage />} />
-      <Route path="/study-groups" element={<StudentStudyGroups />} />
       <Route
         path="/invite"
         element={
