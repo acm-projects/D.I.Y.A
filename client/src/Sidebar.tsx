@@ -8,7 +8,7 @@ const palette = {
   sage: "#7A9B76",
 } as const;
 
-export type SidebarActiveId = "profile" | "groups" | "request" | "selfcheck";
+export type SidebarActiveId = "profile" | "groups" | "study-groups" | "request" | "selfcheck";
 
 function ProfileIcon() {
   return (
@@ -27,6 +27,30 @@ function GroupsIcon() {
       <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
       <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
     </svg>
+  );
+}
+
+/* Icon from `public/pencil.svg` (`/pencil.svg`). Mask + currentColor matches other nav icons. */
+function PencilIcon() {
+  return (
+    <span
+      aria-hidden
+      style={{
+        display: "inline-block",
+        width: 17,
+        height: 17,
+        flexShrink: 0,
+        backgroundColor: "currentColor",
+        WebkitMaskImage: "url(/pencil.svg)",
+        WebkitMaskSize: "contain",
+        WebkitMaskRepeat: "no-repeat",
+        WebkitMaskPosition: "center",
+        maskImage: "url(/pencil.svg)",
+        maskSize: "contain",
+        maskRepeat: "no-repeat",
+        maskPosition: "center",
+      }}
+    />
   );
 }
 
@@ -58,11 +82,13 @@ export function Sidebar({ activeId }: { activeId: SidebarActiveId | null }) {
     { id: "groups" as SidebarActiveId, label: "Groups", icon: <GroupsIcon /> },
     { id: "request" as SidebarActiveId, label: "Office Hours", icon: <CalendarIcon /> },
     { id: "selfcheck" as SidebarActiveId, label: "Self-Check", icon: <CheckDocIcon /> },
+    { id: "study-groups" as SidebarActiveId, label: "Study Groups", icon: <PencilIcon /> },
   ];
 
   const handleNav = (id: SidebarActiveId) => {
     if (id === "profile") { navigate("/profile"); return; }
     if (id === "groups") { navigate("/groups"); return; }
+    if (id === "study-groups") { navigate("/study-groups"); return; }
     if (id === "request") { navigate("/office-hours"); return; }
     if (id === "selfcheck") { navigate("/self-check"); return; }
   };
