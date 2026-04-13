@@ -1,6 +1,8 @@
 import { db } from '../config/firebase.ts'
 import type { Post } from '../types.ts'
+import { cosineSimilarity } from '../api/services/embedding.ts'
 import { Timestamp } from 'firebase-admin/firestore'
+import * as admin from 'firebase-admin'
 
 const collection = db.collection('posts')
 
@@ -56,4 +58,31 @@ export const updatePost = async (id: string, updates: Partial<Post>): Promise<vo
 
 export const deletePost = async (id: string): Promise<void> => {
     await collection.doc(id).delete()
+}
+
+export const getRelatedPosts = async (req: { params: { postId: string } }, res: { json: (arg0: { relatedPosts: any[] }) => void }) => {
+    const { postId } = req.params
+
+    const db = admin.firestore()
+
+    const currentDoc = await db.collection('posts').doc(postId).get()
+    const currentData = currentDoc.data() as Post | undefined
+
+    if (!currentData || !currentData?.embedding) {
+        return res.json({ relatedPosts: [] })
+    }
+
+    const snapshot = await db.collection('posts').where('groupId', '==', currentData.groupId).limit(50).get()
+
+    const relatedPosts = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }) as Post)
+        .filter(post => post.id !== postId)
+        .map(post => ({
+            ...post,
+            similarity: cosineSimilarity(currentData.embedding, post.embedding)
+        }))
+        .sort((a, b) => b.similarity - a.similarity)
+        .slice(0, 5)
+
+    res.json({ relatedPosts })
 }
