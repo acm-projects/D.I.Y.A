@@ -1,0 +1,333 @@
+{
+  "topicAnalysis": {
+    "notFound": "لم يتم العثور على الموضوع.",
+    "backToSelfCheck": "العودة إلى التحقق الذاتي",
+    "backToAnalysis": "العودة إلى التحليل",
+    "badges": {
+      "forumQuestions": "{{count}} أسئلة المنتدى",
+      "engagement": "{{score}}% نسبة التفاعل"
+    },
+    "trend": {
+      "rising": "في ارتفاع",
+      "steady": "مستقر",
+      "declining": "يحتاج إلى اهتمام"
+    },
+    "positives": {
+      "title": "الإيجابيات",
+      "subtitle": "الجوانب الجيدة"
+    },
+    "concerns": {
+      "title": "المخاوف",
+      "subtitle": "نقاط الضعف"
+    },
+    "recommendations": {
+      "title": "التوصيات",
+      "subtitle": "كيفية التحسين"
+    },
+    "snapshot": {
+      "title": "ملخص الفصل — {{topicName}}",
+      "description": "بناءً على {{count}} من أسئلة المنتدى، درجة تفاعل الفصل لهذا الموضوع هي {{score}}%. ركز على المخاوف المذكورة أعلاه لتحسين فهمك قبل التقييم القادم."
+    }
+  },
+  "sidebar": {
+    "appSubtitle": "بوابة الطالب",
+    "menuLabel": "القائمة",
+    "defaultName": "طالب",
+    "defaultEmail": "student@university.edu",
+    "nav": {
+      "profile": "الملف الشخصي",
+      "groups": "المجموعات",
+      "request": "طلب الساعات المكتبية",
+      "requestShort": "الساعات المكتبية",
+      "selfcheck": "التحقق الذاتي"
+    },
+    "user": {
+      "signOut": "تسجيل الخروج"
+    }
+  },
+  "professorSidebar": {
+    "appSubtitle": "عرض الأستاذ",
+    "navigationLabel": "التنقل",
+    "nav": {
+      "forum": "المنتدى",
+      "calendar": "التقويم",
+      "analysis": "التحليل",
+      "requests": "الطلبات",
+      "editGroup": "تعديل المجموعة"
+    },
+    "signOut": "تسجيل الخروج"
+  },
+  "login": {
+    "title": "مرحباً بعودتك",
+    "subtitle": "استمر بأمان عبر Auth0 للوصول إلى مساحة عمل D.I.Y.A، والمهام، والمناقشات، وأدوات الملاحظات.",
+    "submitButton": "تسجيل الدخول عبر Auth0",
+    "signUpPrompt": "جديد في D.I.Y.A؟",
+    "signUpLink": "أنشئ حسابك"
+  },
+  "signUp": {
+    "title": "أنشئ حسابك",
+    "subtitle": "ابدأ مع D.I.Y.A من خلال تدفق التسجيل الآمن لـ Auth0 وتابع إلى مساحة التعلم الخاصة بك.",
+    "role": {
+      "label": "دور الحساب",
+      "description": "اختر ما إذا كنت تريد إنشاء هذا الحساب الجديد كطالب أم أستاذ.",
+      "student": "طالب",
+      "professor": "أستاذ"
+    },
+    "submitButton": "إنشاء حساب عبر Auth0",
+    "loginPrompt": "لديك حساب بالفعل؟",
+    "loginLink": "تسجيل الدخول"
+  },
+  "groupInvite": {
+    "title": "دعوة للمجموعة",
+    "message": "قام <strong>{{adminName}}</strong> بدعوتك للانضمام إلى <strong>{{groupName}}</strong>",
+    "accept": "قبول",
+    "declined": "رفض"
+  },
+  "groups": {
+    "pageTitle": "مرحباً بعودتك، {{name}}!",
+    "defaultName": "طالب",
+    "search": {
+      "placeholder": "ابحث عن مجموعاتك بالاسم...",
+      "ariaLabel": "البحث عن المجموعات حسب الاسم"
+    },
+    "count": {
+      "showing": "عرض {{count}} من أصل {{total}} مجموعات",
+      "member_one": "أنت عضو في مجموعة واحدة",
+      "member_other": "أنت عضو في {{count}} مجموعات"
+    },
+    "card": {
+      "members_one": "عضو واحد",
+      "members_other": "{{count}} أعضاء",
+      "posts_one": "منشور واحد",
+      "posts_other": "{{count}} منشورات",
+      "viewGroup": "عرض المجموعة"
+    },
+    "loading": "جاري التحميل...",
+    "error": {
+      "title": "تعذر تحميل المجموعات",
+      "loadGroups": "فشل تحميل المجموعات.",
+      "loadPosts": "فشل تحميل عدد منشورات المنتدى."
+    },
+    "empty": {
+      "title": "لا توجد مجموعات تطابق \"{{query}}\"",
+      "subtitle": "جرب اسماً أقصر، أو رمز الدورة، أو قم بإزالة المسافات الزائدة."
+    }
+  },
+  "forum": {
+    "pageTitle": "صفحة منتدى {{groupName}}",
+    "header": {
+      "askQuestion": "اطرح سؤالاً جديداً",
+      "ariaCreate": "إنشاء سؤال جديد"
+    },
+    "search": {
+      "placeholder": "البحث عن أسئلة...",
+      "ariaLabel": "البحث عن الأسئلة"
+    },
+    "count": {
+      "showing": "عرض {{count}} من أصل {{total}} أسئلة",
+      "total_one": "سؤال واحد طرحه زملائك",
+      "total_other": "{{count}} أسئلة طرحها زملائك"
+    },
+    "card": {
+      "newBadge": "جديد",
+      "replies_one": "رد واحد",
+      "replies_other": "{{count}} ردود",
+      "viewReplies": "عرض الردود",
+      "aiVerified": "تم التحقق من إجابة الذكاء الاصطناعي لهذا السؤال من قبل الأستاذ.",
+      "timeAgo": {
+        "minute_one": "منذ دقيقة واحدة",
+        "minute_other": "منذ {{count}} دقائق",
+        "hour_one": "منذ ساعة واحدة",
+        "hour_other": "منذ {{count}} ساعات",
+        "day_one": "منذ يوم واحد",
+        "day_other": "منذ {{count}} أيام",
+        "week_one": "منذ أسبوع واحد",
+        "week_other": "منذ {{count}} أسابيع"
+      }
+    },
+    "loading": "جاري التحميل...",
+    "error": {
+      "title": "تعذر تحميل أسئلة المنتدى",
+      "loadQuestions": "فشل تحميل أسئلة المنتدى.",
+      "createQuestion": "فشل إنشاء السؤال.",
+      "upvote": "فشل تحديث التصويت."
+    },
+    "empty": {
+      "title": "لم يتم العثور على أسئلة",
+      "subtitle": "جرب بحثاً آخر أو انشر أول سؤال لهذه المجموعة."
+    },
+    "popup": {
+      "title": "اطرح سؤالاً",
+      "inputPlaceholder": "ما هو سؤالك؟",
+      "imageLabel": "صورة (اختياري)",
+      "uploadImage": "رفع صورة",
+      "changeImage": "تغيير الصورة",
+      "cancel": "إلغاء",
+      "postButton": "نشر السؤال"
+    }
+  },
+  "forumThread": {
+    "backToForum": "← العودة إلى المنتدى",
+    "question": {
+      "askedBy": "طرحه {{author}}",
+      "defaultTitle": "سؤالك",
+      "defaultAuthor": "أنت"
+    },
+    "replies": {
+      "loading": "جاري تحميل الموضوع...",
+      "empty": "لا توجد ردود بعد — كن أول من يرد!",
+      "professorLabel": "(أستاذ)",
+      "imageFallback": "(صورة)"
+    },
+    "related": {
+      "title": "مناقشات ذات صلة",
+      "loading": "البحث عن مواضيع مماثلة...",
+      "empty": "لم يتم العثور على منشورات مماثلة.",
+      "untitled": "منشور بدون عنوان",
+      "viewThread": "عرض الموضوع ←"
+    },
+    "input": {
+      "placeholder": "اكتب ردك...",
+      "removeImage": "إزالة",
+      "ariaUpload": "رفع صورة",
+      "ariaSend": "إرسال الرد",
+      "ariaToggleSidebarOpen": "فتح الشريط الجانبي",
+      "ariaToggleSidebarClose": "إغلاق الشريط الجانبي"
+    },
+    "errors": {
+      "loadThread": "فشل تحميل موضوع المنتدى.",
+      "loadReplies": "فشل تحميل الردود.",
+      "sendReply": "فشل إرسال الرد."
+    }
+  },
+  "officeHours": {
+    "pageTitle": "طلب الساعات المكتبية",
+    "form": {
+      "title": "طلب جديد",
+      "subtitle": "املأ النموذج أدناه لطلب اجتماع مع أستاذك أو مساعد التدريس.",
+      "loading": "جاري تحميل دوراتك وجهات الاتصال المتاحة...",
+      "courseLabel": "أي دورة/مجموعة؟ *",
+      "coursePlaceholder": "اختر دورة أو مجموعة",
+      "noGroups": "أنت غير مسجل في أي مجموعات دورات بعد.",
+      "professorLabel": "طلب الأستاذ أو مساعد التدريس؟ *",
+      "professorPlaceholder": "اختر أستاذاً أو مساعد تدريس",
+      "reasonLabel": "ما هو سبب هذا الطلب؟ *",
+      "reasonPlaceholder": "صف باختصار سبب رغبتك في الاجتماع...",
+      "dateLabel": "التاريخ المقترح *",
+      "startTimeLabel": "وقت البدء (CST) *",
+      "endTimeLabel": "وقت الانتهاء (CST) *",
+      "meetingTypeLabel": "نوع الاجتماع *",
+      "online": "اجتماع عبر الإنترنت",
+      "inPerson": "اجتماع حضوري",
+      "meetingLinkLabel": "رابط الاجتماع (اختياري)",
+      "meetingLinkPlaceholder": "...https://zoom.us/j",
+      "submitButton": "إرسال الطلب"
+    },
+    "success": {
+      "title": "تم إرسال الطلب!",
+      "subtitle": "تم إرسال طلب الساعات المكتبية الخاص بك. ستتلقى تأكيداً عبر البريد الإلكتروني بمجرد رد أستاذك.",
+      "emailNote": "تحقق من بريدك الإلكتروني في <strong>{{email}}</strong> للحصول على التحديثات.",
+      "submitAnother": "إرسال طلب آخر"
+    },
+    "requests": {
+      "title": "طلباتك",
+      "empty": "لا توجد طلبات بعد. أرسل طلبك الأول أعلاه.",
+      "online": "عبر الإنترنت",
+      "inPerson": "حضورياً",
+      "meetingLink": "رابط الاجتماع: {{link}}",
+      "addToGoogle": "إضافة إلى تقويم Google",
+      "addToOutlook": "إضافة إلى Outlook",
+      "joinMeeting": "الانضمام للاجتماع",
+      "timeRange": "{{start}} – {{end}}"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "تم التأكيد",
+      "declined": "مرفوض"
+    },
+    "errors": {
+      "loadProfessors": "فشل تحميل جهات اتصال الأساتذة.",
+      "loadGroups": "فشل تحميل المجموعات.",
+      "loadRequests": "فشل تحميل طلبات الساعات المكتبية الخاصة بك.",
+      "loadData": "فشل تحميل بيانات الساعات المكتبية.",
+      "noGroup": "يرجى اختيار دورة أو مجموعة.",
+      "submit": "فشل إرسال طلب الساعات المكتبية."
+    }
+  },
+  "selfCheck": {
+    "pageTitle": "التحقق الذاتي",
+    "upload": {
+      "title": "تحقق من عملك",
+      "subtitle": "قم برفع معايير التقييم وعملك للحصول على تقرير تقديري للدرجة بواسطة الذكاء الاصطناعي.",
+      "rubricLabel": "معايير تقييم الواجب",
+      "rubricPlaceholder": "انقر لرفع معايير التقييم",
+      "workLabel": "عملك",
+      "workPlaceholder": "انقر لرفع عملك",
+      "analyzeButton": "تحليل عملي",
+      "analyzingButton": "جاري التحليل..."
+    },
+    "analyzing": {
+      "title": "جاري تحليل عملك...",
+      "subtitle": "مقارنة ما قدمته مقابل معايير التقييم"
+    },
+    "report": {
+      "title": "تقرير الدرجات",
+      "potentialGradeLabel": "الدرجة المحتملة",
+      "areasForImprovement": "مجالات التحسين"
+    },
+    "history": {
+      "title": "عمليات التحقق السابقة",
+      "loading": "جاري تحميل عمليات التحقق السابقة...",
+      "empty": "لا توجد عمليات تحقق سابقة بعد. ارفع واجبك الأول أعلاه للبدء.",
+      "areasForImprovement": "مجالات التحسين"
+    },
+    "errors": {
+      "loadHistory": "فشل تحميل سجل التحقق الذاتي.",
+      "analyze": "فشل تحليل عملك."
+    }
+  },
+  "profile": {
+    "sectionLabel": "إعدادات الطالب",
+    "pageTitle": "إدارة حسابك",
+    "pageSubtitle": "قم بتحديث تفضيلات الأمان الخاصة بك، ومراجعة تفاصيل حسابك، والتحكم في كيفية إخطار D.I.Y.A لك بالأنشطة المهمة.",
+    "status": {
+      "emailVerified": "تم التحقق من البريد الإلكتروني",
+      "emailPending": "التحقق من البريد الإلكتروني قيد الانتظار",
+      "lastSynced": "آخر مزامنة {{date}}"
+    },
+    "account": {
+      "sectionLabel": "الحساب",
+      "noEmail": "البريد الإلكتروني غير متوفر",
+      "emailAlertsLabel": "تنبيهات البريد الإلكتروني",
+      "forumRepliesLabel": "ردود المنتدى",
+      "on": "تفعيل",
+      "off": "إيقاف"
+    },
+    "security": {
+      "title": "أمان الحساب",
+      "subtitle": "استخدم Auth0 لإدارة كلمة المرور الخاصة بك والحفاظ على أمان تسجيل دخولك.",
+      "passwordReset": {
+        "title": "إعادة تعيين كلمة المرور",
+        "description": "إرسال بريد إلكتروني آمن لإعادة تعيين كلمة مرور Auth0 إلى <strong>{{email}}</strong>.",
+        "fallbackEmail": "بريدك الإلكتروني المسجل",
+        "button": "تغيير كلمة المرور",
+        "buttonSending": "جاري إرسال بريد إعادة التعيين...",
+        "successMessage": "تم إرسال بريد إعادة تعيين كلمة المرور إلى {{email}}. تحقق من بريدك الوارد للحصول على الرابط الآمن."
+      }
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "subtitle": "يتم تحميل هذه التفضيلات مباشرة من مستند المستخدم الخاص بك في Firestore ويتم حفظها فوراً عند تغييرها.",
+      "emailAlerts": {
+        "title": "تنبيهات البريد الإلكتروني",
+        "description": "تلقي إشعارات عبر البريد الإلكتروني لأنشطة الحساب المهمة والتحديثات المتعلقة بالمواعيد.",
+        "successMessage": "تم تحديث تنبيهات البريد الإلكتروني بنجاح."
+      },
+      "forumReplies": {
+        "title": "ردود منتدى جديدة",
+        "description": "سيتم إخطارك عندما يكون هناك نشاط جديد أو رد على المناقشات التي تهم دراستك.",
+        "successMessage": "تم تحديث إشعارات ردود المنتدى الجديدة بنجاح."
+      }
+    }
+  }
+}

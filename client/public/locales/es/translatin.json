@@ -1,0 +1,333 @@
+{
+  "topicAnalysis": {
+    "notFound": "Tema no encontrado.",
+    "backToSelfCheck": "Volver a Autoverificación",
+    "backToAnalysis": "Volver al Análisis",
+    "badges": {
+      "forumQuestions": "{{count}} preguntas en el foro",
+      "engagement": "{{score}}% de participación"
+    },
+    "trend": {
+      "rising": "En aumento",
+      "steady": "Estable",
+      "declining": "Requiere atención"
+    },
+    "positives": {
+      "title": "Puntos positivos",
+      "subtitle": "Lo que va bien"
+    },
+    "concerns": {
+      "title": "Preocupaciones",
+      "subtitle": "Áreas con dificultades"
+    },
+    "recommendations": {
+      "title": "Recomendaciones",
+      "subtitle": "Cómo mejorar"
+    },
+    "snapshot": {
+      "title": "Resumen de la clase — {{topicName}}",
+      "description": "Basado en {{count}} preguntas del foro, la puntuación de participación de la clase para este tema es del {{score}}%. Enfócate en las preocupaciones anteriores para mejorar tu comprensión antes de la próxima evaluación."
+    }
+  },
+  "sidebar": {
+    "appSubtitle": "Portal del Estudiante",
+    "menuLabel": "Menú",
+    "defaultName": "Estudiante",
+    "defaultEmail": "estudiante@university.edu",
+    "nav": {
+      "profile": "Perfil",
+      "groups": "Grupos",
+      "request": "Solicitar horas de tutoría",
+      "requestShort": "Tutorías",
+      "selfcheck": "Autoverificación"
+    },
+    "user": {
+      "signOut": "Cerrar sesión"
+    }
+  },
+  "professorSidebar": {
+    "appSubtitle": "Vista del Profesor",
+    "navigationLabel": "Navegación",
+    "nav": {
+      "forum": "Foro",
+      "calendar": "Calendario",
+      "analysis": "Análisis",
+      "requests": "Solicitudes",
+      "editGroup": "Editar grupo"
+    },
+    "signOut": "Cerrar sesión"
+  },
+  "login": {
+    "title": "Bienvenido de nuevo",
+    "subtitle": "Continúa de forma segura con Auth0 para acceder a tu espacio de trabajo D.I.Y.A, tareas, discusiones y herramientas de retroalimentación.",
+    "submitButton": "Iniciar sesión con Auth0",
+    "signUpPrompt": "¿Eres nuevo en D.I.Y.A?",
+    "signUpLink": "Crea tu cuenta"
+  },
+  "signUp": {
+    "title": "Crea tu cuenta",
+    "subtitle": "Comienza con D.I.Y.A a través del flujo de registro seguro de Auth0 y accede a tu espacio de aprendizaje.",
+    "role": {
+      "label": "Rol de la cuenta",
+      "description": "Elige si esta nueva cuenta debe crearse como estudiante o profesor.",
+      "student": "Estudiante",
+      "professor": "Profesor"
+    },
+    "submitButton": "Regístrate con Auth0",
+    "loginPrompt": "¿Ya tienes una cuenta?",
+    "loginLink": "Inicia sesión"
+  },
+  "groupInvite": {
+    "title": "Invitación al grupo",
+    "message": "<strong>{{adminName}}</strong> te ha invitado a unirte a <strong>{{groupName}}</strong>",
+    "accept": "Aceptar",
+    "declined": "Rechazar"
+  },
+  "groups": {
+    "pageTitle": "¡Bienvenido de nuevo, {{name}}!",
+    "defaultName": "Estudiante",
+    "search": {
+      "placeholder": "Buscar tus grupos por nombre...",
+      "ariaLabel": "Buscar grupos por nombre"
+    },
+    "count": {
+      "showing": "Mostrando {{count}} de {{total}} grupos",
+      "member_one": "Eres miembro de {{count}} grupo",
+      "member_other": "Eres miembro de {{count}} grupos"
+    },
+    "card": {
+      "members_one": "{{count}} miembro",
+      "members_other": "{{count}} miembros",
+      "posts_one": "{{count}} publicación",
+      "posts_other": "{{count}} publicaciones",
+      "viewGroup": "Ver grupo"
+    },
+    "loading": "Cargando...",
+    "error": {
+      "title": "No se pudieron cargar los grupos",
+      "loadGroups": "Error al cargar los grupos.",
+      "loadPosts": "Error al cargar el conteo de publicaciones del foro."
+    },
+    "empty": {
+      "title": "No hay grupos que coincidan con \"{{query}}\"",
+      "subtitle": "Prueba con un nombre más corto, código de curso o elimina espacios extra."
+    }
+  },
+  "forum": {
+    "pageTitle": "Foro de {{groupName}}",
+    "header": {
+      "askQuestion": "Hacer una nueva pregunta",
+      "ariaCreate": "Crear nueva pregunta"
+    },
+    "search": {
+      "placeholder": "Buscar preguntas...",
+      "ariaLabel": "Buscar preguntas"
+    },
+    "count": {
+      "showing": "Mostrando {{count}} de {{total}} preguntas",
+      "total_one": "{{count}} pregunta realizada por tus compañeros",
+      "total_other": "{{count}} preguntas realizadas por tus compañeros"
+    },
+    "card": {
+      "newBadge": "NUEVO",
+      "replies_one": "{{count}} respuesta",
+      "replies_other": "{{count}} respuestas",
+      "viewReplies": "Ver respuestas",
+      "aiVerified": "La respuesta de IA de esta pregunta ha sido verificada por el profesor.",
+      "timeAgo": {
+        "minute_one": "Hace {{count}} minuto",
+        "minute_other": "Hace {{count}} minutos",
+        "hour_one": "Hace {{count}} hora",
+        "hour_other": "Hace {{count}} horas",
+        "day_one": "Hace {{count}} día",
+        "day_other": "Hace {{count}} días",
+        "week_one": "Hace {{count}} semana",
+        "week_other": "Hace {{count}} semanas"
+      }
+    },
+    "loading": "Cargando...",
+    "error": {
+      "title": "No se pudieron cargar las preguntas del foro",
+      "loadQuestions": "Error al cargar las preguntas del foro.",
+      "createQuestion": "Error al crear la pregunta.",
+      "upvote": "Error al actualizar el voto."
+    },
+    "empty": {
+      "title": "No se encontraron preguntas",
+      "subtitle": "Prueba con otra búsqueda o publica la primera pregunta para este grupo."
+    },
+    "popup": {
+      "title": "Hacer una pregunta",
+      "inputPlaceholder": "¿Cuál es tu pregunta?",
+      "imageLabel": "Imagen (opcional)",
+      "uploadImage": "Subir imagen",
+      "changeImage": "Cambiar imagen",
+      "cancel": "Cancelar",
+      "postButton": "Publicar pregunta"
+    }
+  },
+  "forumThread": {
+    "backToForum": "← Volver al foro",
+    "question": {
+      "askedBy": "Preguntado por {{author}}",
+      "defaultTitle": "Tu pregunta",
+      "defaultAuthor": "Tú"
+    },
+    "replies": {
+      "loading": "Cargando hilo...",
+      "empty": "Aún no hay respuestas — ¡sé el primero en responder!",
+      "professorLabel": "(Profesor)",
+      "imageFallback": "(imagen)"
+    },
+    "related": {
+      "title": "Discusiones relacionadas",
+      "loading": "Buscando temas similares...",
+      "empty": "No se encontraron publicaciones similares.",
+      "untitled": "Publicación sin título",
+      "viewThread": "Ver hilo →"
+    },
+    "input": {
+      "placeholder": "Escribe tu respuesta...",
+      "removeImage": "Eliminar",
+      "ariaUpload": "Subir imagen",
+      "ariaSend": "Enviar respuesta",
+      "ariaToggleSidebarOpen": "Abrir barra lateral",
+      "ariaToggleSidebarClose": "Cerrar barra lateral"
+    },
+    "errors": {
+      "loadThread": "Error al cargar el hilo del foro.",
+      "loadReplies": "Error al cargar las respuestas.",
+      "sendReply": "Error al enviar la respuesta."
+    }
+  },
+  "officeHours": {
+    "pageTitle": "Solicitar horas de tutoría",
+    "form": {
+      "title": "Nueva solicitud",
+      "subtitle": "Completa el siguiente formulario para solicitar una reunión con tu profesor o asistente (TA).",
+      "loading": "Cargando tus cursos y contactos disponibles...",
+      "courseLabel": "¿Qué curso/grupo? *",
+      "coursePlaceholder": "Selecciona un curso o grupo",
+      "noGroups": "Aún no estás inscrito en ningún grupo de curso.",
+      "professorLabel": "¿Solicitar a profesor o TA? *",
+      "professorPlaceholder": "Selecciona un profesor o TA",
+      "reasonLabel": "¿Cuál es el motivo de esta solicitud? *",
+      "reasonPlaceholder": "Describe brevemente por qué te gustaría reunirte...",
+      "dateLabel": "Fecha propuesta *",
+      "startTimeLabel": "Hora de inicio (CST) *",
+      "endTimeLabel": "Hora de finalización (CST) *",
+      "meetingTypeLabel": "Tipo de reunión *",
+      "online": "Reunión en línea",
+      "inPerson": "Reunión presencial",
+      "meetingLinkLabel": "Enlace de la reunión (opcional)",
+      "meetingLinkPlaceholder": "https://zoom.us/j/...",
+      "submitButton": "Enviar solicitud"
+    },
+    "success": {
+      "title": "¡Solicitud enviada!",
+      "subtitle": "Tu solicitud de tutoría ha sido enviada. Recibirás una confirmación por correo electrónico una vez que tu profesor responda.",
+      "emailNote": "Revisa tu correo en <strong>{{email}}</strong> para ver actualizaciones.",
+      "submitAnother": "Enviar otra solicitud"
+    },
+    "requests": {
+      "title": "Tus solicitudes",
+      "empty": "Aún no tienes solicitudes. Envía la primera arriba.",
+      "online": "En línea",
+      "inPerson": "Presencial",
+      "meetingLink": "Enlace de la reunión: {{link}}",
+      "addToGoogle": "Añadir a Google Calendar",
+      "addToOutlook": "Añadir a Outlook",
+      "joinMeeting": "Unirse a la reunión",
+      "timeRange": "{{start}} – {{end}}"
+    },
+    "status": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada",
+      "declined": "Rechazada"
+    },
+    "errors": {
+      "loadProfessors": "Error al cargar los contactos de los profesores.",
+      "loadGroups": "Error al cargar los grupos.",
+      "loadRequests": "Error al cargar tus solicitudes de tutoría.",
+      "loadData": "Error al cargar los datos de tutoría.",
+      "noGroup": "Por favor, selecciona un curso o grupo.",
+      "submit": "Error al enviar la solicitud de tutoría."
+    }
+  },
+  "selfCheck": {
+    "pageTitle": "Autoverificación",
+    "upload": {
+      "title": "Revisa tu trabajo",
+      "subtitle": "Sube la rúbrica de la tarea y tu trabajo para obtener un informe de calificación estimado por IA.",
+      "rubricLabel": "Rúbrica de la tarea",
+      "rubricPlaceholder": "Haz clic para subir la rúbrica",
+      "workLabel": "Tu trabajo",
+      "workPlaceholder": "Haz clic para subir tu trabajo",
+      "analyzeButton": "Analizar mi trabajo",
+      "analyzingButton": "Analizando..."
+    },
+    "analyzing": {
+      "title": "Analizando tu trabajo...",
+      "subtitle": "Comparando tu entrega con los criterios de la rúbrica"
+    },
+    "report": {
+      "title": "Informe de calificación",
+      "potentialGradeLabel": "Calificación potencial",
+      "areasForImprovement": "Áreas de mejora"
+    },
+    "history": {
+      "title": "Revisiones pasadas",
+      "loading": "Cargando tus revisiones anteriores...",
+      "empty": "Aún no hay revisiones pasadas. Sube tu primera tarea arriba para comenzar.",
+      "areasForImprovement": "Áreas de mejora"
+    },
+    "errors": {
+      "loadHistory": "Error al cargar el historial de autoverificación.",
+      "analyze": "Error al analizar tu trabajo."
+    }
+  },
+  "profile": {
+    "sectionLabel": "Configuración del estudiante",
+    "pageTitle": "Administrar tu cuenta",
+    "pageSubtitle": "Actualiza tus preferencias de seguridad, revisa los detalles de tu cuenta y controla cómo te notifica D.I.Y.A sobre actividades importantes.",
+    "status": {
+      "emailVerified": "Correo verificado",
+      "emailPending": "Verificación de correo pendiente",
+      "lastSynced": "Última sincronización: {{date}}"
+    },
+    "account": {
+      "sectionLabel": "Cuenta",
+      "noEmail": "Correo no disponible",
+      "emailAlertsLabel": "Alertas por correo",
+      "forumRepliesLabel": "Respuestas del foro",
+      "on": "Activado",
+      "off": "Desactivado"
+    },
+    "security": {
+      "title": "Seguridad de la cuenta",
+      "subtitle": "Usa Auth0 para gestionar tu contraseña y mantener tu inicio de sesión seguro.",
+      "passwordReset": {
+        "title": "Restablecer contraseña",
+        "description": "Enviar un correo seguro de restablecimiento de contraseña de Auth0 a <strong>{{email}}</strong>.",
+        "fallbackEmail": "el correo de tu cuenta",
+        "button": "Cambiar contraseña",
+        "buttonSending": "Enviando correo...",
+        "successMessage": "Correo de restablecimiento enviado a {{email}}. Revisa tu bandeja de entrada para el enlace seguro."
+      }
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "subtitle": "Estas preferencias se cargan directamente desde tu documento de usuario en Firestore y se guardan inmediatamente al cambiarlas.",
+      "emailAlerts": {
+        "title": "Alertas por correo electrónico",
+        "description": "Recibe notificaciones por correo sobre actividad importante de la cuenta y actualizaciones de citas.",
+        "successMessage": "Alertas por correo actualizadas con éxito."
+      },
+      "forumReplies": {
+        "title": "Nuevas respuestas en el foro",
+        "description": "Recibe una notificación cuando haya nueva actividad o una respuesta en discusiones importantes para tu curso.",
+        "successMessage": "Notificaciones de respuestas del foro actualizadas con éxito."
+      }
+    }
+  }
+}

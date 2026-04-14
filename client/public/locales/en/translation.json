@@ -1,0 +1,333 @@
+{
+  "topicAnalysis": {
+    "notFound": "Topic not found.",
+    "backToSelfCheck": "Back to Self-Check",
+    "backToAnalysis": "Back to Analysis",
+    "badges": {
+      "forumQuestions": "{{count}} forum questions",
+      "engagement": "{{score}}% engagement"
+    },
+    "trend": {
+      "rising": "Trending Up",
+      "steady": "Steady",
+      "declining": "Needs Attention"
+    },
+    "positives": {
+      "title": "Positives",
+      "subtitle": "What's going well"
+    },
+    "concerns": {
+      "title": "Concerns",
+      "subtitle": "Areas of struggle"
+    },
+    "recommendations": {
+      "title": "Recommendations",
+      "subtitle": "How to improve"
+    },
+    "snapshot": {
+      "title": "Class Snapshot — {{topicName}}",
+      "description": "Based on {{count}} forum questions, the class engagement score for this topic is {{score}}%. Focus on the concerns above to improve your understanding before the next assessment."
+    }
+  },
+  "sidebar": {
+    "appSubtitle": "Student Portal",
+    "menuLabel": "Menu",
+    "defaultName": "Student",
+    "defaultEmail": "student@university.edu",
+    "nav": {
+      "profile": "Profile",
+      "groups": "Groups",
+      "request": "Request Office Hours",
+      "requestShort": "Office Hours",
+      "selfcheck": "Self-Check"
+    },
+    "user": {
+      "signOut": "Sign out"
+    }
+  },
+  "professorSidebar": {
+    "appSubtitle": "Professor View",
+    "navigationLabel": "Navigation",
+    "nav": {
+      "forum": "Forum",
+      "calendar": "Calendar",
+      "analysis": "Analysis",
+      "requests": "Requests",
+      "editGroup": "Edit Group"
+    },
+    "signOut": "Sign out"
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Continue securely with Auth0 to access your D.I.Y.A workspace, assignments, discussions, and feedback tools.",
+    "submitButton": "Log in with Auth0",
+    "signUpPrompt": "New to D.I.Y.A?",
+    "signUpLink": "Create your account"
+  },
+  "signUp": {
+    "title": "Create your account",
+    "subtitle": "Get started with D.I.Y.A through the secure Auth0 signup flow and continue into your learning workspace.",
+    "role": {
+      "label": "Account role",
+      "description": "Choose whether this new account should be created as a student or professor.",
+      "student": "Student",
+      "professor": "Professor"
+    },
+    "submitButton": "Sign up with Auth0",
+    "loginPrompt": "Already have an account?",
+    "loginLink": "Log in"
+  },
+  "groupInvite": {
+    "title": "Group Invite",
+    "message": "<strong>{{adminName}}</strong> has invited you to join <strong>{{groupName}}</strong>",
+    "accept": "Accept",
+    "declined": "Decline"
+  },
+  "groups": {
+    "pageTitle": "Welcome Back, {{name}}!",
+    "defaultName": "Student",
+    "search": {
+      "placeholder": "Search your groups by name...",
+      "ariaLabel": "Search groups by name"
+    },
+    "count": {
+      "showing": "Showing {{count}} of {{total}} groups",
+      "member_one": "You're a member of {{count}} group",
+      "member_other": "You're a member of {{count}} groups"
+    },
+    "card": {
+      "members_one": "{{count}} member",
+      "members_other": "{{count}} members",
+      "posts_one": "{{count}} post",
+      "posts_other": "{{count}} posts",
+      "viewGroup": "View group"
+    },
+    "loading": "Loading...",
+    "error": {
+      "title": "Unable to load groups",
+      "loadGroups": "Failed to load groups.",
+      "loadPosts": "Failed to load forum post counts."
+    },
+    "empty": {
+      "title": "No groups match \"{{query}}\"",
+      "subtitle": "Try a shorter name, course code, or remove extra spaces."
+    }
+  },
+  "forum": {
+    "pageTitle": "{{groupName}} Forum Page",
+    "header": {
+      "askQuestion": "Ask a new question",
+      "ariaCreate": "Create new question"
+    },
+    "search": {
+      "placeholder": "Search questions...",
+      "ariaLabel": "Search questions"
+    },
+    "count": {
+      "showing": "Showing {{count}} of {{total}} questions",
+      "total_one": "{{count}} question asked by your peers",
+      "total_other": "{{count}} questions asked by your peers"
+    },
+    "card": {
+      "newBadge": "NEW",
+      "replies_one": "{{count}} reply",
+      "replies_other": "{{count}} replies",
+      "viewReplies": "View replies",
+      "aiVerified": "This question's AI answer has been verified by the professor.",
+      "timeAgo": {
+        "minute_one": "{{count}} minute ago",
+        "minute_other": "{{count}} minutes ago",
+        "hour_one": "{{count}} hour ago",
+        "hour_other": "{{count}} hours ago",
+        "day_one": "{{count}} day ago",
+        "day_other": "{{count}} days ago",
+        "week_one": "{{count}} week ago",
+        "week_other": "{{count}} weeks ago"
+      }
+    },
+    "loading": "Loading...",
+    "error": {
+      "title": "Unable to load forum questions",
+      "loadQuestions": "Failed to load forum questions.",
+      "createQuestion": "Failed to create question.",
+      "upvote": "Failed to update upvote."
+    },
+    "empty": {
+      "title": "No questions found",
+      "subtitle": "Try another search or post the first question for this group."
+    },
+    "popup": {
+      "title": "Ask a Question",
+      "inputPlaceholder": "What's your question?",
+      "imageLabel": "Image (optional)",
+      "uploadImage": "Upload image",
+      "changeImage": "Change image",
+      "cancel": "Cancel",
+      "postButton": "Post Question"
+    }
+  },
+  "forumThread": {
+    "backToForum": "← Back to Forum",
+    "question": {
+      "askedBy": "Asked by {{author}}",
+      "defaultTitle": "Your question",
+      "defaultAuthor": "You"
+    },
+    "replies": {
+      "loading": "Loading thread...",
+      "empty": "No replies yet — be the first to respond!",
+      "professorLabel": "(Professor)",
+      "imageFallback": "(image)"
+    },
+    "related": {
+      "title": "Related Discussions",
+      "loading": "Finding similar topics...",
+      "empty": "No similar posts found.",
+      "untitled": "Untitled Post",
+      "viewThread": "View Thread →"
+    },
+    "input": {
+      "placeholder": "Type your reply...",
+      "removeImage": "Remove",
+      "ariaUpload": "Upload image",
+      "ariaSend": "Send reply",
+      "ariaToggleSidebarOpen": "Open sidebar",
+      "ariaToggleSidebarClose": "Close sidebar"
+    },
+    "errors": {
+      "loadThread": "Failed to load forum thread.",
+      "loadReplies": "Failed to load replies.",
+      "sendReply": "Failed to send reply."
+    }
+  },
+  "officeHours": {
+    "pageTitle": "Request Office Hours",
+    "form": {
+      "title": "New Request",
+      "subtitle": "Fill out the form below to request a meeting with your professor or TA.",
+      "loading": "Loading your courses and available contacts...",
+      "courseLabel": "Which Course/Group? *",
+      "coursePlaceholder": "Select a course or group",
+      "noGroups": "You are not enrolled in any course groups yet.",
+      "professorLabel": "Requesting Professor or TA? *",
+      "professorPlaceholder": "Select a professor or TA",
+      "reasonLabel": "What is this request for? *",
+      "reasonPlaceholder": "Briefly describe why you'd like to meet...",
+      "dateLabel": "Proposed Date *",
+      "startTimeLabel": "Start Time (CST) *",
+      "endTimeLabel": "End Time (CST) *",
+      "meetingTypeLabel": "Meeting Type *",
+      "online": "Online Meeting",
+      "inPerson": "In-Person Meeting",
+      "meetingLinkLabel": "Meeting Link (optional)",
+      "meetingLinkPlaceholder": "https://zoom.us/j/...",
+      "submitButton": "Submit Request"
+    },
+    "success": {
+      "title": "Request Submitted!",
+      "subtitle": "Your office hours request has been sent. You'll receive an email confirmation once your professor responds.",
+      "emailNote": "Check your email at <strong>{{email}}</strong> for updates.",
+      "submitAnother": "Submit Another Request"
+    },
+    "requests": {
+      "title": "Your Requests",
+      "empty": "No requests yet. Submit your first one above.",
+      "online": "Online",
+      "inPerson": "In-Person",
+      "meetingLink": "Meeting link: {{link}}",
+      "addToGoogle": "Add to Google Calendar",
+      "addToOutlook": "Add to Outlook",
+      "joinMeeting": "Join Meeting",
+      "timeRange": "{{start}} – {{end}}"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "declined": "Declined"
+    },
+    "errors": {
+      "loadProfessors": "Failed to load professor contacts.",
+      "loadGroups": "Failed to load groups.",
+      "loadRequests": "Failed to load your office hour requests.",
+      "loadData": "Failed to load office hour data.",
+      "noGroup": "Please select a course or group.",
+      "submit": "Failed to submit office hour request."
+    }
+  },
+  "selfCheck": {
+    "pageTitle": "Self-Check",
+    "upload": {
+      "title": "Check Your Work",
+      "subtitle": "Upload your assignment rubric and your work to get an AI-estimated grade report.",
+      "rubricLabel": "Assignment Rubric",
+      "rubricPlaceholder": "Click to upload rubric",
+      "workLabel": "Your Work",
+      "workPlaceholder": "Click to upload your work",
+      "analyzeButton": "Analyze My Work",
+      "analyzingButton": "Analyzing..."
+    },
+    "analyzing": {
+      "title": "Analyzing your work...",
+      "subtitle": "Comparing your submission against the rubric criteria"
+    },
+    "report": {
+      "title": "Grade Report",
+      "potentialGradeLabel": "Potential Grade",
+      "areasForImprovement": "Areas for Improvement"
+    },
+    "history": {
+      "title": "Past Checks",
+      "loading": "Loading your previous checks...",
+      "empty": "No past checks yet. Upload your first assignment above to get started.",
+      "areasForImprovement": "Areas for Improvement"
+    },
+    "errors": {
+      "loadHistory": "Failed to load self-check history.",
+      "analyze": "Failed to analyze your work."
+    }
+  },
+  "profile": {
+    "sectionLabel": "Student settings",
+    "pageTitle": "Manage your account",
+    "pageSubtitle": "Update your security preferences, review your account details, and control how D.I.Y.A notifies you about important activity.",
+    "status": {
+      "emailVerified": "Email verified",
+      "emailPending": "Email verification pending",
+      "lastSynced": "Last synced {{date}}"
+    },
+    "account": {
+      "sectionLabel": "Account",
+      "noEmail": "No email available",
+      "emailAlertsLabel": "Email alerts",
+      "forumRepliesLabel": "Forum replies",
+      "on": "On",
+      "off": "Off"
+    },
+    "security": {
+      "title": "Account Security",
+      "subtitle": "Use Auth0 to manage your password and keep your login secure.",
+      "passwordReset": {
+        "title": "Password reset",
+        "description": "Send a secure Auth0 password reset email to <strong>{{email}}</strong>.",
+        "fallbackEmail": "your account email",
+        "button": "Change Password",
+        "buttonSending": "Sending reset email...",
+        "successMessage": "Password reset email sent to {{email}}. Check your inbox for the secure link."
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "These preferences load directly from your Firestore user document and save immediately when you toggle them.",
+      "emailAlerts": {
+        "title": "Email Alerts",
+        "description": "Receive email notifications for important account activity and appointment-related updates.",
+        "successMessage": "Email alerts updated successfully."
+      },
+      "forumReplies": {
+        "title": "New Forum Replies",
+        "description": "Be notified when there is new activity or a reply on discussions that matter to your coursework.",
+        "successMessage": "New forum reply notifications updated successfully."
+      }
+    }
+  }
+}

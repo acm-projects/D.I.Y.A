@@ -1,0 +1,333 @@
+{
+  "topicAnalysis": {
+    "notFound": "Tópico não encontrado.",
+    "backToSelfCheck": "Voltar para Autoavaliação",
+    "backToAnalysis": "Voltar para Análise",
+    "badges": {
+      "forumQuestions": "{{count}} perguntas no fórum",
+      "engagement": "{{score}}% de engajamento"
+    },
+    "trend": {
+      "rising": "Em alta",
+      "steady": "Estável",
+      "declining": "Requer atenção"
+    },
+    "positives": {
+      "title": "Pontos Positivos",
+      "subtitle": "O que está indo bem"
+    },
+    "concerns": {
+      "title": "Preocupações",
+      "subtitle": "Áreas de dificuldade"
+    },
+    "recommendations": {
+      "title": "Recomendações",
+      "subtitle": "Como melhorar"
+    },
+    "snapshot": {
+      "title": "Resumo da Turma — {{topicName}}",
+      "description": "Com base em {{count}} perguntas no fórum, a pontuação de engajamento da turma para este tópico é de {{score}}%. Foque nas preocupações acima para melhorar sua compreensão antes da próxima avaliação."
+    }
+  },
+  "sidebar": {
+    "appSubtitle": "Portal do Aluno",
+    "menuLabel": "Menu",
+    "defaultName": "Aluno",
+    "defaultEmail": "aluno@universidade.edu",
+    "nav": {
+      "profile": "Perfil",
+      "groups": "Grupos",
+      "request": "Solicitar Horário de Monitoria",
+      "requestShort": "Monitoria",
+      "selfcheck": "Autoavaliação"
+    },
+    "user": {
+      "signOut": "Sair"
+    }
+  },
+  "professorSidebar": {
+    "appSubtitle": "Visão do Professor",
+    "navigationLabel": "Navegação",
+    "nav": {
+      "forum": "Fórum",
+      "calendar": "Calendário",
+      "analysis": "Análise",
+      "requests": "Solicitações",
+      "editGroup": "Editar Grupo"
+    },
+    "signOut": "Sair"
+  },
+  "login": {
+    "title": "Bem-vindo de volta",
+    "subtitle": "Continue com segurança via Auth0 para acessar seu espaço de trabalho D.I.Y.A, tarefas, discussões e ferramentas de feedback.",
+    "submitButton": "Entrar com Auth0",
+    "signUpPrompt": "Novo no D.I.Y.A?",
+    "signUpLink": "Crie sua conta"
+  },
+  "signUp": {
+    "title": "Crie sua conta",
+    "subtitle": "Comece no D.I.Y.A através do fluxo de cadastro seguro do Auth0 e prossiga para seu espaço de aprendizagem.",
+    "role": {
+      "label": "Função da conta",
+      "description": "Escolha se esta nova conta deve ser criada como Aluno ou Professor.",
+      "student": "Aluno",
+      "professor": "Professor"
+    },
+    "submitButton": "Cadastrar com Auth0",
+    "loginPrompt": "Já tem uma conta?",
+    "loginLink": "Entrar"
+  },
+  "groupInvite": {
+    "title": "Convite de Grupo",
+    "message": "<strong>{{adminName}}</strong> convidou você para participar de <strong>{{groupName}}</strong>",
+    "accept": "Aceitar",
+    "declined": "Recusar"
+  },
+  "groups": {
+    "pageTitle": "Bem-vindo de volta, {{name}}!",
+    "defaultName": "Aluno",
+    "search": {
+      "placeholder": "Buscar seus grupos por nome...",
+      "ariaLabel": "Buscar grupos por nome"
+    },
+    "count": {
+      "showing": "Exibindo {{count}} de {{total}} grupos",
+      "member_one": "Você é membro de 1 grupo",
+      "member_other": "Você é membro de {{count}} grupos"
+    },
+    "card": {
+      "members_one": "{{count}} membro",
+      "members_other": "{{count}} membros",
+      "posts_one": "{{count}} postagem",
+      "posts_other": "{{count}} postagens",
+      "viewGroup": "Ver Grupo"
+    },
+    "loading": "Carregando...",
+    "error": {
+      "title": "Não foi possível carregar os grupos",
+      "loadGroups": "Falha ao carregar grupos.",
+      "loadPosts": "Falha ao carregar contagem de postagens do fórum."
+    },
+    "empty": {
+      "title": "Nenhum grupo corresponde a \"{{query}}\"",
+      "subtitle": "Tente um nome mais curto, código da disciplina ou remova espaços extras."
+    }
+  },
+  "forum": {
+    "pageTitle": "Fórum de {{groupName}}",
+    "header": {
+      "askQuestion": "Fazer uma nova pergunta",
+      "ariaCreate": "Criar nova pergunta"
+    },
+    "search": {
+      "placeholder": "Buscar perguntas...",
+      "ariaLabel": "Buscar perguntas"
+    },
+    "count": {
+      "showing": "Exibindo {{count}} de {{total}} perguntas",
+      "total_one": "{{count}} pergunta feita por seus colegas",
+      "total_other": "{{count}} perguntas feitas por seus colegas"
+    },
+    "card": {
+      "newBadge": "NOVO",
+      "replies_one": "{{count}} resposta",
+      "replies_other": "{{count}} respostas",
+      "viewReplies": "Ver respostas",
+      "aiVerified": "A resposta da IA para esta pergunta foi verificada pelo professor.",
+      "timeAgo": {
+        "minute_one": "Há {{count}} minuto",
+        "minute_other": "Há {{count}} minutos",
+        "hour_one": "Há {{count}} hora",
+        "hour_other": "Há {{count}} horas",
+        "day_one": "Há {{count}} dia",
+        "day_other": "Há {{count}} dias",
+        "week_one": "Há {{count}} semana",
+        "week_other": "Há {{count}} semanas"
+      }
+    },
+    "loading": "Carregando...",
+    "error": {
+      "title": "Não foi possível carregar as perguntas",
+      "loadQuestions": "Falha ao carregar perguntas do fórum.",
+      "createQuestion": "Falha ao criar pergunta.",
+      "upvote": "Falha ao atualizar curtida."
+    },
+    "empty": {
+      "title": "Nenhuma pergunta encontrada",
+      "subtitle": "Tente outra busca ou publique a primeira pergunta deste grupo."
+    },
+    "popup": {
+      "title": "Fazer uma Pergunta",
+      "inputPlaceholder": "Qual é a sua dúvida?",
+      "imageLabel": "Imagem (opcional)",
+      "uploadImage": "Enviar imagem",
+      "changeImage": "Alterar imagem",
+      "cancel": "Cancelar",
+      "postButton": "Publicar Pergunta"
+    }
+  },
+  "forumThread": {
+    "backToForum": "← Voltar ao Fórum",
+    "question": {
+      "askedBy": "Perguntado por {{author}}",
+      "defaultTitle": "Sua pergunta",
+      "defaultAuthor": "Você"
+    },
+    "replies": {
+      "loading": "Carregando discussão...",
+      "empty": "Ainda não há respostas — seja o primeiro a responder!",
+      "professorLabel": "(Professor)",
+      "imageFallback": "(imagem)"
+    },
+    "related": {
+      "title": "Discussões Relacionadas",
+      "loading": "Buscando tópicos semelhantes...",
+      "empty": "Nenhuma postagem semelhante encontrada.",
+      "untitled": "Postagem sem título",
+      "viewThread": "Ver discussão →"
+    },
+    "input": {
+      "placeholder": "Digite sua resposta...",
+      "removeImage": "Remover",
+      "ariaUpload": "Enviar imagem",
+      "ariaSend": "Enviar resposta",
+      "ariaToggleSidebarOpen": "Abrir barra lateral",
+      "ariaToggleSidebarClose": "Fechar barra lateral"
+    },
+    "errors": {
+      "loadThread": "Falha ao carregar discussão do fórum.",
+      "loadReplies": "Falha ao carregar respostas.",
+      "sendReply": "Falha ao enviar resposta."
+    }
+  },
+  "officeHours": {
+    "pageTitle": "Solicitar Monitoria",
+    "form": {
+      "title": "Nova Solicitação",
+      "subtitle": "Preencha o formulário abaixo para solicitar uma reunião com seu professor ou monitor (TA).",
+      "loading": "Carregando suas disciplinas e contatos disponíveis...",
+      "courseLabel": "Qual disciplina/grupo? *",
+      "coursePlaceholder": "Selecione uma disciplina ou grupo",
+      "noGroups": "Você ainda não está inscrito em nenhum grupo de disciplina.",
+      "professorLabel": "Solicitar ao Professor ou Monitor? *",
+      "professorPlaceholder": "Selecione um professor ou monitor",
+      "reasonLabel": "Qual o motivo desta solicitação? *",
+      "reasonPlaceholder": "Descreva brevemente por que você gostaria de uma reunião...",
+      "dateLabel": "Data Sugerida *",
+      "startTimeLabel": "Hora de Início (CST) *",
+      "endTimeLabel": "Hora de Término (CST) *",
+      "meetingTypeLabel": "Tipo de Reunião *",
+      "online": "Reunião Online",
+      "inPerson": "Reunião Presencial",
+      "meetingLinkLabel": "Link da Reunião (opcional)",
+      "meetingLinkPlaceholder": "https://zoom.us/j/...",
+      "submitButton": "Enviar Solicitação"
+    },
+    "success": {
+      "title": "Solicitação Enviada!",
+      "subtitle": "Sua solicitação de monitoria foi enviada. Você receberá uma confirmação por e-mail assim que seu professor responder.",
+      "emailNote": "Verifique seu e-mail em <strong>{{email}}</strong> para atualizações.",
+      "submitAnother": "Enviar outra solicitação"
+    },
+    "requests": {
+      "title": "Suas Solicitações",
+      "empty": "Nenhuma solicitação ainda. Envie sua primeira solicitação acima.",
+      "online": "Online",
+      "inPerson": "Presencial",
+      "meetingLink": "Link da reunião: {{link}}",
+      "addToGoogle": "Adicionar ao Google Agenda",
+      "addToOutlook": "Adicionar ao Outlook",
+      "joinMeeting": "Entrar na Reunião",
+      "timeRange": "{{start}} – {{end}}"
+    },
+    "status": {
+      "pending": "Pendente",
+      "confirmed": "Confirmado",
+      "declined": "Recusado"
+    },
+    "errors": {
+      "loadProfessors": "Falha ao carregar contatos dos professores.",
+      "loadGroups": "Falha ao carregar grupos.",
+      "loadRequests": "Falha ao carregar suas solicitações de monitoria.",
+      "loadData": "Falha ao carregar dados de monitoria.",
+      "noGroup": "Por favor, selecione uma disciplina ou grupo.",
+      "submit": "Falha ao enviar solicitação de monitoria."
+    }
+  },
+  "selfCheck": {
+    "pageTitle": "Autoavaliação",
+    "upload": {
+      "title": "Verifique seu trabalho",
+      "subtitle": "Envie os critérios de avaliação (rubrica) e seu trabalho para obter um relatório de nota estimado por IA.",
+      "rubricLabel": "Critérios de Avaliação",
+      "rubricPlaceholder": "Clique para enviar a rubrica",
+      "workLabel": "Seu Trabalho",
+      "workPlaceholder": "Clique para enviar seu trabalho",
+      "analyzeButton": "Analisar meu Trabalho",
+      "analyzingButton": "Analisando..."
+    },
+    "analyzing": {
+      "title": "Analisando seu trabalho...",
+      "subtitle": "Comparando seu envio com os critérios da rubrica"
+    },
+    "report": {
+      "title": "Relatório de Notas",
+      "potentialGradeLabel": "Nota Potencial",
+      "areasForImprovement": "Áreas para Melhoria"
+    },
+    "history": {
+      "title": "Avaliações Anteriores",
+      "loading": "Carregando seu histórico de avaliações...",
+      "empty": "Nenhuma avaliação anterior. Envie seu primeiro trabalho acima para começar.",
+      "areasForImprovement": "Áreas para Melhoria"
+    },
+    "errors": {
+      "loadHistory": "Falha ao carregar histórico de autoavaliação.",
+      "analyze": "Falha ao analisar seu trabalho."
+    }
+  },
+  "profile": {
+    "sectionLabel": "Configurações do Aluno",
+    "pageTitle": "Gerencie sua conta",
+    "pageSubtitle": "Atualize suas preferências de segurança, revise os detalhes da conta e controle como o D.I.Y.A notifica você sobre atividades importantes.",
+    "status": {
+      "emailVerified": "E-mail verificado",
+      "emailPending": "Verificação de e-mail pendente",
+      "lastSynced": "Última sincronização em {{date}}"
+    },
+    "account": {
+      "sectionLabel": "Conta",
+      "noEmail": "E-mail indisponível",
+      "emailAlertsLabel": "Alertas por E-mail",
+      "forumRepliesLabel": "Respostas no Fórum",
+      "on": "Ligado",
+      "off": "Desligado"
+    },
+    "security": {
+      "title": "Segurança da Conta",
+      "subtitle": "Use o Auth0 para gerenciar sua senha e manter seu login seguro.",
+      "passwordReset": {
+        "title": "Redefinir Senha",
+        "description": "Enviar um e-mail seguro de redefinição de senha do Auth0 para <strong>{{email}}</strong>.",
+        "fallbackEmail": "seu e-mail da conta",
+        "button": "Alterar Senha",
+        "buttonSending": "Enviando e-mail de redefinição...",
+        "successMessage": "E-mail de redefinição enviado para {{email}}. Verifique sua caixa de entrada para o link seguro."
+      }
+    },
+    "notifications": {
+      "title": "Notificações",
+      "subtitle": "Essas preferências são carregadas diretamente do seu documento de usuário no Firestore e salvas instantaneamente ao serem alteradas.",
+      "emailAlerts": {
+        "title": "Alertas por E-mail",
+        "description": "Receba notificações por e-mail para atividades importantes da conta e atualizações de compromissos.",
+        "successMessage": "Alertas por e-mail atualizados com sucesso."
+      },
+      "forumReplies": {
+        "title": "Novas Respostas no Fórum",
+        "description": "Seja notificado quando houver novas atividades ou respostas em discussões importantes para seus estudos.",
+        "successMessage": "Notificações de respostas no fórum atualizadas com sucesso."
+      }
+    }
+  }
+}
