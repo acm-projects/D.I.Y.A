@@ -255,7 +255,7 @@ export function ProfessorEditGroupPage() {
     );
   };
 
-  const handleAddStudent = () => {
+  const handleAddStudent = async () => {
     const trimmedEmail = newStudentEmail.trim().toLowerCase();
     const trimmedName = newStudentName.trim();
 
@@ -273,20 +273,47 @@ export function ProfessorEditGroupPage() {
       return;
     }
 
+    const newStudent: Student = {
+      id: matchedUser.id,
+      name: matchedUser.name || trimmedName || matchedUser.email || "Student",
+      email: matchedUser.email || trimmedEmail,
+      status: "active",
+    };
+
+    const nextStudents = [...students, newStudent];
+    const nextMemberIds = nextStudents.map((s) => s.id);
+
     setError(null);
     setSuccessMessage(null);
-    setStudents([
-      ...students,
-      {
-        id: matchedUser.id,
-        name: matchedUser.name || trimmedName || matchedUser.email || "Student",
-        email: matchedUser.email || trimmedEmail,
-        status: "active",
-      },
-    ]);
+    setStudents(nextStudents);
     setNewStudentName("");
     setNewStudentEmail("");
     setShowAddStudent(false);
+
+    // Persist immediately
+    if (groupId) {
+      try {
+        setIsSaving(true);
+        const response = await fetch(`${GROUPS_API_BASE_URL}/${groupId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: groupNameEdit.trim() || courseTitle,
+            description: groupDescription.trim(),
+            professor: groupProfessor,
+            members: nextMemberIds,
+          }),
+        });
+        if (!response.ok) throw new Error("Failed to save student addition.");
+        await syncUserMemberships(nextMemberIds);
+        setPersistedMemberIds(nextMemberIds);
+        setSuccessMessage("Student added successfully.");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to save student addition.");
+      } finally {
+        setIsSaving(false);
+      }
+    }
   };
 
   const closeAddStudentModal = () => {
@@ -345,11 +372,39 @@ export function ProfessorEditGroupPage() {
     }
   };
 
-  const handleRemoveStudent = (id: string) => {
-    if (confirm("Are you sure you want to remove this student?")) {
-      setError(null);
-      setSuccessMessage(null);
-      setStudents(students.filter((s) => s.id !== id));
+  const handleRemoveStudent = async (id: string) => {
+    if (!confirm("Are you sure you want to remove this student?")) return;
+
+    const nextStudents = students.filter((s) => s.id !== id);
+    const nextMemberIds = nextStudents.map((s) => s.id);
+
+    setError(null);
+    setSuccessMessage(null);
+    setStudents(nextStudents);
+
+    // Persist immediately
+    if (groupId) {
+      try {
+        setIsSaving(true);
+        const response = await fetch(`${GROUPS_API_BASE_URL}/${groupId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: groupNameEdit.trim() || courseTitle,
+            description: groupDescription.trim(),
+            professor: groupProfessor,
+            members: nextMemberIds,
+          }),
+        });
+        if (!response.ok) throw new Error("Failed to save student removal.");
+        await syncUserMemberships(nextMemberIds);
+        setPersistedMemberIds(nextMemberIds);
+        setSuccessMessage("Student removed successfully.");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to save student removal.");
+      } finally {
+        setIsSaving(false);
+      }
     }
   };
 
@@ -559,7 +614,7 @@ export function ProfessorEditGroupPage() {
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                         <span style={{ padding: "5px 12px", backgroundColor: student.status === "active" ? palette.sage : "#FFA500", color: "white", fontSize: 11, fontWeight: 700, borderRadius: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>{student.status}</span>
-                        <button onClick={() => handleRemoveStudent(student.id)} style={{ padding: "7px 14px", background: "transparent", color: "#DC3545", border: "1.5px solid rgba(220,53,69,0.4)", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>Remove</button>
+                        <button onClick={() => void handleRemoveStudent(student.id)} style={{ padding: "7px 14px", background: "transparent", color: "#DC3545", border: "1.5px solid rgba(220,53,69,0.4)", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>Remove</button>
                       </div>
                     </div>
                   ))}
@@ -591,7 +646,7 @@ export function ProfessorEditGroupPage() {
               <input type="email" placeholder="student@school.edu" value={newStudentEmail} onChange={(e) => setNewStudentEmail(e.target.value)} style={{ padding: "12px 14px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit" }} />
               <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 8 }}>
                 <button type="button" onClick={closeAddStudentModal} style={{ padding: "10px 16px", background: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Cancel</button>
-                <button type="button" onClick={handleAddStudent} style={{ padding: "10px 18px", background: palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Add Student</button>
+                <button type="button" onClick={() => void handleAddStudent()} style={{ padding: "10px 18px", background: palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Add Student</button>
               </div>
             </div>
           </div>

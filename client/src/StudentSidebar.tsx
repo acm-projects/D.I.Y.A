@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useFirestoreDisplayName } from "./hooks/useFirestoreDisplayName";
 
 const palette = {
   darkest: "#270115",
@@ -60,8 +61,9 @@ export function StudentSidebar({ activeItem }: { activeItem: StudentSidebarItem 
   const navigate = useNavigate();
   const { logout, user } = useAuth0();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const displayName = user?.name?.trim() || "Student";
+  const firestoreName = useFirestoreDisplayName(user?.sub?.trim());
   const displayEmail = user?.email?.trim() || "student@university.edu";
+  const displayName = firestoreName || (user?.name?.trim() !== displayEmail ? user?.name?.trim() : "") || "Student";
   const avatarText = (displayName[0] || displayEmail[0] || "S").toUpperCase();
 
   return (

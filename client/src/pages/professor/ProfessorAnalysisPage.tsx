@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { ProfessorSidebar } from "../../ProfessorSidebar";
+import { useProfessorGroups } from "../../ProfessorGroupContext";
 
  type TopicStatus = "needs-attention" | "proficient";
 
@@ -16,13 +17,6 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
  interface LiveGroup {
    id: string;
    professor?: string;
- }
-
- interface LiveUser {
-   id: string;
-   authId?: string;
-   email?: string;
-   name?: string;
  }
 
  interface LivePost {
@@ -45,7 +39,6 @@ const palette = {
 
 const GROUPS_API_BASE_URL = "/api/groups";
 const POSTS_API_BASE_URL = "/api/posts";
-const USERS_API_BASE_URL = "/api/users";
 
 const COLORS: Record<TopicStatus, string> = {
   "needs-attention": "#DC3545",
@@ -156,8 +149,8 @@ function renderTopicLabel(props: {
 }
 
 export function ProfessorAnalysisPage() {
-  const navigate = useNavigate();
   const { user, logout } = useAuth0();
+  const { selectedGroupId } = useProfessorGroups();
   const [topicData, setTopicData] = useState<TopicData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -183,35 +176,24 @@ export function ProfessorAnalysisPage() {
       setError(null);
 
       try {
-        const [groupsResponse, postsResponse, usersResponse] = await Promise.all([
+        const [groupsResponse, postsResponse] = await Promise.all([
           fetch(GROUPS_API_BASE_URL, { signal: controller.signal }),
           fetch(POSTS_API_BASE_URL, { signal: controller.signal }),
-          fetch(USERS_API_BASE_URL, { signal: controller.signal }),
         ]);
 
-        if (!groupsResponse.ok || !postsResponse.ok || !usersResponse.ok) {
+        if (!groupsResponse.ok || !postsResponse.ok) {
           throw new Error("Failed to load analysis data.");
         }
 
         const groups = (await groupsResponse.json()) as LiveGroup[];
         const posts = (await postsResponse.json()) as LivePost[];
-        const users = (await usersResponse.json()) as LiveUser[];
 
-        const currentProfessor = users.find((liveUser) => {
-          const candidateValues = [liveUser.id, liveUser.authId, liveUser.email, liveUser.name].filter(
-            (value): value is string => Boolean(value),
-          );
-
-          return candidateValues.some((value) => [user.sub, user.email, user.name].filter((item): item is string => Boolean(item)).includes(value));
-        }) ?? null;
-
-        const professorIdentifiers = [user.sub, user.email, user.name, currentProfessor?.id, currentProfessor?.authId].filter(
-          (value): value is string => Boolean(value),
-        );
-
-        const professorGroups = groups.filter((group) => professorIdentifiers.includes(group.professor ?? ""));
-        const groupIds = new Set(professorGroups.map((group) => group.id));
-        const relevantPosts = posts.filter((post) => groupIds.has(post.groupId ?? ""));
+        const relevantPosts = selectedGroupId
+          ? posts.filter((post) => post.groupId === selectedGroupId)
+          : posts;
+        const professorGroups = selectedGroupId
+          ? groups.filter((g) => g.id === selectedGroupId)
+          : groups;
         const aggregatedTopics = aggregateTopics(relevantPosts);
 
         if (isMounted) {
@@ -241,7 +223,7 @@ export function ProfessorAnalysisPage() {
       isMounted = false;
       controller.abort();
     };
-  }, [user?.email, user?.name, user?.sub]);
+  }, [user?.email, user?.name, user?.sub, selectedGroupId]);
 
   const totalTopicQuestions = useMemo(
     () => topicData.reduce((sum, topic) => sum + topic.value, 0),
@@ -269,121 +251,11 @@ export function ProfessorAnalysisPage() {
         display: "flex",
       }}
     >
-      {/* Sidebar */}
-      <aside
-        style={{
-          width: 220,
-          background: "linear-gradient(160deg, #4a1850 0%, #2d0f38 50%, #1c0a24 100%)",
-          padding: "0 10px 16px",
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-          borderRight: "1px solid rgba(255,255,255,0.05)",
-          boxShadow: "4px 0 32px rgba(0,0,0,0.25)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            padding: "18px 8px 16px",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
-            marginBottom: 16,
-          }}
-        >
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 10,
-              background: "linear-gradient(135deg, #a22237 0%, #5C1E26 100%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              boxShadow: "0 2px 10px rgba(162,34,55,0.45)",
-            }}
-          >
-            <img src="/logo.png" alt="logo" style={{ height: 22, objectFit: "contain" }} />
-          </div>
-          <div>
-            <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>
-              D.I.Y.A
-            </div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>
-              Professor View
-            </div>
-          </div>
-        </div>
-
-        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>
-          Navigation
-        </div>
-
-        <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button
-            type="button"
-            onClick={() => navigate("/professor/forum")}
-            style={{
-              width: "100%",
-              textAlign: "left",
-              padding: "10px 12px",
-              borderRadius: 10,
-              border: "none",
-              backgroundColor: "rgba(255,255,255,0.04)",
-              color: "rgba(255,255,255,0.88)",
-              fontSize: 13,
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
-            ← Back to Forum
-          </button>
-          {[
-            { id: "calendar", label: "Calendar", path: "/professor/calendar" },
-            { id: "analysis", label: "Analysis", path: "/professor/analysis" },
-            { id: "requests", label: "Requests", path: "/professor/requests" },
-            { id: "editgroup", label: "Edit Group", path: "/professor/edit-group" },
-          ].map((item) => {
-            const isActive = item.id === "analysis";
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => navigate(item.path)}
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "none",
-                  backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent",
-                  color: isActive ? "#fff" : "rgba(255,255,255,0.65)",
-                  fontSize: 13,
-                  fontWeight: isActive ? 700 : 600,
-                  cursor: "pointer",
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-        <div style={{ flex: 1 }} />
-        <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)", margin: "12px 0 10px 0" }} />
-        <button
-          type="button"
-          onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-          style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
-        >
-          Sign out
-        </button>
-      </aside>
+      <ProfessorSidebar activeItem="analysis" onSignOut={() => {
+        window.localStorage.removeItem("diya_role");
+        window.sessionStorage.removeItem("pendingSignupRole");
+        void logout({ logoutParams: { returnTo: window.location.origin } });
+      }} />
 
       {/* Main content */}
       <main style={{ flex: 1, overflow: "auto" }}>

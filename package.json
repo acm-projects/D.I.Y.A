@@ -10,6 +10,7 @@
   "main": "index.js",
   "dependencies": {
     "@google/genai": "^1.43.0",
+    "@google/generative-ai": "^0.24.1",
     "ansi-styles": "^3.2.1",
     "array-buffer-byte-length": "^1.0.2",
     "arraybuffer.prototype.slice": "^1.0.4",

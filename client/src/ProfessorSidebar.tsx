@@ -1,12 +1,22 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useProfessorGroups } from "./ProfessorGroupContext";
 
 const palette = {
   crimson: "#a22237",
   deepBurgundy: "#5C1E26",
   sage: "#7A9B76",
 } as const;
+
+function HomeIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12l9-8 9 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 function ForumIcon() {
   return (
@@ -61,15 +71,77 @@ function EditGroupIcon() {
   );
 }
 
+function ProfileIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const navItems = [
+  { id: "home", label: "Home", path: "/professor/home", icon: <HomeIcon /> },
   { id: "forum", label: "Forum", path: "/professor/forum", icon: <ForumIcon /> },
   { id: "calendar", label: "Calendar", path: "/professor/calendar", icon: <CalendarIcon /> },
   { id: "analysis", label: "Analysis", path: "/professor/analysis", icon: <AnalysisIcon /> },
   { id: "requests", label: "Requests", path: "/professor/requests", icon: <RequestsIcon /> },
   { id: "editgroup", label: "Edit Group", path: "/professor/edit-group", icon: <EditGroupIcon /> },
+  { id: "profile", label: "Profile", path: "/professor/profile", icon: <ProfileIcon /> },
 ] as const;
 
 export type ProfessorSidebarItem = (typeof navItems)[number]["id"];
+
+function GroupSelector() {
+  const { groups, selectedGroupId, setSelectedGroupId, isLoading } = useProfessorGroups();
+
+  if (isLoading || groups.length === 0) return null;
+
+  return (
+    <div style={{ padding: "12px 8px 0" }}>
+      <div
+        style={{
+          fontSize: 10,
+          fontWeight: 700,
+          color: "rgba(255,255,255,0.28)",
+          letterSpacing: 1.5,
+          textTransform: "uppercase",
+          marginBottom: 6,
+        }}
+      >
+        Active Group
+      </div>
+      <select
+        value={selectedGroupId ?? ""}
+        onChange={(e) => setSelectedGroupId(e.target.value || null)}
+        style={{
+          width: "100%",
+          padding: "8px 10px",
+          borderRadius: 8,
+          border: "1px solid rgba(255,255,255,0.12)",
+          backgroundColor: "rgba(255,255,255,0.08)",
+          color: "#fff",
+          fontSize: 12,
+          fontWeight: 600,
+          outline: "none",
+          cursor: "pointer",
+          appearance: "none",
+          WebkitAppearance: "none",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right 10px center",
+          paddingRight: 28,
+        }}
+      >
+        {groups.map((g) => (
+          <option key={g.id} value={g.id} style={{ color: "#111", backgroundColor: "#fff" }}>
+            {g.title}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
 
 export function ProfessorSidebar({
   activeItem,
@@ -222,6 +294,8 @@ export function ProfessorSidebar({
           );
         })}
       </nav>
+
+      <GroupSelector />
 
       {children ? <div style={{ marginTop: 12 }}>{children}</div> : null}
 

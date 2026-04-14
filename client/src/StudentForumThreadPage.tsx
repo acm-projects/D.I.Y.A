@@ -1,7 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "./firebase";
 import { StudentSidebar } from "./StudentSidebar";
+import { useRelatedPosts } from "./api/useRelatedPosts";
 
 const palette = {
   darkest: "#270115",
@@ -44,6 +47,58 @@ type BackendReply = {
 const POSTS_API_BASE_URL = "/api/posts";
 const REPLIES_API_BASE_URL = "/api/replies";
 
+/** Lightweight markdown-to-HTML: handles bold, numbered/bulleted lists, and line breaks */
+function renderFormattedText(text: string): string {
+  let html = text
+    // Escape HTML entities
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  // Bold: **text** or __text__
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/__(.+?)__/g, "<strong>$1</strong>");
+
+  // Split into lines for list detection
+  const lines = html.split("\n");
+  const result: string[] = [];
+  let inList: "ol" | "ul" | null = null;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    // Numbered list: "1. ", "2. ", etc.
+    const olMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+    // Bullet list: "- ", "• ", or "* "
+    const ulMatch = trimmed.match(/^[-•*]\s+(.*)$/);
+
+    if (olMatch) {
+      if (inList !== "ol") {
+        if (inList) result.push(inList === "ul" ? "</ul>" : "</ol>");
+        result.push('<ol style="margin:4px 0 4px 18px;padding:0;list-style:decimal">');
+        inList = "ol";
+      }
+      result.push(`<li style="margin-bottom:3px">${olMatch[2]}</li>`);
+    } else if (ulMatch) {
+      if (inList !== "ul") {
+        if (inList) result.push(inList === "ol" ? "</ol>" : "</ul>");
+        result.push('<ul style="margin:4px 0 4px 18px;padding:0;list-style:disc">');
+        inList = "ul";
+      }
+      result.push(`<li style="margin-bottom:3px">${ulMatch[1]}</li>`);
+    } else {
+      if (inList) {
+        result.push(inList === "ol" ? "</ol>" : "</ul>");
+        inList = null;
+      }
+      result.push(trimmed === "" ? "<br/>" : `<p style="margin:2px 0">${trimmed}</p>`);
+    }
+  }
+  if (inList) result.push(inList === "ol" ? "</ol>" : "</ul>");
+
+  return result.join("");
+}
+
 function getTimestampMs(value?: BackendPost["createdAt"] | BackendReply["createdAt"]): number {
   if (!value) return Date.now();
   if (typeof value === "string") {
@@ -59,16 +114,23 @@ export function StudentForumThreadPage() {
   const { user } = useAuth0();
   const { groupId, questionId } = useParams<{ groupId: string; questionId: string }>();
   const navigate = useNavigate();
+  const { relatedPosts, loading: relatedLoading } = useRelatedPosts(questionId ?? null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [replies, setReplies] = useState<Reply[]>([]);
   const [draft, setDraft] = useState("");
   const [imagePreview, setImagePreview] = useState<string | undefined>();
+  const [fileObj, setFileObj] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<string | undefined>();
   const [questionTitle, setQuestionTitle] = useState("Your question");
   const [questionAuthor, setQuestionAuthor] = useState("You");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAiThinking, setIsAiThinking] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const pollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const knownIdsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     let isMounted = true;
@@ -103,22 +165,15 @@ export function StudentForumThreadPage() {
 
         const post = (await postResponse.json()) as BackendPost;
         const rawReplies = (await repliesResponse.json()) as BackendReply[];
-        const aiReply: Reply[] = post.aiAnswer
-          ? [{
-              id: `ai-${post.id}`,
-              author: post.isVerified ? "Professor Verified AI" : "D.I.Y.A AI",
-              role: "professor" as const,
-              text: post.aiAnswer,
-              timestamp: new Date(getTimestampMs(post.createdAt)),
-            }]
-          : [];
-
         const mappedReplies: Reply[] = rawReplies.map((reply) => {
           const role: Reply["role"] = reply.role === "professor" ? "professor" : "student";
+          const isAI = reply.authorId === "diya-ai";
 
           return {
             id: reply.id,
-            author: reply.authorId === user?.sub ? "You" : reply.authorName || "Student",
+            author: isAI
+              ? (post.isVerified ? "Professor Verified AI" : "D.I.Y.A AI")
+              : reply.authorId === user?.sub ? "You" : reply.authorName || "Student",
             role,
             text: reply.text || "",
             image: reply.imageUrl,
@@ -129,7 +184,16 @@ export function StudentForumThreadPage() {
         if (isMounted) {
           setQuestionTitle(post.title ?? post.content ?? "Your question");
           setQuestionAuthor(post.authorId === user?.sub ? "You" : "Student");
-          setReplies([...aiReply, ...mappedReplies]);
+          setReplies(mappedReplies);
+
+          // If this is a fresh post with no AI reply yet, start polling
+          const hasAiReply = mappedReplies.some((r) => r.author === "D.I.Y.A AI" || r.author === "Professor Verified AI");
+          const postAgeMs = Date.now() - getTimestampMs(post.createdAt);
+          if (!hasAiReply && postAgeMs < 60000) {
+            setIsAiThinking(true);
+            if (pollTimerRef.current) clearTimeout(pollTimerRef.current);
+            pollTimerRef.current = setTimeout(() => void pollForAiReply(Date.now()), 2000);
+          }
         }
       } catch (err) {
         if (isMounted) {
@@ -147,28 +211,105 @@ export function StudentForumThreadPage() {
 
     return () => {
       isMounted = false;
+      if (pollTimerRef.current) clearTimeout(pollTimerRef.current);
     };
   }, [questionId, user?.sub]);
 
-  const handleSend = async () => {
-    const text = draft.trim();
-    if ((!text && !imagePreview) || !questionId || !user?.sub) return;
+  // Keep knownIdsRef in sync whenever replies change
+  useEffect(() => {
+    knownIdsRef.current = new Set(replies.map((r) => r.id));
+  }, [replies]);
+
+  const pollForAiReply = useCallback(async (startTime: number) => {
+    if (!questionId) return;
+    if (Date.now() - startTime > 30000) {
+      setIsAiThinking(false);
+      return;
+    }
 
     try {
+      const resp = await fetch(`${REPLIES_API_BASE_URL}/post/${questionId}`);
+      if (resp.ok) {
+        const raw = (await resp.json()) as BackendReply[];
+        const newAiReplies = raw.filter(
+          (r) => r.authorId === "diya-ai" && !knownIdsRef.current.has(r.id)
+        );
+        if (newAiReplies.length > 0) {
+          const postResp = await fetch(`${POSTS_API_BASE_URL}/${questionId}`);
+          const post = postResp.ok ? ((await postResp.json()) as BackendPost) : null;
+          const mapped: Reply[] = newAiReplies.map((r) => ({
+            id: r.id,
+            author: post?.isVerified ? "Professor Verified AI" : "D.I.Y.A AI",
+            role: "professor" as const,
+            text: r.text || "",
+            image: r.imageUrl,
+            timestamp: new Date(getTimestampMs(r.createdAt)),
+          }));
+          setReplies((prev) => [...prev, ...mapped]);
+          setIsAiThinking(false);
+          requestAnimationFrame(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }));
+          return;
+        }
+      }
+    } catch {
+      // ignore poll errors, try again
+    }
+
+    pollTimerRef.current = setTimeout(() => void pollForAiReply(startTime), 2000);
+  }, [questionId]);
+
+  const handleSend = async () => {
+    const text = draft.trim();
+    if ((!text && !imagePreview && !fileObj) || !questionId || !user?.sub || isSending) return;
+
+    setIsSending(true);
+    try {
+      // Upload file to Firebase Storage if present
+      let uploadedUrl: string | undefined;
+      if (fileObj && groupId) {
+        if (fileObj.size > 10 * 1024 * 1024) {
+          throw new Error("Attached file is too large. Please use a file under 10MB.");
+        }
+
+        if (fileObj.type.startsWith("image/") && imagePreview) {
+          uploadedUrl = imagePreview;
+        } else {
+          const storageRef = ref(storage, `forum-images/${groupId}/${Date.now()}-${fileObj.name}`);
+          const snapshot = await Promise.race([
+            uploadBytes(storageRef, fileObj),
+            new Promise<never>((_, reject) => {
+              window.setTimeout(() => reject(new Error("File upload timed out. Please try a smaller file or check Firebase Storage config.")), 12000);
+            }),
+          ]);
+          uploadedUrl = await Promise.race([
+            getDownloadURL(snapshot.ref),
+            new Promise<never>((_, reject) => {
+              window.setTimeout(() => reject(new Error("Could not get uploaded file URL. Check Firebase Storage bucket and rules.")), 8000);
+            }),
+          ]);
+        }
+      }
+
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 12000);
+
       const response = await fetch(REPLIES_API_BASE_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        signal: controller.signal,
         body: JSON.stringify({
           postId: questionId,
           authorId: user.sub,
           authorName: user.name || user.email || "Student",
           role: "student",
-          text: text || "(image)",
-          imageUrl: imagePreview,
+          text: text || `(${fileName || "file"})`,
+          imageUrl: uploadedUrl || imagePreview,
         }),
       });
+
+      window.clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error("Failed to send reply.");
@@ -188,29 +329,50 @@ export function StudentForumThreadPage() {
       ]);
       setDraft("");
       setImagePreview(undefined);
+      setFileObj(null);
+      setFileName(undefined);
+      setIsAiThinking(true);
       requestAnimationFrame(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }));
+
+      // Start polling for AI reply
+      if (pollTimerRef.current) clearTimeout(pollTimerRef.current);
+      pollTimerRef.current = setTimeout(() => void pollForAiReply(Date.now()), 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send reply.");
+      if (err instanceof DOMException && err.name === "AbortError") {
+        setError("Reply request timed out. Make sure the backend server is running.");
+      } else {
+        setError(err instanceof Error ? err.message : "Failed to send reply.");
+      }
+    } finally {
+      setIsSending(false);
     }
   };
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        setImagePreview(reader.result);
-      }
-    };
-    reader.readAsDataURL(file);
+    setFileObj(file);
+    setFileName(file.name);
+
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setImagePreview(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // For non-image files (PDFs, etc.), show a placeholder
+      setImagePreview(undefined);
+    }
     e.target.value = "";
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      void handleSend();
     }
   };
 
@@ -311,6 +473,8 @@ export function StudentForumThreadPage() {
           </div>
         </div>
 
+        <div style={{ display: "flex", flex: 1, flexDirection: "row", overflow: "hidden" }}>
+
         {/* replies area */}
         <div
           style={{
@@ -378,7 +542,7 @@ export function StudentForumThreadPage() {
                       color: isProf ? palette.sage : palette.deepBurgundy,
                     }}
                   >
-                    {r.author} {isProf && "(Professor)"}
+                    {r.author}{isProf && r.author !== "D.I.Y.A AI" && r.author !== "Professor Verified AI" && " (Professor)"}
                   </div>
                   {r.image && (
                     <img
@@ -387,7 +551,14 @@ export function StudentForumThreadPage() {
                       style={{ maxWidth: "100%", borderRadius: 8, marginBottom: 6 }}
                     />
                   )}
-                  <div style={{ fontSize: 14, lineHeight: 1.45, color: "#111" }}>{r.text}</div>
+                  {(r.author === "D.I.Y.A AI" || r.author === "Professor Verified AI") ? (
+                    <div
+                      style={{ fontSize: 14, lineHeight: 1.55, color: "#111", textAlign: "left" }}
+                      dangerouslySetInnerHTML={{ __html: renderFormattedText(r.text) }}
+                    />
+                  ) : (
+                    <div style={{ fontSize: 14, lineHeight: 1.45, color: "#111" }}>{r.text}</div>
+                  )}
                   <div style={{ fontSize: 10, marginTop: 6, opacity: 0.5, textAlign: "right" }}>
                     {r.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
@@ -395,16 +566,128 @@ export function StudentForumThreadPage() {
               </div>
             );
           })}
+          {isAiThinking && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+              }}
+            >
+              <div
+                style={{
+                  maxWidth: "65%",
+                  padding: "12px 18px",
+                  borderRadius: 14,
+                  borderBottomLeftRadius: 4,
+                  backgroundColor: "rgba(122,155,118,0.1)",
+                  border: `1px solid ${palette.sage}`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    marginBottom: 6,
+                    color: palette.sage,
+                  }}
+                >
+                  D.I.Y.A AI
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                    fontSize: 14,
+                    color: "rgba(92,30,38,0.55)",
+                    fontWeight: 600,
+                    fontStyle: "italic",
+                  }}
+                >
+                  <span className="ai-thinking-dots">Thinking</span>
+                </div>
+              </div>
+            </div>
+          )}
           <div ref={bottomRef} />
         </div>
 
-        {/* image preview strip */}
-        {imagePreview && (
+          {/* Related discussions sidebar */}
+          <aside
+            style={{
+              width: 260,
+              borderLeft: "1px solid #e0e0e0",
+              backgroundColor: palette.cream,
+              display: "flex",
+              flexDirection: "column",
+              padding: "20px 16px",
+              overflowY: "auto",
+              flexShrink: 0,
+            }}
+          >
+            <h3 style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: palette.deepBurgundy, marginBottom: 16, fontWeight: 800 }}>
+              Related Discussions
+            </h3>
+
+            {relatedLoading ? (
+              <div style={{ fontSize: 13, color: "#666", fontStyle: "italic" }}>Finding similar topics...</div>
+            ) : relatedPosts && relatedPosts.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {relatedPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    onClick={() => navigate(`/groups/${groupId}/forum/${post.id}`)}
+                    style={{
+                      padding: "12px",
+                      backgroundColor: "#fff",
+                      border: `1px solid ${palette.lightGray}`,
+                      borderRadius: 8,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <div style={{ fontSize: 13, fontWeight: 700, color: palette.darkest, lineHeight: 1.4 }}>
+                      {post.title || "Untitled Post"}
+                    </div>
+                    <div style={{ fontSize: 11, color: palette.sage, marginTop: 4, fontWeight: 600 }}>
+                      View Thread →
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ fontSize: 13, color: "#999" }}>No similar posts found.</div>
+            )}
+          </aside>
+        </div>
+
+        {/* file preview strip */}
+        {(imagePreview || fileName) && (
           <div style={{ padding: "6px 16px 0", display: "flex", alignItems: "center", gap: 8 }}>
-            <img src={imagePreview} alt="preview" style={{ height: 48, borderRadius: 6 }} />
+            {imagePreview ? (
+              <img src={imagePreview} alt="preview" style={{ height: 48, borderRadius: 6 }} />
+            ) : (
+              <div style={{
+                height: 48,
+                padding: "0 12px",
+                borderRadius: 6,
+                backgroundColor: "rgba(39,1,21,0.06)",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                fontSize: 12,
+                fontWeight: 600,
+                color: palette.deepBurgundy,
+              }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={palette.deepBurgundy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg>
+                {fileName}
+              </div>
+            )}
             <button
               type="button"
-              onClick={() => setImagePreview(undefined)}
+              onClick={() => { setImagePreview(undefined); setFileObj(null); setFileName(undefined); }}
               style={{
                 background: "none",
                 border: "none",
@@ -433,8 +716,8 @@ export function StudentForumThreadPage() {
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
-            onChange={handleImageSelect}
+            accept="image/*,.pdf,.doc,.docx,.txt,.csv,.xlsx"
+            onChange={handleFileSelect}
             style={{ display: "none" }}
           />
           <button
@@ -463,7 +746,8 @@ export function StudentForumThreadPage() {
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={handleKeyDown}
             type="text"
-            placeholder="Type your reply..."
+            placeholder={isSending ? "Sending..." : "Type your reply..."}
+            disabled={isSending}
             style={{
               flex: 1,
               padding: "10px 14px",
@@ -471,19 +755,22 @@ export function StudentForumThreadPage() {
               border: `1px solid rgba(39,1,21,0.2)`,
               fontSize: 14,
               outline: "none",
+              opacity: isSending ? 0.5 : 1,
             }}
           />
 
           <button
             type="button"
-            onClick={handleSend}
+            onClick={() => void handleSend()}
+            disabled={isSending}
             aria-label="Send reply"
             style={{
               background: palette.crimson,
               border: "none",
               borderRadius: 8,
               padding: "8px 10px",
-              cursor: "pointer",
+              cursor: isSending ? "not-allowed" : "pointer",
+              opacity: isSending ? 0.6 : 1,
               display: "flex",
               alignItems: "center",
             }}

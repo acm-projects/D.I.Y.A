@@ -100,7 +100,7 @@ export function SignUpPage() {
             color: "rgba(39,1,21,0.74)",
           }}
         >
-          Get started with D.I.Y.A through the secure Auth0 signup flow and continue into your learning workspace.
+          Create your D.I.Y.A account to join your classes, access discussions, and get AI-powered feedback on your work.
         </p>
 
         <div
@@ -171,7 +171,7 @@ export function SignUpPage() {
             boxShadow: "0 16px 36px rgba(92,30,38,0.25)",
           }}
         >
-          Sign up with Auth0
+          Sign up
         </button>
 
         <div

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { StudentSidebar } from "./StudentSidebar";
+import { useFirestoreDisplayName } from "./hooks/useFirestoreDisplayName";
 
 // Defining the shape of a group object
 type StudentGroup = {
@@ -71,6 +72,7 @@ function ForumIcon({ color }: { color: string }) {
 // Main page component for displaying student groups
 export function StudentGroupsPage() {
   const { user } = useAuth0();
+  const firestoreName = useFirestoreDisplayName(user?.sub?.trim());
   const navigate = useNavigate(); // for navigating to other pages
   const [groups, setGroups] = useState<StudentGroup[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -82,6 +84,14 @@ export function StudentGroupsPage() {
     let isMounted = true;
 
     const loadGroups = async () => {
+      if (!user?.sub) {
+        if (isMounted) {
+          setGroups([]);
+          setIsLoading(false);
+        }
+        return;
+      }
+
       setIsLoading(true);
       setError(null);
 
@@ -102,13 +112,22 @@ export function StudentGroupsPage() {
         const rawGroups = (await groupsResponse.json()) as BackendGroup[];
         const rawPosts = (await postsResponse.json()) as BackendPost[];
 
+        const currentUserIdentifiers = [user.sub, user.email, user.name].filter(
+          (value): value is string => Boolean(value),
+        );
+
+        const myGroups = rawGroups.filter((group) => {
+          const members = Array.isArray(group.members) ? group.members : [];
+          return members.some((memberId) => currentUserIdentifiers.includes(memberId));
+        });
+
         const postCounts = rawPosts.reduce<Record<string, number>>((counts, post) => {
           if (!post.groupId) return counts;
           counts[post.groupId] = (counts[post.groupId] ?? 0) + 1;
           return counts;
         }, {});
 
-        const mappedGroups = rawGroups.map((group) => ({
+        const mappedGroups = myGroups.map((group) => ({
           id: group.id,
           name: group.title ?? group.id,
           membersCount: Array.isArray(group.members) ? group.members.length : 0,
@@ -135,7 +154,7 @@ export function StudentGroupsPage() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [user?.email, user?.name, user?.sub]);
 
   // Filter groups based on search query
   const filteredGroups = useMemo(() => {
@@ -213,7 +232,7 @@ export function StudentGroupsPage() {
               lineHeight: 1.1,
             }}
           >
-            Welcome Back, {user?.name || 'Student'}!
+            Welcome Back, {firestoreName || user?.name || user?.email || 'Student'}!
           </div>
 
           {/* small divider under title */}

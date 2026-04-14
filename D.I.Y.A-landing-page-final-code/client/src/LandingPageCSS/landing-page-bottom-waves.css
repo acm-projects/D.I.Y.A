@@ -1,0 +1,47 @@
+/* Bottom-of-second-screen wave band: two lightest layers only, flipped so they sit along the bottom edge. */
+
+.landing-bottom-waves {
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.landing-bottom-waves--band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: min(40vh, 420px);
+  z-index: 0;
+  /* Flip vertically so the same paths read as a bottom wave */
+  transform: scaleY(-1);
+}
+
+.landing-bottom-waves svg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.landing-bottom-waves .wave-mid-b {
+  opacity: 0.58;
+}
+
+.landing-bottom-waves .wave-front {
+  opacity: 0.45;
+}
+
+.landing-bottom-waves .wave-mid-b,
+.landing-bottom-waves .wave-front {
+  mix-blend-mode: multiply;
+}
+
+@supports not (mix-blend-mode: multiply) {
+  .landing-bottom-waves .wave-mid-b,
+  .landing-bottom-waves .wave-front {
+    mix-blend-mode: normal;
+  }
+}

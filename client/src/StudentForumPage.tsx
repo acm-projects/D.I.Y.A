@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "./firebase";
 import { StudentSidebar } from "./StudentSidebar";
 
 const palette = {
@@ -120,9 +122,10 @@ export function StudentForumPage() {
   const { user } = useAuth0();
   const [query, setQuery] = useState("");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [showPopup, setShowPopup] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newImage, setNewImage] = useState<string | undefined>();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isPosting, setIsPosting] = useState(false);
   const [groupName, setGroupName] = useState("Forum");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [upvotedIds, setUpvotedIds] = useState<Set<string>>(new Set());
@@ -255,9 +258,32 @@ export function StudentForumPage() {
 
   const handleCreateQuestion = async () => {
     const title = newTitle.trim();
-    if (!title || !groupId || !user?.sub) return;
+    if (!title || !groupId || !user?.sub || isPosting) return;
 
+    setIsPosting(true);
     try {
+      let imageUrl: string | undefined;
+
+      if (imageFile) {
+        if (imageFile.size > 10 * 1024 * 1024) {
+          throw new Error("Attached file is too large. Please use a file under 10MB.");
+        }
+
+        const storageRef = ref(storage, `forum-images/${groupId}/${Date.now()}-${imageFile.name}`);
+        const snapshot = await Promise.race([
+          uploadBytes(storageRef, imageFile),
+          new Promise<never>((_, reject) => {
+            window.setTimeout(() => reject(new Error("File upload timed out. Please try a smaller file or check Firebase Storage config.")), 12000);
+          }),
+        ]);
+        imageUrl = await Promise.race([
+          getDownloadURL(snapshot.ref),
+          new Promise<never>((_, reject) => {
+            window.setTimeout(() => reject(new Error("Could not get uploaded file URL. Check Firebase Storage bucket and rules.")), 8000);
+          }),
+        ]);
+      }
+
       const response = await fetch(POSTS_API_BASE_URL, {
         method: "POST",
         headers: {
@@ -268,6 +294,7 @@ export function StudentForumPage() {
           content: title,
           groupId,
           authorId: user.sub,
+          ...(imageUrl ? { imageUrl } : {}),
         }),
       });
 
@@ -292,10 +319,14 @@ export function StudentForumPage() {
       setQuestions((prev) => [newQ, ...prev]);
       setNewTitle("");
       setNewImage(undefined);
-      setShowPopup(false);
+      setImageFile(null);
+
+      // Navigate to the new thread so the user sees the AI reply arrive
       navigate(`/groups/${groupId}/forum/${createdPost.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create question.");
+    } finally {
+      setIsPosting(false);
     }
   };
 
@@ -370,7 +401,13 @@ export function StudentForumPage() {
   const handlePopupImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setNewImage(URL.createObjectURL(file));
+    setImageFile(file);
+    if (file.type.startsWith("image/")) {
+      setNewImage(URL.createObjectURL(file));
+    } else {
+      // Non-image file: store a placeholder so the preview shows
+      setNewImage(`file:${file.name}`);
+    }
     e.target.value = "";
   };
 
@@ -411,36 +448,6 @@ export function StudentForumPage() {
           <span style={{ fontWeight: 850, fontSize: 44, color: palette.deepBurgundy, letterSpacing: -1, lineHeight: 1.1 }}>
             {groupName} Forum Page
           </span>
-
-          <div style={{ flex: 1 }} />
-
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 13, fontWeight: 700, color: palette.crimson }}>
-              Ask a new question
-            </span>
-            <button
-              type="button"
-              onClick={() => setShowPopup(true)}
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 8,
-                border: "none",
-                backgroundColor: palette.crimson,
-                color: palette.cream,
-                fontSize: 22,
-                fontWeight: 700,
-                lineHeight: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-              }}
-              aria-label="Create new question"
-            >
-              +
-            </button>
-          </div>
         </header>
 
         {/* content area */}
@@ -484,6 +491,173 @@ export function StudentForumPage() {
                 fontWeight: 500,
               }}
             />
+          </div>
+
+          {/* ── Inline Post Composer ── */}
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 16,
+              border: "1px solid rgba(39,1,21,0.10)",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+              padding: "18px 20px 14px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 0,
+            }}
+          >
+            <textarea
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  void handleCreateQuestion();
+                }
+              }}
+              placeholder="Ask a question to your peers and the D.I.Y.A AI..."
+              rows={3}
+              style={{
+                width: "100%",
+                minHeight: 72,
+                resize: "vertical",
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                color: palette.deepBurgundy,
+                fontSize: 14,
+                fontWeight: 500,
+                lineHeight: 1.6,
+                fontFamily: "inherit",
+                boxSizing: "border-box",
+                padding: 0,
+              }}
+            />
+
+            {newImage && (
+              <div style={{ position: "relative", display: "inline-block", marginTop: 10, marginBottom: 4 }}>
+                {newImage.startsWith("file:") ? (
+                  <div style={{
+                    height: 48,
+                    padding: "0 14px",
+                    borderRadius: 10,
+                    backgroundColor: "rgba(39,1,21,0.06)",
+                    border: "1px solid rgba(39,1,21,0.10)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: palette.deepBurgundy,
+                  }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={palette.deepBurgundy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    {newImage.slice(5)}
+                  </div>
+                ) : (
+                  <img
+                    src={newImage}
+                    alt="Attachment preview"
+                    style={{ maxHeight: 100, maxWidth: 180, borderRadius: 10, objectFit: "cover", border: "1px solid rgba(39,1,21,0.10)" }}
+                  />
+                )}
+                <button
+                  type="button"
+                  onClick={() => { setNewImage(undefined); setImageFile(null); }}
+                  aria-label="Remove attachment"
+                  style={{
+                    position: "absolute",
+                    top: -6,
+                    right: -6,
+                    width: 20,
+                    height: 20,
+                    borderRadius: 999,
+                    border: "none",
+                    backgroundColor: palette.crimson,
+                    color: "#fff",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    lineHeight: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                borderTop: "1px solid rgba(39,1,21,0.07)",
+                paddingTop: 12,
+                marginTop: 10,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <input
+                  ref={popupFileRef}
+                  type="file"
+                  accept="image/*,.pdf,.doc,.docx,.txt,.csv,.xlsx"
+                  onChange={handlePopupImage}
+                  style={{ display: "none" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => popupFileRef.current?.click()}
+                  aria-label="Attach file"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "6px 12px",
+                    borderRadius: 8,
+                    border: "1px solid rgba(39,1,21,0.12)",
+                    backgroundColor: "transparent",
+                    color: palette.deepBurgundy,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "background-color 120ms ease",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(39,1,21,0.04)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke={palette.deepBurgundy} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  Attach
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => void handleCreateQuestion()}
+                disabled={!newTitle.trim() || isPosting}
+                style={{
+                  padding: "9px 22px",
+                  borderRadius: 10,
+                  border: "none",
+                  backgroundColor: (!newTitle.trim() || isPosting) ? "rgba(74,21,37,0.35)" : "#4A1525",
+                  color: "#fff",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: (!newTitle.trim() || isPosting) ? "not-allowed" : "pointer",
+                  transition: "background-color 120ms ease, opacity 120ms ease",
+                  letterSpacing: 0.2,
+                }}
+              >
+                {isPosting ? "Posting..." : "Post Question"}
+              </button>
+            </div>
           </div>
 
           <div style={{ height: 1, backgroundColor: "rgba(39,1,21,0.12)" }} />
@@ -740,127 +914,6 @@ export function StudentForumPage() {
         </div>
       </div>
 
-      {/* new question popup */}
-      {showPopup && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0,0,0,0.45)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 100,
-          }}
-          onClick={() => { setShowPopup(false); setNewTitle(""); setNewImage(undefined); }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: 16,
-              padding: "28px 28px 22px",
-              width: 420,
-              maxWidth: "90vw",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
-            }}
-          >
-            <div style={{ fontSize: 20, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 18 }}>
-              Ask a Question
-            </div>
-
-            
-            <input
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter") handleCreateQuestion(); }}
-              placeholder="What's your question?"
-              autoFocus
-              style={{
-                width: "100%",
-                padding: "10px 14px",
-                borderRadius: 10,
-                border: `1px solid rgba(39,1,21,0.2)`,
-                fontSize: 14,
-                outline: "none",
-                boxSizing: "border-box",
-                marginBottom: 14,
-              }}
-            />
-
-            <div style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy, marginBottom: 6 }}>
-              Image (optional)
-            </div>
-            <input
-              ref={popupFileRef}
-              type="file"
-              accept="image/*"
-              onChange={handlePopupImage}
-              style={{ display: "none" }}
-            />
-            <button
-              type="button"
-              onClick={() => popupFileRef.current?.click()}
-              style={{
-                padding: "8px 14px",
-                borderRadius: 8,
-                border: `1px solid rgba(39,1,21,0.2)`,
-                backgroundColor: "transparent",
-                color: palette.deepBurgundy,
-                fontSize: 13,
-                fontWeight: 600,
-                cursor: "pointer",
-                marginBottom: 6,
-              }}
-            >
-              {newImage ? "Change image" : "Upload image"}
-            </button>
-            {newImage && (
-              <img
-                src={newImage}
-                alt="Preview"
-                style={{ display: "block", maxWidth: "100%", maxHeight: 160, borderRadius: 8, marginTop: 8, marginBottom: 8 }}
-              />
-            )}
-
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 18 }}>
-              <button
-                type="button"
-                onClick={() => { setShowPopup(false); setNewTitle(""); setNewImage(undefined); }}
-                style={{
-                  padding: "10px 18px",
-                  borderRadius: 10,
-                  border: `1px solid rgba(39,1,21,0.2)`,
-                  backgroundColor: "transparent",
-                  color: palette.deepBurgundy,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleCreateQuestion}
-                style={{
-                  padding: "10px 18px",
-                  borderRadius: 10,
-                  border: "none",
-                  backgroundColor: palette.crimson,
-                  color: "#fff",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  opacity: newTitle.trim() ? 1 : 0.5,
-                }}
-              >
-                Post Question
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

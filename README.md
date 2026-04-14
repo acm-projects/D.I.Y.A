@@ -166,7 +166,7 @@ D.I.Y.A. differentiates by combining structured intake, duplicate consolidation 
 ## The Team
 
 - **Project Manager**: Shreya S Ramani
-- **Industry Mentor**: TBD
+- **Industry Mentor**: Jeshna Gupta
 - **Participant 1**: Kevin Arputharaj  
 - **Participant 2**: Polina Maidanova
 - **Participant 3**: Madhav Suri

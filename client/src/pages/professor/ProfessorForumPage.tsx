@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { ProfessorSidebar } from "../../ProfessorSidebar";
+import { useProfessorGroups } from "../../ProfessorGroupContext";
 
 interface Question {
   id: string;
@@ -125,6 +126,7 @@ function ForumIcon({ color }: { color: string }) {
 export function ProfessorForumPage() {
   const navigate = useNavigate();
   const { user, logout } = useAuth0();
+  const { selectedGroupId, groups } = useProfessorGroups();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [announcements, setAnnouncements] = useState<AnnouncementRecord[]>([]);
@@ -161,28 +163,17 @@ export function ProfessorForumPage() {
           throw new Error("Failed to load professor forum posts.");
         }
 
-        const groups = (await groupsResponse.json()) as BackendGroup[];
+        const allGroups = (await groupsResponse.json()) as BackendGroup[];
         const posts = (await postsResponse.json()) as BackendPost[];
         const users = usersResponse.ok ? ((await usersResponse.json()) as BackendUser[]) : [];
         const liveAnnouncements = announcementsResponse.ok
           ? ((await announcementsResponse.json()) as AnnouncementRecord[])
           : [];
 
-        const currentProfessor = users.find((liveUser) => {
-          const candidateValues = [liveUser.id, liveUser.authId, liveUser.email, liveUser.name].filter(
-            (value): value is string => Boolean(value),
-          );
-
-          return candidateValues.some((value) =>
-            [user?.sub, user?.email, user?.name].filter((item): item is string => Boolean(item)).includes(value),
-          );
-        }) ?? null;
-
-        const professorIdentifiers = [user?.sub, user?.email, user?.name, currentProfessor?.id, currentProfessor?.authId].filter(
-          (value): value is string => Boolean(value),
-        );
-
-        const selectedGroup = groups.find((group) => professorIdentifiers.includes(group.professor ?? "")) ?? null;
+        const contextGroup = groups.find((g) => g.id === selectedGroupId) ?? null;
+        const selectedGroup = contextGroup
+          ? allGroups.find((g) => g.id === contextGroup.id) ?? null
+          : null;
 
         const repliesByPost = await Promise.all(
           posts.map(async (post) => {
@@ -261,7 +252,7 @@ export function ProfessorForumPage() {
     return () => {
       isMounted = false;
     };
-  }, [user?.email, user?.name, user?.sub]);
+  }, [user?.email, user?.name, user?.sub, selectedGroupId, groups]);
 
   const visibleQuestions = useMemo(() => {
     const filteredQuestions = showOnlyUnanswered
@@ -375,7 +366,11 @@ export function ProfessorForumPage() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: palette.cream, textAlign: "left", fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", color: "#111", display: "flex" }}>
-      <ProfessorSidebar activeItem="forum" onSignOut={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+      <ProfessorSidebar activeItem="forum" onSignOut={() => {
+        window.localStorage.removeItem("diya_role");
+        window.sessionStorage.removeItem("pendingSignupRole");
+        void logout({ logoutParams: { returnTo: window.location.origin } });
+      }}>
         <div style={{ padding: "12px 12px", backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", marginBottom: 8 }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>Forum Stats</div>
           <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)", marginBottom: 4 }}>📊 {questions.length} Questions</div>

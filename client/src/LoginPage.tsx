@@ -82,7 +82,7 @@ export function LoginPage() {
             color: palette.deepBurgundy,
           }}
         >
-          Welcome back
+          Welcome!
         </div>
         <p
           style={{
@@ -93,7 +93,7 @@ export function LoginPage() {
             color: "rgba(39,1,21,0.74)",
           }}
         >
-          Continue securely with Auth0 to access your D.I.Y.A workspace, assignments, discussions, and feedback tools.
+          Log in to access your D.I.Y.A workspace, connect with your classes, and manage your coursework.
         </p>
 
         <button
@@ -113,7 +113,7 @@ export function LoginPage() {
             boxShadow: "0 16px 36px rgba(92,30,38,0.25)",
           }}
         >
-          Log in with Auth0
+          Log in
         </button>
 
         <div

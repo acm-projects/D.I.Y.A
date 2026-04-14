@@ -139,28 +139,21 @@ export function ProfessorQuestionDetailPage() {
           }
         });
 
-        const aiReply: Reply[] = post.aiAnswer
-          ? [
-              {
-                id: `ai-${post.id}`,
-                author: post.isVerified ? "Professor Verified AI" : "D.I.Y.A AI",
-                message: post.aiAnswer,
-                timestamp: formatTimeAgo(getTimestampMs(post.createdAt)),
-                isAI: true,
-              },
-            ]
-          : [];
-
-        const mappedReplies: Reply[] = rawReplies.map((reply) => ({
-          id: reply.id,
-          author:
-            reply.authorId === user?.sub
-              ? "You"
-              : reply.authorName || userNameById.get(reply.authorId ?? "") || "Student",
-          message: reply.text || "",
-          timestamp: formatTimeAgo(getTimestampMs(reply.createdAt)),
-          isProfessor: reply.role === "professor",
-        }));
+        const mappedReplies: Reply[] = rawReplies.map((reply) => {
+          const isAI = reply.authorId === "diya-ai";
+          return {
+            id: reply.id,
+            author: isAI
+              ? (post.isVerified ? "Professor Verified AI" : "D.I.Y.A AI")
+              : reply.authorId === user?.sub
+                ? "You"
+                : reply.authorName || userNameById.get(reply.authorId ?? "") || "Student",
+            message: reply.text || "",
+            timestamp: formatTimeAgo(getTimestampMs(reply.createdAt)),
+            isAI,
+            isProfessor: !isAI && reply.role === "professor",
+          };
+        });
 
         if (isMounted) {
           setCurrentQuestion({
@@ -168,7 +161,7 @@ export function ProfessorQuestionDetailPage() {
             question: post.title ?? post.content ?? "Question not available",
             aiAnswer: post.aiAnswer ?? "",
           });
-          setReplies([...aiReply, ...mappedReplies]);
+          setReplies(mappedReplies);
         }
       } catch (err) {
         if (isMounted) {

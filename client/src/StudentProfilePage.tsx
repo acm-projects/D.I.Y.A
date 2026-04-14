@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Bell, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
+import { Bell, Globe, LockKeyhole, Mail, Palette, ShieldCheck, User, Trash2 } from "lucide-react";
 import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { StudentSidebar } from "./StudentSidebar";
 import { db } from "./firebase";
+import { useTheme } from "./context/ThemeContext";
 
 const palette = {
   darkest: "#270115",
@@ -99,11 +100,19 @@ export function StudentProfilePage() {
   const [savingPreferenceKey, setSavingPreferenceKey] = useState<keyof NotificationPreferences | null>(null);
   const [isSendingPasswordReset, setIsSendingPasswordReset] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [savedDisplayName, setSavedDisplayName] = useState<string>("");
+  const [nameInput, setNameInput] = useState("");
+  const [isSavingName, setIsSavingName] = useState(false);
+  const [bioInput, setBioInput] = useState("");
+  const [savedBio, setSavedBio] = useState("");
+  const [isSavingBio, setIsSavingBio] = useState(false);
+  const [timezone, setTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const { theme, setTheme } = useTheme();
 
-  const displayName = user?.name?.trim() || user?.nickname?.trim() || "D.I.Y.A Student";
   const email = user?.email?.trim() || "";
+  const displayName = savedDisplayName || user?.name?.trim() || user?.nickname?.trim() || "";
+  const displayLabel = displayName && displayName !== email ? displayName : "";
   const avatarUrl = user?.picture;
-  const isVerified = Boolean(user?.email_verified);
   const userDocId = user?.sub?.trim() || "";
   const lastUpdated = user?.updated_at
     ? new Date(user.updated_at).toLocaleDateString(undefined, {
@@ -165,10 +174,20 @@ export function StudentProfilePage() {
           return;
         }
 
-        const loadedPreferences = readNotificationPreferences(snapshot.data() as Record<string, unknown> | undefined);
+        const data = snapshot.data() as Record<string, unknown> | undefined;
+        const loadedPreferences = readNotificationPreferences(data);
 
+        // Load profile fields
+        const savedName = typeof data?.displayName === "string" ? data.displayName.trim() : "";
+        const savedBioVal = typeof data?.bio === "string" ? data.bio.trim() : "";
+        const savedTz = typeof data?.timezone === "string" ? data.timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
         if (isMounted) {
           setNotificationPreferences(loadedPreferences);
+          setSavedDisplayName(savedName);
+          setNameInput(savedName);
+          setSavedBio(savedBioVal);
+          setBioInput(savedBioVal);
+          setTimezone(savedTz);
         }
       } catch (error) {
         if (isMounted) {
@@ -255,15 +274,88 @@ export function StudentProfilePage() {
     }
   };
 
+  const handleSaveName = async () => {
+    if (!userDocId) return;
+    const trimmed = nameInput.trim();
+    setIsSavingName(true);
+    try {
+      const res = await fetch(`/api/users/${encodeURIComponent(userDocId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ displayName: trimmed }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setSavedDisplayName(trimmed);
+      setSuccessMessage("Display name updated successfully.");
+    } catch (error) {
+      console.error("Failed to save display name.", error);
+      setSuccessMessage("Failed to save name. Please try again.");
+    } finally {
+      setIsSavingName(false);
+    }
+  };
+
+  const handleSaveBio = async () => {
+    if (!userDocId) return;
+    setIsSavingBio(true);
+    try {
+      const res = await fetch(`/api/users/${encodeURIComponent(userDocId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bio: bioInput.trim() }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setSavedBio(bioInput.trim());
+      setSuccessMessage("Bio updated successfully.");
+    } catch (error) {
+      console.error("Failed to save bio.", error);
+      setSuccessMessage("Failed to save bio. Please try again.");
+    } finally {
+      setIsSavingBio(false);
+    }
+  };
+
+  const handleSaveTimezone = async (tz: string) => {
+    if (!userDocId) return;
+    setTimezone(tz);
+    try {
+      await updateDoc(doc(db, "users", userDocId), {
+        timezone: tz,
+        updatedAt: serverTimestamp(),
+      });
+      setSuccessMessage("Timezone updated.");
+    } catch (error) {
+      console.error("Failed to save timezone.", error);
+    }
+  };
+
+  const handleToggleTheme = async () => {
+    if (!userDocId) return;
+    const next = theme === "light" ? "dark" as const : "light" as const;
+    setTheme(next);
+    try {
+      const res = await fetch(`/api/users/${encodeURIComponent(userDocId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ theme: next }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setSuccessMessage(`Theme set to ${next}.`);
+    } catch (error) {
+      console.error("Failed to save theme.", error);
+    }
+  };
+
   return (
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: palette.cream,
+        backgroundColor: theme === "dark" ? "#1a1020" : palette.cream,
         textAlign: "left",
         fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
-        color: "#111",
+        color: theme === "dark" ? "#e8dfe3" : "#111",
         display: "flex",
+        transition: "background-color 0.3s, color 0.3s",
       }}
     >
       <aside
@@ -287,18 +379,19 @@ export function StudentProfilePage() {
 
       <main className="flex-1 overflow-y-auto px-6 py-8 text-left lg:px-9 lg:py-10">
         <div className="mx-auto flex max-w-7xl flex-col gap-6">
+          {/* ── Hero header ── */}
           <div className="rounded-[28px] border border-[#eadadf] bg-white px-6 py-6 shadow-[0_14px_40px_rgba(39,1,21,0.08)] sm:px-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex flex-1 items-center gap-4 sm:gap-5">
                 {avatarUrl ? (
                   <img
                     src={avatarUrl}
-                    alt={displayName}
+                    alt={displayLabel || email}
                     className="h-20 w-20 rounded-full border-4 border-[#f2e6e9] object-cover shadow-md sm:h-24 sm:w-24"
                   />
                 ) : (
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[linear-gradient(135deg,#a22237_0%,#5C1E26_100%)] text-3xl font-extrabold text-white shadow-md sm:h-24 sm:w-24">
-                    {displayName.charAt(0).toUpperCase()}
+                    {(displayLabel || email || "S").charAt(0).toUpperCase()}
                   </div>
                 )}
 
@@ -306,13 +399,9 @@ export function StudentProfilePage() {
                   <div className="text-xs font-bold uppercase tracking-[0.28em] text-[#a22237]">Student settings</div>
                   <h1 className="mt-2 text-3xl font-black tracking-tight text-[#270115] sm:text-4xl">Manage your account</h1>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-[#6d5560] sm:text-base">
-                    Update your security preferences, review your account details, and control how D.I.Y.A notifies you about important activity.
+                    Update your profile, security preferences, and control how D.I.Y.A notifies you about important activity.
                   </p>
                   <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${isVerified ? "bg-[#edf4eb] text-[#5f825b]" : "bg-[#fdf0f2] text-[#a22237]"}`}>
-                      <span className={`h-2 w-2 rounded-full ${isVerified ? "bg-[#7A9B76]" : "bg-[#a22237]"}`} />
-                      {isVerified ? "Email verified" : "Email verification pending"}
-                    </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-[#f8f1f3] px-3 py-1.5 text-xs font-semibold text-[#5C1E26]">
                       <ShieldCheck size={14} />
                       Last synced {lastUpdated}
@@ -321,20 +410,21 @@ export function StudentProfilePage() {
                 </div>
               </div>
 
-              <div className="grid min-w-[240px] gap-3 rounded-3xl border border-[#efe1e5] bg-[#fcf8f9] p-4 shadow-sm">
+              {/* ── Account summary card ── */}
+              <div className="grid min-w-[200px] gap-2 rounded-3xl border border-[#efe1e5] bg-[#fcf8f9] p-4 shadow-sm">
                 <div>
                   <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8c6d76]">Account</div>
-                  <div className="mt-2 text-lg font-bold text-[#5C1E26]">{displayName}</div>
-                  <div className="mt-1 break-all text-sm text-[#6d5560]">{email || "No email available"}</div>
+                  <div className="mt-1 text-lg font-bold text-[#5C1E26]">{displayLabel || email || "Student"}</div>
+                  {displayLabel && <div className="mt-0.5 break-all text-sm text-[#6d5560]">{email}</div>}
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl bg-white px-3 py-3 text-left shadow-sm">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="rounded-2xl bg-white px-3 py-2 text-left shadow-sm">
                     <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Email alerts</div>
-                    <div className="mt-2 text-lg font-black text-[#270115]">{notificationPreferences.emailAlerts ? "On" : "Off"}</div>
+                    <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.emailAlerts ? "On" : "Off"}</div>
                   </div>
-                  <div className="rounded-2xl bg-white px-3 py-3 text-left shadow-sm">
+                  <div className="rounded-2xl bg-white px-3 py-2 text-left shadow-sm">
                     <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Forum replies</div>
-                    <div className="mt-2 text-lg font-black text-[#270115]">{notificationPreferences.newForumReplies ? "On" : "Off"}</div>
+                    <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.newForumReplies ? "On" : "Off"}</div>
                   </div>
                 </div>
               </div>
@@ -347,7 +437,81 @@ export function StudentProfilePage() {
             </div>
           ) : null}
 
+          {/* ── Personal Information ── */}
+          <section className="rounded-[28px] border border-[#eadadf] bg-white p-6 shadow-[0_12px_34px_rgba(39,1,21,0.08)] sm:p-7">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#f3eef5] text-[#6b4f7a]">
+                <User size={22} />
+              </div>
+              <div className="text-left">
+                <h2 className="text-xl font-extrabold text-[#270115]">Personal Information</h2>
+                <p className="mt-1 text-sm leading-6 text-[#6d5560]">
+                  Set your display name so professors and classmates can identify you. This appears across the platform instead of your email.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              {/* Display Name */}
+              <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Display Name</label>
+                <input
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  placeholder="Enter your name..."
+                  className="mt-2 w-full rounded-xl border border-[#d7c2c7] bg-white px-3 py-2.5 text-sm text-[#270115] outline-none focus:border-[#a22237]"
+                />
+                <button
+                  type="button"
+                  onClick={() => void handleSaveName()}
+                  disabled={isSavingName || nameInput.trim() === savedDisplayName}
+                  className={`mt-3 rounded-xl px-4 py-2 text-xs font-bold text-white shadow-sm transition ${
+                    isSavingName || nameInput.trim() === savedDisplayName
+                      ? "cursor-not-allowed bg-[#c9b3b9]"
+                      : "bg-[#7A9B76] hover:bg-[#5f8a5c]"
+                  }`}
+                >
+                  {isSavingName ? "Saving..." : "Save Name"}
+                </button>
+              </div>
+
+              {/* Bio / About */}
+              <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Bio / About</label>
+                <textarea
+                  value={bioInput}
+                  onChange={(e) => setBioInput(e.target.value)}
+                  placeholder="Tell others about yourself..."
+                  rows={3}
+                  className="mt-2 w-full resize-vertical rounded-xl border border-[#d7c2c7] bg-white px-3 py-2.5 text-sm text-[#270115] outline-none focus:border-[#a22237]"
+                />
+                <button
+                  type="button"
+                  onClick={() => void handleSaveBio()}
+                  disabled={isSavingBio || bioInput.trim() === savedBio}
+                  className={`mt-3 rounded-xl px-4 py-2 text-xs font-bold text-white shadow-sm transition ${
+                    isSavingBio || bioInput.trim() === savedBio
+                      ? "cursor-not-allowed bg-[#c9b3b9]"
+                      : "bg-[#7A9B76] hover:bg-[#5f8a5c]"
+                  }`}
+                >
+                  {isSavingBio ? "Saving..." : "Save Bio"}
+                </button>
+              </div>
+            </div>
+
+            {/* Read-only info */}
+            <div className="mt-5 rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Email Address</div>
+                <div className="mt-1 break-all text-sm font-semibold text-[#5C1E26]">{email || "Not available"}</div>
+              </div>
+            </div>
+          </section>
+
           <div className="grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.35fr)]">
+            {/* ── Account Security ── */}
             <section className="rounded-[28px] border border-[#eadadf] bg-white p-6 shadow-[0_12px_34px_rgba(39,1,21,0.08)] sm:p-7">
               <div className="flex items-start gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#fff1f4] text-[#a22237]">
@@ -386,6 +550,7 @@ export function StudentProfilePage() {
               </div>
             </section>
 
+            {/* ── Notifications ── */}
             <section className="rounded-[28px] border border-[#eadadf] bg-white p-6 shadow-[0_12px_34px_rgba(39,1,21,0.08)] sm:p-7">
               <div className="flex items-start gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#eef5ec] text-[#5d8159]">
@@ -394,7 +559,7 @@ export function StudentProfilePage() {
                 <div className="text-left">
                   <h2 className="text-xl font-extrabold text-[#270115]">Notifications</h2>
                   <p className="mt-1 text-sm leading-6 text-[#6d5560]">
-                    These preferences load directly from your Firestore user document and save immediately when you toggle them.
+                    These preferences save immediately when you toggle them.
                   </p>
                 </div>
               </div>
@@ -408,7 +573,6 @@ export function StudentProfilePage() {
                   isSaving={savingPreferenceKey === "emailAlerts"}
                   onToggle={() => void handleTogglePreference("emailAlerts")}
                 />
-
                 <ToggleRow
                   title="New Forum Replies"
                   description="Be notified when there is new activity or a reply on discussions that matter to your coursework."
@@ -420,6 +584,90 @@ export function StudentProfilePage() {
               </div>
             </section>
           </div>
+
+          {/* ── Preferences ── */}
+          <section className="rounded-[28px] border border-[#eadadf] bg-white p-6 shadow-[0_12px_34px_rgba(39,1,21,0.08)] sm:p-7">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#eee8f2] text-[#6b4f7a]">
+                <Globe size={22} />
+              </div>
+              <div className="text-left">
+                <h2 className="text-xl font-extrabold text-[#270115]">Preferences</h2>
+                <p className="mt-1 text-sm leading-6 text-[#6d5560]">
+                  Customize your experience with timezone and appearance settings.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              {/* Timezone */}
+              <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Timezone</label>
+                <select
+                  value={timezone}
+                  onChange={(e) => void handleSaveTimezone(e.target.value)}
+                  className="mt-2 w-full rounded-xl border border-[#d7c2c7] bg-white px-3 py-2.5 text-sm text-[#270115] outline-none focus:border-[#a22237]"
+                >
+                  {Intl.supportedValuesOf("timeZone").map((tz) => (
+                    <option key={tz} value={tz}>{tz.replace(/_/g, " ")}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Theme */}
+              <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Appearance</label>
+                <div className="mt-2 flex items-center gap-3">
+                  <Palette size={18} className="text-[#6b4f7a]" />
+                  <span className="text-sm font-semibold text-[#5C1E26]">{theme === "light" ? "Light Mode" : "Dark Mode"}</span>
+                  <button
+                    type="button"
+                    onClick={() => void handleToggleTheme()}
+                    className="ml-auto rounded-xl border border-[#d7c2c7] bg-white px-3 py-1.5 text-xs font-bold text-[#5C1E26] transition hover:bg-[#f8f1f3]"
+                  >
+                    Switch to {theme === "light" ? "Dark" : "Light"}
+                  </button>
+                </div>
+                <p className="mt-2 text-xs text-[#8c6d76]">Theme preference is saved and applied to your profile page.</p>
+              </div>
+
+              {/* Language (display only) */}
+              <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Language</label>
+                <div className="mt-2 text-sm font-semibold text-[#5C1E26]">English (US)</div>
+                <p className="mt-1 text-xs text-[#8c6d76]">Additional languages coming soon.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Danger Zone ── */}
+          <section className="rounded-[28px] border border-[#f5d3d3] bg-white p-6 shadow-[0_12px_34px_rgba(39,1,21,0.08)] sm:p-7">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#fef2f2] text-[#DC3545]">
+                <Trash2 size={22} />
+              </div>
+              <div className="text-left">
+                <h2 className="text-xl font-extrabold text-[#270115]">Danger Zone</h2>
+                <p className="mt-1 text-sm leading-6 text-[#6d5560]">
+                  Permanent actions that cannot be undone. Please proceed with caution.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-[#f5d3d3] bg-[#fef8f8] p-4">
+              <div className="text-sm font-semibold text-[#5C1E26]">Delete Account</div>
+              <div className="mt-1 text-sm leading-6 text-[#6d5560]">
+                Permanently remove your account and all associated data. This action is irreversible.
+              </div>
+              <button
+                type="button"
+                onClick={() => alert("Please contact your administrator to delete your account.")}
+                className="mt-3 rounded-xl border-2 border-[#DC3545] bg-transparent px-4 py-2 text-xs font-bold text-[#DC3545] transition hover:bg-[#DC3545] hover:text-white"
+              >
+                Request Account Deletion
+              </button>
+            </div>
+          </section>
         </div>
       </main>
     </div>

@@ -1,0 +1,117 @@
+/*
+ Landing wave stack — used by LandingPage.tsx.
+ Makes the waves a fixed layer in the viewport. 
+ */
+:root {
+  --wave-height: 40vh;
+  --wave-red-deep: #6e2a32;
+  --wave-red-mid: #9e4552;
+  --wave-red-crimson: #a22237;
+}
+
+.landing-top-waves {
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* anchored to the browser viewport. The document scrolls UNDER it.*/
+.landing-top-waves--fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  z-index: 0;
+}
+
+.landing-top-waves svg {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+ @keyframes move1 {
+  0% {
+    transform: translateX(-500px) scaleX(2.5);
+  }
+  50% {
+    transform: translateX(-100) scaleX(2.5);
+  }
+  100% {
+    transform: translateX(0) scaleX(2.5);
+  }
+}
+@keyframes move2 {
+  0% {
+    transform: translateX(-600px) scaleX(3);
+  }
+  50% {
+    transform: translateX(-100) scaleX(2.5);
+  }
+  100% {
+    transform: translateX(0) scaleX(3);
+  }
+}
+@keyframes move3 {
+  0% {
+    transform: translateX(-800px) scaleX(4);
+  }
+  50% {
+    transform: translateX(-100) scaleX(2.5);
+  }
+  100% {
+    transform: translateX(0) scaleX(4);
+  }
+}
+
+@keyframes floatWaveY {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(-8px); }
+  50%  { transform: translateY(-16px); }
+  75%  { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+/*
+Sets the opacity animation for each wave
+*/
+.landing-top-waves .wave-back {
+  opacity: 0.95;
+  animation: move1 4s linear infinite;
+}
+.landing-top-waves .wave-mid-a {
+  opacity: 0.72;
+  transform: translate3d(0, 0, 0);
+  animation: move2 4s linear infinite;
+}
+.landing-top-waves .wave-mid-b {
+  opacity: 0.58;
+  transform: translate3d(0, 0, 0);
+  animation: move3 2s linear infinite;
+}
+.landing-top-waves .wave-front {
+  opacity: 0.45;
+  animation:
+    floatWaveY 18s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+    
+}
+
+.landing-top-waves .wave-mid-a,
+.landing-top-waves .wave-mid-b,
+.landing-top-waves .wave-front {
+  mix-blend-mode: multiply;
+}
+@supports not (mix-blend-mode: multiply) {
+  .landing-top-waves .wave-mid-a,
+  .landing-top-waves .wave-mid-b,
+  .landing-top-waves .wave-front {
+    mix-blend-mode: normal;
+  }
+}
+
+.landing-intro-shell {
+  position: relative;
+  z-index: 1;
+}
