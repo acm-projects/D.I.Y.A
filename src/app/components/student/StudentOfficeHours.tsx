@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Sidebar } from "./Sidebar";
+import { ListenButton } from "./TTSContext";
 
 const palette = {
   darkest: "#270115",
@@ -143,15 +144,16 @@ export function StudentOfficeHours() {
         {/* Hero Section */}
         <div
           style={{
-            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            backgroundColor: "#fff",
             padding: "56px 64px 52px",
+            borderBottom: "1px solid rgba(214,214,214,0.2)",
           }}
         >
           <div
             style={{
               fontSize: 11,
               fontWeight: 700,
-              color: "rgba(255,255,255,0.55)",
+              color: palette.crimson,
               textTransform: "uppercase",
               letterSpacing: 2,
               marginBottom: 16,
@@ -161,12 +163,12 @@ export function StudentOfficeHours() {
           </div>
           <div
             style={{
-              fontSize: 64,
+              fontSize: 72,
               fontWeight: 900,
-              color: "#fff",
+              color: palette.darkest,
               letterSpacing: -2.5,
               lineHeight: 1,
-              marginBottom: 12,
+              marginBottom: 16,
             }}
           >
             Office Hours
@@ -175,7 +177,7 @@ export function StudentOfficeHours() {
             style={{
               fontSize: 20,
               fontWeight: 400,
-              color: "rgba(255,255,255,0.7)",
+              color: "rgba(92,30,38,0.55)",
               marginBottom: 52,
             }}
           >
@@ -185,9 +187,9 @@ export function StudentOfficeHours() {
           {/* Stats Row */}
           <div style={{ display: "flex", gap: 0, alignItems: "stretch" }}>
             {[
-              { label: "Total Requests", value: pastRequests.length, color: "#fff" },
-              { label: "Confirmed", value: pastRequests.filter(r => r.status === "confirmed").length, color: "rgba(255,255,255,0.9)" },
-              { label: "Pending", value: pastRequests.filter(r => r.status === "pending").length, color: "rgba(255,255,255,0.9)" },
+              { label: "Total Requests", value: pastRequests.length, color: palette.crimson },
+              { label: "Confirmed", value: pastRequests.filter(r => r.status === "confirmed").length, color: palette.sage },
+              { label: "Pending", value: pastRequests.filter(r => r.status === "pending").length, color: "#FFA500" },
             ].map((stat, i) => (
               <div
                 key={stat.label}
@@ -195,13 +197,13 @@ export function StudentOfficeHours() {
                   flex: 1,
                   paddingRight: i < 2 ? 40 : 0,
                   marginRight: i < 2 ? 40 : 0,
-                  borderRight: i < 2 ? "1px solid rgba(255,255,255,0.2)" : "none",
+                  borderRight: i < 2 ? "1px solid rgba(214,214,214,0.5)" : "none",
                 }}
               >
                 <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
                   {stat.value}
                 </div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: 1 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>
                   {stat.label}
                 </div>
               </div>
@@ -419,16 +421,15 @@ export function StudentOfficeHours() {
           )}
 
           {/* Past requests */}
-          <div
-            style={{
-              fontSize: 32,
-              fontWeight: 900,
-              color: palette.darkest,
-              letterSpacing: -1,
-              marginBottom: 24,
-            }}
-          >
-            Your Requests
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 24 }}>
+            <div>
+              <div style={{ fontSize: 40, fontWeight: 900, color: palette.darkest, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+                Your Requests
+              </div>
+              <div style={{ fontSize: 16, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>
+                {pastRequests.length} request{pastRequests.length !== 1 ? "s" : ""} submitted
+              </div>
+            </div>
           </div>
 
           {pastRequests.length === 0 && (
@@ -460,8 +461,8 @@ export function StudentOfficeHours() {
                     boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
                   }}
                 >
-                  <div style={{ height: 4, backgroundColor: req.status === "confirmed" ? palette.sage : req.status === "declined" ? palette.crimson : "rgba(39,1,21,0.15)" }} />
-                  <div style={{ padding: "20px 24px" }}>
+                  <div style={{ height: 5, backgroundColor: req.status === "confirmed" ? palette.sage : req.status === "declined" ? palette.crimson : "rgba(39,1,21,0.15)" }} />
+                  <div style={{ padding: "24px 28px" }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                         <div
@@ -528,10 +529,30 @@ export function StudentOfficeHours() {
                         Meeting link: {req.meetingLink}
                       </div>
                     )}
+                    <div style={{ marginTop: 12 }}>
+                      <ListenButton
+                        text={`Meeting request with ${req.professorName}. ${new Date(req.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}, ${req.startTime} to ${req.endTime}, ${req.meetingType === "online" ? "online" : "in person"}. Status: ${sc.label}. Reason: ${req.reason}.`}
+                        label={req.professorName}
+                        id={`request-${req.id}`}
+                      />
+                    </div>
                   </div>
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Bottom Banner */}
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px", marginTop: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+            D.I.Y.A Student Portal
+          </div>
+          <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>
+            AI-powered learning, built for you.
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.7)" }}>
+            Ask questions, check your work, and stay on top of your courses.
           </div>
         </div>
       </main>

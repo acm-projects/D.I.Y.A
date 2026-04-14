@@ -96,15 +96,16 @@ export function StudentGroupsPage({
         {/* Hero Section */}
         <div
           style={{
-            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            backgroundColor: "#fff",
             padding: "56px 64px 52px",
+            borderBottom: "1px solid rgba(214,214,214,0.2)",
           }}
         >
           <div
             style={{
               fontSize: 11,
               fontWeight: 700,
-              color: "rgba(255,255,255,0.55)",
+              color: palette.crimson,
               textTransform: "uppercase",
               letterSpacing: 2,
               marginBottom: 16,
@@ -114,12 +115,12 @@ export function StudentGroupsPage({
           </div>
           <div
             style={{
-              fontSize: 64,
+              fontSize: 72,
               fontWeight: 900,
-              color: "#fff",
+              color: palette.darkest,
               letterSpacing: -2.5,
               lineHeight: 1,
-              marginBottom: 12,
+              marginBottom: 16,
             }}
           >
             My Groups
@@ -128,7 +129,7 @@ export function StudentGroupsPage({
             style={{
               fontSize: 20,
               fontWeight: 400,
-              color: "rgba(255,255,255,0.7)",
+              color: "rgba(92,30,38,0.55)",
               marginBottom: 52,
             }}
           >
@@ -138,9 +139,9 @@ export function StudentGroupsPage({
           {/* Stats Row */}
           <div style={{ display: "flex", gap: 0, alignItems: "stretch" }}>
             {[
-              { label: "Groups Enrolled", value: totalCount, color: "#fff" },
-              { label: "Total Members", value: totalMembers, color: "rgba(255,255,255,0.9)" },
-              { label: "Forum Posts", value: totalPosts, color: "rgba(255,255,255,0.9)" },
+              { label: "Groups Enrolled", value: totalCount, color: palette.crimson },
+              { label: "Total Members", value: totalMembers, color: palette.sage },
+              { label: "Forum Posts", value: totalPosts, color: palette.deepBurgundy },
             ].map((stat, i) => (
               <div
                 key={stat.label}
@@ -148,7 +149,7 @@ export function StudentGroupsPage({
                   flex: 1,
                   paddingRight: i < 2 ? 40 : 0,
                   marginRight: i < 2 ? 40 : 0,
-                  borderRight: i < 2 ? "1px solid rgba(255,255,255,0.2)" : "none",
+                  borderRight: i < 2 ? "1px solid rgba(214,214,214,0.5)" : "none",
                 }}
               >
                 <div
@@ -167,7 +168,7 @@ export function StudentGroupsPage({
                   style={{
                     fontSize: 12,
                     fontWeight: 600,
-                    color: "rgba(255,255,255,0.55)",
+                    color: "rgba(92,30,38,0.5)",
                     textTransform: "uppercase",
                     letterSpacing: 1,
                   }}
@@ -180,163 +181,103 @@ export function StudentGroupsPage({
         </div>
 
         {/* Content Area */}
-        <div style={{ padding: "48px 64px 56px" }}>
-          {/* Search bar */}
-          <div
-            style={{
-              width: "min(560px, 100%)",
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "12px 18px",
-              borderRadius: 14,
-              border: "1px solid rgba(39,1,21,0.15)",
-              backgroundColor: "#fff",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-              marginBottom: 20,
-            }}
-          >
-            <SearchIcon color={palette.deepBurgundy} />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              type="search"
-              placeholder="Search your groups by name..."
-              aria-label="Search groups by name"
+        <div style={{ padding: "48px 64px" }}>
+          {/* Section header + search */}
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 32 }}>
+            <div>
+              <div style={{ fontSize: 40, fontWeight: 900, color: palette.darkest, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+                Your Groups
+              </div>
+              <div style={{ fontSize: 16, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>
+                {showingLabel}
+              </div>
+            </div>
+            <div
               style={{
-                width: "100%",
-                border: "none",
-                outline: "none",
-                background: "transparent",
-                color: palette.deepBurgundy,
-                fontSize: 14,
-                fontWeight: 500,
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "12px 18px",
+                borderRadius: 14,
+                border: "1.5px solid rgba(39,1,21,0.12)",
+                backgroundColor: "#fff",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                minWidth: 280,
               }}
-            />
-          </div>
-
-          <div
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: "rgba(92,30,38,0.55)",
-              marginBottom: 24,
-            }}
-          >
-            {showingLabel}
+            >
+              <SearchIcon color={palette.deepBurgundy} />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                type="search"
+                placeholder="Search groups..."
+                aria-label="Search groups by name"
+                style={{
+                  flex: 1,
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                  color: palette.deepBurgundy,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  fontFamily: "inherit",
+                }}
+              />
+            </div>
           </div>
 
           {/* Group cards */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: 20,
-              alignItems: "stretch",
+              gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
+              gap: 24,
             }}
           >
             {filteredGroups.map((g) => {
               const isHovered = hoveredId === g.id;
               return (
-                <button
+                <div
                   key={g.id}
-                  type="button"
-                  onClick={() => navigate(`/groups/${g.id}/forum`)}
                   onMouseEnter={() => setHoveredId(g.id)}
                   onMouseLeave={() => setHoveredId(null)}
+                  onClick={() => navigate(`/groups/${g.id}/forum`)}
                   style={{
-                    textAlign: "left",
                     backgroundColor: "#fff",
-                    border: isHovered ? `1px solid ${palette.crimson}` : "1px solid rgba(214,214,214,0.4)",
                     borderRadius: 20,
-                    padding: "22px 24px",
-                    cursor: "pointer",
-                    boxShadow: isHovered
-                      ? "0 12px 36px rgba(0,0,0,0.16)"
-                      : "0 2px 24px rgba(0,0,0,0.06)",
-                    transform: isHovered ? "translateY(-2px)" : "translateY(0px)",
-                    transition: "transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease",
                     overflow: "hidden",
+                    boxShadow: isHovered ? "0 20px 60px rgba(0,0,0,0.18)" : "0 2px 24px rgba(0,0,0,0.06)",
+                    transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+                    transition: "transform 200ms ease, box-shadow 200ms ease",
+                    cursor: "pointer",
                     position: "relative",
                   }}
                 >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 4,
-                      backgroundColor: palette.crimson,
-                    }}
-                  />
-                  <div
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 800,
-                      letterSpacing: -0.2,
-                      color: palette.darkest,
-                      lineHeight: 1.3,
-                      marginBottom: 16,
-                    }}
-                  >
-                    {g.name}
-                  </div>
+                  <div style={{ height: 5, background: `linear-gradient(90deg, ${palette.crimson}, ${palette.sage})` }} />
+                  <div style={{ padding: "28px 28px 24px" }}>
+                    <div style={{ fontSize: 18, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, lineHeight: 1.3, marginBottom: 20 }}>
+                      {g.name}
+                    </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 8,
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: palette.deepBurgundy,
-                      marginBottom: 16,
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        padding: "6px 10px",
-                        borderRadius: 8,
-                        backgroundColor: "rgba(122,155,118,0.12)",
-                      }}
-                    >
-                      <UsersIcon color={palette.sage} />
-                      <span>{g.membersCount} members</span>
+                    <div style={{ display: "flex", gap: 16, marginBottom: 20 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px", borderRadius: 10, backgroundColor: "rgba(122,155,118,0.1)" }}>
+                        <UsersIcon color={palette.sage} />
+                        <span style={{ fontSize: 13, fontWeight: 700, color: palette.deepBurgundy }}>{g.membersCount} members</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px", borderRadius: 10, backgroundColor: "rgba(162,34,55,0.06)" }}>
+                        <ForumIcon color={palette.crimson} />
+                        <span style={{ fontSize: 13, fontWeight: 700, color: palette.deepBurgundy }}>{g.forumPostsCount} posts</span>
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        padding: "6px 10px",
-                        borderRadius: 8,
-                        backgroundColor: "rgba(92,30,38,0.08)",
-                      }}
-                    >
-                      <ForumIcon color={palette.deepBurgundy} />
-                      <span>{g.forumPostsCount} posts</span>
-                    </div>
-                  </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>
-                      View group
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span style={{ fontSize: 14, fontWeight: 700, color: palette.crimson }}>View Forum</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
                     </div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
                   </div>
-                </button>
+                </div>
               );
             })}
 
@@ -346,17 +287,33 @@ export function StudentGroupsPage({
                   gridColumn: "1 / -1",
                   backgroundColor: "#fff",
                   borderRadius: 20,
-                  padding: "40px 32px",
+                  padding: "40px",
                   textAlign: "center",
                   boxShadow: "0 2px 24px rgba(0,0,0,0.06)",
-                  color: "rgba(92,30,38,0.5)",
-                  fontSize: 15,
-                  fontWeight: 600,
                 }}
               >
-                No groups match your search.
+                <div style={{ fontSize: 32, marginBottom: 12 }}>🔍</div>
+                <div style={{ color: palette.darkest, fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+                  No groups match "{query.trim()}"
+                </div>
+                <div style={{ color: "rgba(92,30,38,0.5)", fontSize: 14, fontWeight: 500 }}>
+                  Try a shorter name or course code.
+                </div>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Bottom Banner */}
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px", marginTop: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+            D.I.Y.A Student Portal
+          </div>
+          <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>
+            AI-powered learning, built for you.
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.7)" }}>
+            Ask questions, check your work, and stay on top of your courses.
           </div>
         </div>
       </main>

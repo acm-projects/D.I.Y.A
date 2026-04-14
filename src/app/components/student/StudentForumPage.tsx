@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Sidebar } from "./Sidebar";
+import { ListenButton } from "./TTSContext";
 
 const palette = {
   darkest: "#270115",
@@ -172,15 +173,16 @@ export function StudentForumPage() {
         {/* Hero Section */}
         <div
           style={{
-            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            backgroundColor: "#fff",
             padding: "56px 64px 52px",
+            borderBottom: "1px solid rgba(214,214,214,0.2)",
           }}
         >
           <div
             style={{
               fontSize: 11,
               fontWeight: 700,
-              color: "rgba(255,255,255,0.55)",
+              color: palette.crimson,
               textTransform: "uppercase",
               letterSpacing: 2,
               marginBottom: 16,
@@ -190,22 +192,22 @@ export function StudentForumPage() {
           </div>
           <div
             style={{
-              fontSize: 56,
+              fontSize: 72,
               fontWeight: 900,
-              color: "#fff",
-              letterSpacing: -2,
+              color: palette.darkest,
+              letterSpacing: -2.5,
               lineHeight: 1,
-              marginBottom: 12,
+              marginBottom: 16,
             }}
           >
             {groupName}
           </div>
           <div
             style={{
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: 400,
-              color: "rgba(255,255,255,0.7)",
-              marginBottom: 40,
+              color: "rgba(92,30,38,0.55)",
+              marginBottom: 52,
             }}
           >
             Ask questions, share insights, and collaborate with your peers.
@@ -213,19 +215,19 @@ export function StudentForumPage() {
 
           {/* Stats + action row */}
           <div style={{ display: "flex", gap: 0, alignItems: "center" }}>
-            <div style={{ flex: 1, paddingRight: 40, marginRight: 40, borderRight: "1px solid rgba(255,255,255,0.2)" }}>
-              <div style={{ fontSize: 48, fontWeight: 900, color: "#fff", letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+            <div style={{ flex: 1, paddingRight: 40, marginRight: 40, borderRight: "1px solid rgba(214,214,214,0.5)" }}>
+              <div style={{ fontSize: 48, fontWeight: 900, color: palette.crimson, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
                 {questions.length}
               </div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: 1 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>
                 Questions Posted
               </div>
             </div>
-            <div style={{ flex: 1, paddingRight: 40, marginRight: 40, borderRight: "1px solid rgba(255,255,255,0.2)" }}>
-              <div style={{ fontSize: 48, fontWeight: 900, color: "#fff", letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+            <div style={{ flex: 1, paddingRight: 40, marginRight: 40, borderRight: "1px solid rgba(214,214,214,0.5)" }}>
+              <div style={{ fontSize: 48, fontWeight: 900, color: palette.sage, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
                 {questions.filter(q => q.isNew).length}
               </div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: 1 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>
                 New This Week
               </div>
             </div>
@@ -236,8 +238,8 @@ export function StudentForumPage() {
                 style={{
                   padding: "14px 28px",
                   borderRadius: 12,
-                  border: "2px solid rgba(255,255,255,0.4)",
-                  backgroundColor: "rgba(255,255,255,0.12)",
+                  border: `2px solid ${palette.crimson}`,
+                  backgroundColor: palette.crimson,
                   color: "#fff",
                   fontSize: 14,
                   fontWeight: 700,
@@ -259,44 +261,50 @@ export function StudentForumPage() {
 
         {/* Content Area */}
         <div style={{ padding: "48px 64px 56px", flex: 1 }}>
-          {/* Search bar */}
-          <div
-            style={{
-              width: "min(560px, 100%)",
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "12px 18px",
-              borderRadius: 14,
-              border: "1px solid rgba(39,1,21,0.15)",
-              backgroundColor: "#fff",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-              marginBottom: 12,
-            }}
-          >
-            <SearchIcon color={palette.deepBurgundy} />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              type="search"
-              placeholder="Search questions..."
-              aria-label="Search questions"
+          {/* Section header + search */}
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 32 }}>
+            <div>
+              <div style={{ fontSize: 40, fontWeight: 900, color: palette.darkest, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+                Forum Questions
+              </div>
+              <div style={{ fontSize: 16, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>
+                {query.trim() && filtered.length !== questions.length
+                  ? `Showing ${filtered.length} of ${questions.length} questions`
+                  : `${questions.length} question${questions.length !== 1 ? "s" : ""} asked by your peers`}
+              </div>
+            </div>
+            <div
               style={{
-                width: "100%",
-                border: "none",
-                outline: "none",
-                background: "transparent",
-                color: palette.deepBurgundy,
-                fontSize: 14,
-                fontWeight: 500,
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "12px 18px",
+                borderRadius: 14,
+                border: "1.5px solid rgba(39,1,21,0.12)",
+                backgroundColor: "#fff",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                minWidth: 280,
               }}
-            />
-          </div>
-
-          <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.55)", marginBottom: 24 }}>
-            {query.trim() && filtered.length !== questions.length
-              ? `Showing ${filtered.length} of ${questions.length} questions`
-              : `${questions.length} question${questions.length !== 1 ? "s" : ""} asked by your peers`}
+            >
+              <SearchIcon color={palette.deepBurgundy} />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                type="search"
+                placeholder="Search questions..."
+                aria-label="Search questions"
+                style={{
+                  flex: 1,
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                  color: palette.deepBurgundy,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  fontFamily: "inherit",
+                }}
+              />
+            </div>
           </div>
 
           {/* Question cards */}
@@ -314,12 +322,12 @@ export function StudentForumPage() {
                     backgroundColor: "#fff",
                     border: isQHovered ? `1px solid ${palette.crimson}` : "1px solid rgba(214,214,214,0.4)",
                     borderRadius: 20,
-                    padding: "22px 24px",
+                    padding: "28px 28px 24px",
                     cursor: "pointer",
                     boxShadow: isQHovered
-                      ? "0 12px 36px rgba(0,0,0,0.16)"
+                      ? "0 20px 60px rgba(0,0,0,0.18)"
                       : "0 2px 24px rgba(0,0,0,0.06)",
-                    transform: isQHovered ? "translateY(-2px)" : "translateY(0px)",
+                    transform: isQHovered ? "translateY(-4px)" : "translateY(0px)",
                     transition: "transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease",
                     overflow: "hidden",
                   }}
@@ -359,12 +367,12 @@ export function StudentForumPage() {
 
                   <div
                     style={{
-                      fontSize: 15,
+                      fontSize: 18,
                       fontWeight: 800,
-                      letterSpacing: -0.2,
+                      letterSpacing: -0.5,
                       color: palette.darkest,
                       lineHeight: 1.3,
-                      marginBottom: 16,
+                      marginBottom: 20,
                       paddingRight: q.isNew ? 60 : 0,
                     }}
                   >
@@ -376,7 +384,7 @@ export function StudentForumPage() {
                       display: "flex",
                       flexWrap: "wrap",
                       gap: 8,
-                      fontSize: 12,
+                      fontSize: 13,
                       fontWeight: 700,
                       color: palette.deepBurgundy,
                       alignItems: "center",
@@ -388,8 +396,8 @@ export function StudentForumPage() {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 6,
-                        padding: "6px 10px",
-                        borderRadius: 8,
+                        padding: "8px 12px",
+                        borderRadius: 10,
                         backgroundColor: "rgba(122,155,118,0.12)",
                       }}
                     >
@@ -401,8 +409,8 @@ export function StudentForumPage() {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 6,
-                        padding: "6px 10px",
-                        borderRadius: 8,
+                        padding: "8px 12px",
+                        borderRadius: 10,
                         backgroundColor: q.replies === 0 ? "rgba(220,53,69,0.1)" : "rgba(92,30,38,0.08)",
                       }}
                     >
@@ -466,12 +474,19 @@ export function StudentForumPage() {
                       justifyContent: "space-between",
                     }}
                   >
-                    <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>
-                      View replies
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: palette.crimson }}>
+                        View replies
+                      </div>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
                     </div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <ListenButton
+                      text={`${q.question}. Asked by ${q.author}. ${q.replies} ${q.replies === 1 ? "reply" : "replies"}. ${q.upvotes} upvotes.`}
+                      label={q.author}
+                      id={`forum-q-${q.id}`}
+                    />
                   </div>
 
                   {q.aiVerified && (
@@ -495,6 +510,19 @@ export function StudentForumPage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Bottom Banner */}
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px", marginTop: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+            D.I.Y.A Student Portal
+          </div>
+          <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>
+            AI-powered learning, built for you.
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.7)" }}>
+            Ask questions, check your work, and stay on top of your courses.
           </div>
         </div>
       </main>

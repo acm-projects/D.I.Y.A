@@ -6,13 +6,15 @@ export function SignUpPage() {
   const [isHovered, setIsHovered] = useState(false);
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
+  const [signupError, setSignupError] = useState("");
   const navigate = useNavigate();
 
   const handleSignUp = () => {
     if (!role) {
-      alert("Please select a role to continue.");
+      setSignupError("Please select a role to continue.");
       return;
     }
+    setSignupError("");
     if (role === "student") {
       navigate("/groups");
       return;
@@ -22,7 +24,7 @@ export function SignUpPage() {
     }
   };
 
-  const handleGoogleSignup = () => alert("Sign up with Google clicked!");
+  const handleGoogleSignup = () => setSignupError("Google sign-in coming soon.");
 
   return (
     <div
@@ -177,6 +179,12 @@ export function SignUpPage() {
               style={{ width: 283, padding: 10, borderRadius: 8, border: "1px solid #ccc" }}
             />
           </div>
+
+          {signupError && (
+            <div style={{ width: 300, padding: "10px 14px", borderRadius: 10, backgroundColor: "rgba(162,34,55,0.08)", border: "1px solid rgba(162,34,55,0.25)", color: "#a22237", fontSize: 13, fontWeight: 600, marginBottom: 8, textAlign: "center" }}>
+              {signupError}
+            </div>
+          )}
 
           <button
             onClick={handleSignUp}

@@ -158,11 +158,11 @@ export function ProfessorSidebar({ activeId, groupName }: ProfessorSidebarProps)
         </button>
       </div>
 
-      {/* Back to Forum */}
+      {/* Back to Dashboard */}
       <button
         type="button"
-        onClick={() => navigate(`/forum/${groupName}`)}
-        title={collapsed ? "Back to Forum" : undefined}
+        onClick={() => navigate("/professor")}
+        title={collapsed ? "Back to Dashboard" : undefined}
         style={{
           width: "100%",
           textAlign: collapsed ? "center" : "left",
@@ -185,7 +185,7 @@ export function ProfessorSidebar({ activeId, groupName }: ProfessorSidebarProps)
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
           <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        {!collapsed && "Back to Forum"}
+        {!collapsed && "Back to Dashboard"}
       </button>
 
       {/* Section label */}

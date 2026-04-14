@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Sidebar } from "./Sidebar";
+import { ListenButton } from "./TTSContext";
 
 const palette = {
   darkest: "#270115",
@@ -98,9 +99,10 @@ export function StudentForumThreadPage() {
         {/* Hero / question banner */}
         <div
           style={{
-            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            backgroundColor: "#fff",
             padding: "32px 48px",
             flexShrink: 0,
+            borderBottom: "1px solid rgba(214,214,214,0.3)",
           }}
         >
           <button
@@ -109,7 +111,7 @@ export function StudentForumThreadPage() {
             style={{
               background: "none",
               border: "none",
-              color: "rgba(255,255,255,0.75)",
+              color: palette.crimson,
               fontSize: 13,
               fontWeight: 700,
               cursor: "pointer",
@@ -126,20 +128,27 @@ export function StudentForumThreadPage() {
             Back to Forum
           </button>
 
-          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
             Asked by {questionAuthor}
           </div>
           <div
             style={{
-              fontSize: 28,
+              fontSize: 36,
               fontWeight: 900,
-              color: "#fff",
+              color: palette.darkest,
               lineHeight: 1.25,
-              letterSpacing: -0.5,
+              letterSpacing: -1,
+              marginBottom: 14,
             }}
           >
             {questionTitle}
           </div>
+          <ListenButton
+            text={`Asked by ${questionAuthor}. ${questionTitle}`}
+            label="Question"
+            id={`thread-question-${questionId ?? "0"}`}
+            size="md"
+          />
         </div>
 
         {/* replies area */}
@@ -219,8 +228,15 @@ export function StudentForumThreadPage() {
                     />
                   )}
                   <div style={{ fontSize: 14, lineHeight: 1.5, color: "#111" }}>{r.text}</div>
-                  <div style={{ fontSize: 10, marginTop: 6, opacity: 0.5, textAlign: "right" }}>
-                    {r.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8, gap: 8 }}>
+                    <ListenButton
+                      text={`${r.author}${isProf ? ", professor" : ""}. ${r.text}`}
+                      label={r.author}
+                      id={`reply-${r.id}`}
+                    />
+                    <div style={{ fontSize: 10, opacity: 0.45, whiteSpace: "nowrap" }}>
+                      {r.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </div>
                   </div>
                 </div>
               </div>

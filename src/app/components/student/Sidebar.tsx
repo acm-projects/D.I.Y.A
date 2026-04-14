@@ -165,6 +165,36 @@ export function Sidebar({ activeId }: { activeId: SidebarActiveId }) {
         </button>
       </div>
 
+      {/* Back to Dashboard */}
+      <button
+        type="button"
+        onClick={() => navigate("/groups")}
+        title={collapsed ? "Back to Dashboard" : undefined}
+        style={{
+          width: "100%",
+          textAlign: collapsed ? "center" : "left",
+          padding: collapsed ? "10px 0" : "10px 14px",
+          borderRadius: 10,
+          border: "none",
+          backgroundColor: "transparent",
+          color: "rgba(255,255,255,0.5)",
+          fontSize: 13,
+          fontWeight: 600,
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: collapsed ? "center" : "flex-start",
+          gap: 9,
+          marginBottom: 10,
+          outline: "none",
+        }}
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        {!collapsed && "Back to Dashboard"}
+      </button>
+
       {/* Section label */}
       {!collapsed && (
         <div

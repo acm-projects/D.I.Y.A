@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { Sidebar } from "./Sidebar";
+import { ListenButton } from "./TTSContext";
 
 const palette = {
   darkest: "#270115",
@@ -149,13 +150,39 @@ export function StudentSelfCheckPage() {
   return (
     <div style={{ minHeight: "100vh", backgroundColor: palette.cream, textAlign: "left", fontFamily: "Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif", color: "#111", display: "flex" }}>
       <Sidebar activeId="selfcheck" />
-      <main style={{ flex: 1, padding: "32px 36px 56px 24px", boxSizing: "border-box", overflowY: "auto" }}>
-        <div style={{ maxWidth: 1400 }}>
-          <div style={{ color: palette.crimson, fontSize: 44, fontWeight: 850, letterSpacing: -1, lineHeight: 1.1 }}>Self-Check</div>
-          <div style={{ height: 1, backgroundColor: "rgba(39,1,21,0.12)", marginTop: 14, marginBottom: 24 }} />
+      <main style={{ flex: 1, overflowY: "auto" }}>
+        {/* Hero Section */}
+        <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>
+            AI-Powered Tools
+          </div>
+          <div style={{ fontSize: 72, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 16 }}>
+            Self-Check
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>
+            Upload your work and rubric for an instant AI-estimated grade report.
+          </div>
+          <div style={{ display: "flex", gap: 0, alignItems: "stretch" }}>
+            {[
+              { label: "Total Checks", value: history.length, color: palette.crimson },
+              { label: "Last Grade", value: history.length > 0 ? history[0].letterGrade : "—", color: palette.sage },
+              { label: "Topics Tracked", value: topicDistributionData.length, color: palette.deepBurgundy },
+            ].map((stat, i) => (
+              <div key={stat.label} style={{ flex: 1, paddingRight: i < 2 ? 40 : 0, marginRight: i < 2 ? 40 : 0, borderRight: i < 2 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
+                <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1 }}>{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          <div style={{ backgroundColor: "#fff", borderRadius: 14, padding: "24px 28px", border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", marginBottom: 28 }}>
-            <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 4 }}>Check Your Work</div>
+        <div style={{ padding: "48px 64px 56px", boxSizing: "border-box" }}>
+        <div style={{ maxWidth: 1400 }}>
+
+          <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.06)", marginBottom: 28 }}>
+            <div style={{ height: 5, background: `linear-gradient(90deg, ${palette.crimson}, ${palette.sage})` }} />
+            <div style={{ padding: "28px 32px 32px" }}>
+            <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 4 }}>Check Your Work</div>
             <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(92,30,38,0.6)", marginBottom: 20 }}>Upload your assignment rubric and your work to get an AI-estimated grade report.</div>
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 20 }}>
               <div style={{ flex: "1 1 240px" }}>
@@ -178,6 +205,7 @@ export function StudentSelfCheckPage() {
             <button type="button" onClick={handleAnalyze} disabled={!rubricFile || !workFile || isAnalyzing} style={{ padding: "12px 28px", borderRadius: 10, border: "none", backgroundColor: rubricFile && workFile && !isAnalyzing ? palette.crimson : "rgba(162,34,55,0.3)", color: "#fff", fontSize: 14, fontWeight: 700, cursor: rubricFile && workFile && !isAnalyzing ? "pointer" : "not-allowed" }}>
               {isAnalyzing ? "Analyzing..." : "Analyze My Work"}
             </button>
+            </div>
           </div>
 
           {isAnalyzing && (
@@ -193,7 +221,15 @@ export function StudentSelfCheckPage() {
           {currentReport && !isAnalyzing && (
             <div style={{ backgroundColor: "#fff", borderRadius: 14, padding: "24px 28px", border: `2px solid ${palette.sage}`, boxShadow: "0 4px 18px rgba(0,0,0,0.08)", marginBottom: 28 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy }}>Grade Report</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy }}>Grade Report</div>
+                  <ListenButton
+                    text={`Grade report for ${currentReport.assignmentName}. Potential grade: ${currentReport.letterGrade}, ${currentReport.potentialGrade}. Areas for improvement: ${currentReport.improvements.map((imp) => `${imp.section}. ${imp.suggestion}`).join(" ")}`}
+                    label="Grade Report"
+                    id={`report-${currentReport.id}`}
+                    size="md"
+                  />
+                </div>
                 <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(92,30,38,0.5)" }}>{currentReport.timestamp.toLocaleDateString()} at {currentReport.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
               </div>
               <div style={{ display: "flex", gap: 16, marginBottom: 20, flexWrap: "wrap" }}>
@@ -207,7 +243,14 @@ export function StudentSelfCheckPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {currentReport.improvements.map((imp, i) => (
                   <div key={i} style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "rgba(162,34,55,0.04)", border: "1px solid rgba(162,34,55,0.1)" }}>
-                    <div style={{ fontSize: 13, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 4 }}>{imp.section}</div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+                      <div style={{ fontSize: 13, fontWeight: 800, color: palette.deepBurgundy }}>{imp.section}</div>
+                      <ListenButton
+                        text={`${imp.section}. ${imp.suggestion}`}
+                        label={imp.section}
+                        id={`imp-${currentReport.id}-${i}`}
+                      />
+                    </div>
                     <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(17,17,17,0.7)", lineHeight: 1.5 }}>{imp.suggestion}</div>
                   </div>
                 ))}
@@ -218,7 +261,8 @@ export function StudentSelfCheckPage() {
           <TopicDistribution />
 
           <div style={{ marginTop: 8 }}>
-            <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 14 }}>Past Checks</div>
+            <div style={{ fontSize: 40, fontWeight: 900, color: palette.darkest, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>Past Checks</div>
+            <div style={{ fontSize: 16, fontWeight: 500, color: "rgba(92,30,38,0.5)", marginBottom: 20 }}>Your previous grade estimates and feedback.</div>
             {history.length === 0 && (
               <div style={{ backgroundColor: "#fff", borderRadius: 14, padding: 22, border: "1px solid rgba(214,214,214,0.3)", color: "rgba(92,30,38,0.5)", fontSize: 13, fontWeight: 600 }}>No past checks yet. Upload your first assignment above to get started.</div>
             )}
@@ -257,6 +301,20 @@ export function StudentSelfCheckPage() {
                 );
               })}
             </div>
+          </div>
+        </div>
+        </div>
+
+        {/* Bottom Banner */}
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px", marginTop: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+            D.I.Y.A Student Portal
+          </div>
+          <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>
+            AI-powered learning, built for you.
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.7)" }}>
+            Ask questions, check your work, and stay on top of your courses.
           </div>
         </div>
       </main>

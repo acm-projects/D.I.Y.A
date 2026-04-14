@@ -83,6 +83,12 @@ export function StudentProfilePage() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [draftUrl, setDraftUrl] = useState<string | null>(null);
   const [draftFile, setDraftFile] = useState<File | null>(null);
+  const [profileToast, setProfileToast] = useState<string | null>(null);
+
+  const showProfileToast = (msg: string) => {
+    setProfileToast(msg);
+    setTimeout(() => setProfileToast(null), 3000);
+  };
   const draftUrlRef = useRef<string | null>(null);
   const avatarUrlRef = useRef<string | null>(null);
   draftUrlRef.current = draftUrl;
@@ -139,7 +145,7 @@ export function StudentProfilePage() {
     setEditorOpen(false);
     setDraftUrl(null);
     setDraftFile(null);
-    alert(`Saved: ${draftFile.name} (${Math.round(draftFile.size / 1024)} KB)`);
+    showProfileToast(`Photo updated — ${draftFile.name}`);
   };
 
   useEffect(() => {
@@ -161,23 +167,31 @@ export function StudentProfilePage() {
         backgroundColor: palette.cream,
         fontFamily: "Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
         display: "flex",
+        position: "relative",
       }}
     >
+      {profileToast && (
+        <div style={{ position: "fixed", bottom: 28, left: "50%", transform: "translateX(-50%)", zIndex: 9999, display: "flex", alignItems: "center", gap: 10, background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "#fff", padding: "14px 24px", borderRadius: 14, boxShadow: "0 8px 32px rgba(0,0,0,0.2)", fontSize: 14, fontWeight: 700, whiteSpace: "nowrap" }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          {profileToast}
+        </div>
+      )}
       <Sidebar activeId="profile" />
 
       <main style={{ flex: 1, overflow: "auto" }}>
         {/* Hero Section */}
         <div
           style={{
-            background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`,
+            backgroundColor: "#fff",
             padding: "56px 64px 52px",
+            borderBottom: "1px solid rgba(214,214,214,0.2)",
           }}
         >
           <div
             style={{
               fontSize: 11,
               fontWeight: 700,
-              color: "rgba(255,255,255,0.55)",
+              color: palette.crimson,
               textTransform: "uppercase",
               letterSpacing: 2,
               marginBottom: 16,
@@ -187,12 +201,12 @@ export function StudentProfilePage() {
           </div>
           <div
             style={{
-              fontSize: 64,
+              fontSize: 72,
               fontWeight: 900,
-              color: "#fff",
+              color: palette.darkest,
               letterSpacing: -2.5,
               lineHeight: 1,
-              marginBottom: 12,
+              marginBottom: 16,
             }}
           >
             Profile
@@ -201,7 +215,7 @@ export function StudentProfilePage() {
             style={{
               fontSize: 20,
               fontWeight: 400,
-              color: "rgba(255,255,255,0.7)",
+              color: "rgba(92,30,38,0.55)",
               marginBottom: 52,
             }}
           >
@@ -223,9 +237,9 @@ export function StudentProfilePage() {
                   width: 28,
                   height: 28,
                   borderRadius: "50%",
-                  border: "1px solid rgba(255,255,255,0.4)",
-                  backgroundColor: "rgba(255,255,255,0.9)",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                  border: "1px solid rgba(39,1,21,0.2)",
+                  backgroundColor: "#fff",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -237,10 +251,10 @@ export function StudentProfilePage() {
               </button>
             </div>
             <div>
-              <div style={{ fontSize: 36, fontWeight: 900, color: "#fff", letterSpacing: -1, lineHeight: 1, marginBottom: 6 }}>
+              <div style={{ fontSize: 40, fontWeight: 900, color: palette.darkest, letterSpacing: -1.5, lineHeight: 1, marginBottom: 6 }}>
                 {studentName}
               </div>
-              <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.65)" }}>
+              <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(92,30,38,0.55)" }}>
                 {email}
               </div>
             </div>
@@ -250,6 +264,15 @@ export function StudentProfilePage() {
         {/* Content Area */}
         <div style={{ padding: "48px 64px 56px" }}>
           <div style={{ maxWidth: 720 }}>
+            {/* Section Header */}
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontSize: 40, fontWeight: 900, color: palette.darkest, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+                Account Settings
+              </div>
+              <div style={{ fontSize: 16, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>
+                Manage your name, email, and notification preferences.
+              </div>
+            </div>
             {/* Basic Information Card */}
             <div
               style={{
@@ -417,6 +440,19 @@ export function StudentProfilePage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Bottom Banner */}
+        <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px", marginTop: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+            D.I.Y.A Student Portal
+          </div>
+          <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>
+            AI-powered learning, built for you.
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.7)" }}>
+            Ask questions, check your work, and stay on top of your courses.
           </div>
         </div>
       </main>

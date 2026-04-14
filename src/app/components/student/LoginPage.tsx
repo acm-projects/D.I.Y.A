@@ -6,13 +6,15 @@ export function LoginPage() {
   const [isHovered, setIsHovered] = useState(false);
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = () => {
     if (!role) {
-      alert("Please select a role to continue.");
+      setLoginError("Please select a role to continue.");
       return;
     }
+    setLoginError("");
     if (role === "student") {
       navigate("/groups");
       return;
@@ -22,7 +24,7 @@ export function LoginPage() {
     }
   };
 
-  const handleGoogleSignup = () => alert("Sign up with Google clicked!");
+  const handleGoogleSignup = () => setLoginError("Google sign-in coming soon.");
 
   return (
     <div
@@ -191,6 +193,12 @@ export function LoginPage() {
           }}>
             Forgot your password?
           </h2>
+
+          {loginError && (
+            <div style={{ width: 300, padding: "10px 14px", borderRadius: 10, backgroundColor: "rgba(162,34,55,0.08)", border: "1px solid rgba(162,34,55,0.25)", color: "#a22237", fontSize: 13, fontWeight: 600, marginBottom: 12, textAlign: "center" }}>
+              {loginError}
+            </div>
+          )}
 
           <button
             onClick={handleLogin}
