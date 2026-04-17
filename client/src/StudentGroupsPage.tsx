@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { StudentSidebar } from "./StudentSidebar";
 import { useFirestoreDisplayName } from "./hooks/useFirestoreDisplayName";
+import { useTranslation } from "react-i18next";
 
 // Defining the shape of a group object
 type StudentGroup = {
@@ -71,6 +72,7 @@ function ForumIcon({ color }: { color: string }) {
 
 // Main page component for displaying student groups
 export function StudentGroupsPage() {
+  const { t } = useTranslation();
   const { user } = useAuth0();
   const firestoreName = useFirestoreDisplayName(user?.sub?.trim());
   const navigate = useNavigate(); // for navigating to other pages
@@ -102,11 +104,11 @@ export function StudentGroupsPage() {
         ]);
 
         if (!groupsResponse.ok) {
-          throw new Error("Failed to load groups.");
+          throw new Error(t("groups.error.loadGroups"));
         }
 
         if (!postsResponse.ok) {
-          throw new Error("Failed to load forum post counts.");
+          throw new Error(t("groups.error.loadPosts"));
         }
 
         const rawGroups = (await groupsResponse.json()) as BackendGroup[];
@@ -139,7 +141,7 @@ export function StudentGroupsPage() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load groups.");
+          setError(err instanceof Error ? err.message : t("groups.error.loadGroups"));
           setGroups([]);
         }
       } finally {
@@ -168,8 +170,8 @@ export function StudentGroupsPage() {
   const showingCount = filteredGroups.length;
   const showingLabel =
     query.trim().length > 0 && showingCount !== totalCount
-      ? `Showing ${showingCount} of ${totalCount} groups`
-      : `You're a member of ${totalCount} group${totalCount === 1 ? "" : "s"}`;
+      ? t("groups.count.showing", { count: showingCount, total: totalCount })
+      : t("groups.count.member_one", { count: totalCount });
 
 
       
@@ -232,7 +234,7 @@ export function StudentGroupsPage() {
               lineHeight: 1.1,
             }}
           >
-            Welcome Back, {firestoreName || user?.name || user?.email || 'Student'}!
+            {t("groups.pageTitle", { name: firestoreName || user?.name || user?.email || t("groups.defaultName") })}
           </div>
 
           {/* small divider under title */}
@@ -324,7 +326,7 @@ export function StudentGroupsPage() {
                 fontWeight: 700,
               }}
             >
-              Loading...
+              {t("groups.loading")}
             </div>
           )}
 
@@ -340,7 +342,7 @@ export function StudentGroupsPage() {
               }}
             >
               <div style={{ color: palette.deepBurgundy, fontWeight: 900, fontSize: 16 }}>
-                Unable to load groups
+                {t("groups.error.title")}
               </div>
               <div style={{ marginTop: 8, color: "rgba(17,17,17,0.6)", fontSize: 13, fontWeight: 600 }}>
                 {error}
@@ -450,7 +452,7 @@ export function StudentGroupsPage() {
                       }}
                     >
                       <UsersIcon color={palette.sage} />
-                      <span>{g.membersCount} members</span>
+                      <span>{g.membersCount} {t("groups.members")}</span>
                     </div>
 
 
@@ -469,7 +471,7 @@ export function StudentGroupsPage() {
                       }}
                     >
                       <ForumIcon color={palette.deepBurgundy} />
-                      <span>{g.forumPostsCount} posts</span>
+                      <span>{g.forumPostsCount} {t("groups.posts")}</span>
                     </div>
                   </div>
 
@@ -489,7 +491,7 @@ export function StudentGroupsPage() {
                     }}
                   >
                     <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>
-                      View group
+                      {t("groups.card.viewGroup")}
                     </div>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -521,10 +523,10 @@ export function StudentGroupsPage() {
                 }}
               >
                 <div style={{ color: palette.deepBurgundy, fontWeight: 900, fontSize: 16 }}>
-                  No groups match "{query.trim()}"
+                  {t("groups.empty.title")} "{query.trim()}"
                 </div>
                 <div style={{ marginTop: 8, color: "rgba(17,17,17,0.6)", fontSize: 13, fontWeight: 600 }}>
-                  Try a shorter name, course code, or remove extra spaces.
+                  {t("groups.empty.subtitle")}
                 </div>
               </div>
             )}

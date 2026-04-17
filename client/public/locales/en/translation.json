@@ -86,6 +86,8 @@
   "groups": {
     "pageTitle": "Welcome Back, {{name}}!",
     "defaultName": "Student",
+    "members": "members",
+    "posts": "posts",
     "search": {
       "placeholder": "Search your groups by name...",
       "ariaLabel": "Search groups by name"
@@ -109,14 +111,14 @@
       "loadPosts": "Failed to load forum post counts."
     },
     "empty": {
-      "title": "No groups match \"{{query}}\"",
+      "title": "No groups match ",
       "subtitle": "Try a shorter name, course code, or remove extra spaces."
     }
   },
   "forum": {
-    "pageTitle": "{{groupName}} Forum Page",
+    "pageTitle": "Forum Page",
     "header": {
-      "askQuestion": "Ask a new question",
+      "askQuestion": "Ask a question to your peers and the D.I.Y.A AI...",
       "ariaCreate": "Create new question"
     },
     "search": {
@@ -130,8 +132,8 @@
     },
     "card": {
       "newBadge": "NEW",
-      "replies_one": "{{count}} reply",
-      "replies_other": "{{count}} replies",
+      "replies_one": "reply",
+      "replies_other": "replies",
       "viewReplies": "View replies",
       "aiVerified": "This question's AI answer has been verified by the professor.",
       "timeAgo": {
@@ -163,13 +165,14 @@
       "uploadImage": "Upload image",
       "changeImage": "Change image",
       "cancel": "Cancel",
+      "posting": "Posting...",
       "postButton": "Post Question"
     }
   },
   "forumThread": {
     "backToForum": "← Back to Forum",
     "question": {
-      "askedBy": "Asked by {{author}}",
+      "askedBy": "Asked by ",
       "defaultTitle": "Your question",
       "defaultAuthor": "You"
     },
@@ -177,22 +180,33 @@
       "loading": "Loading thread...",
       "empty": "No replies yet — be the first to respond!",
       "professorLabel": "(Professor)",
-      "imageFallback": "(image)"
+      "imageFallback": "(image)",
+      "professor": "professor",
+      "student": "student",
+      "ai": "D.I.Y.A AI",
+      "profssorVerified": "Professor Verified AI"
     },
     "related": {
       "title": "Related Discussions",
       "loading": "Finding similar topics...",
       "empty": "No similar posts found.",
       "untitled": "Untitled Post",
-      "viewThread": "View Thread →"
+      "viewThread": "View Thread →",
+      "untitledQuestion": "Untitled Question"
     },
     "input": {
       "placeholder": "Type your reply...",
-      "removeImage": "Remove",
+      "sending": "Sending...",
+      "removeImage": "Remove attachment",
+      "remove": "Remove",
+      "attach": "Attach",
       "ariaUpload": "Upload image",
       "ariaSend": "Send reply",
       "ariaToggleSidebarOpen": "Open sidebar",
-      "ariaToggleSidebarClose": "Close sidebar"
+      "ariaToggleSidebarClose": "Close sidebar",
+      "fileTooLarge": "Attached file is too large. Please use a file under 10MB.",
+      "timeOut": "File upload timed out. Please try a smaller file or check Firebase Storage config.",
+      "urlError": "Could not get uploaded file URL. Check Firebase Storage bucket and rules."
     },
     "errors": {
       "loadThread": "Failed to load forum thread.",

@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
 import { StudentSidebar } from "./StudentSidebar";
+import { useTranslation } from "react-i18next";
+import { t, type TFunction } from "i18next";
 
 const palette = {
   darkest: "#270115",
@@ -58,16 +60,16 @@ const POSTS_API_BASE_URL = "/api/posts";
 const REPLIES_API_BASE_URL = "/api/replies";
 const UPVOTES_API_BASE_URL = "/api/upvotes";
 
-function getTimeAgo(createdAtMs: number): string {
+function getTimeAgo(createdAtMs: number, t: TFunction): string {
   const diffMs = Date.now() - createdAtMs;
   const minutes = Math.max(1, Math.floor(diffMs / 60000));
-  if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+  if (minutes < 60) return t("forum.card.timeAgo.minute", { count: minutes });
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  if (hours < 24) return t("forum.card.timeAgo.hour", { count: hours });
   const days = Math.floor(hours / 24);
-  if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
+  if (days < 7) return t("forum.card.timeAgo.day", { count: days });
   const weeks = Math.floor(days / 7);
-  return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
+  return t("forum.card.timeAgo.week", { count: weeks });
 }
 
 function getTimestampMs(value?: BackendPost["createdAt"]): number {
@@ -83,7 +85,7 @@ function getTimestampMs(value?: BackendPost["createdAt"]): number {
 
 function formatAuthor(authorId: string | undefined, currentUserId: string | undefined): string {
   if (!authorId) return "Student";
-  if (currentUserId && authorId === currentUserId) return "You";
+  if (currentUserId && authorId === currentUserId) return t("forumThread.question.defaultAuthor");
   return "Student";
 }
 
@@ -117,6 +119,7 @@ function ForumIcon({ color }: { color: string }) {
 }
 
 export function StudentForumPage() {
+  const { t } = useTranslation();
   const { groupId } = useParams<{ groupId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth0();
@@ -155,7 +158,7 @@ export function StudentForumPage() {
         ]);
 
         if (!postsResponse.ok) {
-          throw new Error("Failed to load forum questions.");
+          throw new Error(t("forum.error.loadQuestions"));
         }
 
         if (groupResponse.ok) {
@@ -206,7 +209,7 @@ export function StudentForumPage() {
           return {
             id: post.id,
             author: formatAuthor(post.authorId, user?.sub),
-            question: post.title ?? post.content ?? "Untitled question",
+            question: post.title ?? post.content ?? t("forumThread.related.untitledQuestion"),
             replies: replies.length,
             isNew: Date.now() - createdAtMs < 2 * 24 * 60 * 60 * 1000,
             image: post.imageUrl,
@@ -223,7 +226,7 @@ export function StudentForumPage() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load forum questions.");
+          setError(err instanceof Error ? err.message : t("forum.error.loadQuestions"));
           setQuestions([]);
         }
       } finally {
@@ -266,20 +269,20 @@ export function StudentForumPage() {
 
       if (imageFile) {
         if (imageFile.size > 10 * 1024 * 1024) {
-          throw new Error("Attached file is too large. Please use a file under 10MB.");
+          throw new Error(t("forumThread.input.fileTooLarge"));
         }
 
         const storageRef = ref(storage, `forum-images/${groupId}/${Date.now()}-${imageFile.name}`);
         const snapshot = await Promise.race([
           uploadBytes(storageRef, imageFile),
           new Promise<never>((_, reject) => {
-            window.setTimeout(() => reject(new Error("File upload timed out. Please try a smaller file or check Firebase Storage config.")), 12000);
+            window.setTimeout(() => reject(new Error(t("forumThread.input.timeOut"))), 12000);
           }),
         ]);
         imageUrl = await Promise.race([
           getDownloadURL(snapshot.ref),
           new Promise<never>((_, reject) => {
-            window.setTimeout(() => reject(new Error("Could not get uploaded file URL. Check Firebase Storage bucket and rules.")), 8000);
+            window.setTimeout(() => reject(new Error(t("forumThread.input.urlError"))), 8000);
           }),
         ]);
       }
@@ -299,14 +302,14 @@ export function StudentForumPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create question.");
+        throw new Error(t("forum.error.createQuestion"));
       }
 
       const createdPost = (await response.json()) as BackendPost;
       const createdAtMs = getTimestampMs(createdPost.createdAt);
       const newQ: Question = {
         id: createdPost.id,
-        author: "You",
+        author: t("forumThread.question.defaultAuthor"),
         question: createdPost.title ?? createdPost.content ?? title,
         replies: 0,
         isNew: true,
@@ -324,7 +327,7 @@ export function StudentForumPage() {
       // Navigate to the new thread so the user sees the AI reply arrive
       navigate(`/groups/${groupId}/forum/${createdPost.id}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create question.");
+      setError(err instanceof Error ? err.message : t("forum.error.createQuestion"));
     } finally {
       setIsPosting(false);
     }
@@ -346,7 +349,7 @@ export function StudentForumPage() {
         });
 
         if (!response.ok) {
-          throw new Error("Failed to remove upvote.");
+          throw new Error(t("forum.error.upvote"));
         }
 
         setQuestions((prev) =>
@@ -379,7 +382,7 @@ export function StudentForumPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add upvote.");
+        throw new Error(t("forum.error.upvote"));
       }
 
       const createdUpvote = (await response.json()) as BackendUpvote;
@@ -394,7 +397,7 @@ export function StudentForumPage() {
         [questionId]: createdUpvote.id,
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update upvote.");
+      setError(err instanceof Error ? err.message : t("forum.error.upvote"));
     }
   };
 
@@ -446,7 +449,7 @@ export function StudentForumPage() {
           }}
         >
           <span style={{ fontWeight: 850, fontSize: 44, color: palette.deepBurgundy, letterSpacing: -1, lineHeight: 1.1 }}>
-            {groupName} Forum Page
+            {groupName} {t("forum.pageTitle")}
           </span>
         </header>
 
@@ -479,8 +482,8 @@ export function StudentForumPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               type="search"
-              placeholder="Search questions..."
-              aria-label="Search questions"
+              placeholder={t("forum.search.placeholder")}
+              aria-label={t("forum.search.ariaLabel")}
               style={{
                 width: "100%",
                 border: "none",
@@ -515,7 +518,7 @@ export function StudentForumPage() {
                   void handleCreateQuestion();
                 }
               }}
-              placeholder="Ask a question to your peers and the D.I.Y.A AI..."
+              placeholder={t("forum.header.askQuestion")}
               rows={3}
               style={{
                 width: "100%",
@@ -566,7 +569,7 @@ export function StudentForumPage() {
                 <button
                   type="button"
                   onClick={() => { setNewImage(undefined); setImageFile(null); }}
-                  aria-label="Remove attachment"
+                  aria-label={t("forumThread.input.removeImage")}
                   style={{
                     position: "absolute",
                     top: -6,
@@ -634,7 +637,7 @@ export function StudentForumPage() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke={palette.deepBurgundy} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  Attach
+                  {t("forumThread.input.attach")}
                 </button>
               </div>
 
@@ -655,7 +658,7 @@ export function StudentForumPage() {
                   letterSpacing: 0.2,
                 }}
               >
-                {isPosting ? "Posting..." : "Post Question"}
+                {isPosting ? t("forum.popup.posting") : t("forum.popup.postButton")}
               </button>
             </div>
           </div>
@@ -670,8 +673,8 @@ export function StudentForumPage() {
             }}
           >
             {query.trim() && filtered.length !== questions.length
-              ? `Showing ${filtered.length} of ${questions.length} questions`
-              : `${questions.length} question${questions.length !== 1 ? "s" : ""} asked by your peers`}
+              ? t("forum.count.showing", { count: filtered.length, total: questions.length })
+              : t("forum.count.total", { count: questions.length })}
           </div>
 
           {isLoading && (
@@ -687,7 +690,7 @@ export function StudentForumPage() {
                 fontWeight: 700,
               }}
             >
-              Loading...
+              {t("forum.loading")}
             </div>
           )}
 
@@ -702,7 +705,7 @@ export function StudentForumPage() {
               }}
             >
               <div style={{ color: palette.deepBurgundy, fontWeight: 900, fontSize: 16 }}>
-                Unable to load forum questions
+                {t("forum.error.title")}
               </div>
               <div style={{ marginTop: 8, color: "rgba(17,17,17,0.6)", fontSize: 13, fontWeight: 600 }}>
                 {error}
@@ -755,7 +758,7 @@ export function StudentForumPage() {
                       letterSpacing: 0.5,
                     }}
                   >
-                    NEW
+                    {t("forum.card.newBadge")}
                   </div>
                 )}
 
@@ -818,7 +821,7 @@ export function StudentForumPage() {
                     }}
                   >
                     <ForumIcon color={q.replies === 0 ? "#DC3545" : palette.deepBurgundy} />
-                    <span>{q.replies} {q.replies === 1 ? "reply" : "replies"}</span>
+                    <span>{q.replies} {q.replies === 1 ? t("forum.card.replies_one") : t("forum.card.replies_other")}</span>
                   </div>
                   <button
                     type="button"
@@ -850,7 +853,7 @@ export function StudentForumPage() {
                       marginLeft: "auto",
                     }}
                   >
-                    {getTimeAgo(q.createdAtMs)}
+                    {getTimeAgo(q.createdAtMs, t)}
                   </div>
                 </div>
 
@@ -864,7 +867,7 @@ export function StudentForumPage() {
                   }}
                 >
                   <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>
-                    View replies
+                    {t("forum.card.viewReplies")}
                   </div>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -886,7 +889,7 @@ export function StudentForumPage() {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path d="M20 6L9 17l-5-5" stroke={palette.sage} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    This question's AI answer has been verified by the professor.
+                    {t("forum.card.aiVerified")}
                   </div>
                 )}
               </div>
@@ -904,10 +907,10 @@ export function StudentForumPage() {
               }}
             >
               <div style={{ color: palette.deepBurgundy, fontWeight: 900, fontSize: 16 }}>
-                No questions found
+                {t("forum.empty.title")}
               </div>
               <div style={{ marginTop: 8, color: "rgba(17,17,17,0.6)", fontSize: 13, fontWeight: 600 }}>
-                Try another search or post the first question for this group.
+                {t("forum.empty.subtitle")}
               </div>
             </div>
           )}

@@ -5,6 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
 import { StudentSidebar } from "./StudentSidebar";
 import { useRelatedPosts } from "./api/useRelatedPosts";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -111,6 +112,7 @@ function getTimestampMs(value?: BackendPost["createdAt"] | BackendReply["created
 }
 
 export function StudentForumThreadPage() {
+  const { t } = useTranslation();
   const { user } = useAuth0();
   const { groupId, questionId } = useParams<{ groupId: string; questionId: string }>();
   const navigate = useNavigate();
@@ -121,8 +123,8 @@ export function StudentForumThreadPage() {
   const [imagePreview, setImagePreview] = useState<string | undefined>();
   const [fileObj, setFileObj] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | undefined>();
-  const [questionTitle, setQuestionTitle] = useState("Your question");
-  const [questionAuthor, setQuestionAuthor] = useState("You");
+  const [questionTitle, setQuestionTitle] = useState(t("forumThread.question.defaultTitle"));
+  const [questionAuthor, setQuestionAuthor] = useState(t("forumThread.question.defaultAuthor"));
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAiThinking, setIsAiThinking] = useState(false);
@@ -138,8 +140,8 @@ export function StudentForumThreadPage() {
     const loadThread = async () => {
       if (!questionId) {
         if (isMounted) {
-          setQuestionTitle("Your question");
-          setQuestionAuthor("You");
+          setQuestionTitle(t("forumThread.question.defaultTitle"));
+          setQuestionAuthor(t("forumThread.question.defaultAuthor"));
           setReplies([]);
           setIsLoading(false);
         }
@@ -156,11 +158,11 @@ export function StudentForumThreadPage() {
         ]);
 
         if (!postResponse.ok) {
-          throw new Error("Failed to load forum thread.");
+          throw new Error(t("forumThread.errors.loadThread"));
         }
 
         if (!repliesResponse.ok) {
-          throw new Error("Failed to load replies.");
+          throw new Error(t("forumThread.errors.loadReplies"));
         }
 
         const post = (await postResponse.json()) as BackendPost;
@@ -172,8 +174,8 @@ export function StudentForumThreadPage() {
           return {
             id: reply.id,
             author: isAI
-              ? (post.isVerified ? "Professor Verified AI" : "D.I.Y.A AI")
-              : reply.authorId === user?.sub ? "You" : reply.authorName || "Student",
+              ? (post.isVerified ? t("forumThread.replies.professorVerified") : t("forumThread.replies.ai"))
+              : reply.authorId === user?.sub ? t("forumThread.question.defaultAuthor") : reply.authorName || t("forumThread.replies.student"),
             role,
             text: reply.text || "",
             image: reply.imageUrl,
@@ -182,12 +184,12 @@ export function StudentForumThreadPage() {
         });
 
         if (isMounted) {
-          setQuestionTitle(post.title ?? post.content ?? "Your question");
-          setQuestionAuthor(post.authorId === user?.sub ? "You" : "Student");
+          setQuestionTitle(post.title ?? post.content ?? t("forumThread.question.defaultTitle"));
+          setQuestionAuthor(post.authorId === user?.sub ? t("forumThread.question.defaultAuthor") : t("forumThread.replies.student"));
           setReplies(mappedReplies);
 
           // If this is a fresh post with no AI reply yet, start polling
-          const hasAiReply = mappedReplies.some((r) => r.author === "D.I.Y.A AI" || r.author === "Professor Verified AI");
+          const hasAiReply = mappedReplies.some((r) => r.author === t("forumThread.replies.ai") || r.author === t("forumThread.replies.professorVerified"));
           const postAgeMs = Date.now() - getTimestampMs(post.createdAt);
           if (!hasAiReply && postAgeMs < 60000) {
             setIsAiThinking(true);
@@ -197,7 +199,7 @@ export function StudentForumThreadPage() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load forum thread.");
+          setError(err instanceof Error ? err.message : t("forumThread.errors.loadThread"));
           setReplies([]);
         }
       } finally {
@@ -239,7 +241,7 @@ export function StudentForumThreadPage() {
           const post = postResp.ok ? ((await postResp.json()) as BackendPost) : null;
           const mapped: Reply[] = newAiReplies.map((r) => ({
             id: r.id,
-            author: post?.isVerified ? "Professor Verified AI" : "D.I.Y.A AI",
+            author: post?.isVerified ? t("forumThread.replies.professorVerified") : t("forumThread.replies.ai"),
             role: "professor" as const,
             text: r.text || "",
             image: r.imageUrl,
@@ -268,7 +270,7 @@ export function StudentForumThreadPage() {
       let uploadedUrl: string | undefined;
       if (fileObj && groupId) {
         if (fileObj.size > 10 * 1024 * 1024) {
-          throw new Error("Attached file is too large. Please use a file under 10MB.");
+          throw new Error(t("forumThread.input.fileTooLarge"));
         }
 
         if (fileObj.type.startsWith("image/") && imagePreview) {
@@ -278,13 +280,13 @@ export function StudentForumThreadPage() {
           const snapshot = await Promise.race([
             uploadBytes(storageRef, fileObj),
             new Promise<never>((_, reject) => {
-              window.setTimeout(() => reject(new Error("File upload timed out. Please try a smaller file or check Firebase Storage config.")), 12000);
+              window.setTimeout(() => reject(new Error(t("forumThread.input.timeOut"))), 12000);
             }),
           ]);
           uploadedUrl = await Promise.race([
             getDownloadURL(snapshot.ref),
             new Promise<never>((_, reject) => {
-              window.setTimeout(() => reject(new Error("Could not get uploaded file URL. Check Firebase Storage bucket and rules.")), 8000);
+              window.setTimeout(() => reject(new Error(t("forumThread.input.urlError"))), 8000);
             }),
           ]);
         }
@@ -302,7 +304,7 @@ export function StudentForumThreadPage() {
         body: JSON.stringify({
           postId: questionId,
           authorId: user.sub,
-          authorName: user.name || user.email || "Student",
+          authorName: user.name || user.email || t("groups.defaultName"),
           role: "student",
           text: text || `(${fileName || "file"})`,
           imageUrl: uploadedUrl || imagePreview,
@@ -312,7 +314,7 @@ export function StudentForumThreadPage() {
       window.clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error("Failed to send reply.");
+        throw new Error(t("forumThread.errors.sendReply"));
       }
 
       const createdReply = (await response.json()) as BackendReply;
@@ -320,7 +322,7 @@ export function StudentForumThreadPage() {
         ...prev,
         {
           id: createdReply.id,
-          author: "You",
+          author: t("forumThread.question.defaultAuthor"),
           role: "student",
           text: createdReply.text || text || "(image)",
           image: createdReply.imageUrl,
@@ -417,7 +419,7 @@ export function StudentForumThreadPage() {
           <button
             type="button"
             onClick={() => setSidebarOpen((v) => !v)}
-            aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+            aria-label={sidebarOpen ? t("forumThread.input.ariaToggleSidebarClose") : t("forumThread.input.ariaToggleSidebarOpen")}
             style={{
               background: "none",
               border: "1px solid #ccc",
@@ -446,7 +448,7 @@ export function StudentForumThreadPage() {
               padding: 0,
             }}
           >
-            ← Back to Forum
+            {t("forumThread.backToForum")}
           </button>
         </header>
 
@@ -459,7 +461,7 @@ export function StudentForumThreadPage() {
           }}
         >
           <div style={{ fontSize: 11, fontWeight: 700, color: palette.sage, marginBottom: 4 }}>
-            Asked by {questionAuthor}
+            {t("forumThread.question.askedBy")} {questionAuthor}
           </div>
           <div
             style={{
@@ -505,8 +507,8 @@ export function StudentForumThreadPage() {
           )}
 
           {!isLoading && !error && replies.map((r) => {
-            const isSelf = r.author === "You";
-            const isProf = r.role === "professor";
+            const isSelf = r.author === t("forumThread.question.defaultAuthor");
+            const isProf = r.role === t("forumThread.replied.professor");
             return (
               <div
                 key={r.id}
@@ -626,11 +628,11 @@ export function StudentForumThreadPage() {
             }}
           >
             <h3 style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: 1, color: palette.deepBurgundy, marginBottom: 16, fontWeight: 800 }}>
-              Related Discussions
+              {t("forumThread.related.title")}
             </h3>
 
             {relatedLoading ? (
-              <div style={{ fontSize: 13, color: "#666", fontStyle: "italic" }}>Finding similar topics...</div>
+              <div style={{ fontSize: 13, color: "#666", fontStyle: "italic" }}>{t("forumThread.related.loading")}</div>
             ) : relatedPosts && relatedPosts.length > 0 ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {relatedPosts.map((post) => (
@@ -649,13 +651,13 @@ export function StudentForumThreadPage() {
                       {post.title || "Untitled Post"}
                     </div>
                     <div style={{ fontSize: 11, color: palette.sage, marginTop: 4, fontWeight: 600 }}>
-                      View Thread →
+                      {t("forumThread.related.viewThread")}
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div style={{ fontSize: 13, color: "#999" }}>No similar posts found.</div>
+              <div style={{ fontSize: 13, color: "#999" }}>{t("forumThread.related.empty")}</div>
             )}
           </aside>
         </div>
@@ -697,7 +699,7 @@ export function StudentForumThreadPage() {
                 cursor: "pointer",
               }}
             >
-              Remove
+              {t("forumThread.input.remove")}
             </button>
           </div>
         )}
@@ -746,7 +748,7 @@ export function StudentForumThreadPage() {
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={handleKeyDown}
             type="text"
-            placeholder={isSending ? "Sending..." : "Type your reply..."}
+            placeholder={isSending ? t("forumThread.input.sending") : t("forumThread.input.placeholder")}
             disabled={isSending}
             style={{
               flex: 1,

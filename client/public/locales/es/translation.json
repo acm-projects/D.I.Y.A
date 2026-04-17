@@ -86,6 +86,8 @@
   "groups": {
     "pageTitle": "¡Bienvenido de nuevo, {{name}}!",
     "defaultName": "Estudiante",
+    "members": "miembros",
+    "posts": "publicaciones",
     "search": {
       "placeholder": "Buscar tus grupos por nombre...",
       "ariaLabel": "Buscar grupos por nombre"
@@ -109,14 +111,14 @@
       "loadPosts": "Error al cargar el recuento de publicaciones del foro."
     },
     "empty": {
-      "title": "No hay grupos que coincidan con \"{{query}}\"",
+      "title": "No hay grupos que coincidan con ",
       "subtitle": "Prueba con un nombre más corto, código del curso o elimina espacios adicionales."
     }
   },
   "forum": {
-    "pageTitle": "Foro de {{groupName}}",
+    "pageTitle": "Foro",
     "header": {
-      "askQuestion": "Hacer una pregunta nueva",
+      "askQuestion": "Haz una pregunta a tus compañeros y a la IA de D.I.Y.A...",
       "ariaCreate": "Crear nueva pregunta"
     },
     "search": {
@@ -130,8 +132,8 @@
     },
     "card": {
       "newBadge": "NUEVO",
-      "replies_one": "{{count}} respuesta",
-      "replies_other": "{{count}} respuestas",
+      "replies_one": "respuesta",
+      "replies_other": "respuestas",
       "viewReplies": "Ver respuestas",
       "aiVerified": "La respuesta de IA de esta pregunta ha sido verificada por el profesor.",
       "timeAgo": {
@@ -163,6 +165,7 @@
       "uploadImage": "Subir imagen",
       "changeImage": "Cambiar imagen",
       "cancel": "Cancelar",
+      "posting": "Publicando...",
       "postButton": "Publicar pregunta"
     }
   },
@@ -177,22 +180,33 @@
       "loading": "Cargando hilo...",
       "empty": "Aún no hay respuestas. ¡Sé el primero en responder!",
       "professorLabel": "(Profesor)",
-      "imageFallback": "(imagen)"
+      "imageFallback": "(imagen)",
+      "professor": "profesor",
+      "student": "estudiante",
+      "ai": "IA de D.I.Y.A",
+      "profssorVerified": "IA verificada por el profesor"
     },
     "related": {
       "title": "Discusiones relacionadas",
       "loading": "Buscando temas similares...",
       "empty": "No se encontraron publicaciones similares.",
       "untitled": "Publicación sin título",
-      "viewThread": "Ver hilo →"
+      "viewThread": "Ver hilo →",
+      "untitledQuestion": "Pregunta sin título"
     },
     "input": {
       "placeholder": "Escribe tu respuesta...",
-      "removeImage": "Eliminar",
+      "sending": "Enviando...",
+      "removeImage": "Eliminar adjunto",
+      "remove": "Eliminar",
+      "attach": "Adjuntar",
       "ariaUpload": "Subir imagen",
       "ariaSend": "Enviar respuesta",
       "ariaToggleSidebarOpen": "Abrir barra lateral",
-      "ariaToggleSidebarClose": "Cerrar barra lateral"
+      "ariaToggleSidebarClose": "Cerrar barra lateral",
+      "fileTooLarge": "El archivo adjunto es demasiado grande. Por favor, usa un archivo menor a 10MB.",
+      "timeOut": "Se agotó el tiempo de subida. Prueba con un archivo más pequeño o revisa la configuración de Firebase.",
+      "urlError": "No se pudo obtener la URL del archivo. Revisa los permisos de Firebase Storage."
     },
     "errors": {
       "loadThread": "Error al cargar el hilo del foro.",
@@ -354,9 +368,9 @@
       },
       "appearance": {
         "label": "Apariencia",
-        "lightMode": "Modo Claro",
-        "darkMode": "Modo Oscuro",
-        "switchButton": "Cambiar a {{ mode }}",
+        "lightMode": "Modo claro",
+        "darkMode": "Modo oscuro",
+        "switchButton": "Cambiar a modo {{ mode }}",
         "description": "La preferencia de tema se guarda y se aplica a tu página de perfil."
       },
       "language": {
