@@ -78,8 +78,11 @@ function ToggleRow({
         type="button"
         role="switch"
         aria-checked={checked}
-        onClick={onToggle}
-        disabled={disabled || isSaving}
+        onClick={() => {
+          console.log("TOGGLE CLICKED");
+          if (disabled || isSaving) return;
+          onToggle();
+        }}
         className={`relative inline-flex h-8 w-14 shrink-0 items-center rounded-full border transition-all duration-200 ${
           checked
             ? "border-[#7A9B76] bg-[#7A9B76]"
@@ -172,6 +175,7 @@ export function StudentProfilePage() {
 
           if (isMounted) {
             setNotificationPreferences(defaultNotificationPreferences);
+            setIsLoadingPreferences(false);
           }
           return;
         }
@@ -194,6 +198,7 @@ export function StudentProfilePage() {
       } catch (error) {
         if (isMounted) {
           console.error("Failed to load notification preferences.", error);
+          setIsLoadingPreferences(false);
         }
       } finally {
         if (isMounted) {
@@ -207,7 +212,7 @@ export function StudentProfilePage() {
     return () => {
       isMounted = false;
     };
-  }, [displayName, email, userDocId]);
+  }, [userDocId, email]);
 
   const handlePasswordReset = async () => {
     if (!email) {
@@ -236,7 +241,7 @@ export function StudentProfilePage() {
         throw new Error(message || "Auth0 could not send a password reset email.");
       }
 
-      setSuccessMessage(`Password reset email sent to ${email}. Check your inbox for the secure link.`);
+      setSuccessMessage(t("profile.security.passwordReset.successEmail", { email }));
     } catch (error) {
       console.error("Failed to send password reset email.", error);
     } finally {
@@ -267,7 +272,7 @@ export function StudentProfilePage() {
         updatedAt: serverTimestamp(),
       });
 
-      setSuccessMessage(`${key === "emailAlerts" ? "Email alerts" : "New forum reply notifications"} updated successfully.`);
+      setSuccessMessage(`${t(`profile.notifications.${key}.successMessage`)}`);
     } catch (error) {
       console.error("Failed to save notification preferences.", error);
       setNotificationPreferences(previousPreferences);
@@ -288,10 +293,10 @@ export function StudentProfilePage() {
       });
       if (!res.ok) throw new Error(await res.text());
       setSavedDisplayName(trimmed);
-      setSuccessMessage("Display name updated successfully.");
+      setSuccessMessage(t("profile.account.displayNameSuccess"));
     } catch (error) {
       console.error("Failed to save display name.", error);
-      setSuccessMessage("Failed to save name. Please try again.");
+      setSuccessMessage(t("profile.account.displayNameError"));
     } finally {
       setIsSavingName(false);
     }
@@ -308,10 +313,10 @@ export function StudentProfilePage() {
       });
       if (!res.ok) throw new Error(await res.text());
       setSavedBio(bioInput.trim());
-      setSuccessMessage("Bio updated successfully.");
+      setSuccessMessage(t("profile.account.bioSuccess"));
     } catch (error) {
       console.error("Failed to save bio.", error);
-      setSuccessMessage("Failed to save bio. Please try again.");
+      setSuccessMessage(t("profile.account.bioError"));
     } finally {
       setIsSavingBio(false);
     }
@@ -325,7 +330,7 @@ export function StudentProfilePage() {
         timezone: tz,
         updatedAt: serverTimestamp(),
       });
-      setSuccessMessage("Timezone updated.");
+      setSuccessMessage(t("profile.account.timezoneSuccess"));
     } catch (error) {
       console.error("Failed to save timezone.", error);
     }
@@ -342,7 +347,7 @@ export function StudentProfilePage() {
         body: JSON.stringify({ theme: next }),
       });
       if (!res.ok) throw new Error(await res.text());
-      setSuccessMessage(`Theme set to ${next}.`);
+      setSuccessMessage(t("profile.account.themeSuccess"));
     } catch (error) {
       console.error("Failed to save theme.", error);
     }
@@ -422,7 +427,7 @@ export function StudentProfilePage() {
                 <div className="grid grid-cols-2 gap-2">
                   <div className="rounded-2xl bg-white px-3 py-2 text-left shadow-sm">
                     <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.emailAlertsLabel")}</div>
-                    <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.emailAlerts ? "On" : "Off"}</div>
+                    <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.emailAlerts ? t("profile.account.on") : t("profile.account.off")}</div>
                   </div>
                   <div className="rounded-2xl bg-white px-3 py-2 text-left shadow-sm">
                     <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.forumRepliesLabel")}</div>
@@ -577,8 +582,8 @@ export function StudentProfilePage() {
                   onToggle={() => void handleTogglePreference("emailAlerts")}
                 />
                 <ToggleRow
-                  title={t("profile.notifications.forumReplies.title")}
-                  description={t("profile.notifications.forumReplies.description")}
+                  title={t("profile.notifications.newForumReplies.title")}
+                  description={t("profile.notifications.newForumReplies.description")}
                   checked={notificationPreferences.newForumReplies}
                   disabled={isLoadingPreferences}
                   isSaving={savingPreferenceKey === "newForumReplies"}

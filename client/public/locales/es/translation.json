@@ -10,10 +10,10 @@
     "trend": {
       "rising": "Tendencia al alza",
       "steady": "Estable",
-      "declining": "Requiere atención"
+      "declining": "Necesita atención"
     },
     "positives": {
-      "title": "Aspectos Positivos",
+      "title": "Puntos positivos",
       "subtitle": "Lo que va bien"
     },
     "concerns": {
@@ -25,8 +25,8 @@
       "subtitle": "Cómo mejorar"
     },
     "snapshot": {
-      "title": "Resumen de la Clase — {{topicName}}",
-      "description": "Basado en {{count}} preguntas del foro, la puntuación de participación de la clase para este tema es {{score}}%. Concéntrese en las preocupaciones anteriores para mejorar su comprensión antes de la próxima evaluación."
+      "title": "Resumen de la clase — {{topicName}}",
+      "description": "Basado en {{count}} preguntas del foro, la puntuación de participación de la clase para este tema es del {{score}}%. Concéntrate en las preocupaciones anteriores para mejorar tu comprensión antes de la próxima evaluación."
     }
   },
   "sidebar": {
@@ -37,8 +37,8 @@
     "nav": {
       "profile": "Perfil",
       "groups": "Grupos",
-      "request": "Solicitar Horas de Tutoría",
-      "requestShort": "Tutorías",
+      "request": "Solicitar horas de consulta",
+      "requestShort": "Horas de consulta",
       "selfcheck": "Autoevaluación"
     },
     "user": {
@@ -53,23 +53,23 @@
       "calendar": "Calendario",
       "analysis": "Análisis",
       "requests": "Solicitudes",
-      "editGroup": "Editar Grupo"
+      "editGroup": "Editar grupo"
     },
     "signOut": "Cerrar sesión"
   },
   "login": {
     "title": "Bienvenido de nuevo",
-    "subtitle": "Continúe de forma segura con Auth0 para acceder a su espacio de trabajo de D.I.Y.A, tareas, discusiones y herramientas de retroalimentación.",
+    "subtitle": "Continúa de forma segura con Auth0 para acceder a tu espacio de trabajo de D.I.Y.A, tareas, discusiones y herramientas de retroalimentación.",
     "submitButton": "Iniciar sesión con Auth0",
-    "signUpPrompt": "¿Nuevo en D.I.Y.A?",
+    "signUpPrompt": "¿Eres nuevo en D.I.Y.A?",
     "signUpLink": "Crea tu cuenta"
   },
   "signUp": {
     "title": "Crea tu cuenta",
-    "subtitle": "Comience con D.I.Y.A a través del flujo de registro seguro de Auth0 y continúe hacia su espacio de aprendizaje.",
+    "subtitle": "Comienza con D.I.Y.A a través del flujo de registro seguro de Auth0 y accede a tu espacio de aprendizaje.",
     "role": {
       "label": "Rol de la cuenta",
-      "description": "Elija si esta nueva cuenta debe crearse como estudiante o profesor.",
+      "description": "Elige si esta nueva cuenta debe crearse como estudiante o profesor.",
       "student": "Estudiante",
       "professor": "Profesor"
     },
@@ -78,7 +78,7 @@
     "loginLink": "Iniciar sesión"
   },
   "groupInvite": {
-    "title": "Invitación al Grupo",
+    "title": "Invitación al grupo",
     "message": "<strong>{{adminName}}</strong> te ha invitado a unirte a <strong>{{groupName}}</strong>",
     "accept": "Aceptar",
     "declined": "Rechazar"
@@ -110,13 +110,13 @@
     },
     "empty": {
       "title": "No hay grupos que coincidan con \"{{query}}\"",
-      "subtitle": "Prueba con un nombre más corto, código de curso o elimina espacios adicionales."
+      "subtitle": "Prueba con un nombre más corto, código del curso o elimina espacios adicionales."
     }
   },
   "forum": {
-    "pageTitle": "Página del Foro de {{groupName}}",
+    "pageTitle": "Foro de {{groupName}}",
     "header": {
-      "askQuestion": "Hacer una nueva pregunta",
+      "askQuestion": "Hacer una pregunta nueva",
       "ariaCreate": "Crear nueva pregunta"
     },
     "search": {
@@ -133,7 +133,7 @@
       "replies_one": "{{count}} respuesta",
       "replies_other": "{{count}} respuestas",
       "viewReplies": "Ver respuestas",
-      "aiVerified": "La respuesta de IA a esta pregunta ha sido verificada por el profesor.",
+      "aiVerified": "La respuesta de IA de esta pregunta ha sido verificada por el profesor.",
       "timeAgo": {
         "minute_one": "hace {{count}} minuto",
         "minute_other": "hace {{count}} minutos",
@@ -154,7 +154,7 @@
     },
     "empty": {
       "title": "No se encontraron preguntas",
-      "subtitle": "Intenta otra búsqueda o publica la primera pregunta para este grupo."
+      "subtitle": "Prueba con otra búsqueda o publica la primera pregunta para este grupo."
     },
     "popup": {
       "title": "Hacer una pregunta",
@@ -167,7 +167,7 @@
     }
   },
   "forumThread": {
-    "backToForum": "← Volver al Foro",
+    "backToForum": "← Volver al foro",
     "question": {
       "askedBy": "Preguntado por {{author}}",
       "defaultTitle": "Tu pregunta",
@@ -175,7 +175,7 @@
     },
     "replies": {
       "loading": "Cargando hilo...",
-      "empty": "Aún no hay respuestas — ¡sé el primero en responder!",
+      "empty": "Aún no hay respuestas. ¡Sé el primero en responder!",
       "professorLabel": "(Profesor)",
       "imageFallback": "(imagen)"
     },
@@ -201,39 +201,39 @@
     }
   },
   "officeHours": {
-    "pageTitle": "Solicitar Horas de Tutoría",
+    "pageTitle": "Solicitar horas de consulta",
     "form": {
       "title": "Nueva solicitud",
-      "subtitle": "Complete el formulario a continuación para solicitar una reunión con su profesor o asistente.",
-      "loading": "Cargando sus cursos y contactos disponibles...",
+      "subtitle": "Completa el formulario a continuación para solicitar una reunión con tu profesor o tutor (TA).",
+      "loading": "Cargando tus cursos y contactos disponibles...",
       "courseLabel": "¿Qué curso/grupo? *",
-      "coursePlaceholder": "Seleccione un curso o grupo",
-      "noGroups": "Aún no está inscrito en ningún grupo de curso.",
-      "professorLabel": "¿Solicitar a profesor o asistente? *",
-      "professorPlaceholder": "Seleccione un profesor o asistente",
-      "reasonLabel": "¿Cuál es el motivo de esta solicitud? *",
-      "reasonPlaceholder": "Describa brevemente por qué le gustaría reunirse...",
+      "coursePlaceholder": "Selecciona un curso o grupo",
+      "noGroups": "Aún no estás inscrito en ningún grupo de curso.",
+      "professorLabel": "¿A qué profesor o tutor solicitas? *",
+      "professorPlaceholder": "Selecciona un profesor o tutor",
+      "reasonLabel": "¿Cuál es el motivo de la solicitud? *",
+      "reasonPlaceholder": "Describe brevemente por qué te gustaría reunirte...",
       "dateLabel": "Fecha propuesta *",
       "startTimeLabel": "Hora de inicio (CST) *",
       "endTimeLabel": "Hora de finalización (CST) *",
       "meetingTypeLabel": "Tipo de reunión *",
-      "online": "Reunión en línea",
-      "inPerson": "Reunión en persona",
+      "online": "Reunión virtual",
+      "inPerson": "Reunión presencial",
       "meetingLinkLabel": "Enlace de la reunión (opcional)",
       "meetingLinkPlaceholder": "https://zoom.us/j/...",
       "submitButton": "Enviar solicitud"
     },
     "success": {
       "title": "¡Solicitud enviada!",
-      "subtitle": "Su solicitud de horas de tutoría ha sido enviada. Recibirá una confirmación por correo electrónico una vez que su profesor responda.",
-      "emailNote": "Revise su correo electrónico para actualizaciones en ",
+      "subtitle": "Tu solicitud de horas de consulta ha sido enviada. Recibirás una confirmación por correo electrónico una vez que tu profesor responda.",
+      "emailNote": "Revisa tu correo para actualizaciones en ",
       "submitAnother": "Enviar otra solicitud"
     },
     "requests": {
       "title": "Tus solicitudes",
       "empty": "Aún no hay solicitudes. Envía la primera arriba.",
-      "online": "En línea",
-      "inPerson": "En persona",
+      "online": "Virtual",
+      "inPerson": "Presencial",
       "meetingLink": "Enlace de la reunión: ",
       "addToGoogle": "Añadir a Google Calendar",
       "addToOutlook": "Añadir a Outlook",
@@ -242,16 +242,16 @@
     },
     "status": {
       "pending": "Pendiente",
-      "confirmed": "Confirmado",
-      "declined": "Rechazado"
+      "confirmed": "Confirmada",
+      "declined": "Rechazada"
     },
     "errors": {
       "loadProfessors": "Error al cargar los contactos de los profesores.",
       "loadGroups": "Error al cargar los grupos.",
-      "loadRequests": "Error al cargar sus solicitudes de tutoría.",
-      "loadData": "Error al cargar los datos de tutorías.",
-      "noGroup": "Por favor, seleccione un curso o grupo.",
-      "submit": "Error al enviar la solicitud de tutoría."
+      "loadRequests": "Error al cargar tus solicitudes de horas de consulta.",
+      "loadData": "Error al cargar los datos de horas de consulta.",
+      "noGroup": "Por favor, selecciona un curso o grupo.",
+      "submit": "Error al enviar la solicitud de horas de consulta."
     }
   },
   "selfCheck": {
@@ -271,7 +271,7 @@
       "subtitle": "Comparando tu entrega con los criterios de la rúbrica"
     },
     "report": {
-      "title": "Informe de Calificación",
+      "title": "Informe de calificación",
       "potentialGradeLabel": "Calificación potencial",
       "areasForImprovement": "Áreas de mejora"
     },
@@ -287,13 +287,13 @@
     }
   },
   "profile": {
-    "sectionLabel": "Configuración del estudiante",
-    "pageTitle": "Gestiona tu cuenta",
+    "sectionLabel": "Ajustes del estudiante",
+    "pageTitle": "Administra tu cuenta",
     "pageSubtitle": "Actualiza tus preferencias de seguridad, revisa los detalles de tu cuenta y controla cómo te notifica D.I.Y.A sobre actividades importantes.",
     "status": {
       "emailVerified": "Correo verificado",
       "emailPending": "Verificación de correo pendiente",
-      "lastSynced": "Última sincronización"
+      "lastSynced": "Sincronizado por última vez"
     },
     "account": {
       "sectionLabel": "Cuenta",
@@ -303,70 +303,76 @@
       "on": "Activado",
       "off": "Desactivado",
       "personalInfo": "Información personal",
-      "setName": "Establece tu nombre de visualización para que profesores y compañeros puedan identificarte. Aparecerá en toda la plataforma en lugar de tu correo.",
+      "setName": "Establece tu nombre para mostrar para que los profesores y compañeros puedan identificarte. Este aparecerá en toda la plataforma en lugar de tu correo.",
       "saving": "Guardando...",
       "saveName": "Guardar nombre",
       "saveBio": "Guardar biografía",
-      "tellMessage": "Cuéntales a otros sobre ti...",
+      "tellMessage": "Cuéntale a otros sobre ti...",
       "notAvailable": "No disponible",
-      "displayName": "NOMBRE DE USUARIO",
-      "enterName": "Ingresa tu nombre",
+      "displayName": "NOMBRE PARA MOSTRAR",
+      "enterName": "Introduce tu nombre",
       "bio": "BIOGRAFÍA / ACERCA DE",
-      "email": "CORREO ELECTRÓNICO"
+      "email": "DIRECCIÓN DE CORREO",
+      "displayNameSuccess": "Nombre para mostrar actualizado correctamente.",
+      "displayNameError": "Error al guardar el nombre. Por favor, inténtalo de nuevo.",
+      "bioSuccess": "Biografía actualizada correctamente.",
+      "bioError": "Error al guardar la biografía. Por favor, inténtalo de nuevo.",
+      "timezoneSuccess": "Zona horaria actualizada correctamente.",
+      "themeSuccess": "Tema actualizado correctamente."
     },
     "security": {
       "title": "Seguridad de la cuenta",
-      "subtitle": "Usa Auth0 para gestionar tu contraseña y mantener tu inicio de sesión seguro.",
+      "subtitle": "Administra tu contraseña y mantén tu inicio de sesión seguro.",
       "passwordReset": {
         "title": "Restablecer contraseña",
-        "description": "Enviar un correo seguro de restablecimiento de contraseña de Auth0 a ",
+        "description": "Enviar un correo seguro de restablecimiento de contraseña a ",
         "fallbackEmail": "el correo de tu cuenta",
         "button": "Cambiar contraseña",
         "buttonSending": "Enviando correo...",
-        "successMessage": "Correo de restablecimiento enviado a {{email}}. Revisa tu bandeja de entrada para el enlace seguro."
+        "successEmail": "Se ha enviado un correo para restablecer la contraseña a {{email}}. Revisa tu bandeja de entrada para el enlace seguro."
       }
     },
     "notifications": {
       "title": "Notificaciones",
-      "subtitle": "Estas preferencias se cargan directamente de tu documento de usuario en Firestore y se guardan inmediatamente al cambiarlas.",
+      "subtitle": "Establece tus preferencias de notificación.",
       "emailAlerts": {
-        "title": "Alertas por correo electrónico",
-        "description": "Recibe notificaciones por correo sobre actividad importante de la cuenta y actualizaciones de citas.",
-        "successMessage": "Alertas por correo actualizadas con éxito."
+        "title": "Alertas por correo",
+        "description": "Recibe notificaciones por correo para actividades importantes de la cuenta y actualizaciones relacionadas con citas.",
+        "successMessage": "Alertas por correo actualizadas correctamente."
       },
-      "forumReplies": {
+      "newForumReplies": {
         "title": "Nuevas respuestas en el foro",
-        "description": "Recibe notificaciones cuando haya nueva actividad o respuestas en discusiones relevantes para tus cursos.",
-        "successMessage": "Notificaciones de respuestas del foro actualizadas con éxito."
+        "description": "Recibe una notificación cuando haya nueva actividad o una respuesta en discusiones importantes para tus cursos.",
+        "successMessage": "Notificaciones de respuestas en el foro actualizadas correctamente."
       }
     },
     "preferences": {
       "title": "Preferencias",
-      "subtitle": "Personaliza tu experiencia con la configuración de zona horaria y apariencia.",
+      "subtitle": "Personaliza tu experiencia con los ajustes de zona horaria y apariencia.",
       "timezone": {
         "label": "Zona horaria"
       },
       "appearance": {
         "label": "Apariencia",
-        "lightMode": "Modo claro",
-        "darkMode": "Modo oscuro",
-        "switchButton": "Cambiar a {{mode}}",
+        "lightMode": "Modo Claro",
+        "darkMode": "Modo Oscuro",
+        "switchButton": "Cambiar a {{ mode }}",
         "description": "La preferencia de tema se guarda y se aplica a tu página de perfil."
       },
       "language": {
         "label": "Idioma",
         "current": "Español",
-        "comingSoon": "Próximamente más idiomas."
+        "comingSoon": "Próximamente habrá más idiomas."
       }
     },
     "dangerZone": {
       "title": "Zona de peligro",
-      "subtitle": "Acciones permanentes que no se pueden deshacer. Por favor, proceda con precaución.",
+      "subtitle": "Acciones permanentes que no se pueden deshacer. Por favor, procede con precaución.",
       "deleteAccount": {
         "title": "Eliminar cuenta",
-        "description": "Eliminar permanentemente su cuenta y todos los datos asociados. Esta acción es irreversible.",
+        "description": "Elimina permanentemente tu cuenta y todos los datos asociados. Esta acción es irreversible.",
         "button": "Solicitar eliminación de cuenta",
-        "alertMessage": "Por favor, contacte a su administrador para eliminar su cuenta."
+        "alertMessage": "Por favor, contacta con tu administrador para eliminar tu cuenta."
       }
     }
   }

@@ -312,29 +312,35 @@
       "displayName": "DISPLAY NAME",
       "enterName": "Enter your name",
       "bio": "BIO / ABOUT",
-      "email": "EMAIL ADDRESS"
+      "email": "EMAIL ADDRESS",
+      "displayNameSuccess": "Display name updated successfully.",
+      "displayNameError": "Failed to save name. Please try again.",
+      "bioSuccess": "Bio updated successfully.",
+      "bioError": "Failed to save bio. Please try again.",
+      "timezoneSuccess": "Timezone updated successfully.",
+      "themeSuccess": "Theme updated successfully."
     },
     "security": {
       "title": "Account Security",
-      "subtitle": "Use Auth0 to manage your password and keep your login secure.",
+      "subtitle": "Manage your password and keep your login secure.",
       "passwordReset": {
         "title": "Password reset",
-        "description": "Send a secure Auth0 password reset email to ",
+        "description": "Send a secure password reset email to ",
         "fallbackEmail": "your account email",
         "button": "Change Password",
         "buttonSending": "Sending reset email...",
-        "successMessage": "Password reset email sent to "
+        "successEmail": "Password reset email sent to {{email}}. Check your inbox for the secure link."
       }
     },
     "notifications": {
       "title": "Notifications",
-      "subtitle": "These preferences load directly from your Firestore user document and save immediately when you toggle them.",
+      "subtitle": "Set your notifications preferences.",
       "emailAlerts": {
         "title": "Email Alerts",
         "description": "Receive email notifications for important account activity and appointment-related updates.",
         "successMessage": "Email alerts updated successfully."
       },
-      "forumReplies": {
+      "newForumReplies": {
         "title": "New Forum Replies",
         "description": "Be notified when there is new activity or a reply on discussions that matter to your coursework.",
         "successMessage": "New forum reply notifications updated successfully."
@@ -350,7 +356,7 @@
       "label": "Appearance",
       "lightMode": "Light Mode",
       "darkMode": "Dark Mode",
-      "switchButton": "Switch to {{mode}}",
+      "switchButton": "Switch to {{ mode }}",
       "description": "Theme preference is saved and applied to your profile page."
     },
     "language": {
