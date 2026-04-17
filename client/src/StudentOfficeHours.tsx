@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { StudentSidebar } from "./StudentSidebar";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -114,6 +115,7 @@ function buildOutlookUrl(req: PastRequest): string {
 }
 
 export function StudentOfficeHours() {
+  const { t } = useTranslation();
   const { user } = useAuth0();
   const [selectedGroupId, setSelectedGroupId] = useState("");
   const [selectedProf, setSelectedProf] = useState("");
@@ -154,15 +156,15 @@ export function StudentOfficeHours() {
         ]);
 
         if (!professorsResponse.ok) {
-          throw new Error("Failed to load professor contacts.");
+          throw new Error(t("officeHours.errors.loadProfessors"));
         }
 
         if (!groupsResponse.ok) {
-          throw new Error("Failed to load groups.");
+          throw new Error(t("officeHours.errors.loadGroups"));
         }
 
         if (!requestsResponse.ok) {
-          throw new Error("Failed to load your office hour requests.");
+          throw new Error(t("officeHours.errors.loadRequests"));
         }
 
         const liveProfessors = (await professorsResponse.json()) as LiveUser[];
@@ -190,7 +192,7 @@ export function StudentOfficeHours() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load office hour data.");
+          setError(err instanceof Error ? err.message : t("officeHours.errors.loadData"));
           setProfessors([]);
           setAvailableGroups([]);
           setPastRequests([]);
@@ -237,7 +239,7 @@ export function StudentOfficeHours() {
     const prof = filteredProfessors.find((p) => p.id === selectedProf) ?? professors.find((p) => p.id === selectedProf);
 
     if (!selectedGroup) {
-      setError("Please select a course or group.");
+      setError(t("officeHours.errors.noGroup"));
       return;
     }
 
@@ -267,14 +269,14 @@ export function StudentOfficeHours() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit office hour request.");
+        throw new Error(t("officeHours.errors.submit"));
       }
 
       const newReq = (await response.json()) as PastRequest;
       setPastRequests((prev) => [newReq, ...prev]);
       setSubmitted(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to submit office hour request.");
+      setError(err instanceof Error ? err.message : t("officeHours.errors.submit"));
     }
   };
 
@@ -291,9 +293,9 @@ export function StudentOfficeHours() {
   };
 
   const statusColors: Record<string, { bg: string; text: string; label: string }> = {
-    pending: { bg: "rgba(39,1,21,0.06)", text: "rgba(39,1,21,0.55)", label: "Pending" },
-    confirmed: { bg: "rgba(122,155,118,0.12)", text: palette.sage, label: "Confirmed" },
-    declined: { bg: "rgba(162,34,55,0.08)", text: palette.crimson, label: "Declined" },
+    pending: { bg: "rgba(39,1,21,0.06)", text: "rgba(39,1,21,0.55)", label: t("officeHours.status.pending") },
+    confirmed: { bg: "rgba(122,155,118,0.12)", text: palette.sage, label: t("officeHours.status.confirmed") },
+    declined: { bg: "rgba(162,34,55,0.08)", text: palette.crimson, label: t("officeHours.status.declined") },
   };
 
   return (
@@ -337,7 +339,7 @@ export function StudentOfficeHours() {
               lineHeight: 1.1,
             }}
           >
-            Request Office Hours
+            {t("officeHours.pageTitle")}
           </div>
 
           <div
@@ -385,27 +387,27 @@ export function StudentOfficeHours() {
               }}
             >
               <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 4 }}>
-                New Request
+                {t("officeHours.form.title")}
               </div>
               <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(92,30,38,0.55)", marginBottom: 24 }}>
-                Fill out the form below to request a meeting with your professor or TA.
+                {t("officeHours.form.subtitle")}
               </div>
 
               {isLoading && (
                 <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.5)", marginBottom: 16 }}>
-                  Loading your courses and available contacts...
+                  {t("officeHours.form.loading")}
                 </div>
               )}
 
               <div style={{ marginBottom: 18 }}>
-                <label style={labelStyle}>Which Course/Group? *</label>
+                <label style={labelStyle}>{t("officeHours.form.courseLabel")}</label>
                 <select
                   value={selectedGroupId}
                   onChange={(e) => setSelectedGroupId(e.target.value)}
                   style={{ ...inputStyle, cursor: "pointer" }}
                   disabled={isLoading || availableGroups.length === 0}
                 >
-                  <option value="">Select a course or group</option>
+                  <option value="">{t("officeHours.form.coursePlaceholder")}</option>
                   {availableGroups.map((group) => (
                     <option key={group.id} value={group.id}>
                       {group.title?.trim() || "Untitled Group"}
@@ -414,19 +416,19 @@ export function StudentOfficeHours() {
                 </select>
                 {!isLoading && availableGroups.length === 0 && (
                   <div style={{ marginTop: 8, fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.55)" }}>
-                    You are not enrolled in any course groups yet.
+                    {t("officeHours.form.noGroups")}
                   </div>
                 )}
               </div>
 
               <div style={{ marginBottom: 18 }}>
-                <label style={labelStyle}>Requesting Professor or TA? *</label>
+                <label style={labelStyle}>{t("officeHours.form.professorLabel")}</label>
                 <select
                   value={selectedProf}
                   onChange={(e) => setSelectedProf(e.target.value)}
                   style={{ ...inputStyle, cursor: "pointer" }}
                 >
-                  <option value="">Select a professor or TA</option>
+                  <option value="">{t("officeHours.form.professorPlaceholder")}</option>
                   {filteredProfessors.map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.displayLabel}
@@ -437,11 +439,11 @@ export function StudentOfficeHours() {
 
               {/* reason */}
               <div style={{ marginBottom: 18 }}>
-                <label style={labelStyle}>What is this request for? *</label>
+                <label style={labelStyle}>{t("officeHours.form.reasonLabel")}</label>
                 <textarea
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  placeholder="Briefly describe why you'd like to meet..."
+                  placeholder={t("officeHours.form.reasonPlaceholder")}
                   rows={4}
                   style={{
                     ...inputStyle,
@@ -453,7 +455,7 @@ export function StudentOfficeHours() {
 
               {/* date */}
               <div style={{ marginBottom: 18 }}>
-                <label style={labelStyle}>Proposed Date *</label>
+                <label style={labelStyle}>{t("officeHours.form.dateLabel")}</label>
                 <input
                   type="date"
                   value={date}
@@ -465,7 +467,7 @@ export function StudentOfficeHours() {
               {/* time range */}
               <div style={{ display: "flex", gap: 14, marginBottom: 18 }}>
                 <div style={{ flex: 1 }}>
-                  <label style={labelStyle}>Start Time (CST) *</label>
+                  <label style={labelStyle}>{t("officeHours.form.startTimeLabel")}</label>
                   <input
                     type="time"
                     value={startTime}
@@ -474,7 +476,7 @@ export function StudentOfficeHours() {
                   />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <label style={labelStyle}>End Time (CST) *</label>
+                  <label style={labelStyle}>{t("officeHours.form.endTimeLabel")}</label>
                   <input
                     type="time"
                     value={endTime}
@@ -486,7 +488,7 @@ export function StudentOfficeHours() {
 
               {/* meeting type */}
               <div style={{ marginBottom: 18 }}>
-                <label style={labelStyle}>Meeting Type *</label>
+                <label style={labelStyle}>{t("officeHours.form.meetingTypeLabel")}</label>
                 <div style={{ display: "flex", gap: 10 }}>
                   {(["online", "in-person"] as const).map((type) => {
                     const isSelected = meetingType === type;
@@ -522,7 +524,7 @@ export function StudentOfficeHours() {
                               stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                           )}
                         </svg>
-                        {type === "online" ? "Online Meeting" : "In-Person Meeting"}
+                        {type === "online" ? t("officeHours.form.online") : t("officeHours.form.inPerson")}
                       </button>
                     );
                   })}
@@ -532,12 +534,12 @@ export function StudentOfficeHours() {
               {/* meeting link (only for online) */}
               {meetingType === "online" && (
                 <div style={{ marginBottom: 18 }}>
-                  <label style={labelStyle}>Meeting Link (optional)</label>
+                  <label style={labelStyle}>{t("officeHours.form.meetingLinkLabel")}</label>
                   <input
                     type="url"
                     value={meetingLink}
                     onChange={(e) => setMeetingLink(e.target.value)}
-                    placeholder="https://zoom.us/j/..."
+                    placeholder={t("officeHours.form.meetingLinkPlaceholder")}
                     style={inputStyle}
                   />
                 </div>
@@ -561,7 +563,7 @@ export function StudentOfficeHours() {
                   marginTop: 6,
                 }}
               >
-                Submit Request
+                {t("officeHours.form.submitButton")}
               </button>
             </div>
           ) : (
@@ -595,13 +597,13 @@ export function StudentOfficeHours() {
                 </svg>
               </div>
               <div style={{ fontSize: 20, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 8 }}>
-                Request Submitted!
+                {t("officeHours.success.title")}
               </div>
               <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(92,30,38,0.6)", lineHeight: 1.5, marginBottom: 6 }}>
-                Your office hours request has been sent. You'll receive an email confirmation once your professor responds.
+                {t("officeHours.success.subtitle")}
               </div>
               <div style={{ fontSize: 13, fontWeight: 600, color: palette.sage, marginBottom: 20 }}>
-                Check your email at <span style={{ fontWeight: 700 }}>{user?.email || "your email"}</span> for updates.
+                {t("officeHours.success.emailNote")} <span style={{ fontWeight: 700 }}>{user?.email || "your email"}</span>
               </div>
               <button
                 type="button"
@@ -617,7 +619,7 @@ export function StudentOfficeHours() {
                   cursor: "pointer",
                 }}
               >
-                Submit Another Request
+                {t("officeHours.success.submitAnother")}
               </button>
             </div>
           )}
@@ -629,7 +631,7 @@ export function StudentOfficeHours() {
           {/* past requests */}
           <div style={{ marginTop: 8 }}>
             <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 14 }}>
-              Your Requests
+              {t("officeHours.requests.title")}
             </div>
 
             {pastRequests.length === 0 && (
@@ -645,7 +647,7 @@ export function StudentOfficeHours() {
                   fontWeight: 600,
                 }}
               >
-                No requests yet. Submit your first one above.
+                {t("officeHours.requests.empty")}
               </div>
             )}
 
@@ -691,7 +693,7 @@ export function StudentOfficeHours() {
                             {" · "}
                             {req.startTime} – {req.endTime}
                             {" · "}
-                            {req.meetingType === "online" ? "Online" : "In-Person"}
+                            {req.meetingType === "online" ? t("officeHours.requests.online") : t("officeHours.requests.inPerson")}
                           </div>
                         </div>
                       </div>
@@ -730,7 +732,7 @@ export function StudentOfficeHours() {
 
                     {req.meetingType === "online" && req.meetingLink && (
                       <div style={{ marginTop: 8, fontSize: 12, fontWeight: 600, color: palette.sage }}>
-                        Meeting link: {req.meetingLink}
+                        {t("officeHours.requests.meetingLink")} {req.meetingLink}
                       </div>
                     )}
 
@@ -759,7 +761,7 @@ export function StudentOfficeHours() {
                             <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
                             <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                           </svg>
-                          Add to Google Calendar
+                          {t("officeHours.requests.addToGoogle")}
                         </a>
                         <a
                           href={buildOutlookUrl(req)}
@@ -784,7 +786,7 @@ export function StudentOfficeHours() {
                             <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
                             <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                           </svg>
-                          Add to Outlook
+                          {t("officeHours.requests.addToOutlook")}
                         </a>
                         {req.meetingType === "online" && req.meetingLink && (
                           <a
@@ -809,7 +811,7 @@ export function StudentOfficeHours() {
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
                               <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
-                            Join Meeting
+                            {t("officeHours.requests.joinMeeting")}
                           </a>
                         )}
                       </div>

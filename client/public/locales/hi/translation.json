@@ -1,0 +1,333 @@
+{
+  "topicAnalysis": {
+    "notFound": "विषय नहीं मिला।",
+    "backToSelfCheck": "स्व-जाँच पर वापस जाएँ",
+    "backToAnalysis": "विश्लेषण पर वापस जाएँ",
+    "badges": {
+      "forumQuestions": "{{count}} फ़ोरम प्रश्न",
+      "engagement": "{{score}}% जुड़ाव"
+    },
+    "trend": {
+      "rising": "बढ़ रहा है",
+      "steady": "स्थिर",
+      "declining": "ध्यान देने की आवश्यकता है"
+    },
+    "positives": {
+      "title": "सकारात्मक पक्ष",
+      "subtitle": "क्या अच्छा चल रहा है"
+    },
+    "concerns": {
+      "title": "चिंताएँ",
+      "subtitle": "कठिनाई के क्षेत्र"
+    },
+    "recommendations": {
+      "title": "सुझाव",
+      "subtitle": "सुधार कैसे करें"
+    },
+    "snapshot": {
+      "title": "कक्षा स्नैपशॉट — {{topicName}}",
+      "description": "{{count}} फ़ोरम प्रश्नों के आधार पर, इस विषय के लिए कक्षा जुड़ाव स्कोर {{score}}% है। अगले मूल्यांकन से पहले अपनी समझ सुधारने के लिए ऊपर दी गई चिंताओं पर ध्यान दें।"
+    }
+  },
+  "sidebar": {
+    "appSubtitle": "छात्र पोर्टल",
+    "menuLabel": "मेनू",
+    "defaultName": "छात्र",
+    "defaultEmail": "student@university.edu",
+    "nav": {
+      "profile": "प्रोफ़ाइल",
+      "groups": "समूह",
+      "request": "ऑफिस आवर्स के लिए अनुरोध करें",
+      "requestShort": "ऑफिस आवर्स",
+      "selfcheck": "स्व-जाँच"
+    },
+    "user": {
+      "signOut": "साइन आउट"
+    }
+  },
+  "professorSidebar": {
+    "appSubtitle": "प्रोफेसर दृश्य",
+    "navigationLabel": "नेविगेशन",
+    "nav": {
+      "forum": "फ़ोरम",
+      "calendar": "कैलेंडर",
+      "analysis": "विश्लेषण",
+      "requests": "अनुरोध",
+      "editGroup": "समूह संपादित करें"
+    },
+    "signOut": "साइन आउट"
+  },
+  "login": {
+    "title": "वापसी पर स्वागत है",
+    "subtitle": "अपने D.I.Y.A कार्यक्षेत्र, असाइनमेंट, चर्चाओं और फीडबैक टूल तक पहुँचने के लिए Auth0 के साथ सुरक्षित रूप से आगे बढ़ें।",
+    "submitButton": "Auth0 के साथ लॉग इन करें",
+    "signUpPrompt": "D.I.Y.A पर नए हैं?",
+    "signUpLink": "अपना खाता बनाएँ"
+  },
+  "signUp": {
+    "title": "अपना खाता बनाएँ",
+    "subtitle": "सुरक्षित Auth0 साइनअप प्रक्रिया के माध्यम से D.I.Y.A के साथ शुरुआत करें और अपने लर्निंग कार्यक्षेत्र में प्रवेश करें।",
+    "role": {
+      "label": "खाता भूमिका",
+      "description": "चुनें कि यह नया खाता छात्र के रूप में बनाया जाना चाहिए या प्रोफेसर के रूप में।",
+      "student": "छात्र",
+      "professor": "प्रोफेसर"
+    },
+    "submitButton": "Auth0 के साथ साइन अप करें",
+    "loginPrompt": "पहले से ही एक खाता है?",
+    "loginLink": "लॉग इन करें"
+  },
+  "groupInvite": {
+    "title": "समूह आमंत्रण",
+    "message": "<strong>{{adminName}}</strong> ने आपको <strong>{{groupName}}</strong> में शामिल होने के लिए आमंत्रित किया है",
+    "accept": "स्वीकार करें",
+    "declined": "अस्वीकार करें"
+  },
+  "groups": {
+    "pageTitle": "वापसी पर स्वागत है, {{name}}!",
+    "defaultName": "छात्र",
+    "search": {
+      "placeholder": "नाम से अपने समूह खोजें...",
+      "ariaLabel": "नाम से समूह खोजें"
+    },
+    "count": {
+      "showing": "{{total}} में से {{count}} समूह दिखाए जा रहे हैं",
+      "member_one": "आप {{count}} समूह के सदस्य हैं",
+      "member_other": "आप {{count}} समूहों के सदस्य हैं"
+    },
+    "card": {
+      "members_one": "{{count}} सदस्य",
+      "members_other": "{{count}} सदस्य",
+      "posts_one": "{{count}} पोस्ट",
+      "posts_other": "{{count}} पोस्ट",
+      "viewGroup": "समूह देखें"
+    },
+    "loading": "लोड हो रहा है...",
+    "error": {
+      "title": "समूह लोड करने में असमर्थ",
+      "loadGroups": "समूह लोड करने में विफल।",
+      "loadPosts": "फ़ोरम पोस्ट संख्या लोड करने में विफल।"
+    },
+    "empty": {
+      "title": "\"{{query}}\" से मिलता-जुलता कोई समूह नहीं मिला",
+      "subtitle": "कोई छोटा नाम, कोर्स कोड आज़माएँ, या अतिरिक्त स्पेस हटा दें।"
+    }
+  },
+  "forum": {
+    "pageTitle": "{{groupName}} फ़ोरम पेज",
+    "header": {
+      "askQuestion": "एक नया प्रश्न पूछें",
+      "ariaCreate": "नया प्रश्न बनाएँ"
+    },
+    "search": {
+      "placeholder": "प्रश्न खोजें...",
+      "ariaLabel": "प्रश्न खोजें"
+    },
+    "count": {
+      "showing": "{{total}} में से {{count}} प्रश्न दिखाए जा रहे हैं",
+      "total_one": "आपके सहपाठियों द्वारा पूछा गया {{count}} प्रश्न",
+      "total_other": "आपके सहपाठियों द्वारा पूछे गए {{count}} प्रश्न"
+    },
+    "card": {
+      "newBadge": "नया",
+      "replies_one": "{{count}} उत्तर",
+      "replies_other": "{{count}} उत्तर",
+      "viewReplies": "उत्तर देखें",
+      "aiVerified": "इस प्रश्न के AI उत्तर को प्रोफेसर द्वारा सत्यापित किया गया है।",
+      "timeAgo": {
+        "minute_one": "{{count}} मिनट पहले",
+        "minute_other": "{{count}} मिनट पहले",
+        "hour_one": "{{count}} घंटा पहले",
+        "hour_other": "{{count}} घंटे पहले",
+        "day_one": "{{count}} दिन पहले",
+        "day_other": "{{count}} दिन पहले",
+        "week_one": "{{count}} सप्ताह पहले",
+        "week_other": "{{count}} सप्ताह पहले"
+      }
+    },
+    "loading": "लोड हो रहा है...",
+    "error": {
+      "title": "फ़ोरम प्रश्न लोड करने में असमर्थ",
+      "loadQuestions": "फ़ोरम प्रश्न लोड करने में विफल।",
+      "createQuestion": "प्रश्न बनाने में विफल।",
+      "upvote": "अपवोट अपडेट करने में विफल।"
+    },
+    "empty": {
+      "title": "कोई प्रश्न नहीं मिला",
+      "subtitle": "कोई अन्य खोज आज़माएँ या इस समूह के लिए पहला प्रश्न पोस्ट करें।"
+    },
+    "popup": {
+      "title": "एक प्रश्न पूछें",
+      "inputPlaceholder": "आपका प्रश्न क्या है?",
+      "imageLabel": "छवि (वैकल्पिक)",
+      "uploadImage": "छवि अपलोड करें",
+      "changeImage": "छवि बदलें",
+      "cancel": "रद्द करें",
+      "postButton": "प्रश्न पोस्ट करें"
+    }
+  },
+  "forumThread": {
+    "backToForum": "← फ़ोरम पर वापस जाएँ",
+    "question": {
+      "askedBy": "{{author}} द्वारा पूछा गया",
+      "defaultTitle": "आपका प्रश्न",
+      "defaultAuthor": "आप"
+    },
+    "replies": {
+      "loading": "थ्रेड लोड हो रहा है...",
+      "empty": "अभी तक कोई उत्तर नहीं है — प्रतिक्रिया देने वाले पहले व्यक्ति बनें!",
+      "professorLabel": "(प्रोफेसर)",
+      "imageFallback": "(छवि)"
+    },
+    "related": {
+      "title": "संबंधित चर्चाएँ",
+      "loading": "समान विषय खोजे जा रहे हैं...",
+      "empty": "कोई समान पोस्ट नहीं मिली।",
+      "untitled": "बिना शीर्षक वाली पोस्ट",
+      "viewThread": "थ्रेड देखें →"
+    },
+    "input": {
+      "placeholder": "अपना उत्तर टाइप करें...",
+      "removeImage": "हटाएँ",
+      "ariaUpload": "छवि अपलोड करें",
+      "ariaSend": "उत्तर भेजें",
+      "ariaToggleSidebarOpen": "साइडबार खोलें",
+      "ariaToggleSidebarClose": "साइडबार बंद करें"
+    },
+    "errors": {
+      "loadThread": "फ़ोरम थ्रेड लोड करने में विफल।",
+      "loadReplies": "उत्तर लोड करने में विफल।",
+      "sendReply": "उत्तर भेजने में विफल।"
+    }
+  },
+  "officeHours": {
+    "pageTitle": "ऑफिस आवर्स के लिए अनुरोध करें",
+    "form": {
+      "title": "नया अनुरोध",
+      "subtitle": "अपने प्रोफेसर या टीए (TA) के साथ मीटिंग के लिए अनुरोध करने के लिए नीचे दिया गया फॉर्म भरें।",
+      "loading": "आपके कोर्स और उपलब्ध संपर्क लोड हो रहे हैं...",
+      "courseLabel": "कौन सा कोर्स/समूह? *",
+      "coursePlaceholder": "एक कोर्स या समूह चुनें",
+      "noGroups": "आप अभी तक किसी भी कोर्स समूह में नामांकित नहीं हैं।",
+      "professorLabel": "प्रोफेसर या टीए से अनुरोध कर रहे हैं? *",
+      "professorPlaceholder": "एक प्रोफेसर या टीए चुनें",
+      "reasonLabel": "यह अनुरोध किसलिए है? *",
+      "reasonPlaceholder": "संक्षेप में बताएं कि आप क्यों मिलना चाहते हैं...",
+      "dateLabel": "प्रस्तावित तिथि *",
+      "startTimeLabel": "प्रारंभ समय (CST) *",
+      "endTimeLabel": "समाप्ति समय (CST) *",
+      "meetingTypeLabel": "मीटिंग का प्रकार *",
+      "online": "ऑनलाइन मीटिंग",
+      "inPerson": "व्यक्तिगत मीटिंग",
+      "meetingLinkLabel": "मीटिंग लिंक (वैकल्पिक)",
+      "meetingLinkPlaceholder": "https://zoom.us/j/...",
+      "submitButton": "अनुरोध जमा करें"
+    },
+    "success": {
+      "title": "अनुरोध जमा कर दिया गया!",
+      "subtitle": "आपका ऑफिस आवर्स अनुरोध भेज दिया गया है। आपके प्रोफेसर के जवाब देने के बाद आपको एक ईमेल पुष्टिकरण प्राप्त होगा।",
+      "emailNote": "पडेट के लिए अपना ईमेल यहाँ देखें:",
+      "submitAnother": "एक और अनुरोध जमा करें"
+    },
+    "requests": {
+      "title": "आपके अनुरोध",
+      "empty": "अभी तक कोई अनुरोध नहीं है। ऊपर अपना पहला अनुरोध जमा करें।",
+      "online": "ऑनलाइन",
+      "inPerson": "व्यक्तिगत",
+      "meetingLink": "मीटिंग लिंक: ",
+      "addToGoogle": "गूगल कैलेंडर में जोड़ें",
+      "addToOutlook": "आउटलुक में जोड़ें",
+      "joinMeeting": "मीटिंग में शामिल हों",
+      "timeRange": "{{start}} – {{end}}"
+    },
+    "status": {
+      "pending": "लंबित",
+      "confirmed": "पुष्टि की गई",
+      "declined": "अस्वीकार कर दिया गया"
+    },
+    "errors": {
+      "loadProfessors": "प्रोफेसर संपर्क लोड करने में विफल।",
+      "loadGroups": "समूह लोड करने में विफल।",
+      "loadRequests": "आपके ऑफिस ऑवर अनुरोध लोड करने में विफल।",
+      "loadData": "ऑफिस ऑवर डेटा लोड करने में विफल।",
+      "noGroup": "कृपया एक कोर्स या समूह चुनें।",
+      "submit": "ऑफिस ऑवर अनुरोध जमा करने में विफल।"
+    }
+  },
+  "selfCheck": {
+    "pageTitle": "स्व-जाँच",
+    "upload": {
+      "title": "अपने काम की जाँच करें",
+      "subtitle": "AI-अनुमानित ग्रेड रिपोर्ट प्राप्त करने के लिए अपना असाइनमेंट रूब्रिक और अपना काम अपलोड करें।",
+      "rubricLabel": "असाइनमेंट रूब्रिक",
+      "rubricPlaceholder": "रूब्रिक अपलोड करने के लिए क्लिक करें",
+      "workLabel": "आपका काम",
+      "workPlaceholder": "अपना काम अपलोड करने के लिए क्लिक करें",
+      "analyzeButton": "मेरे काम का विश्लेषण करें",
+      "analyzingButton": "विश्लेषण किया जा रहा है..."
+    },
+    "analyzing": {
+      "title": "आपके काम का विश्लेषण किया जा रहा है...",
+      "subtitle": "रूब्रिक मानदंडों के साथ आपके सबमिशन की तुलना की जा रही है"
+    },
+    "report": {
+      "title": "ग्रेड रिपोर्ट",
+      "potentialGradeLabel": "संभावित ग्रेड",
+      "areasForImprovement": "सुधार के क्षेत्र"
+    },
+    "history": {
+      "title": "पिछली जाँचें",
+      "loading": "आपकी पिछली जाँचें लोड हो रही हैं...",
+      "empty": "अभी तक कोई पिछली जाँच नहीं है। शुरू करने के लिए ऊपर अपना पहला असाइनमेंट अपलोड करें।",
+      "areasForImprovement": "सुधार के क्षेत्र"
+    },
+    "errors": {
+      "loadHistory": "स्व-जाँच इतिहास लोड करने में विफल।",
+      "analyze": "आपके काम का विश्लेषण करने में विफल।"
+    }
+  },
+  "profile": {
+    "sectionLabel": "छात्र सेटिंग्स",
+    "pageTitle": "अपना खाता प्रबंधित करें",
+    "pageSubtitle": "अपनी सुरक्षा प्राथमिकताओं को अपडेट करें, अपने खाते के विवरण की समीक्षा करें और यह नियंत्रित करें कि D.I.Y.A आपको महत्वपूर्ण गतिविधि के बारे में कैसे सूचित करता है।",
+    "status": {
+      "emailVerified": "ईमेल सत्यापित",
+      "emailPending": "ईमेल सत्यापन लंबित",
+      "lastSynced": "अंतिम सिंक {{date}}"
+    },
+    "account": {
+      "sectionLabel": "खाता",
+      "noEmail": "कोई ईमेल उपलब्ध नहीं",
+      "emailAlertsLabel": "ईमेल अलर्ट",
+      "forumRepliesLabel": "फ़ोरम उत्तर",
+      "on": "चालू",
+      "off": "बंद"
+    },
+    "security": {
+      "title": "खाता सुरक्षा",
+      "subtitle": "अपना पासवर्ड प्रबंधित करने और अपने लॉगिन को सुरक्षित रखने के लिए Auth0 का उपयोग करें।",
+      "passwordReset": {
+        "title": "पासवर्ड रीसेट",
+        "description": "<strong>{{email}}</strong> पर एक सुरक्षित Auth0 पासवर्ड रीसेट ईमेल भेजें।",
+        "fallbackEmail": "आपका खाता ईमेल",
+        "button": "पासवर्ड बदलें",
+        "buttonSending": "रीसेट ईमेल भेजा जा रहा है...",
+        "successMessage": "{{email}} पर पासवर्ड रीसेट ईमेल भेज दिया गया है। सुरक्षित लिंक के लिए अपना इनबॉक्स चेक करें।"
+      }
+    },
+    "notifications": {
+      "title": "सूचनाएं",
+      "subtitle": "ये प्राथमिकताएं सीधे आपके Firestore उपयोगकर्ता दस्तावेज़ से लोड होती हैं और आपके द्वारा टॉगल किए जाने पर तुरंत सहेजी जाती हैं।",
+      "emailAlerts": {
+        "title": "ईमेल अलर्ट",
+        "description": "महत्वपूर्ण खाता गतिविधि और नियुक्तियों से संबंधित अपडेट के लिए ईमेल सूचनाएं प्राप्त करें।",
+        "successMessage": "ईमेल अलर्ट सफलतापूर्वक अपडेट किए गए।"
+      },
+      "forumReplies": {
+        "title": "नए फ़ोरम उत्तर",
+        "description": "जब आपके कोर्सवर्क के लिए महत्वपूर्ण चर्चाओं में कोई नई गतिविधि या उत्तर हो तो सूचित किया जाए।",
+        "successMessage": "नई फ़ोरम उत्तर सूचनाएं सफलतापूर्वक अपडेट की गईं।"
+      }
+    }
+  }
+}

@@ -2,6 +2,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFirestoreDisplayName } from "./hooks/useFirestoreDisplayName";
+import { useTranslation } from "react-i18next";
+import LocaleSwitcher from "./i18n/LocaleSwitcher";
 
 const palette = {
   darkest: "#270115",
@@ -49,15 +51,16 @@ function CheckDocIcon() {
 }
 
 const navItems = [
-  { id: "profile", label: "Profile", path: "/profile", icon: <ProfileIcon /> },
-  { id: "groups", label: "Groups", path: "/groups", icon: <GroupsIcon /> },
-  { id: "request", label: "Request Office Hours", path: "/office-hours", icon: <CalendarIcon /> },
-  { id: "selfcheck", label: "Self-Check", path: "/self-check", icon: <CheckDocIcon /> },
+  { id: "profile", label: "sidebar.nav.profile", path: "/profile", icon: <ProfileIcon /> },
+  { id: "groups", label: "sidebar.nav.groups", path: "/groups", icon: <GroupsIcon /> },
+  { id: "request", label: "sidebar.nav.request", path: "/office-hours", icon: <CalendarIcon /> },
+  { id: "selfcheck", label: "sidebar.nav.selfcheck", path: "/self-check", icon: <CheckDocIcon /> },
 ] as const;
 
 export type StudentSidebarItem = (typeof navItems)[number]["id"];
 
 export function StudentSidebar({ activeItem }: { activeItem: StudentSidebarItem }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { logout, user } = useAuth0();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -115,7 +118,7 @@ export function StudentSidebar({ activeItem }: { activeItem: StudentSidebarItem 
               marginTop: 3,
             }}
           >
-            Student Portal
+            {t("sidebar.appSubtitle")}
           </div>
         </div>
       </div>
@@ -131,7 +134,7 @@ export function StudentSidebar({ activeItem }: { activeItem: StudentSidebarItem 
           marginBottom: 8,
         }}
       >
-        Menu
+        {t("sidebar.menuLabel")}
       </div>
 
       <nav aria-label="Sidebar navigation" style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -184,7 +187,7 @@ export function StudentSidebar({ activeItem }: { activeItem: StudentSidebarItem 
                 />
               )}
               <span style={{ opacity: isActive ? 1 : 0.65, display: "flex" }}>{item.icon}</span>
-              {item.label}
+              {t(item.label)}
             </button>
           );
         })}
@@ -242,6 +245,15 @@ export function StudentSidebar({ activeItem }: { activeItem: StudentSidebarItem 
             </div>
           </div>
         </div>
+
+        <div style={{
+          borderTop: "1px solid rgba(255,255,255,0.07)",
+          paddingTop: 12,
+          marginBottom: 8,
+        }}>
+          <LocaleSwitcher />
+        </div>
+
         <button
           type="button"
           onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
@@ -271,7 +283,7 @@ export function StudentSidebar({ activeItem }: { activeItem: StudentSidebarItem 
               strokeLinejoin="round"
             />
           </svg>
-          Sign out
+          {t("sidebar.user.signOut")}
         </button>
       </div>
     </>

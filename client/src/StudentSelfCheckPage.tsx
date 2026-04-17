@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { StudentSidebar } from "./StudentSidebar";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -94,6 +95,7 @@ async function fileToUploadedPayload(file: File): Promise<UploadedSelfCheckFile>
 }
 
 export function StudentSelfCheckPage() {
+  const { t } = useTranslation();
   const { user } = useAuth0();
   const rubricInputRef = useRef<HTMLInputElement>(null);
   const workInputRef = useRef<HTMLInputElement>(null);
@@ -237,7 +239,7 @@ export function StudentSelfCheckPage() {
               lineHeight: 1.1,
             }}
           >
-            Self-Check
+            {t("selfCheck.pageTitle")}
           </div>
 
           <div
@@ -279,17 +281,17 @@ export function StudentSelfCheckPage() {
             }}
           >
             <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 4 }}>
-              Check Your Work
+              {t("selfCheck.upload.title")}
             </div>
             <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(92,30,38,0.6)", marginBottom: 20 }}>
-              Upload your assignment rubric and your work to get an AI-estimated grade report.
+              {t("selfCheck.upload.subtitle")}
             </div>
 
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 20 }}>
               {/* rubric upload */}
               <div style={{ flex: "1 1 240px" }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 8 }}>
-                  Assignment Rubric
+                  {t("selfCheck.upload.rubricLabel")}
                 </div>
                 <input
                   ref={rubricInputRef}
@@ -319,7 +321,7 @@ export function StudentSelfCheckPage() {
                     <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2" stroke={rubricFile ? palette.sage : palette.deepBurgundy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   <span style={{ fontSize: 13, fontWeight: 600, color: rubricFile ? palette.sage : palette.deepBurgundy }}>
-                    {rubricFile ? rubricFile.name : "Click to upload rubric"}
+                    {rubricFile ? rubricFile.name : t("selfCheck.upload.rubricPlaceholder")}
                   </span>
                 </button>
               </div>
@@ -327,7 +329,7 @@ export function StudentSelfCheckPage() {
               {/* work upload */}
               <div style={{ flex: "1 1 240px" }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 8 }}>
-                  Your Work
+                  {t("selfCheck.upload.workLabel")}
                 </div>
                 <input
                   ref={workInputRef}
@@ -357,7 +359,7 @@ export function StudentSelfCheckPage() {
                     <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2" stroke={workFile ? palette.sage : palette.deepBurgundy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   <span style={{ fontSize: 13, fontWeight: 600, color: workFile ? palette.sage : palette.deepBurgundy }}>
-                    {workFile ? workFile.name : "Click to upload your work"}
+                    {workFile ? workFile.name : t("selfCheck.upload.workPlaceholder")}
                   </span>
                 </button>
               </div>
@@ -378,7 +380,7 @@ export function StudentSelfCheckPage() {
                 cursor: rubricFile && workFile && !isAnalyzing ? "pointer" : "not-allowed",
               }}
             >
-              {isAnalyzing ? "Analyzing..." : "Analyze My Work"}
+              {isAnalyzing ? t("selfCheck.upload.analyzingButton") : t("selfCheck.upload.analyzeButton")}
             </button>
           </div>
 
@@ -396,10 +398,10 @@ export function StudentSelfCheckPage() {
               }}
             >
               <div style={{ fontSize: 16, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 8 }}>
-                Analyzing your work...
+                {t("selfCheck.analyzing.title")}
               </div>
               <div style={{ fontSize: 13, color: "rgba(92,30,38,0.5)" }}>
-                Comparing your submission against the rubric criteria
+                {t("selfCheck.analyzing.subtitle")}
               </div>
               <div
                 style={{
@@ -437,7 +439,7 @@ export function StudentSelfCheckPage() {
             >
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
                 <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy }}>
-                  Grade Report
+                  {t("selfCheck.report.title")}
                 </div>
                 <div
                   style={{
@@ -463,7 +465,7 @@ export function StudentSelfCheckPage() {
                   }}
                 >
                   <div style={{ fontSize: 11, fontWeight: 700, color: palette.sage, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>
-                    Potential Grade
+                    {t("selfCheck.report.potentialGradeLabel")}
                   </div>
                   <div style={{ fontSize: 28, fontWeight: 900, color: palette.deepBurgundy }}>
                     {currentReport.letterGrade}
@@ -512,7 +514,7 @@ export function StudentSelfCheckPage() {
               </div>
 
               <div style={{ fontSize: 15, fontWeight: 800, color: palette.crimson, marginBottom: 12 }}>
-                Areas for Improvement
+                {t("selfCheck.report.areasForImprovement")}
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -541,7 +543,7 @@ export function StudentSelfCheckPage() {
           {/* history section */}
           <div style={{ marginTop: 8 }}>
             <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 14 }}>
-              Past Checks
+              {t("selfCheck.history.title")}
             </div>
 
             {isLoadingHistory && (
@@ -557,7 +559,7 @@ export function StudentSelfCheckPage() {
                   fontWeight: 600,
                 }}
               >
-                Loading your previous checks...
+                {t("selfCheck.history.loading")}
               </div>
             )}
 
@@ -574,7 +576,7 @@ export function StudentSelfCheckPage() {
                   fontWeight: 600,
                 }}
               >
-                No past checks yet. Upload your first assignment above to get started.
+                {t("selfCheck.history.empty")}
               </div>
             )}
 
@@ -645,7 +647,7 @@ export function StudentSelfCheckPage() {
                       <div style={{ padding: "0 20px 18px" }}>
                         <div style={{ height: 1, backgroundColor: "rgba(39,1,21,0.08)", marginBottom: 14 }} />
                         <div style={{ fontSize: 13, fontWeight: 700, color: palette.crimson, marginBottom: 10 }}>
-                          Areas for Improvement
+                          {t("selfCheck.report.areasForImprovement")}
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {report.improvements.map((imp, i) => (
