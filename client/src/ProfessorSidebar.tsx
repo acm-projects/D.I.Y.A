@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfessorGroups } from "./ProfessorGroupContext";
+import { useTranslation } from "react-i18next";
+import LocaleSwitcher from "./i18n/LocaleSwitcher";
 
 const palette = {
   crimson: "#a22237",
@@ -81,18 +83,19 @@ function ProfileIcon() {
 }
 
 const navItems = [
-  { id: "home", label: "Home", path: "/professor/home", icon: <HomeIcon /> },
-  { id: "forum", label: "Forum", path: "/professor/forum", icon: <ForumIcon /> },
-  { id: "calendar", label: "Calendar", path: "/professor/calendar", icon: <CalendarIcon /> },
-  { id: "analysis", label: "Analysis", path: "/professor/analysis", icon: <AnalysisIcon /> },
-  { id: "requests", label: "Requests", path: "/professor/requests", icon: <RequestsIcon /> },
-  { id: "editgroup", label: "Edit Group", path: "/professor/edit-group", icon: <EditGroupIcon /> },
-  { id: "profile", label: "Profile", path: "/professor/profile", icon: <ProfileIcon /> },
+  { id: "home", label: "professorSidebar.nav.home", path: "/professor/home", icon: <HomeIcon /> },
+  { id: "forum", label: "professorSidebar.nav.forum", path: "/professor/forum", icon: <ForumIcon /> },
+  { id: "calendar", label: "professorSidebar.nav.calendar", path: "/professor/calendar", icon: <CalendarIcon /> },
+  { id: "analysis", label: "professorSidebar.nav.analysis", path: "/professor/analysis", icon: <AnalysisIcon /> },
+  { id: "requests", label: "professorSidebar.nav.requests", path: "/professor/requests", icon: <RequestsIcon /> },
+  { id: "editgroup", label: "professorSidebar.nav.editGroup", path: "/professor/edit-group", icon: <EditGroupIcon /> },
+  { id: "profile", label: "professorSidebar.nav.profile", path: "/professor/profile", icon: <ProfileIcon /> },
 ] as const;
 
 export type ProfessorSidebarItem = (typeof navItems)[number]["id"];
 
 function GroupSelector() {
+  const { t } = useTranslation();
   const { groups, selectedGroupId, setSelectedGroupId, isLoading } = useProfessorGroups();
 
   if (isLoading || groups.length === 0) return null;
@@ -109,7 +112,7 @@ function GroupSelector() {
           marginBottom: 6,
         }}
       >
-        Active Group
+        {t("professorSidebar.activeGroup")}
       </div>
       <select
         value={selectedGroupId ?? ""}
@@ -152,6 +155,7 @@ export function ProfessorSidebar({
   onSignOut: () => void;
   children?: ReactNode;
 }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -220,7 +224,7 @@ export function ProfessorSidebar({
               marginTop: 3,
             }}
           >
-            Professor View
+            {t("professorSidebar.appSubtitle")}
           </div>
         </div>
       </div>
@@ -236,7 +240,7 @@ export function ProfessorSidebar({
           marginBottom: 8,
         }}
       >
-        Navigation
+        {t("professorSidebar.navigationLabel")}
       </div>
 
       <nav aria-label="Professor sidebar navigation" style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -289,7 +293,7 @@ export function ProfessorSidebar({
                 />
               )}
               <span style={{ opacity: isActive ? 1 : 0.7, display: "flex" }}>{item.icon}</span>
-              {item.label}
+              {t(item.label)}
             </button>
           );
         })}
@@ -300,6 +304,16 @@ export function ProfessorSidebar({
       {children ? <div style={{ marginTop: 12 }}>{children}</div> : null}
 
       <div style={{ flex: 1 }} />
+
+
+      <div style={{
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        paddingTop: 12,
+        marginBottom: 8,
+      }}>
+        <LocaleSwitcher />
+      </div>
+
       <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)", margin: "12px 0 10px 0" }} />
       <button
         type="button"
@@ -317,7 +331,7 @@ export function ProfessorSidebar({
           cursor: "pointer",
         }}
       >
-        Sign out
+        {t("professorSidebar.signOut")}
       </button>
     </aside>
   );

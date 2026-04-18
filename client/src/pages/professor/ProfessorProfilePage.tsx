@@ -5,6 +5,7 @@ import { doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { ProfessorSidebar } from "../../ProfessorSidebar";
 import { db } from "../../firebase";
 import { useTheme } from "../../context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -86,6 +87,7 @@ function ToggleRow({
 }
 
 export function ProfessorProfilePage() {
+  const { t } = useTranslation();
   const { user, logout } = useAuth0();
   const [notificationPreferences, setNotificationPreferences] = useState<NotificationPreferences>(defaultNotificationPreferences);
   const [isLoadingPreferences, setIsLoadingPreferences] = useState(true);
@@ -108,7 +110,7 @@ export function ProfessorProfilePage() {
   const userDocId = user?.sub?.trim() || "";
   const lastUpdated = user?.updated_at
     ? new Date(user.updated_at).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })
-    : "Recently";
+    : t("profile.recently");
 
   const handleSignOut = () => {
     window.localStorage.removeItem("diya_role");
@@ -163,9 +165,9 @@ export function ProfessorProfilePage() {
         body: JSON.stringify({ client_id: auth0ClientId, email, connection: auth0Connection }),
       });
       if (!response.ok) throw new Error(await response.text());
-      setSuccessMessage(`Password reset email sent to ${email}.`);
+      setSuccessMessage(t("profile.security.passwordReset.successEmail", { email }));
     } catch (error) {
-      console.error("Failed to send password reset email.", error);
+      console.error(t("profile.security.passwordReset.failEmail"), error);
     } finally {
       setIsSendingPasswordReset(false);
     }
@@ -184,7 +186,7 @@ export function ProfessorProfilePage() {
         notificationPreferences: next,
         updatedAt: serverTimestamp(),
       });
-      setSuccessMessage(`${key === "emailAlerts" ? "Email alerts" : "Forum reply notifications"} updated.`);
+      setSuccessMessage(`${key === "emailAlerts" ? t("profile.notifications.emailAlerts.successMessage") : t("profile.notifications.newForumReplies.successMessage")}`);
     } catch (error) {
       console.error("Failed to save notification preferences.", error);
       setNotificationPreferences(prev);
@@ -205,10 +207,10 @@ export function ProfessorProfilePage() {
       });
       if (!res.ok) throw new Error(await res.text());
       setSavedDisplayName(trimmed);
-      setSuccessMessage("Display name updated successfully.");
+      setSuccessMessage(t("profile.account.displayNameSuccess"));
     } catch (error) {
       console.error("Failed to save display name.", error);
-      setSuccessMessage("Failed to save name. Please try again.");
+      setSuccessMessage(t("profile.account.displayNameError"));
     } finally {
       setIsSavingName(false);
     }
@@ -225,10 +227,10 @@ export function ProfessorProfilePage() {
       });
       if (!res.ok) throw new Error(await res.text());
       setSavedBio(bioInput.trim());
-      setSuccessMessage("Bio updated successfully.");
+      setSuccessMessage(t("profile.account.bioSuccess"));
     } catch (error) {
       console.error("Failed to save bio.", error);
-      setSuccessMessage("Failed to save bio. Please try again.");
+      setSuccessMessage(t("profile.account.bioError"));
     } finally {
       setIsSavingBio(false);
     }
@@ -239,7 +241,7 @@ export function ProfessorProfilePage() {
     setTimezone(tz);
     try {
       await updateDoc(doc(db, "users", userDocId), { timezone: tz, updatedAt: serverTimestamp() });
-      setSuccessMessage("Timezone updated.");
+      setSuccessMessage(t("profile.account.timezoneSuccess"));
     } catch (error) {
       console.error("Failed to save timezone.", error);
     }
@@ -256,7 +258,7 @@ export function ProfessorProfilePage() {
         body: JSON.stringify({ theme: next }),
       });
       if (!res.ok) throw new Error(await res.text());
-      setSuccessMessage(`Theme set to ${next}.`);
+      setSuccessMessage(t("profile.account.themeSuccess"));
     } catch (error) {
       console.error("Failed to save theme.", error);
     }
@@ -290,15 +292,15 @@ export function ProfessorProfilePage() {
                   </div>
                 )}
                 <div className="min-w-0 flex-1">
-                  <div className="text-xs font-bold uppercase tracking-[0.28em] text-[#a22237]">Professor settings</div>
-                  <h1 className="mt-2 text-3xl font-black tracking-tight text-[#270115] sm:text-4xl">Manage your account</h1>
+                  <div className="text-xs font-bold uppercase tracking-[0.28em] text-[#a22237]">{t("profile.account.professorSettings")}</div>
+                  <h1 className="mt-2 text-3xl font-black tracking-tight text-[#270115] sm:text-4xl">{t("profile.pageTitle")}</h1>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-[#6d5560] sm:text-base">
-                    Update your profile, security preferences, and control how D.I.Y.A notifies you about important activity.
+                    {t("profile.pageSubtitle")}
                   </p>
                   <div className="mt-4 flex flex-wrap items-center gap-3">
                     <div className="inline-flex items-center gap-2 rounded-full bg-[#f8f1f3] px-3 py-1.5 text-xs font-semibold text-[#5C1E26]">
                       <ShieldCheck size={14} />
-                      Last synced {lastUpdated}
+                      {t("profile.status.lastSynced")} {lastUpdated}
                     </div>
                   </div>
                 </div>
@@ -307,17 +309,17 @@ export function ProfessorProfilePage() {
               <div className="grid min-w-[200px] gap-2 rounded-3xl border border-[#efe1e5] bg-[#fcf8f9] p-4 shadow-sm">
                 <div>
                   <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8c6d76]">Account</div>
-                  <div className="mt-1 text-lg font-bold text-[#5C1E26]">{displayLabel || email || "Professor"}</div>
+                  <div className="mt-1 text-lg font-bold text-[#5C1E26]">{displayLabel || email || t("signUp.role.professor")}</div>
                   {displayLabel && <div className="mt-0.5 break-all text-sm text-[#6d5560]">{email}</div>}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="rounded-2xl bg-white px-3 py-2 text-left shadow-sm">
-                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Email alerts</div>
-                    <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.emailAlerts ? "On" : "Off"}</div>
+                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.emailAlerts.label")}</div>
+                    <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.emailAlerts ? t("profile.account.on") : t("profile.account.off")}</div>
                   </div>
                   <div className="rounded-2xl bg-white px-3 py-2 text-left shadow-sm">
-                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Forum replies</div>
-                    <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.newForumReplies ? "On" : "Off"}</div>
+                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.forumRepliesLabel")}</div>
+                    <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.newForumReplies ? t("profile.account.on") : t("profile.account.off")}</div>
                   </div>
                 </div>
               </div>
@@ -337,21 +339,21 @@ export function ProfessorProfilePage() {
                 <User size={22} />
               </div>
               <div className="text-left">
-                <h2 className="text-xl font-extrabold text-[#270115]">Personal Information</h2>
+                <h2 className="text-xl font-extrabold text-[#270115]">{t("profile.account.personalInfo")}</h2>
                 <p className="mt-1 text-sm leading-6 text-[#6d5560]">
-                  Set your display name so students and colleagues can identify you.
+                  {t("profile.account.professorSetName")}
                 </p>
               </div>
             </div>
 
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
-                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Display Name</label>
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.displayName")}</label>
                 <input
                   type="text"
                   value={nameInput}
                   onChange={(e) => setNameInput(e.target.value)}
-                  placeholder="Enter your name..."
+                  placeholder={t("profile.account.enterName")}
                   className="mt-2 w-full rounded-xl border border-[#d7c2c7] bg-white px-3 py-2.5 text-sm text-[#270115] outline-none focus:border-[#a22237]"
                 />
                 <button
@@ -362,16 +364,16 @@ export function ProfessorProfilePage() {
                     isSavingName || nameInput.trim() === savedDisplayName ? "cursor-not-allowed bg-[#c9b3b9]" : "bg-[#7A9B76] hover:bg-[#5f8a5c]"
                   }`}
                 >
-                  {isSavingName ? "Saving..." : "Save Name"}
+                  {isSavingName ? t("profile.account.saving") : t("profile.account.saveName")}
                 </button>
               </div>
 
               <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
-                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Bio / About</label>
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.bio")}</label>
                 <textarea
                   value={bioInput}
                   onChange={(e) => setBioInput(e.target.value)}
-                  placeholder="Tell others about yourself..."
+                  placeholder={t("profile.account.tellMessage")}
                   rows={3}
                   className="mt-2 w-full resize-vertical rounded-xl border border-[#d7c2c7] bg-white px-3 py-2.5 text-sm text-[#270115] outline-none focus:border-[#a22237]"
                 />
@@ -383,15 +385,15 @@ export function ProfessorProfilePage() {
                     isSavingBio || bioInput.trim() === savedBio ? "cursor-not-allowed bg-[#c9b3b9]" : "bg-[#7A9B76] hover:bg-[#5f8a5c]"
                   }`}
                 >
-                  {isSavingBio ? "Saving..." : "Save Bio"}
+                  {isSavingBio ? t("profile.account.saving") : t("profile.account.saveBio")}
                 </button>
               </div>
             </div>
 
             <div className="mt-5 rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
               <div>
-                <div className="text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Email Address</div>
-                <div className="mt-1 break-all text-sm font-semibold text-[#5C1E26]">{email || "Not available"}</div>
+                <div className="text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.emailAddress")}</div>
+                <div className="mt-1 break-all text-sm font-semibold text-[#5C1E26]">{email || t("profile.account.notAvailable")}</div>
               </div>
             </div>
           </section>
@@ -404,9 +406,9 @@ export function ProfessorProfilePage() {
                   <LockKeyhole size={22} />
                 </div>
                 <div className="text-left">
-                  <h2 className="text-xl font-extrabold text-[#270115]">Account Security</h2>
+                  <h2 className="text-xl font-extrabold text-[#270115]">{t("profile.security.title")}</h2>
                   <p className="mt-1 text-sm leading-6 text-[#6d5560]">
-                    Use Auth0 to manage your password and keep your login secure.
+                    {t("profile.security.subtitle")}
                   </p>
                 </div>
               </div>
@@ -414,9 +416,9 @@ export function ProfessorProfilePage() {
                 <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <div className="text-sm font-semibold text-[#5C1E26]">Password reset</div>
+                      <div className="text-sm font-semibold text-[#5C1E26]">{t("profile.security.passwordReset.title")}</div>
                       <div className="mt-1 text-sm leading-6 text-[#6d5560]">
-                        Send a secure password reset email to <span className="font-semibold text-[#5C1E26]">{email || "your account email"}</span>.
+                        {t("profile.security.passwordReset.description")} <span className="font-semibold text-[#5C1E26]">{email || t("profile.security.passwordReset.fallBackEmail")}</span>.
                       </div>
                     </div>
                     <Mail className="mt-1 shrink-0 text-[#a22237]" size={18} />
@@ -428,7 +430,7 @@ export function ProfessorProfilePage() {
                     className={`mt-4 inline-flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition ${isSendingPasswordReset ? "cursor-not-allowed bg-[#d88c99]" : "bg-[#a22237] hover:bg-[#8f1d30]"}`}
                   >
                     <LockKeyhole size={16} />
-                    {isSendingPasswordReset ? "Sending reset email..." : "Change Password"}
+                    {isSendingPasswordReset ? t("profile.security.passwordReset.buttonSending") : t("profile.security.passwordReset.button")}
                   </button>
                 </div>
               </div>
@@ -441,24 +443,24 @@ export function ProfessorProfilePage() {
                   <Bell size={22} />
                 </div>
                 <div className="text-left">
-                  <h2 className="text-xl font-extrabold text-[#270115]">Notifications</h2>
+                  <h2 className="text-xl font-extrabold text-[#270115]">{t("profile.notifications.title")}</h2>
                   <p className="mt-1 text-sm leading-6 text-[#6d5560]">
-                    These preferences save immediately when you toggle them.
+                    {t("profile.notifications.subtitle")}
                   </p>
                 </div>
               </div>
               <div className="mt-6 space-y-4">
                 <ToggleRow
-                  title="Email Alerts"
-                  description="Receive email notifications for important account activity."
+                  title={t("profile.notifications.emailAlerts.title")}
+                  description={t("profile.notifications.emailAlerts.description")}
                   checked={notificationPreferences.emailAlerts}
                   disabled={isLoadingPreferences}
                   isSaving={savingPreferenceKey === "emailAlerts"}
                   onToggle={() => void handleTogglePreference("emailAlerts")}
                 />
                 <ToggleRow
-                  title="New Forum Replies"
-                  description="Be notified when there is new activity on forum discussions."
+                  title={t("profile.notifications.newForumReplies.title")}
+                  description={t("profile.notifications.newForumReplies.description")}
                   checked={notificationPreferences.newForumReplies}
                   disabled={isLoadingPreferences}
                   isSaving={savingPreferenceKey === "newForumReplies"}
@@ -475,15 +477,15 @@ export function ProfessorProfilePage() {
                 <Globe size={22} />
               </div>
               <div className="text-left">
-                <h2 className="text-xl font-extrabold text-[#270115]">Preferences</h2>
+                <h2 className="text-xl font-extrabold text-[#270115]">{t("profile.preferences.title")}</h2>
                 <p className="mt-1 text-sm leading-6 text-[#6d5560]">
-                  Customize your experience with timezone and appearance settings.
+                  {t("profile.preferences.subtitle")}
                 </p>
               </div>
             </div>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
-                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Timezone</label>
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.preferences.timezone.label")}</label>
                 <select
                   value={timezone}
                   onChange={(e) => void handleSaveTimezone(e.target.value)}
@@ -495,24 +497,19 @@ export function ProfessorProfilePage() {
                 </select>
               </div>
               <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
-                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Appearance</label>
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.appearance.label")}</label>
                 <div className="mt-2 flex items-center gap-3">
                   <Palette size={18} className="text-[#6b4f7a]" />
-                  <span className="text-sm font-semibold text-[#5C1E26]">{theme === "light" ? "Light Mode" : "Dark Mode"}</span>
+                  <span className="text-sm font-semibold text-[#5C1E26]">{theme === "light" ? t("profile.appearance.lightMode") : t("profile.appearance.darkMode")}</span>
                   <button
                     type="button"
                     onClick={() => void handleToggleTheme()}
                     className="ml-auto rounded-xl border border-[#d7c2c7] bg-white px-3 py-1.5 text-xs font-bold text-[#5C1E26] transition hover:bg-[#f8f1f3]"
                   >
-                    Switch to {theme === "light" ? "Dark" : "Light"}
+                    Switch to {theme === "light" ? t("profile.appearance.darkMode") : t("profile.appearance.lightMode")}
                   </button>
                 </div>
                 <p className="mt-2 text-xs text-[#8c6d76]">Theme preference is saved and applied across all pages.</p>
-              </div>
-              <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
-                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">Language</label>
-                <div className="mt-2 text-sm font-semibold text-[#5C1E26]">English (US)</div>
-                <p className="mt-1 text-xs text-[#8c6d76]">Additional languages coming soon.</p>
               </div>
             </div>
           </section>
@@ -524,23 +521,23 @@ export function ProfessorProfilePage() {
                 <Trash2 size={22} />
               </div>
               <div className="text-left">
-                <h2 className="text-xl font-extrabold text-[#270115]">Danger Zone</h2>
+                <h2 className="text-xl font-extrabold text-[#270115]">{t("profile.dangerZone.title")}</h2>
                 <p className="mt-1 text-sm leading-6 text-[#6d5560]">
-                  Permanent actions that cannot be undone. Please proceed with caution.
+                  {t("profile.dangerZone.subtitle")}
                 </p>
               </div>
             </div>
             <div className="mt-6 rounded-2xl border border-[#f5d3d3] bg-[#fef8f8] p-4">
-              <div className="text-sm font-semibold text-[#5C1E26]">Delete Account</div>
+              <div className="text-sm font-semibold text-[#5C1E26]">{t("profile.dangerZone.deleteAccount.title")}</div>
               <div className="mt-1 text-sm leading-6 text-[#6d5560]">
-                Permanently remove your account and all associated data. This action is irreversible.
+                {t("profile.dangerZone.deleteAccount.description")}
               </div>
               <button
                 type="button"
-                onClick={() => alert("Please contact your administrator to delete your account.")}
+                onClick={() => alert(t("profile.dangerZone.deleteAccount.alertMessage"))}
                 className="mt-3 rounded-xl border-2 border-[#DC3545] bg-transparent px-4 py-2 text-xs font-bold text-[#DC3545] transition hover:bg-[#DC3545] hover:text-white"
               >
-                Request Account Deletion
+                {t("profile.dangerZone.deleteAccount.button")}
               </button>
             </div>
           </section>

@@ -1,32 +1,88 @@
 {
-  "topicAnalysis": {
-    "notFound": "Topic not found.",
-    "backToSelfCheck": "Back to Self-Check",
-    "backToAnalysis": "Back to Analysis",
-    "badges": {
-      "forumQuestions": "{{count}} forum questions",
-      "engagement": "{{score}}% engagement"
+  "home": {
+    "title": "My Groups",
+    "subtitle_one": "{{count}} group managed",
+    "subtitle_other": "{{count}} groups managed",
+
+    "createButton": "Create Group",
+
+    "loading": "Loading your groups...",
+
+    "empty": {
+      "title": "No groups yet",
+      "subtitle": "Create your first group to get started with D.I.Y.A."
     },
-    "trend": {
-      "rising": "Trending Up",
-      "steady": "Steady",
-      "declining": "Needs Attention"
+
+    "error": "Failed to create group.",
+
+    "groupCard": {
+      "members_one": "{{count}} member",
+      "members_other": "{{count}} members",
+      "view": "View →"
     },
-    "positives": {
-      "title": "Positives",
-      "subtitle": "What's going well"
+
+    "modal": {
+      "title": "Create a New Group",
+      "groupTitleLabel": "Group Title",
+      "groupTitlePlaceholder": "e.g. CS 1337 — Computer Science I",
+      "descriptionLabel": "Description (optional)",
+      "descriptionPlaceholder": "Brief description of the course or group...",
+      "cancel": "Cancel",
+      "creating": "Creating...",
+      "create": "Create Group"
+    }
+  },
+  "analysis": {
+    "badge": "AI-Powered Insights",
+    "title": "Course Analysis",
+    "subtitle": "Insights derived from student questions and engagement patterns",
+
+    "stats": {
+      "postsAnalyzed": "Posts Analyzed",
+      "groupsIncluded": "Groups Included",
+      "topicsIdentified": "Topics Identified",
+      "needAttention": "Need Attention"
     },
-    "concerns": {
-      "title": "Concerns",
-      "subtitle": "Areas of struggle"
+
+    "distribution": {
+      "title": "Question Distribution",
+      "subtitle": "Topic volume detected from live professor forum activity",
+      "loading": "Analyzing current professor groups...",
+      "empty": "Not enough data to analyze yet.",
+      "emptyDetail": "Once students start posting questions in your groups, this dashboard will summarize the most discussed topics automatically.",
+      "legendNeedsAttention": "Needs Attention",
+      "legendLowerVolume": "Lower Volume"
     },
-    "recommendations": {
-      "title": "Recommendations",
-      "subtitle": "How to improve"
+
+    "summary": {
+      "title": "AI Summary",
+      "loading": "Calculating topic activity from live posts...",
+      "empty": "Not enough data to analyze yet.",
+      "postsSummary": "{{count}} posts across {{groups}} group(s) generated {{mentions}} topic mention(s).",
+      "mostActiveTopic": "Most active topic:",
+      "mostActiveDetail": "{{name}} with {{count}} mention(s) ({{percent}}% of current discussion).",
+      "priorityTopics": "Priority topics",
+      "noAttentionTopics": "No topics currently exceed the attention threshold.",
+      "positiveIndicators": "✓ Positive Indicators",
+      "positiveWithTopics": "{{topics}} show comparatively lower question volume, suggesting the current support materials are working well there.",
+      "positiveNoTopics": "Current discussion is concentrated in higher-attention topics, so consider reinforcing core materials before the next checkpoint."
     },
-    "snapshot": {
-      "title": "Class Snapshot — {{topicName}}",
-      "description": "Based on {{count}} forum questions, the class engagement score for this topic is {{score}}%. Focus on the concerns above to improve your understanding before the next assessment."
+
+    "insights": {
+      "title": "Topic Insights",
+      "loading": "Building topic insights from live discussion data...",
+      "empty": "Not enough data to analyze yet.",
+      "badgeAttention": "⚠ Attention",
+      "badgeStrong": "✓ Strong",
+      "recommendedAction": "Recommended Action",
+      "discussionVolume": "of discussion volume"
+    },
+
+    "footer": {
+      "badge": "Analysis Engine",
+      "title_one": "{{count}} topic(s) need your attention.",
+      "title_other": "{{count}} topics need your attention.",
+      "subtitle": "Review the highlighted topics above to decide where extra clarification, announcements, or office-hours emphasis will help most."
     }
   },
   "sidebar": {
@@ -49,13 +105,16 @@
     "appSubtitle": "Professor View",
     "navigationLabel": "Navigation",
     "nav": {
+      "home": "Home",
       "forum": "Forum",
       "calendar": "Calendar",
       "analysis": "Analysis",
       "requests": "Requests",
-      "editGroup": "Edit Group"
+      "editGroup": "Edit Group",
+      "profile": "Profile"
     },
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "activeGroup": "Active Group"
   },
   "login": {
     "title": "Welcome back",
@@ -318,6 +377,7 @@
       "off": "Off",
       "personalInfo": "Personal Information",
       "setName": "Set your display name so professors and classmates can identify you. This appears across the platform instead of your email.",
+      "professorSetName": "Set your display name so students and colleagues can identify you.",
       "saving": "Saving...",
       "saveName": "Save Name",
       "saveBio": "Save Bio",
@@ -332,7 +392,10 @@
       "bioSuccess": "Bio updated successfully.",
       "bioError": "Failed to save bio. Please try again.",
       "timezoneSuccess": "Timezone updated successfully.",
-      "themeSuccess": "Theme updated successfully."
+      "themeSuccess": "Theme updated successfully.",
+      "recently": "Recently",
+      "professorSettings": "Professor Settings",
+      "emailAddress" : "EMAIL ADDRESS"
     },
     "security": {
       "title": "Account Security",
@@ -343,7 +406,8 @@
         "fallbackEmail": "your account email",
         "button": "Change Password",
         "buttonSending": "Sending reset email...",
-        "successEmail": "Password reset email sent to {{email}}. Check your inbox for the secure link."
+        "successEmail": "Password reset email sent to {{email}}. Check your inbox for the secure link.",
+        "failEmail": "Failed to send password reset email."
       }
     },
     "notifications": {

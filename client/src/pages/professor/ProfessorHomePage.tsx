@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { ProfessorSidebar } from "../../ProfessorSidebar";
 import { useProfessorGroups } from "../../ProfessorGroupContext";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -16,6 +17,7 @@ const palette = {
 const GROUPS_API = "/api/groups";
 
 export function ProfessorHomePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, logout } = useAuth0();
   const { groups, isLoading, reload, setSelectedGroupId } = useProfessorGroups();
@@ -81,10 +83,10 @@ export function ProfessorHomePage() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
           <div>
             <div style={{ fontSize: 36, fontWeight: 900, color: palette.deepBurgundy, letterSpacing: -0.8 }}>
-              My Groups
+              {t("home.title")}
             </div>
             <div style={{ fontSize: 14, fontWeight: 600, color: "rgba(92,30,38,0.55)", marginTop: 4 }}>
-              {groups.length} group{groups.length !== 1 ? "s" : ""} managed
+              {t("home.subtitle", { count: groups.length })}
             </div>
           </div>
           <button
@@ -108,7 +110,7 @@ export function ProfessorHomePage() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
               <path d="M12 5v14M5 12h14" />
             </svg>
-            Create Group
+            {t("home.createButton")}
           </button>
         </div>
 
@@ -120,7 +122,7 @@ export function ProfessorHomePage() {
 
         {isLoading && (
           <div style={{ padding: 32, textAlign: "center", color: palette.deepBurgundy, fontWeight: 700, fontSize: 14 }}>
-            Loading your groups...
+            {t("home.loading")}
           </div>
         )}
 
@@ -136,10 +138,10 @@ export function ProfessorHomePage() {
             }}
           >
             <div style={{ fontSize: 18, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 8 }}>
-              No groups yet
+              {t("home.empty.title")}
             </div>
             <div style={{ fontSize: 14, color: "rgba(92,30,38,0.55)", fontWeight: 600 }}>
-              Create your first group to get started with D.I.Y.A.
+              {t("home.empty.subtitle")}
             </div>
           </div>
         )}
@@ -181,7 +183,7 @@ export function ProfessorHomePage() {
                       color: palette.sage,
                     }}
                   >
-                    {group.members.length} member{group.members.length !== 1 ? "s" : ""}
+                    {t("home.groupCard.members", { count: group.members.length })}
                   </div>
                   <div
                     style={{
@@ -191,7 +193,7 @@ export function ProfessorHomePage() {
                       color: palette.crimson,
                     }}
                   >
-                    View →
+                    {t("home.groupCard.view")}
                   </div>
                 </div>
               </div>
@@ -225,16 +227,16 @@ export function ProfessorHomePage() {
             }}
           >
             <div style={{ fontSize: 20, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 18 }}>
-              Create a New Group
+              {t("home.modal.title")}
             </div>
 
             <label style={{ fontSize: 13, fontWeight: 700, color: palette.deepBurgundy, display: "block", marginBottom: 6 }}>
-              Group Title
+              {t("home.modal.groupTitleLabel")}
             </label>
             <input
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="e.g. CS 1337 — Computer Science I"
+              placeholder={t("home.modal.groupTitlePlaceholder")}
               autoFocus
               style={{
                 width: "100%",
@@ -249,12 +251,12 @@ export function ProfessorHomePage() {
             />
 
             <label style={{ fontSize: 13, fontWeight: 700, color: palette.deepBurgundy, display: "block", marginBottom: 6 }}>
-              Description (optional)
+              {t("home.modal.descriptionLabel")}
             </label>
             <textarea
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
-              placeholder="Brief description of the course or group..."
+              placeholder={t("home.modal.descriptionPlaceholder")}
               rows={3}
               style={{
                 width: "100%",
@@ -285,7 +287,7 @@ export function ProfessorHomePage() {
                   cursor: "pointer",
                 }}
               >
-                Cancel
+                {t("home.modal.cancel")}
               </button>
               <button
                 type="button"
@@ -303,7 +305,7 @@ export function ProfessorHomePage() {
                   opacity: isCreating || !newTitle.trim() ? 0.5 : 1,
                 }}
               >
-                {isCreating ? "Creating..." : "Create Group"}
+                {isCreating ? t("home.modal.creating") : t("home.modal.create")}
               </button>
             </div>
           </div>
