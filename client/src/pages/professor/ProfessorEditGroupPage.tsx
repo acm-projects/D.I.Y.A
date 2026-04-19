@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -40,6 +41,7 @@ const GROUPS_API_BASE_URL = "/api/groups";
 const USERS_API_BASE_URL = "/api/users";
 
 export function ProfessorEditGroupPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, logout } = useAuth0();
   const [students, setStudents] = useState<Student[]>([]);
@@ -113,11 +115,11 @@ export function ProfessorEditGroupPage() {
         ]);
 
         if (!groupsResponse.ok) {
-          throw new Error("Failed to load groups.");
+          throw new Error(t("edit.errors.loadGroups"));
         }
 
         if (!usersResponse.ok) {
-          throw new Error("Failed to load users.");
+          throw new Error(t("edit.errors.loadUsers"));
         }
 
         const groups = (await groupsResponse.json()) as BackendGroup[];
@@ -145,7 +147,7 @@ export function ProfessorEditGroupPage() {
             setStudents([]);
             setPersistedMemberIds([]);
             setAllUsers(users);
-            setEmptyStateMessage("No group is available to edit yet.");
+            setEmptyStateMessage(t("edit.errors.empty"));
           }
           return;
         }
@@ -163,7 +165,7 @@ export function ProfessorEditGroupPage() {
           return {
             id: matchedUser?.id ?? memberId,
             name: matchedUser?.name || matchedUser?.email || memberId,
-            email: matchedUser?.email || "No email provided",
+            email: matchedUser?.email || t("edit.fallbacks.noEmail"),
             status: matchedUser ? "active" as const : "pending" as const,
           };
         });
@@ -179,7 +181,7 @@ export function ProfessorEditGroupPage() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load group data.");
+          setError(err instanceof Error ? err.message : t("edit.errors.loadGroupData"));
           setGroupId(null);
           setPersistedMemberIds([]);
           setStudents([]);
@@ -242,7 +244,7 @@ export function ProfessorEditGroupPage() {
         });
 
         if (!response.ok) {
-          throw new Error(`Failed to sync membership for ${liveUser.email || liveUser.id}.`);
+          throw new Error(t("edit.errors.syncMembershipFailed", { identifier: liveUser.email || liveUser.id }));
         }
       }),
     );
@@ -264,18 +266,18 @@ export function ProfessorEditGroupPage() {
     const matchedUser = allUsers.find((liveUser) => liveUser.email?.toLowerCase() === trimmedEmail);
 
     if (!matchedUser) {
-      setError("Student must log in at least once before being added to this group.");
+      setError(t("edit.errors.studentNotFound"));
       return;
     }
 
     if (students.some((student) => student.id === matchedUser.id)) {
-      setError("That student is already in this group.");
+      setError(t("edit.errors.studentAlreadyInGroup"));
       return;
     }
 
     const newStudent: Student = {
       id: matchedUser.id,
-      name: matchedUser.name || trimmedName || matchedUser.email || "Student",
+      name: matchedUser.name || trimmedName || matchedUser.email || t("edit.fallbacks.studentName"),
       email: matchedUser.email || trimmedEmail,
       status: "active",
     };
@@ -304,12 +306,12 @@ export function ProfessorEditGroupPage() {
             members: nextMemberIds,
           }),
         });
-        if (!response.ok) throw new Error("Failed to save student addition.");
+        if (!response.ok) throw new Error(t("edit.errors.addStudentFailed"));
         await syncUserMemberships(nextMemberIds);
         setPersistedMemberIds(nextMemberIds);
-        setSuccessMessage("Student added successfully.");
+        setSuccessMessage(t("edit.success.studentAdded"));
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to save student addition.");
+        setError(err instanceof Error ? err.message : t("edit.errors.addStudentFailed"));
       } finally {
         setIsSaving(false);
       }
@@ -332,12 +334,12 @@ export function ProfessorEditGroupPage() {
     const professorId = user?.sub?.trim() || currentProfessorUser?.authId?.trim() || currentProfessorUser?.id?.trim() || "";
 
     if (!professorId) {
-      setError("Your professor account is not ready yet. Please refresh and try again.");
+      setError(t("edit.errors.professorNotReady"));
       return;
     }
 
     if (!createGroupTitle.trim()) {
-      setError("Please enter a group title.");
+      setError(t("edit.errors.groupTitleRequired"));
       return;
     }
 
@@ -359,21 +361,21 @@ export function ProfessorEditGroupPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create group.");
+        throw new Error(t("home.error"));
       }
 
       closeCreateGroupModal();
-      setSuccessMessage("Group created successfully.");
+      setSuccessMessage(t("edit.success.groupCreated"));
       setReloadKey((currentValue) => currentValue + 1);
     } catch (_error) {
-      setError("Something went wrong while creating the group. Please try again.");
+      setError(t("edit.errors.createFailed"));
     } finally {
       setIsCreatingGroup(false);
     }
   };
 
   const handleRemoveStudent = async (id: string) => {
-    if (!confirm("Are you sure you want to remove this student?")) return;
+    if (!confirm(t("edit.roster.removeConfirm"))) return;
 
     const nextStudents = students.filter((s) => s.id !== id);
     const nextMemberIds = nextStudents.map((s) => s.id);
@@ -396,12 +398,12 @@ export function ProfessorEditGroupPage() {
             members: nextMemberIds,
           }),
         });
-        if (!response.ok) throw new Error("Failed to save student removal.");
+        if (!response.ok) throw new Error(t("edit.errors.removeStudentFailed"));
         await syncUserMemberships(nextMemberIds);
         setPersistedMemberIds(nextMemberIds);
-        setSuccessMessage("Student removed successfully.");
+        setSuccessMessage(t("edit.success.studentRemoved"));
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to save student removal.");
+        setError(err instanceof Error ? err.message : t("edit.errors.removeStudentFailed"));
       } finally {
         setIsSaving(false);
       }
@@ -410,7 +412,7 @@ export function ProfessorEditGroupPage() {
 
   const handleSaveChanges = async () => {
     if (!groupId) {
-      setError("No group is currently selected.");
+      setError(t("edit.errors.noGroupSelected"));
       return;
     }
 
@@ -435,14 +437,14 @@ export function ProfessorEditGroupPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save group settings.");
+        throw new Error(t("edit.errors.saveGroupFailed"));
       }
 
       await syncUserMemberships(nextMemberIds);
       setPersistedMemberIds(nextMemberIds);
-      setSuccessMessage("Group settings saved.");
+      setSuccessMessage(t("edit.success.groupSaved"));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save group settings.");
+      setError(err instanceof Error ? err.message : t("edit.errors.saveGroupFailed"));
     } finally {
       setIsSaving(false);
     }
@@ -463,14 +465,14 @@ export function ProfessorEditGroupPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to archive group.");
+        throw new Error(t("edit.errors.archiveFailed"));
       }
 
       await syncUserMemberships([]);
       setShowArchiveModal(false);
       navigate("/professor/forum");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to archive group.");
+      setError(err instanceof Error ? err.message : t("edit.errors.archiveFailed"));
     } finally {
       setIsSaving(false);
     }
@@ -485,17 +487,17 @@ export function ProfessorEditGroupPage() {
           </div>
           <div>
             <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>D.I.Y.A</div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>Professor View</div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>{t("professorSidebar.appSubtitle")}</div>
           </div>
         </div>
-        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>Navigation</div>
+        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>{t("professorSidebar.navigationLabel")}</div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>← Back to Forum</button>
           {[
-            { id: "calendar", label: "Calendar", path: "/professor/calendar" },
-            { id: "analysis", label: "Analysis", path: "/professor/analysis" },
-            { id: "requests", label: "Requests", path: "/professor/requests" },
-            { id: "editgroup", label: "Edit Group", path: "/professor/edit-group" },
+            { id: "calendar", label: t("professorSidebar.nav.calendar"), path: "/professor/calendar" },
+            { id: "analysis", label: t("professorSidebar.nav.analysis"), path: "/professor/analysis" },
+            { id: "requests", label: t("professorSidebar.nav.requests"), path: "/professor/requests" },
+            { id: "editgroup", label: t("professorSidebar.nav.editGroup"), path: "/professor/edit-group" },
           ].map((item) => {
             const isActive = item.id === "editgroup";
             return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent", color: isActive ? "#fff" : "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: isActive ? 700 : 600, cursor: "pointer" }}>{item.label}</button>;
@@ -509,15 +511,15 @@ export function ProfessorEditGroupPage() {
       <main style={{ flex: 1, overflow: "auto" }}>
         <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
           <div style={{ maxWidth: 1200 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Group Management</div>
-            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>Edit Group</div>
-            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>Manage students and group settings</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>{t("edit.header.eyebrow")}</div>
+            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>"{t("edit.header.title")}"</div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>{t("edit.header.subtitle")}</div>
 
             <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
               {[
-                { label: "Total Students", value: students.length, color: palette.crimson },
-                { label: "Active", value: activeCount, color: palette.sage },
-                { label: "Pending", value: pendingCount, color: "#FFA500" },
+                { label: t("edit.stats.totalStudents"), value: students.length, color: palette.crimson },
+                { label: t("edit.stats.active"), value: activeCount, color: palette.sage },
+                { label: t("edit.stats.pending"), value: pendingCount, color: "#FFA500" },
               ].map((stat, i) => (
                 <div key={stat.label} style={{ flex: "1 1 220px", minWidth: 180, paddingRight: i < 2 ? 40 : 0, marginRight: i < 2 ? 40 : 0, borderRight: i < 2 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
                   <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
@@ -545,7 +547,7 @@ export function ProfessorEditGroupPage() {
 
           {isLoading && (
             <div style={{ marginBottom: 20, padding: "20px 24px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: palette.deepBurgundy, fontSize: 14, fontWeight: 700 }}>
-              Loading group roster...
+              {t("edit.loading")}
             </div>
           )}
 
@@ -553,11 +555,11 @@ export function ProfessorEditGroupPage() {
             <div style={{ backgroundColor: "#fff", border: "1px solid rgba(220,53,69,0.18)", borderRadius: 16, padding: "28px 32px", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", maxWidth: 720 }}>
               <div style={{ fontSize: 22, fontWeight: 800, color: palette.crimson, marginBottom: 10 }}>{emptyStateMessage}</div>
               <div style={{ fontSize: 14, fontWeight: 600, color: "rgba(92,30,38,0.6)", lineHeight: 1.6, marginBottom: 20 }}>
-                Create your first course group to start organizing students, posts, and office-hour analytics.
+                {t("edit.emptyState.description")}
               </div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                <button type="button" onClick={() => setShowCreateGroupModal(true)} disabled={!currentProfessorUser || isCreatingGroup} style={{ padding: "10px 18px", backgroundColor: !currentProfessorUser || isCreatingGroup ? "rgba(122,155,118,0.35)" : palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: !currentProfessorUser || isCreatingGroup ? "not-allowed" : "pointer" }}>Create New Group</button>
-                <button type="button" onClick={() => navigate("/professor/forum")} style={{ padding: "10px 18px", backgroundColor: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Back to Forum</button>
+                <button type="button" onClick={() => setShowCreateGroupModal(true)} disabled={!currentProfessorUser || isCreatingGroup} style={{ padding: "10px 18px", backgroundColor: !currentProfessorUser || isCreatingGroup ? "rgba(122,155,118,0.35)" : palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: !currentProfessorUser || isCreatingGroup ? "not-allowed" : "pointer" }}>{t("edit.emptyState.createButton")}</button>
+                <button type="button" onClick={() => navigate("/professor/forum")} style={{ padding: "10px 18px", backgroundColor: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("forum.forumThread.backToForum")}</button>
               </div>
             </div>
           )}
@@ -568,17 +570,17 @@ export function ProfessorEditGroupPage() {
                 <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}>
                   <div style={{ height: 5, backgroundColor: palette.crimson }} />
                   <div style={{ padding: "28px 32px 32px" }}>
-                    <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>Group Information</div>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>{t("edit.groupInfo.cardTitle")}</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
                       <div>
-                        <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Group Name</label>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>{t("edit.groupInfo.nameLabel")}</label>
                         <input type="text" value={groupNameEdit} onChange={(e) => setGroupNameEdit(e.target.value)} style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 12, fontSize: 15, fontFamily: "inherit", boxSizing: "border-box", outline: "none", color: palette.darkest }} />
                       </div>
                       <div>
-                        <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Description</label>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>{t("edit.groupInfo.descriptionLabel")}</label>
                         <textarea value={groupDescription} onChange={(e) => setGroupDescription(e.target.value)} style={{ width: "100%", minHeight: 90, padding: "12px 16px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 12, fontSize: 15, fontFamily: "inherit", resize: "vertical", boxSizing: "border-box", outline: "none", color: palette.darkest }} />
                       </div>
-                      <button onClick={() => void handleSaveChanges()} disabled={isSaving} style={{ alignSelf: "flex-start", padding: "12px 24px", background: isSaving ? "rgba(122,155,118,0.35)" : `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer" }}>{isSaving ? "Saving..." : "Save Changes"}</button>
+                      <button onClick={() => void handleSaveChanges()} disabled={isSaving} style={{ alignSelf: "flex-start", padding: "12px 24px", background: isSaving ? "rgba(122,155,118,0.35)" : `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer" }}>{isSaving ? t("edit.groupInfo.savingButton") : t("edit.groupInfo.saveButton")}</button>
                     </div>
                   </div>
                 </div>
@@ -586,10 +588,10 @@ export function ProfessorEditGroupPage() {
                 <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}>
                   <div style={{ height: 5, backgroundColor: palette.sage }} />
                   <div style={{ padding: "28px 32px 32px" }}>
-                    <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>Group Actions</div>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>{t("edit.groupActions.cardTitle")}</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                      <button onClick={() => setShowAddStudent(true)} disabled={isLoading} style={{ padding: "16px 20px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: isLoading ? "not-allowed" : "pointer", textAlign: "left", boxShadow: "0 2px 12px rgba(122,155,118,0.3)" }}>➕ Add Students</button>
-                      <button onClick={() => setShowArchiveModal(true)} disabled={isSaving} style={{ padding: "16px 20px", backgroundColor: "transparent", color: "#DC3545", border: "2px solid #DC3545", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer", textAlign: "left" }}>🗄️ Archive Group</button>
+                      <button onClick={() => setShowAddStudent(true)} disabled={isLoading} style={{ padding: "16px 20px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: isLoading ? "not-allowed" : "pointer", textAlign: "left", boxShadow: "0 2px 12px rgba(122,155,118,0.3)" }}>➕ {t("edit.groupActions.addStudents")}</button>
+                      <button onClick={() => setShowArchiveModal(true)} disabled={isSaving} style={{ padding: "16px 20px", backgroundColor: "transparent", color: "#DC3545", border: "2px solid #DC3545", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer", textAlign: "left" }}>🗄️ {t("edit.groupActions.archiveGroup")}</button>
                     </div>
                   </div>
                 </div>
@@ -598,11 +600,11 @@ export function ProfessorEditGroupPage() {
               <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}>
                 <div style={{ height: 5, background: `linear-gradient(90deg, ${palette.crimson}, ${palette.sage})` }} />
                 <div style={{ padding: "28px 32px 32px" }}>
-                  <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>Student Roster ({students.length})</div>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: palette.darkest, letterSpacing: -0.5, marginBottom: 24 }}>{t("edit.roster.cardTitle")} ({students.length})</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {!isLoading && students.length === 0 && (
                     <div style={{ padding: "14px 16px", backgroundColor: "rgba(214,214,214,0.15)", borderRadius: 10, color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 700 }}>
-                      No students are assigned to this group yet.
+                      {t("edit.roster.empty")}
                     </div>
                   )}
 
@@ -614,7 +616,7 @@ export function ProfessorEditGroupPage() {
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                         <span style={{ padding: "5px 12px", backgroundColor: student.status === "active" ? palette.sage : "#FFA500", color: "white", fontSize: 11, fontWeight: 700, borderRadius: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>{student.status}</span>
-                        <button onClick={() => void handleRemoveStudent(student.id)} style={{ padding: "7px 14px", background: "transparent", color: "#DC3545", border: "1.5px solid rgba(220,53,69,0.4)", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>Remove</button>
+                        <button onClick={() => void handleRemoveStudent(student.id)} style={{ padding: "7px 14px", background: "transparent", color: "#DC3545", border: "1.5px solid rgba(220,53,69,0.4)", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>{t("edit.roster.removeButton")}</button>
                       </div>
                     </div>
                   ))}
@@ -629,7 +631,7 @@ export function ProfessorEditGroupPage() {
         <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px" }}>
           <div style={{ maxWidth: 1200 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>{groupNameEdit || courseTitle}</div>
-            <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>{students.length} students enrolled and counting.</div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>{t("edit.footer.enrolled", { count: students.length })}</div>
           </div>
         </div>
       </main>
@@ -637,16 +639,16 @@ export function ProfessorEditGroupPage() {
       {showAddStudent && groupId && (
         <div onClick={closeAddStudentModal} style={{ position: "fixed", inset: 0, backgroundColor: "rgba(39,1,21,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 1000 }}>
           <div onClick={(e) => e.stopPropagation()} style={{ width: "100%", maxWidth: 520, backgroundColor: "#fff", borderRadius: 18, padding: "28px 28px 24px", boxShadow: "0 18px 50px rgba(0,0,0,0.25)" }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: palette.crimson, marginBottom: 8 }}>Add Student</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: palette.crimson, marginBottom: 8 }}>{t("edit.addStudentModal.title")}</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.55)", lineHeight: 1.5, marginBottom: 20 }}>
-              Enter the student email to add them to this group. The student must have logged in at least once so their account exists in the database.
+              {t("edit.addStudentModal.description")}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <input type="text" placeholder="Student Name (optional)" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} style={{ padding: "12px 14px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit" }} />
               <input type="email" placeholder="student@school.edu" value={newStudentEmail} onChange={(e) => setNewStudentEmail(e.target.value)} style={{ padding: "12px 14px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit" }} />
               <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 8 }}>
-                <button type="button" onClick={closeAddStudentModal} style={{ padding: "10px 16px", background: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Cancel</button>
-                <button type="button" onClick={() => void handleAddStudent()} style={{ padding: "10px 18px", background: palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Add Student</button>
+                <button type="button" onClick={closeAddStudentModal} style={{ padding: "10px 16px", background: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("edit.addStudentModal.cancelButton")}</button>
+                <button type="button" onClick={() => void handleAddStudent()} style={{ padding: "10px 18px", background: palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("edit.addStudentModal.addButton")}</button>
               </div>
             </div>
           </div>
@@ -656,16 +658,16 @@ export function ProfessorEditGroupPage() {
       {showCreateGroupModal && !groupId && (
         <div onClick={closeCreateGroupModal} style={{ position: "fixed", inset: 0, backgroundColor: "rgba(39,1,21,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 1000 }}>
           <div onClick={(e) => e.stopPropagation()} style={{ width: "100%", maxWidth: 560, backgroundColor: "#fff", borderRadius: 18, padding: "28px 28px 24px", boxShadow: "0 18px 50px rgba(0,0,0,0.25)" }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: palette.crimson, marginBottom: 8 }}>Create New Group</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: palette.crimson, marginBottom: 8 }}>{t("edit.createGroupModal.title")}</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.55)", lineHeight: 1.5, marginBottom: 20 }}>
-              Create a new course group for your professor account. You can add students after the group is created.
+              {t("edit.createGroupModal.description")}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <input type="text" placeholder="Group title" value={createGroupTitle} onChange={(e) => setCreateGroupTitle(e.target.value)} style={{ padding: "12px 14px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit" }} />
               <textarea placeholder="Group description" value={createGroupDescription} onChange={(e) => setCreateGroupDescription(e.target.value)} style={{ minHeight: 100, padding: "12px 14px", border: "1px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit", resize: "vertical" }} />
               <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 8 }}>
-                <button type="button" onClick={closeCreateGroupModal} disabled={isCreatingGroup} style={{ padding: "10px 16px", background: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: isCreatingGroup ? "not-allowed" : "pointer" }}>Cancel</button>
-                <button type="button" onClick={() => void handleCreateGroup()} disabled={isCreatingGroup} style={{ padding: "10px 18px", background: isCreatingGroup ? "rgba(122,155,118,0.35)" : palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: isCreatingGroup ? "not-allowed" : "pointer" }}>{isCreatingGroup ? "Creating..." : "Create Group"}</button>
+                <button type="button" onClick={closeCreateGroupModal} disabled={isCreatingGroup} style={{ padding: "10px 16px", background: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: isCreatingGroup ? "not-allowed" : "pointer" }}>{t("edit.createGroupModal.cancelButton")}</button>
+                <button type="button" onClick={() => void handleCreateGroup()} disabled={isCreatingGroup} style={{ padding: "10px 18px", background: isCreatingGroup ? "rgba(122,155,118,0.35)" : palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: isCreatingGroup ? "not-allowed" : "pointer" }}>{isCreatingGroup ? t("edit.createGroupModal.creatingButton") : t("edit.createGroupModal.createButton")}</button>
               </div>
             </div>
           </div>
@@ -675,13 +677,13 @@ export function ProfessorEditGroupPage() {
       {showArchiveModal && groupId && (
         <div onClick={() => setShowArchiveModal(false)} style={{ position: "fixed", inset: 0, backgroundColor: "rgba(39,1,21,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 1000 }}>
           <div onClick={(e) => e.stopPropagation()} style={{ width: "100%", maxWidth: 500, backgroundColor: "#fff", borderRadius: 18, padding: "28px 28px 24px", boxShadow: "0 18px 50px rgba(0,0,0,0.25)" }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: palette.crimson, marginBottom: 10 }}>Archive this group?</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: palette.crimson, marginBottom: 10 }}>{t("edit.archiveModal.title")}</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(92,30,38,0.58)", lineHeight: 1.6, marginBottom: 22 }}>
-              This will delete the group and remove the group assignment from its current members.
+              {t("edit.archiveModal.description")}
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
-              <button type="button" onClick={() => setShowArchiveModal(false)} style={{ padding: "10px 16px", background: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Cancel</button>
-              <button type="button" onClick={() => void handleArchiveGroup()} disabled={isSaving} style={{ padding: "10px 18px", background: isSaving ? "rgba(220,53,69,0.45)" : "#DC3545", color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer" }}>{isSaving ? "Archiving..." : "Archive Group"}</button>
+              <button type="button" onClick={() => setShowArchiveModal(false)} style={{ padding: "10px 16px", background: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("edit.archiveModal.cancelButton")}</button>
+              <button type="button" onClick={() => void handleArchiveGroup()} disabled={isSaving} style={{ padding: "10px 18px", background: isSaving ? "rgba(220,53,69,0.45)" : "#DC3545", color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: isSaving ? "not-allowed" : "pointer" }}>{isSaving ? t("edit.archiveModal.archivingButton") : t("edit.archiveModal.archiveButton")}</button>
             </div>
           </div>
         </div>

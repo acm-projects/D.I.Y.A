@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -58,6 +59,7 @@ function getHourValue(value: string): number | null {
 }
 
 export function ProfessorCalendarPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, logout } = useAuth0();
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -89,7 +91,7 @@ export function ProfessorCalendarPage() {
         const response = await fetch(`${OFFICE_HOURS_API_BASE_URL}?${params.toString()}`);
 
         if (!response.ok) {
-          throw new Error("Failed to load office hour schedule.");
+          throw new Error(t("calendar.errors.loadFailed"));
         }
 
         const requests = (await response.json()) as Array<{
@@ -105,8 +107,8 @@ export function ProfessorCalendarPage() {
         const normalizedAppointments = requests
           .map((request) => ({
             id: request.id,
-            studentName: request.studentName || "Student",
-            email: request.studentEmail || "No email provided",
+            studentName: request.studentName || t("calendar.fallbacks.studentName"),
+            email: request.studentEmail || t("calendar.fallbacks.noEmail"),
             date: request.date,
             time: formatTimeDisplay(request.startTime),
             startTimeRaw: request.startTime,
@@ -127,7 +129,7 @@ export function ProfessorCalendarPage() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load office hour schedule.");
+          setError(err instanceof Error ? err.message : t("calendar.errors.loadFailed"));
           setAppointments([]);
         }
       } finally {
@@ -146,8 +148,8 @@ export function ProfessorCalendarPage() {
 
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const monthNames = t("calendar.monthNames", { returnObjects: true }) as string[];
+  const dayNames   = t("calendar.dayNames",   { returnObjects: true }) as string[];
   const confirmedCount = appointments.filter((appointment) => appointment.status === "confirmed").length;
   const pendingCount = appointments.filter((appointment) => appointment.status === "pending").length;
   const declinedCount = appointments.filter((appointment) => appointment.status === "declined").length;
@@ -251,7 +253,7 @@ export function ProfessorCalendarPage() {
                 ))}
                 {dayAppointments.length > 2 && (
                   <div style={{ fontSize: 10, fontWeight: 700, color: palette.crimson }}>
-                    +{dayAppointments.length - 2} more
+                    {t("calendar.calendar.moreAppointments", { count: dayAppointments.length - 2 })}
                   </div>
                 )}
               </div>
@@ -387,7 +389,7 @@ export function ProfessorCalendarPage() {
             {dayNames[selectedDay.getDay()]}, {monthNames[selectedDay.getMonth()]} {selectedDay.getDate()}
           </div>
           <div style={{ fontSize: 15, fontWeight: 500, marginTop: 4, opacity: 0.85 }}>
-            {todayAppointments.length} appointment{todayAppointments.length !== 1 ? "s" : ""} scheduled
+            {t("calendar.dayView.scheduled", { count: todayAppointments.length })}
           </div>
         </div>
         <div style={{ padding: "16px 24px" }}>
@@ -451,17 +453,17 @@ export function ProfessorCalendarPage() {
           </div>
           <div>
             <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>D.I.Y.A</div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>Professor View</div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>{t("professorSidebar.appSubtitle")}</div>
           </div>
         </div>
-        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>Navigation</div>
+        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>{t("professorSidebar.navigationLabel")}</div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>← Back to Forum</button>
+          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("forum.forumThread.backToForum")}</button>
           {[
-            { id: "calendar", label: "Calendar", path: "/professor/calendar" },
-            { id: "analysis", label: "Analysis", path: "/professor/analysis" },
-            { id: "requests", label: "Requests", path: "/professor/requests" },
-            { id: "editgroup", label: "Edit Group", path: "/professor/edit-group" },
+            { id: "calendar", label: t("professorSidebar.nav.calendar"), path: "/professor/calendar" },
+            { id: "analysis", label: t("professorSidebar.nav.analysis"), path: "/professor/analysis" },
+            { id: "requests", label: t("professorSidebar.nav.requests"), path: "/professor/requests" },
+            { id: "editgroup", label: t("professorSidebar.nav.editgroup"), path: "/professor/edit-group" },
           ].map((item) => {
             const isActive = item.id === "calendar";
             return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent", color: isActive ? "#fff" : "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: isActive ? 700 : 600, cursor: "pointer" }}>{item.label}</button>;
@@ -469,22 +471,22 @@ export function ProfessorCalendarPage() {
         </nav>
         <div style={{ flex: 1 }} />
         <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)", margin: "12px 0 10px 0" }} />
-        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Sign out</button>
+        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{t("professorSidebar.signOut")}</button>
       </aside>
 
       <main style={{ flex: 1, overflow: "auto" }}>
         <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
           <div style={{ maxWidth: 1400 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Schedule</div>
-            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>Appointment Calendar</div>
-            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>Manage your student meetings and schedule</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>{t("calendar.header.eyebrow")}</div>
+            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>{t("calendar.header.title")}</div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>{t("calendar.header.subtitle")}</div>
 
             <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
               {[
-                { label: "Total Appointments", value: appointments.length, color: palette.crimson },
-                { label: "Confirmed", value: confirmedCount, color: palette.sage },
-                { label: "Pending", value: pendingCount, color: "#FFA500" },
-                { label: "Declined", value: declinedCount, color: "#DC3545" },
+                { label: t("calendar.stats.total"), value: appointments.length, color: palette.crimson },
+                { label: t("calendar.stats.confirmed"), value: confirmedCount, color: palette.sage },
+                { label: t("calendar.stats.pending"), value: pendingCount, color: "#FFA500" },
+                { label: t("calendar.stats.declined"), value: declinedCount, color: "#DC3545" },
               ].map((stat, i) => (
                 <div key={stat.label} style={{ flex: "1 1 220px", minWidth: 180, paddingRight: i < 3 ? 40 : 0, marginRight: i < 3 ? 40 : 0, borderRight: i < 3 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
                   <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
@@ -511,16 +513,16 @@ export function ProfessorCalendarPage() {
               </div>
               <div style={{ display: "flex", backgroundColor: "#fff", padding: 4, borderRadius: 14, border: "1.5px solid rgba(214,214,214,0.4)", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", gap: 4 }}>
                 {(["month", "week", "day"] as const).map((v) => (
-                  <button key={v} onClick={() => setView(v)} style={{ padding: "8px 22px", backgroundColor: view === v ? palette.crimson : "transparent", color: view === v ? "white" : palette.deepBurgundy, border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", textTransform: "capitalize", transition: "all 150ms ease" }}>{v}</button>
+                  <button key={v} onClick={() => setView(v)} style={{ padding: "8px 22px", backgroundColor: view === v ? palette.crimson : "transparent", color: view === v ? "white" : palette.deepBurgundy, border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", textTransform: "capitalize", transition: "all 150ms ease" }}>{t(`calendar.views.${v}`)}</button>
                 ))}
               </div>
             </div>
 
             <div style={{ display: "flex", gap: 24, marginBottom: 20, padding: "12px 20px", backgroundColor: "#fff", borderRadius: 12, border: "1px solid rgba(214,214,214,0.25)", boxShadow: "0 1px 6px rgba(0,0,0,0.04)", flexWrap: "wrap" }}>
               {[
-                { label: "Confirmed", color: palette.sage },
-                { label: "Pending", color: "#FFA500" },
-                { label: "Declined", color: "#DC3545" },
+                { label: t("calendar.status.confirmed"), color: palette.sage },
+                { label: t("calendar.status.pending"), color: "#FFA500" },
+                { label: t("calendar.status.declined"), color: "#DC3545" },
               ].map((item) => (
                 <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: 4 }} />
@@ -531,13 +533,13 @@ export function ProfessorCalendarPage() {
 
             {isLoading && (
               <div style={{ marginBottom: 20, padding: "20px 24px", backgroundColor: "#fff", borderRadius: 14, border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: palette.deepBurgundy, fontSize: 14, fontWeight: 700 }}>
-                Loading office hour calendar...
+                {t("calendar.loading")}
               </div>
             )}
 
             {!isLoading && appointments.length === 0 && (
               <div style={{ marginBottom: 20, padding: "20px 24px", backgroundColor: "#fff", borderRadius: 14, border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 700 }}>
-                No office hour requests are scheduled yet.
+                {t("calendar.empty")}
               </div>
             )}
 
@@ -549,9 +551,9 @@ export function ProfessorCalendarPage() {
 
         <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px", marginTop: 8 }}>
           <div style={{ maxWidth: 1400 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>Office Hours Overview</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>{t("calendar.footer.eyebrow")}</div>
             <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>
-              {confirmedCount} confirmed meeting{confirmedCount !== 1 ? "s" : ""} currently on your calendar.
+              {t("calendar.footer.confirmed", { count: confirmedCount})}
             </div>
           </div>
         </div>
@@ -562,29 +564,29 @@ export function ProfessorCalendarPage() {
           <div onClick={(e) => e.stopPropagation()} style={{ backgroundColor: "#fff", borderRadius: 24, overflow: "hidden", maxWidth: 480, width: "90%", boxShadow: "0 24px 80px rgba(0,0,0,0.25)" }}>
             <div style={{ height: 6, backgroundColor: getStatusColor(selectedAppointment.status) }} />
             <div style={{ padding: "32px" }}>
-            <div style={{ fontSize: 24, fontWeight: 900, color: palette.darkest, letterSpacing: -0.8, marginBottom: 24 }}>Appointment Details</div>
+            <div style={{ fontSize: 24, fontWeight: 900, color: palette.darkest, letterSpacing: -0.8, marginBottom: 24 }}>{t("calendar.appointmentModal.title")}</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Student</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>{t("calendar.appointmentModal.studentLabel")}</div>
                 <div style={{ fontSize: 18, fontWeight: 800, color: palette.darkest, marginBottom: 2 }}>{selectedAppointment.studentName}</div>
                 <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>{selectedAppointment.email}</div>
               </div>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Date & Time</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>{t("calendar.appointmentModal.dateTimeLabel")}</div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: palette.deepBurgundy }}>
-                  {new Date(selectedAppointment.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })} at {selectedAppointment.time}
+                  {t("calendar.appointmentModal.dateTimeAt", { date: new Date(selectedAppointment.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }), time: selectedAppointment.time })}
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Reason</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>{t("calendar.appointmentModal.reasonLabel")}</div>
                 <div style={{ fontSize: 15, fontWeight: 500, color: palette.deepBurgundy, fontStyle: "italic" }}>&quot;{selectedAppointment.reason}&quot;</div>
               </div>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Status</div>
-                <span style={{ display: "inline-block", padding: "6px 14px", backgroundColor: getStatusColor(selectedAppointment.status), color: "white", fontSize: 12, fontWeight: 700, borderRadius: 8, textTransform: "capitalize" }}>{selectedAppointment.status}</span>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>{t("calendar.appointmentModal.statusLabel")}</div>
+                <span style={{ display: "inline-block", padding: "6px 14px", backgroundColor: getStatusColor(selectedAppointment.status), color: "white", fontSize: 12, fontWeight: 700, borderRadius: 8, textTransform: "capitalize" }}>{t(`calendar.status.${selectedAppointment.status}`)}</span>
               </div>
             </div>
-            <button onClick={() => setSelectedAppointment(null)} style={{ marginTop: 24, width: "100%", padding: "14px", background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`, color: "white", border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Close</button>
+            <button onClick={() => setSelectedAppointment(null)} style={{ marginTop: 24, width: "100%", padding: "14px", background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`, color: "white", border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>{t("calendar.appointmentModal.closeButton")}</button>
             </div>
           </div>
         </div>

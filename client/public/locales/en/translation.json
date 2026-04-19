@@ -453,5 +453,268 @@
       "alertMessage": "Please contact your administrator to delete your account."
     }
   }
+  },
+  "professorRequests": {
+
+    "nav": {
+      "backToForum": "← Back to Forum",
+      "calendar": "Calendar",
+      "analysis": "Analysis",
+      "requests": "Requests",
+      "editGroup": "Edit Group",
+      "professorView": "Professor View",
+      "signOut": "Sign out"
+    },
+
+    "header": {
+      "eyebrow": "Office Hours",
+      "title": "Appointment Requests",
+      "subtitle": "Review and schedule student meetings"
+    },
+
+    "stats": {
+      "pendingRequests": "Pending Requests",
+      "thisWeek": "This Week",
+      "nextWeek": "Next Week"
+    },
+
+    "list": {
+      "heading": "Incoming Requests",
+      "loading": "Loading appointment requests...",
+      "empty": "No pending office hour requests right now."
+    },
+
+    "card": {
+      "fallbackName": "Student",
+      "fallbackEmail": "No email provided",
+      "requestedAgo": "Requested",
+      "accept": "Accept",
+      "reject": "Reject",
+      "reschedule": "Reschedule",
+      "googleCal": "Google Cal",
+      "outlook": "Outlook",
+      "meet": "Meet"
+    },
+
+    "calendarTitle": "Office Hours — {{studentName}}",
+
+    "timeAgo": {
+      "minute_one": "{{count}} minute ago",
+      "minute_other": "{{count}} minutes ago",
+      "hour_one": "{{count}} hour ago",
+      "hour_other": "{{count}} hours ago",
+      "day_one": "{{count}} day ago",
+      "day_other": "{{count}} days ago"
+    },
+
+    "reschedulePanel": {
+      "title": "Propose New Time",
+      "dateLabel": "Date",
+      "timeLabel": "Time",
+      "sendProposal": "Send Proposal",
+      "validationError": "Please select a date and time."
+    },
+
+    "errors": {
+      "loadFailed": "Failed to load office hour requests.",
+      "loadPendingFailed": "Failed to load pending office hour requests.",
+      "approveFailed": "Failed to approve appointment.",
+      "rejectFailed": "Failed to reject appointment.",
+      "rescheduleFailed": "Failed to reschedule appointment.",
+      "updateFailed": "Failed to update office hour request."
+    },
+
+    "footer": {
+      "eyebrow": "Office Hours Queue",
+      "waiting_one": "{{count}} student waiting to meet with you.",
+      "waiting_other": "{{count}} students waiting to meet with you.",
+      "description": "Review each request and confirm the best time for student support."
+    }
+  },
+
+  "edit": {
+    "header": {
+      "eyebrow": "Group Management",
+      "title": "Edit Group",
+      "subtitle": "Manage students and group settings"
+    },
+
+    "stats": {
+      "totalStudents": "Total Students",
+      "active": "Active",
+      "pending": "Pending"
+    },
+
+    "status": {
+      "active": "active",
+      "pending": "pending"
+    },
+
+    "loading": "Loading group roster...",
+
+    "emptyState": {
+      "noGroup": "No group is available to edit yet.",
+      "description": "Create your first course group to start organizing students, posts, and office-hour analytics.",
+      "createButton": "Create New Group",
+      "backButton": "Back to Forum"
+    },
+
+    "groupInfo": {
+      "cardTitle": "Group Information",
+      "nameLabel": "Group Name",
+      "descriptionLabel": "Description",
+      "saveButton": "Save Changes",
+      "savingButton": "Saving..."
+    },
+
+    "groupActions": {
+      "cardTitle": "Group Actions",
+      "addStudents": "Add Students",
+      "archiveGroup": "Archive Group"
+    },
+
+    "roster": {
+      "cardTitle": "Student Roster",
+      "empty": "No students are assigned to this group yet.",
+      "removeButton": "Remove",
+      "removeConfirm": "Are you sure you want to remove this student?"
+    },
+
+    "footer": {
+      "enrolled_one": "{{count}} student enrolled and counting.",
+      "enrolled_other": "{{count}} students enrolled and counting."
+    },
+
+    "addStudentModal": {
+      "title": "Add Student",
+      "description": "Enter the student email to add them to this group. The student must have logged in at least once so their account exists in the database.",
+      "namePlaceholder": "Student Name (optional)",
+      "emailPlaceholder": "student@school.edu",
+      "cancelButton": "Cancel",
+      "addButton": "Add Student"
+    },
+
+    "createGroupModal": {
+      "title": "Create New Group",
+      "description": "Create a new course group for your professor account. You can add students after the group is created.",
+      "titlePlaceholder": "Group title",
+      "descriptionPlaceholder": "Group description",
+      "cancelButton": "Cancel",
+      "createButton": "Create Group",
+      "creatingButton": "Creating..."
+    },
+
+    "archiveModal": {
+      "title": "Archive this group?",
+      "description": "This will delete the group and remove the group assignment from its current members.",
+      "cancelButton": "Cancel",
+      "archiveButton": "Archive Group",
+      "archivingButton": "Archiving..."
+    },
+
+    "errors": {
+      "loadGroups": "Failed to load groups.",
+      "loadUsers": "Failed to load users.",
+      "loadGroupData": "Failed to load group data.",
+      "noGroupSelected": "No group is currently selected.",
+      "professorNotReady": "Your professor account is not ready yet. Please refresh and try again.",
+      "groupTitleRequired": "Please enter a group title.",
+      "studentNotFound": "Student must log in at least once before being added to this group.",
+      "studentAlreadyInGroup": "That student is already in this group.",
+      "addStudentFailed": "Failed to save student addition.",
+      "removeStudentFailed": "Failed to save student removal.",
+      "saveGroupFailed": "Failed to save group settings.",
+      "archiveFailed": "Failed to archive group.",
+      "createFailed": "Something went wrong while creating the group. Please try again.",
+      "syncMembershipFailed": "Failed to sync membership for {{identifier}}.",
+      "empty": "No group is available to edit yet."
+    },
+
+    "success": {
+      "studentAdded": "Student added successfully.",
+      "studentRemoved": "Student removed successfully.",
+      "groupSaved": "Group settings saved.",
+      "groupCreated": "Group created successfully."
+    },
+
+    "fallbacks": {
+      "studentName": "Student",
+      "noEmail": "No email provided"
+    }
+  },
+  "calendar": {
+    "header": {
+      "eyebrow": "Schedule",
+      "title": "Appointment Calendar",
+      "subtitle": "Manage your student meetings and schedule"
+    },
+
+    "stats": {
+      "total": "Total Appointments",
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "declined": "Declined"
+    },
+
+    "status": {
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "declined": "Declined"
+    },
+
+    "views": {
+      "month": "Month",
+      "week": "Week",
+      "day": "Day"
+    },
+
+    "monthNames": [
+      "January", "February", "March", "April",
+      "May", "June", "July", "August",
+      "September", "October", "November", "December"
+    ],
+
+    "dayNames": [
+      "Sun", "Mon", "Tue", "Wed",
+      "Thu", "Fri", "Sat"
+    ],
+
+    "calendar": {
+      "moreAppointments": "+{{count}} more"
+    },
+
+    "dayView": {
+      "scheduled_one": "{{count}} appointment scheduled",
+      "scheduled_other": "{{count}} appointments scheduled"
+    },
+
+    "loading": "Loading office hour calendar...",
+    "empty": "No office hour requests are scheduled yet.",
+
+    "appointmentModal": {
+      "title": "Appointment Details",
+      "studentLabel": "Student",
+      "dateTimeLabel": "Date & Time",
+      "dateTimeAt": "{{date}} at {{time}}",
+      "reasonLabel": "Reason",
+      "statusLabel": "Status",
+      "closeButton": "Close"
+    },
+
+    "footer": {
+      "eyebrow": "Office Hours Overview",
+      "confirmed_one": "{{count}} confirmed meeting currently on your calendar.",
+      "confirmed_other": "{{count}} confirmed meetings currently on your calendar."
+    },
+
+    "errors": {
+      "loadFailed": "Failed to load office hour schedule."
+    },
+
+    "fallbacks": {
+      "studentName": "Student",
+      "noEmail": "No email provided"
+    }
+
   }
 }

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { formatTimeRangeToCST } from "../../utils/formatTime";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -73,6 +74,7 @@ function buildOutlookUrl(request: AppointmentRequest) {
 }
 
 export function ProfessorRequestsPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, logout } = useAuth0();
   const [showReschedule, setShowReschedule] = useState<string | null>(null);
@@ -122,8 +124,8 @@ export function ProfessorRequestsPage() {
 
         const normalizedRequests = requests.map((request) => ({
           id: request.id,
-          studentName: request.studentName || "Student",
-          email: request.studentEmail || "No email provided",
+          studentName: request.studentName || t("sidebar.defaultName"),
+          email: request.studentEmail || t("professorRequests.card.fallbackEmail"),
           groupName: request.groupName,
           requestedDate: request.requestedDate || request.date,
           requestedTime: request.startTime,
@@ -139,7 +141,7 @@ export function ProfessorRequestsPage() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load office hour requests.");
+          setError(err instanceof Error ? err.message : t("professorRequests.errors.loadFailed"));
           setAppointmentRequests([]);
         }
       } finally {
@@ -176,7 +178,7 @@ export function ProfessorRequestsPage() {
       await updateRequest(id, { status: "confirmed" });
       setAppointmentRequests((currentRequests) => currentRequests.filter((request) => request.id !== id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to approve appointment.");
+      setError(err instanceof Error ? err.message : t("professorRequests.errors.approveFailed"));
     }
   };
 
@@ -186,13 +188,13 @@ export function ProfessorRequestsPage() {
       await updateRequest(id, { status: "declined" });
       setAppointmentRequests((currentRequests) => currentRequests.filter((request) => request.id !== id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to reject appointment.");
+      setError(err instanceof Error ? err.message : t("professorRequests.errors.rejectFailed"));
     }
   };
 
   const handleReschedule = async (id: string) => {
     if (!rescheduleDate || !rescheduleTime) {
-      setError("Please select a date and time.");
+      setError(t("professorRequests.reschedulePanel.validationError"));
       return;
     }
 
@@ -213,7 +215,7 @@ export function ProfessorRequestsPage() {
       setRescheduleDate("");
       setRescheduleTime("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to reschedule appointment.");
+      setError(err instanceof Error ? err.message : t("professorRequests.errors.rescheduleFailed"));
     }
   };
 
@@ -255,11 +257,11 @@ export function ProfessorRequestsPage() {
   const formatTimeAgo = (timestamp: number) => {
     const diffMs = Date.now() - timestamp;
     const minutes = Math.max(1, Math.floor(diffMs / 60000));
-    if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+    if (minutes < 60) return t("professorRequests.timeAgo.minute", { count: minutes });
     const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+    if (hours < 24) return t("professorRequests.timeAgo.hour", { count: hours });
     const days = Math.floor(hours / 24);
-    return `${days} day${days === 1 ? "" : "s"} ago`;
+    return t("professorRequests.timeAgo.day", { count: days });
   };
 
   return (
@@ -271,17 +273,17 @@ export function ProfessorRequestsPage() {
           </div>
           <div>
             <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>D.I.Y.A</div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>Professor View</div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>{t("professorSidebar.appSubtitle")}</div>
           </div>
         </div>
-        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>Navigation</div>
+        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>{t("professorSidebar.navigationLabel")}</div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>← Back to Forum</button>
+          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("professorRequests.nav.backToForum")}</button>
           {[
-            { id: "calendar", label: "Calendar", path: "/professor/calendar" },
-            { id: "analysis", label: "Analysis", path: "/professor/analysis" },
-            { id: "requests", label: "Requests", path: "/professor/requests" },
-            { id: "editgroup", label: "Edit Group", path: "/professor/edit-group" },
+            { id: "calendar", label: t("professorSidebar.nav.calendar"), path: "/professor/calendar" },
+            { id: "analysis", label: t("professorSidebar.nav.analysis"), path: "/professor/analysis" },
+            { id: "requests", label: t("professorSidebar.nav.requests"), path: "/professor/requests" },
+            { id: "editgroup", label: t("professorSidebar.nav.editGroup"), path: "/professor/edit-group" },
           ].map((item) => {
             const isActive = item.id === "requests";
             return <button key={item.id} type="button" onClick={() => navigate(item.path)} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: isActive ? "rgba(255,255,255,0.1)" : "transparent", color: isActive ? "#fff" : "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: isActive ? 700 : 600, cursor: "pointer" }}>{item.label}</button>;
@@ -289,21 +291,21 @@ export function ProfessorRequestsPage() {
         </nav>
         <div style={{ flex: 1 }} />
         <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.08)", margin: "12px 0 10px 0" }} />
-        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Sign out</button>
+        <button type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{t("professorRequests.nav.signOut")}</button>
       </aside>
 
       <main style={{ flex: 1, overflow: "auto" }}>
         <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
           <div style={{ maxWidth: 1200 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Office Hours</div>
-            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>Appointment Requests</div>
-            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>Review and schedule student meetings</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>{t("professorRequests.header.eyebrow")}</div>
+            <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>{t("professorRequests.header.title")}</div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>{t("professorRequests.header.subtitle")}</div>
 
             <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
               {[
-                { label: "Pending Requests", value: pendingCount, color: palette.crimson },
-                { label: "This Week", value: thisWeekCount, color: palette.sage },
-                { label: "Next Week", value: nextWeekCount, color: palette.deepBurgundy },
+                { label: t("professorRequests.stats.pendingRequests"), value: pendingCount, color: palette.crimson },
+                { label: t("professorRequests.stats.thisWeek"), value: thisWeekCount, color: palette.sage },
+                { label: t("professorRequests.stats.nextWeek"), value: nextWeekCount, color: palette.deepBurgundy },
               ].map((stat, i) => (
                 <div key={stat.label} style={{ flex: "1 1 220px", minWidth: 180, paddingRight: i < 2 ? 40 : 0, marginRight: i < 2 ? 40 : 0, borderRight: i < 2 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
                   <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
@@ -324,17 +326,17 @@ export function ProfessorRequestsPage() {
           )}
 
           <div>
-            <div style={{ fontSize: 32, fontWeight: 900, color: palette.darkest, letterSpacing: -1, marginBottom: 28 }}>Incoming Requests</div>
+            <div style={{ fontSize: 32, fontWeight: 900, color: palette.darkest, letterSpacing: -1, marginBottom: 28 }}>{t("professorRequests.list.heading")}</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {isLoading && (
                 <div style={{ backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.3)", borderRadius: 14, padding: "20px 24px", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: palette.deepBurgundy, fontSize: 14, fontWeight: 700 }}>
-                  Loading appointment requests...
+                  {t("professorRequests.list.loading")}
                 </div>
               )}
 
               {!isLoading && appointmentRequests.length === 0 && (
                 <div style={{ backgroundColor: "#fff", border: "1px solid rgba(214,214,214,0.3)", borderRadius: 14, padding: "20px 24px", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 700 }}>
-                  No pending office hour requests right now.
+                  {t("professorRequests.list.empty")}
                 </div>
               )}
 
@@ -346,10 +348,10 @@ export function ProfessorRequestsPage() {
                       <div>
                         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
                           <div style={{ width: 44, height: 44, borderRadius: 12, background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`, display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 18, fontWeight: 800, flexShrink: 0 }}>
-                            {(req.studentName || "S").charAt(0)}
+                            {(req.studentName || t("sidebar.defaultName")).charAt(0)}
                           </div>
                           <div>
-                            <div style={{ fontSize: 17, fontWeight: 800, color: palette.darkest, letterSpacing: -0.3 }}>{req.studentName || "Student"}</div>
+                            <div style={{ fontSize: 17, fontWeight: 800, color: palette.darkest, letterSpacing: -0.3 }}>{req.studentName || t("sidebar.defaultName")}</div>
                             <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>{req.email}</div>
                           </div>
                         </div>
@@ -368,24 +370,24 @@ export function ProfessorRequestsPage() {
                           </span>
                         </div>
                         <div style={{ fontSize: 15, fontWeight: 500, color: palette.deepBurgundy, lineHeight: 1.6, fontStyle: "italic", marginBottom: 8 }}>&quot;{req.reason}&quot;</div>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.4)" }}>Requested {formatTimeAgo(req.timestamp)}</div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(92,30,38,0.4)" }}>{t("professorRequests.card.requestedAgo")} {formatTimeAgo(req.timestamp)}</div>
                       </div>
                       <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 140 }}>
-                        <button onClick={() => void handleApproveAppointment(req.id)} style={{ padding: "11px 16px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(122,155,118,0.3)" }}>✓ Accept</button>
+                        <button onClick={() => void handleApproveAppointment(req.id)} style={{ padding: "11px 16px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(122,155,118,0.3)" }}>✓ {t("professorRequests.card.accept")}</button>
                         <a href={buildGoogleCalendarUrl(req)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 12px", borderRadius: 12, backgroundColor: "rgba(66,133,244,0.08)", border: "1.5px solid rgba(66,133,244,0.25)", color: "#4285F4", fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" /><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-                          Google Cal
+                          {t("professorRequests.card.googleCal")}
                         </a>
                         <a href={buildOutlookUrl(req)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 12px", borderRadius: 12, backgroundColor: "rgba(0,120,212,0.07)", border: "1.5px solid rgba(0,120,212,0.22)", color: "#0078D4", fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" /><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-                          Outlook
+                          {t("professorRequests.card.outlook")}
                         </a>
                         <a href="https://meet.google.com/new" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 12px", borderRadius: 12, backgroundColor: "rgba(52,168,83,0.08)", border: "1.5px solid rgba(52,168,83,0.25)", color: "#34A853", fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                          Meet
+                          {t("professorRequests.card.meet")}
                         </a>
-                        <button onClick={() => setShowReschedule(showReschedule === req.id ? null : req.id)} style={{ padding: "9px 16px", background: "transparent", color: palette.crimson, border: "1.5px solid rgba(162,34,55,0.3)", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>🔄 Reschedule</button>
-                        <button onClick={() => void handleRejectAppointment(req.id)} style={{ padding: "9px 16px", background: "transparent", color: "#DC3545", border: "1.5px solid rgba(220,53,69,0.35)", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>✗ Reject</button>
+                        <button onClick={() => setShowReschedule(showReschedule === req.id ? null : req.id)} style={{ padding: "9px 16px", background: "transparent", color: palette.crimson, border: "1.5px solid rgba(162,34,55,0.3)", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>🔄 {t("professorRequests.card.reschedule")}</button>
+                        <button onClick={() => void handleRejectAppointment(req.id)} style={{ padding: "9px 16px", background: "transparent", color: "#DC3545", border: "1.5px solid rgba(220,53,69,0.35)", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>✗ {t("professorRequests.card.reject")}</button>
                       </div>
                     </div>
                   </div>
@@ -394,17 +396,17 @@ export function ProfessorRequestsPage() {
                     <div style={{ marginTop: 12, backgroundColor: "#fff", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.1)" }}>
                       <div style={{ height: 4, backgroundColor: palette.crimson }} />
                       <div style={{ padding: "20px 32px" }}>
-                        <div style={{ fontSize: 15, fontWeight: 800, color: palette.darkest, marginBottom: 16 }}>Propose New Time</div>
+                        <div style={{ fontSize: 15, fontWeight: 800, color: palette.darkest, marginBottom: 16 }}>{t("professorRequests.reschedulePanel.title")}</div>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 14, alignItems: "end" }}>
                           <div>
-                            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Date</label>
+                            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>{t("professorRequests.reschedulePanel.dateLabel")}</label>
                             <input type="date" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} style={{ width: "100%", padding: "10px 14px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
                           </div>
                           <div>
-                            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Time</label>
+                            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "rgba(92,30,38,0.5)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>{t("professorRequests.reschedulePanel.timeLabel")}</label>
                             <input type="time" value={rescheduleTime} onChange={(e) => setRescheduleTime(e.target.value)} style={{ width: "100%", padding: "10px 14px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 10, fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
                           </div>
-                          <button onClick={() => void handleReschedule(req.id)} style={{ padding: "10px 20px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Send Proposal</button>
+                          <button onClick={() => void handleReschedule(req.id)} style={{ padding: "10px 20px", background: `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("professorRequests.reschedulePanel.sendProposal")}</button>
                         </div>
                       </div>
                     </div>
@@ -418,9 +420,9 @@ export function ProfessorRequestsPage() {
 
         <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px" }}>
           <div style={{ maxWidth: 1200 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>Office Hours Queue</div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>{appointmentRequests.length} students waiting to meet with you.</div>
-            <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.65)" }}>Review each request and confirm the best time for student support.</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>{t("professorRequests.footer.eyebrow")}</div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 6 }}>{t("professorRequests.footer.waiting", { count: appointmentRequests.length })}</div>
+            <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.65)" }}>{t("professorRequests.footer.description")}</div>
           </div>
         </div>
       </main>
