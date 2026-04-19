@@ -1,43 +1,99 @@
 {
-  "topicAnalysis": {
-    "notFound": "Topik tidak ditemukan.",
-    "backToSelfCheck": "Kembali ke Cek Mandiri",
-    "backToAnalysis": "Kembali ke Analisis",
-    "badges": {
-      "forumQuestions": "{{count}} pertanyaan forum",
-      "engagement": "Keterlibatan {{score}}%"
+  "home": {
+    "title": "Grup Saya",
+    "subtitle_one": "Mengelola {{count}} grup",
+    "subtitle_other": "Mengelola {{count}} grup",
+
+    "createButton": "Buat Grup",
+
+    "loading": "Memuat grup Anda...",
+
+    "empty": {
+      "title": "Belum ada grup",
+      "subtitle": "Buat grup pertama Anda untuk mulai menggunakan D.I.Y.A."
     },
-    "trend": {
-      "rising": "Meningkat",
-      "steady": "Stabil",
-      "declining": "Butuh Perhatian"
+
+    "error": "Gagal membuat grup.",
+
+    "groupCard": {
+      "members_one": "{{count}} Anggota",
+      "members_other": "{{count}} Anggota",
+      "view": "Lihat →"
     },
-    "positives": {
-      "title": "Hal Positif",
-      "subtitle": "Apa yang berjalan baik"
+
+    "modal": {
+      "title": "Buat Grup Baru",
+      "groupTitleLabel": "Judul Grup",
+      "groupTitlePlaceholder": "contoh: CS 1337 — Ilmu Komputer I",
+      "descriptionLabel": "Deskripsi (opsional)",
+      "descriptionPlaceholder": "Deskripsi singkat mata kuliah atau grup...",
+      "cancel": "Batal",
+      "creating": "Sedang membuat...",
+      "create": "Buat Grup"
+    }
+  },
+  "analysis": {
+    "badge": "Wawasan Berbasis AI",
+    "title": "Analisis Mata Kuliah",
+    "subtitle": "Informasi berdasarkan pertanyaan mahasiswa dan pola partisipasi",
+
+    "stats": {
+      "postsAnalyzed": "Postingan dianalisis",
+      "groupsIncluded": "Grup termasuk",
+      "topicsIdentified": "Topik teridentifikasi",
+      "needAttention": "Butuh perhatian"
     },
-    "concerns": {
-      "title": "Kendala",
-      "subtitle": "Bidang yang sulit"
+
+    "distribution": {
+      "title": "Distribusi Pertanyaan",
+      "subtitle": "Volume topik yang terdeteksi dari aktivitas forum",
+      "loading": "Menganalisis grup pengajar saat ini...",
+      "empty": "Data tidak cukup untuk analisis.",
+      "emptyDetail": "Setelah mahasiswa mulai memposting di grup Anda, dasbor ini akan secara otomatis merangkum topik yang paling banyak dibahas.",
+      "legendNeedsAttention": "Butuh perhatian",
+      "legendLowerVolume": "Volume rendah"
     },
-    "recommendations": {
-      "title": "Rekomendasi",
-      "subtitle": "Cara meningkatkan"
+
+    "summary": {
+      "title": "Ringkasan AI",
+      "loading": "Menghitung aktivitas topik dari postingan langsung...",
+      "empty": "Data tidak cukup untuk analisis.",
+      "postsSummary": "{{count}} postingan di {{groups}} grup menghasilkan {{mentions}} penyebutan topik.",
+      "mostActiveTopic": "Topik paling aktif:",
+      "mostActiveDetail": "{{name}} dengan {{count}} penyebutan ({{percent}}% dari diskusi saat ini).",
+      "priorityTopics": "Topik Prioritas",
+      "noAttentionTopics": "Saat ini tidak ada topik yang melampaui ambang batas perhatian.",
+      "positiveIndicators": "✓ Indikator Positif",
+      "positiveWithTopics": "{{topics}} menunjukkan volume pertanyaan yang relatif rendah, menandakan materi saat ini bekerja dengan baik.",
+      "positiveNoTopics": "Diskusi saat ini berfokus pada topik yang membutuhkan perhatian lebih; pertimbangkan untuk memperkuat materi inti sebelum titik pengecekan berikutnya."
     },
-    "snapshot": {
-      "title": "Ringkasan Kelas — {{topicName}}",
-      "description": "Berdasarkan {{count}} pertanyaan forum, skor keterlibatan kelas untuk topik ini adalah {{score}}%. Fokuslah pada kendala di atas untuk meningkatkan pemahaman Anda sebelum penilaian berikutnya."
+
+    "insights": {
+      "title": "Wawasan Topik",
+      "loading": "Menghasilkan wawasan dari data diskusi langsung...",
+      "empty": "Data tidak cukup untuk analisis.",
+      "badgeAttention": "⚠ Perhatian",
+      "badgeStrong": "✓ Kuat",
+      "recommendedAction": "Tindakan yang Disarankan",
+      "discussionVolume": "Volume Diskusi"
+    },
+
+    "footer": {
+      "badge": "Mesin Analisis",
+      "title_one": "{{count}} topik membutuhkan perhatian Anda.",
+      "title_other": "{{count}} topik membutuhkan perhatian Anda.",
+      "subtitle": "Tinjau topik yang disorot di atas untuk memutuskan di mana klarifikasi tambahan atau pengumuman diperlukan."
     }
   },
   "sidebar": {
     "appSubtitle": "Portal Mahasiswa",
     "menuLabel": "Menu",
     "defaultName": "Mahasiswa",
-    "defaultEmail": "student@university.edu",
+    "defaultEmail": "mahasiswa@university.edu",
     "nav": {
       "profile": "Profil",
       "groups": "Grup",
-      "request": "Ajukan Jam Konsultasi",
+      "request": "Permintaan Jam Konsultasi",
       "requestShort": "Jam Konsultasi",
       "selfcheck": "Cek Mandiri"
     },
@@ -49,27 +105,30 @@
     "appSubtitle": "Tampilan Dosen",
     "navigationLabel": "Navigasi",
     "nav": {
+      "home": "Beranda",
       "forum": "Forum",
       "calendar": "Kalender",
       "analysis": "Analisis",
       "requests": "Permintaan",
-      "editGroup": "Edit Grup"
+      "editGroup": "Edit Grup",
+      "profile": "Profil"
     },
-    "signOut": "Keluar"
+    "signOut": "Keluar",
+    "activeGroup": "Grup Aktif"
   },
   "login": {
-    "title": "Selamat datang kembali",
-    "subtitle": "Lanjutkan dengan aman menggunakan Auth0 untuk mengakses ruang kerja D.I.Y.A, tugas, diskusi, dan alat umpan balik Anda.",
+    "title": "Selamat Datang Kembali",
+    "subtitle": "Masuk dengan aman melalui Auth0 untuk mengakses ruang kerja D.I.Y.A., tugas, dan diskusi Anda.",
     "submitButton": "Masuk dengan Auth0",
     "signUpPrompt": "Baru di D.I.Y.A?",
     "signUpLink": "Buat akun"
   },
   "signUp": {
-    "title": "Buat akun Anda",
-    "subtitle": "Mulai gunakan D.I.Y.A melalui alur pendaftaran Auth0 yang aman dan masuk ke ruang belajar Anda.",
+    "title": "Buat Akun",
+    "subtitle": "Mulai perjalanan belajar Anda di D.I.Y.A melalui pendaftaran Auth0 yang aman.",
     "role": {
-      "label": "Peran akun",
-      "description": "Pilih apakah akun baru ini dibuat sebagai mahasiswa atau dosen.",
+      "label": "Peran Akun",
+      "description": "Pilih apakah Anda membuat akun ini sebagai mahasiswa atau dosen.",
       "student": "Mahasiswa",
       "professor": "Dosen"
     },
@@ -79,13 +138,15 @@
   },
   "groupInvite": {
     "title": "Undangan Grup",
-    "message": "<strong>{{adminName}}</strong> telah mengundang Anda untuk bergabung dengan <strong>{{groupName}}</strong>",
+    "message": "<strong>{{adminName}}</strong> mengundang Anda untuk bergabung dengan <strong>{{groupName}}</strong>",
     "accept": "Terima",
     "declined": "Tolak"
   },
   "groups": {
     "pageTitle": "Selamat Datang Kembali, {{name}}!",
     "defaultName": "Mahasiswa",
+    "members": "anggota",
+    "posts": "postingan",
     "search": {
       "placeholder": "Cari grup berdasarkan nama...",
       "ariaLabel": "Cari grup berdasarkan nama"
@@ -100,23 +161,23 @@
       "members_other": "{{count}} anggota",
       "posts_one": "{{count}} postingan",
       "posts_other": "{{count}} postingan",
-      "viewGroup": "Lihat grup"
+      "viewGroup": "Lihat Grup"
     },
     "loading": "Memuat...",
     "error": {
       "title": "Gagal memuat grup",
-      "loadGroups": "Gagal memuat daftar grup.",
+      "loadGroups": "Kesalahan saat memuat grup.",
       "loadPosts": "Gagal memuat jumlah postingan forum."
     },
     "empty": {
-      "title": "Tidak ada grup yang cocok dengan \"{{query}}\"",
-      "subtitle": "Coba nama yang lebih pendek, kode mata kuliah, atau hapus spasi tambahan."
+      "title": "Grup tidak ditemukan",
+      "subtitle": "Coba gunakan nama yang lebih pendek atau kode mata kuliah."
     }
   },
   "forum": {
-    "pageTitle": "Halaman Forum {{groupName}}",
+    "pageTitle": "Halaman Forum",
     "header": {
-      "askQuestion": "Ajukan pertanyaan baru",
+      "askQuestion": "Ajukan pertanyaan kepada teman sejawat dan D.I.Y.A AI...",
       "ariaCreate": "Buat pertanyaan baru"
     },
     "search": {
@@ -130,9 +191,9 @@
     },
     "card": {
       "newBadge": "BARU",
-      "replies_one": "{{count}} balasan",
-      "replies_other": "{{count}} balasan",
-      "viewReplies": "Lihat balasan",
+      "replies_one": "balasan",
+      "replies_other": "balasan",
+      "viewReplies": "Lihat Balasan",
       "aiVerified": "Jawaban AI untuk pertanyaan ini telah diverifikasi oleh dosen.",
       "timeAgo": {
         "minute_one": "{{count}} menit yang lalu",
@@ -148,95 +209,107 @@
     "loading": "Memuat...",
     "error": {
       "title": "Gagal memuat pertanyaan forum",
-      "loadQuestions": "Gagal memuat daftar pertanyaan.",
+      "loadQuestions": "Kesalahan saat memuat pertanyaan forum.",
       "createQuestion": "Gagal membuat pertanyaan.",
       "upvote": "Gagal memperbarui suara."
     },
     "empty": {
       "title": "Pertanyaan tidak ditemukan",
-      "subtitle": "Coba pencarian lain atau ajukan pertanyaan pertama untuk grup ini."
+      "subtitle": "Coba kata kunci lain atau jadilah yang pertama bertanya di grup ini."
     },
     "popup": {
       "title": "Ajukan Pertanyaan",
       "inputPlaceholder": "Apa pertanyaan Anda?",
       "imageLabel": "Gambar (opsional)",
-      "uploadImage": "Unggah gambar",
-      "changeImage": "Ubah gambar",
+      "uploadImage": "Unggah Gambar",
+      "changeImage": "Ganti Gambar",
       "cancel": "Batal",
+      "posting": "Memposting...",
       "postButton": "Posting Pertanyaan"
     }
   },
   "forumThread": {
     "backToForum": "← Kembali ke Forum",
     "question": {
-      "askedBy": "Ditanyakan oleh {{author}}",
+      "askedBy": "Ditanyakan oleh ",
       "defaultTitle": "Pertanyaan Anda",
       "defaultAuthor": "Anda"
     },
     "replies": {
-      "loading": "Memuat diskusi...",
-      "empty": "Belum ada balasan — jadilah yang pertama merespons!",
+      "loading": "Memuat utas...",
+      "empty": "Belum ada balasan — jadilah yang pertama!",
       "professorLabel": "(Dosen)",
-      "imageFallback": "(gambar)"
+      "imageFallback": "(gambar)",
+      "professor": "dosen",
+      "student": "mahasiswa",
+      "ai": "D.I.Y.A AI",
+      "profssorVerified": "AI Diverifikasi Dosen"
     },
     "related": {
       "title": "Diskusi Terkait",
       "loading": "Mencari topik serupa...",
       "empty": "Tidak ditemukan postingan serupa.",
       "untitled": "Postingan Tanpa Judul",
-      "viewThread": "Lihat Diskusi →"
+      "viewThread": "Lihat Utas →",
+      "untitledQuestion": "Pertanyaan Tanpa Judul"
     },
     "input": {
-      "placeholder": "Ketik balasan Anda...",
-      "removeImage": "Hapus",
+      "placeholder": "Tulis balasan Anda...",
+      "sending": "Mengirim...",
+      "removeImage": "Hapus lampiran",
+      "remove": "Hapus",
+      "attach": "Lampirkan",
       "ariaUpload": "Unggah gambar",
       "ariaSend": "Kirim balasan",
-      "ariaToggleSidebarOpen": "Buka bilah samping",
-      "ariaToggleSidebarClose": "Tutup bilah samping"
+      "ariaToggleSidebarOpen": "Buka bilah sisi",
+      "ariaToggleSidebarClose": "Tutup bilah sisi",
+      "fileTooLarge": "Ukuran file terlalu besar. Harap gunakan file di bawah 10MB.",
+      "timeOut": "Unggahan habis waktu. Harap coba file yang lebih kecil.",
+      "urlError": "Gagal mengambil tautan file yang diunggah."
     },
     "errors": {
-      "loadThread": "Gagal memuat diskusi forum.",
+      "loadThread": "Gagal memuat utas forum.",
       "loadReplies": "Gagal memuat balasan.",
       "sendReply": "Gagal mengirim balasan."
     }
   },
   "officeHours": {
-    "pageTitle": "Ajukan Jam Konsultasi",
+    "pageTitle": "Permintaan Jam Konsultasi",
     "form": {
       "title": "Permintaan Baru",
-      "subtitle": "Isi formulir di bawah ini untuk mengajukan pertemuan dengan dosen atau asisten dosen Anda.",
-      "loading": "Memuat mata kuliah dan kontak yang tersedia...",
-      "courseLabel": "Mata Kuliah/Grup Mana? *",
-      "coursePlaceholder": "Pilih mata kuliah atau grup",
-      "noGroups": "Anda belum terdaftar dalam grup mata kuliah apa pun.",
-      "professorLabel": "Mengajukan ke Dosen atau Asdos? *",
-      "professorPlaceholder": "Pilih dosen atau asdos",
-      "reasonLabel": "Apa tujuan pertemuan ini? *",
-      "reasonPlaceholder": "Jelaskan secara singkat mengapa Anda ingin bertemu...",
+      "subtitle": "Isi formulir di bawah ini untuk menjadwalkan pertemuan dengan dosen atau asisten dosen (TA) Anda.",
+      "loading": "Memuat kursus dan kontak Anda...",
+      "courseLabel": "Kursus/Grup yang mana? *",
+      "coursePlaceholder": "Pilih kursus atau grup",
+      "noGroups": "Anda belum terdaftar dalam kursus apa pun.",
+      "professorLabel": "Dosen atau TA? *",
+      "professorPlaceholder": "Pilih dosen atau TA",
+      "reasonLabel": "Alasan permintaan ini? *",
+      "reasonPlaceholder": "Jelaskan secara singkat tujuan pertemuan...",
       "dateLabel": "Tanggal yang Diusulkan *",
       "startTimeLabel": "Waktu Mulai (CST) *",
       "endTimeLabel": "Waktu Selesai (CST) *",
       "meetingTypeLabel": "Jenis Pertemuan *",
       "online": "Pertemuan Daring",
-      "inPerson": "Pertemuan Tatap Muka",
+      "inPerson": "Tatap Muka",
       "meetingLinkLabel": "Tautan Pertemuan (opsional)",
       "meetingLinkPlaceholder": "https://zoom.us/j/...",
       "submitButton": "Kirim Permintaan"
     },
     "success": {
       "title": "Permintaan Terkirim!",
-      "subtitle": "Permintaan jam konsultasi Anda telah dikirim. Anda akan menerima email konfirmasi setelah dosen Anda merespons.",
-      "emailNote": "Periksa email Anda untuk pembaruan di ",
-      "submitAnother": "Kirim Permintaan Lain"
+      "subtitle": "Permintaan jam konsultasi Anda telah dikirim. Anda akan menerima email setelah dikonfirmasi.",
+      "emailNote": "Periksa email Anda untuk pembaruan: ",
+      "submitAnother": "Kirim permintaan lain"
     },
     "requests": {
       "title": "Permintaan Anda",
       "empty": "Belum ada permintaan. Kirim permintaan pertama Anda di atas.",
       "online": "Daring",
       "inPerson": "Tatap Muka",
-      "meetingLink": "Tautan pertemuan: ",
-      "addToGoogle": "Tambah ke Google Calendar",
-      "addToOutlook": "Tambah ke Outlook",
+      "meetingLink": "Tautan: ",
+      "addToGoogle": "Tambahkan ke Google Calendar",
+      "addToOutlook": "Tambahkan ke Outlook",
       "joinMeeting": "Gabung Pertemuan",
       "timeRange": "{{start}} – {{end}}"
     },
@@ -246,40 +319,40 @@
       "declined": "Ditolak"
     },
     "errors": {
-      "loadProfessors": "Gagal memuat kontak dosen.",
+      "loadProfessors": "Gagal memuat kontak pengajar.",
       "loadGroups": "Gagal memuat grup.",
       "loadRequests": "Gagal memuat permintaan jam konsultasi Anda.",
-      "loadData": "Gagal memuat data jam konsultasi.",
-      "noGroup": "Silakan pilih mata kuliah atau grup.",
-      "submit": "Gagal mengirim permintaan jam konsultasi."
+      "loadData": "Kesalahan saat memuat data jam konsultasi.",
+      "noGroup": "Harap pilih kursus atau grup.",
+      "submit": "Gagal mengirim permintaan."
     }
   },
   "selfCheck": {
     "pageTitle": "Cek Mandiri",
     "upload": {
-      "title": "Periksa Pekerjaan Anda",
-      "subtitle": "Unggah rubrik tugas dan hasil pekerjaan Anda untuk mendapatkan laporan estimasi nilai dari AI.",
+      "title": "Verifikasi Pekerjaan Anda",
+      "subtitle": "Unggah rubrik tugas dan pekerjaan Anda untuk mendapatkan laporan penilaian berbasis AI.",
       "rubricLabel": "Rubrik Tugas",
-      "rubricPlaceholder": "Klik untuk unggah rubrik",
+      "rubricPlaceholder": "Klik untuk mengunggah rubrik",
       "workLabel": "Pekerjaan Anda",
-      "workPlaceholder": "Klik untuk unggah pekerjaan Anda",
+      "workPlaceholder": "Klik untuk mengunggah pekerjaan Anda",
       "analyzeButton": "Analisis Pekerjaan Saya",
       "analyzingButton": "Menganalisis..."
     },
     "analyzing": {
       "title": "Menganalisis pekerjaan Anda...",
-      "subtitle": "Membandingkan kiriman Anda dengan kriteria rubrik"
+      "subtitle": "Membandingkan konten Anda dengan kriteria rubrik."
     },
     "report": {
-      "title": "Laporan Nilai",
-      "potentialGradeLabel": "Estimasi Nilai",
-      "areasForImprovement": "Bagian yang Perlu Ditingkatkan"
+      "title": "Laporan Penilaian",
+      "potentialGradeLabel": "Potensi Nilai",
+      "areasForImprovement": "Area yang Perlu Ditingkatkan"
     },
     "history": {
-      "title": "Pengecekan Sebelumnya",
-      "loading": "Memuat riwayat pengecekan Anda...",
-      "empty": "Belum ada pengecekan sebelumnya. Unggah tugas pertama Anda di atas untuk memulai.",
-      "areasForImprovement": "Bagian yang Perlu Ditingkatkan"
+      "title": "Riwayat Pengecekan",
+      "loading": "Memuat laporan terdahulu...",
+      "empty": "Tidak ditemukan riwayat pengecekan. Unggah tugas pertama Anda untuk memulai.",
+      "areasForImprovement": "Area yang Perlu Ditingkatkan"
     },
     "errors": {
       "loadHistory": "Gagal memuat riwayat cek mandiri.",
@@ -287,47 +360,527 @@
     }
   },
   "profile": {
-    "sectionLabel": "Pengaturan mahasiswa",
-    "pageTitle": "Kelola akun Anda",
-    "pageSubtitle": "Perbarui preferensi keamanan Anda, tinjau detail akun, dan kendalikan cara D.I.Y.A memberi tahu Anda tentang aktivitas penting.",
+    "sectionLabel": "Pengaturan Mahasiswa",
+    "pageTitle": "Kelola Akun",
+    "pageSubtitle": "Perbarui preferensi keamanan dan kendalikan notifikasi D.I.Y.A Anda.",
     "status": {
       "emailVerified": "Email terverifikasi",
       "emailPending": "Verifikasi email tertunda",
-      "lastSynced": "Sinkronisasi terakhir {{date}}"
+      "lastSynced": "Sinkronisasi terakhir"
     },
     "account": {
       "sectionLabel": "Akun",
-      "noEmail": "Email tidak tersedia",
-      "emailAlertsLabel": "Peringatan email",
-      "forumRepliesLabel": "Balasan forum",
+      "noEmail": "Email tidak ditemukan",
+      "emailAlertsLabel": "Peringatan Email",
+      "forumRepliesLabel": "Balasan Forum",
       "on": "Aktif",
-      "off": "Nonaktif"
+      "off": "Nonaktif",
+      "personalInfo": "Informasi Pribadi",
+      "setName": "Atur nama Anda agar dikenali oleh dosen dan teman sejawat.",
+      "professorSetName": "Atur nama Anda agar dikenali oleh mahasiswa dan kolega.",
+      "saving": "Menyimpan...",
+      "saveName": "Simpan Nama",
+      "saveBio": "Simpan Bio",
+      "tellMessage": "Ceritakan sedikit tentang diri Anda...",
+      "notAvailable": "Tidak tersedia",
+      "displayName": "Nama Tampilan",
+      "enterName": "Masukkan nama Anda",
+      "bio": "Bio",
+      "email": "Alamat Email",
+      "displayNameSuccess": "Nama berhasil diperbarui.",
+      "displayNameError": "Gagal menyimpan nama. Silakan coba lagi.",
+      "bioSuccess": "Bio berhasil diperbarui.",
+      "bioError": "Gagal menyimpan bio.",
+      "timezoneSuccess": "Zona waktu diperbarui.",
+      "themeSuccess": "Tema diperbarui.",
+      "recently": "Baru-baru ini",
+      "professorSettings": "Pengaturan Dosen",
+      "emailAddress" : "Alamat Email"
     },
     "security": {
       "title": "Keamanan Akun",
-      "subtitle": "Gunakan Auth0 untuk mengelola kata sandi dan menjaga keamanan login Anda.",
+      "subtitle": "Kelola kata sandi dan jaga keamanan akun Anda.",
       "passwordReset": {
-        "title": "Atur ulang kata sandi",
-        "description": "Kirim email pengaturan ulang kata sandi Auth0 yang aman ke <strong>{{email}}</strong>.",
+        "title": "Atur Ulang Kata Sandi",
+        "description": "Kirim email pengaturan ulang kata sandi yang aman ke: ",
         "fallbackEmail": "email akun Anda",
-        "button": "Ubah Kata Sandi",
-        "buttonSending": "Mengirim email...",
-        "successMessage": "Email pengaturan ulang kata sandi dikirim ke {{email}}. Periksa kotak masuk Anda untuk tautan aman."
+        "button": "Ganti Kata Sandi",
+        "buttonSending": "Mengirim tautan...",
+        "successEmail": "Email pengaturan ulang telah dikirim ke {{email}}.",
+        "failEmail": "Gagal mengirim email pengaturan ulang kata sandi."
       }
     },
     "notifications": {
       "title": "Notifikasi",
-      "subtitle": "Preferensi ini dimuat langsung dari dokumen pengguna Firestore Anda dan langsung tersimpan saat Anda mengubahnya.",
+      "subtitle": "Konfigurasikan preferensi notifikasi Anda.",
       "emailAlerts": {
         "title": "Peringatan Email",
-        "description": "Terima notifikasi email untuk aktivitas akun penting dan pembaruan terkait janji temu.",
+        "description": "Terima notifikasi email tentang pembaruan penting dan janji temu.",
         "successMessage": "Peringatan email berhasil diperbarui."
       },
-      "forumReplies": {
+      "newForumReplies": {
         "title": "Balasan Forum Baru",
-        "description": "Dapatkan pemberitahuan saat ada aktivitas baru atau balasan pada diskusi yang relevan dengan tugas kuliah Anda.",
-        "successMessage": "Notifikasi balasan forum berhasil diperbarui."
+        "description": "Dapatkan pemberitahuan saat seseorang membalas diskusi penting Anda.",
+        "successMessage": "Notifikasi balasan forum diperbarui."
       }
+    },
+    "preferences": {
+    "title": "Preferensi",
+    "subtitle": "Sesuaikan zona waktu dan pengaturan tema Anda.",
+    "timezone": {
+      "label": "Zona Waktu"
+    },
+    "appearance": {
+      "label": "Tema",
+      "lightMode": "Mode Terang",
+      "darkMode": "Mode Gelap",
+      "switchButton": "Ganti ke {{ mode }}",
+      "description": "Preferensi tema Anda akan disimpan ke profil Anda."
+    },
+    "language": {
+      "label": "Bahasa",
+      "current": "Bahasa Indonesia",
+      "comingSoon": "Lebih banyak bahasa segera hadir."
+    }
+  },
+  "dangerZone": {
+    "title": "Zona Bahaya",
+    "subtitle": "Tindakan permanen yang tidak dapat dibatalkan. Lanjutkan dengan hati-hati.",
+    "deleteAccount": {
+      "title": "Hapus Akun",
+      "description": "Hapus akun dan semua data Anda secara permanen.",
+      "button": "Minta Penghapusan Akun",
+      "alertMessage": "Silakan hubungi administrator untuk menghapus akun Anda."
+    }
+  }
+  },
+  "professorRequests": {
+
+    "nav": {
+      "backToForum": "← Kembali ke Forum",
+      "calendar": "Kalender",
+      "analysis": "Analisis",
+      "requests": "Permintaan",
+      "editGroup": "Edit Grup",
+      "professorView": "Tampilan Dosen",
+      "signOut": "Keluar"
+    },
+
+    "header": {
+      "eyebrow": "Jam Konsultasi",
+      "title": "Permintaan Janji Temu",
+      "subtitle": "Tinjau dan jadwalkan pertemuan mahasiswa"
+    },
+
+    "stats": {
+      "pendingRequests": "Permintaan Menunggu",
+      "thisWeek": "Minggu Ini",
+      "nextWeek": "Minggu Depan"
+    },
+
+    "list": {
+      "heading": "Permintaan Masuk",
+      "loading": "Memuat permintaan...",
+      "empty": "Saat ini tidak ada permintaan yang menunggu."
+    },
+
+    "card": {
+      "fallbackName": "Mahasiswa",
+      "fallbackEmail": "Email tidak tersedia",
+      "requestedAgo": "Diminta pada",
+      "accept": "Terima",
+      "reject": "Tolak",
+      "reschedule": "Jadwal Ulang",
+      "googleCal": "Google Cal",
+      "outlook": "Outlook",
+      "meet": "Meet"
+    },
+
+    "calendarTitle": "Jam Konsultasi — {{studentName}}",
+
+    "timeAgo": {
+      "minute_one": "{{count}} menit lalu",
+      "minute_other": "{{count}} menit lalu",
+      "hour_one": "{{count}} jam lalu",
+      "hour_other": "{{count}} jam lalu",
+      "day_one": "{{count}} hari lalu",
+      "day_other": "{{count}} hari lalu"
+    },
+
+    "reschedulePanel": {
+      "title": "Usulkan Waktu Baru",
+      "dateLabel": "Tanggal",
+      "timeLabel": "Waktu",
+      "sendProposal": "Kirim Usulan",
+      "validationError": "Harap pilih tanggal dan waktu."
+    },
+
+    "errors": {
+      "loadFailed": "Gagal memuat permintaan.",
+      "loadPendingFailed": "Gagal memuat permintaan yang menunggu.",
+      "approveFailed": "Gagal menyetujui janji temu.",
+      "rejectFailed": "Gagal menolak janji temu.",
+      "rescheduleFailed": "Gagal menjadwalkan ulang.",
+      "updateFailed": "Gagal memperbarui permintaan."
+    },
+
+    "footer": {
+      "eyebrow": "Antrean Jam Konsultasi",
+      "waiting_one": "{{count}} mahasiswa sedang menunggu tanggapan Anda.",
+      "waiting_other": "{{count}} mahasiswa sedang menunggu tanggapan Anda.",
+      "description": "Tinjau setiap permintaan untuk mengonfirmasi pertemuan Anda."
+    }
+  },
+
+  "edit": {
+    "header": {
+      "eyebrow": "Manajemen Grup",
+      "title": "Edit Grup",
+      "subtitle": "Kelola mahasiswa dan pengaturan grup"
+    },
+
+    "stats": {
+      "totalStudents": "Total Mahasiswa",
+      "active": "Aktif",
+      "pending": "Menunggu"
+    },
+
+    "status": {
+      "active": "Aktif",
+      "pending": "Menunggu"
+    },
+
+    "loading": "Memuat daftar mahasiswa...",
+
+    "emptyState": {
+      "noGroup": "Tidak ada grup untuk diedit.",
+      "description": "Buat grup kursus pertama Anda untuk mengelola mahasiswa dan postingan.",
+      "createButton": "Buat Grup Baru",
+      "backButton": "Kembali ke Forum"
+    },
+
+    "groupInfo": {
+      "cardTitle": "Informasi Grup",
+      "nameLabel": "Nama Grup",
+      "descriptionLabel": "Deskripsi",
+      "saveButton": "Simpan Perubahan",
+      "savingButton": "Menyimpan..."
+    },
+
+    "groupActions": {
+      "cardTitle": "Tindakan Grup",
+      "addStudents": "Tambah Mahasiswa",
+      "archiveGroup": "Arsip Grup"
+    },
+
+    "roster": {
+      "cardTitle": "Daftar Mahasiswa",
+      "empty": "Belum ada mahasiswa di grup ini.",
+      "removeButton": "Hapus",
+      "removeConfirm": "Apakah Anda yakin ingin menghapus mahasiswa ini?"
+    },
+
+    "footer": {
+      "enrolled_one": "{{count}} mahasiswa terdaftar.",
+      "enrolled_other": "{{count}} mahasiswa terdaftar."
+    },
+
+    "addStudentModal": {
+      "title": "Tambah Mahasiswa",
+      "description": "Masukkan email mahasiswa. Mahasiswa harus sudah masuk (login) setidaknya satu kali.",
+      "namePlaceholder": "Nama mahasiswa (opsional)",
+      "emailPlaceholder": "mahasiswa@school.edu",
+      "cancelButton": "Batal",
+      "addButton": "Tambah Mahasiswa"
+    },
+
+    "createGroupModal": {
+      "title": "Buat Grup Baru",
+      "description": "Buat grup baru untuk akun dosen Anda.",
+      "titlePlaceholder": "Judul Grup",
+      "descriptionPlaceholder": "Deskripsi Grup",
+      "cancelButton": "Batal",
+      "createButton": "Buat Grup",
+      "creatingButton": "Membuat..."
+    },
+
+    "archiveModal": {
+      "title": "Arsipkan Grup?",
+      "description": "Ini akan menghapus grup dan membersihkannya dari daftar anggota.",
+      "cancelButton": "Batal",
+      "archiveButton": "Arsip Grup",
+      "archivingButton": "Mengarsipkan..."
+    },
+
+    "errors": {
+      "loadGroups": "Gagal memuat grup.",
+      "loadUsers": "Gagal memuat pengguna.",
+      "loadGroupData": "Kesalahan data grup.",
+      "noGroupSelected": "Saat ini tidak ada grup yang dipilih.",
+      "professorNotReady": "Akun dosen belum siap. Harap coba lagi.",
+      "groupTitleRequired": "Judul grup diperlukan.",
+      "studentNotFound": "Mahasiswa harus login setidaknya sekali sebelum ditambahkan.",
+      "studentAlreadyInGroup": "Mahasiswa sudah ada di grup ini.",
+      "addStudentFailed": "Gagal menambahkan mahasiswa.",
+      "removeStudentFailed": "Gagal menghapus mahasiswa.",
+      "saveGroupFailed": "Gagal menyimpan pengaturan grup.",
+      "archiveFailed": "Gagal mengarsipkan grup.",
+      "createFailed": "Ada masalah saat membuat grup.",
+      "syncMembershipFailed": "Gagal menyinkronkan keanggotaan untuk {{identifier}}.",
+      "empty": "Tidak ada grup untuk diedit."
+    },
+
+    "success": {
+      "studentAdded": "Mahasiswa berhasil ditambahkan.",
+      "studentRemoved": "Mahasiswa berhasil dihapus.",
+      "groupSaved": "Pengaturan grup berhasil disimpan.",
+      "groupCreated": "Grup berhasil dibuat."
+    },
+
+    "fallbacks": {
+      "studentName": "Mahasiswa",
+      "noEmail": "Email tidak tersedia"
+    }
+  },
+  "calendar": {
+    "header": {
+      "eyebrow": "Jadwal",
+      "title": "Kalender Janji Temu",
+      "subtitle": "Kelola jadwal pertemuan Anda"
+    },
+
+    "stats": {
+      "total": "Total Janji Temu",
+      "confirmed": "Dikonfirmasi",
+      "pending": "Menunggu",
+      "declined": "Ditolak"
+    },
+
+    "status": {
+      "confirmed": "Dikonfirmasi",
+      "pending": "Menunggu",
+      "declined": "Ditolak"
+    },
+
+    "views": {
+      "month": "Bulan",
+      "week": "Minggu",
+      "day": "Hari"
+    },
+
+    "monthNames": [
+      "Januari", "Februari", "Maret", "April",
+      "Mei", "Juni", "Juli", "Agustus",
+      "September", "Oktober", "November", "Desember"
+    ],
+
+    "dayNames": [
+      "Min", "Sen", "Sel", "Rab",
+      "Kam", "Jum", "Sab"
+    ],
+
+    "calendar": {
+      "moreAppointments": "+{{count}} lagi"
+    },
+
+    "dayView": {
+      "scheduled_one": "{{count}} janji temu dijadwalkan",
+      "scheduled_other": "{{count}} janji temu dijadwalkan"
+    },
+
+    "loading": "Memuat kalender...",
+    "empty": "Belum ada janji temu yang dijadwalkan.",
+
+    "appointmentModal": {
+      "title": "Detail Janji Temu",
+      "studentLabel": "Mahasiswa",
+      "dateTimeLabel": "Tanggal & Waktu",
+      "dateTimeAt": "{{date}} pukul {{time}}",
+      "reasonLabel": "Alasan",
+      "statusLabel": "Status",
+      "closeButton": "Tutup"
+    },
+
+    "footer": {
+      "eyebrow": "Ikhtisar Jam Konsultasi",
+      "confirmed_one": "Anda memiliki {{count}} pertemuan terkonfirmasi di kalender Anda.",
+      "confirmed_other": "Anda memiliki {{count}} pertemuan terkonfirmasi di kalender Anda."
+    },
+
+    "errors": {
+      "loadFailed": "Gagal memuat jadwal."
+    },
+
+    "fallbacks": {
+      "studentName": "Mahasiswa",
+      "noEmail": "Email tidak tersedia"
+    }
+  },
+  "professorForum": {
+    "header": {
+      "eyebrow": "Manajemen Forum",
+      "subtitle": "Mengelola papan diskusi dan respons AI",
+      "fallbackTitle": "Forum Dosen"
+    },
+
+    "stats": {
+      "totalQuestions": "Total Pertanyaan",
+      "aiVerified": "AI Diverifikasi",
+      "pendingReview": "Menunggu Tinjauan",
+      "discussionReplies": "Balasan Diskusi"
+    },
+
+    "sidebar": {
+      "statsLabel": "Statistik Forum",
+      "questions": "Pertanyaan",
+      "answered": "Terjawab",
+      "newAnnouncement": "Pengumuman Baru"
+    },
+
+    "announcements": {
+      "sectionTitle": "Pengumuman Terbaru",
+      "empty": "Belum ada pengumuman.",
+      "postedBy": "Diposting oleh"
+    },
+
+    "questions": {
+      "sectionTitle": "Pertanyaan Terbaru",
+      "lastUpdated": "Pembaruan terakhir:",
+      "noPostsYet": "Belum ada postingan",
+      "loading": "Memuat forum dosen...",
+      "empty": "Tidak ada pertanyaan yang sesuai dengan filter.",
+      "fallbackTitle": "Pertanyaan Tanpa Judul",
+      "viewReplies": "Lihat Semua Balasan",
+      "reply_one": "{{count}} balasan",
+      "reply_other": "{{count}} balasan"
+    },
+
+    "filters": {
+      "allQuestions": "Semua Pertanyaan",
+      "unanswered": "Belum Terjawab",
+      "sortRecent": "Terbaru",
+      "sortEngagement": "Keterlibatan"
+    },
+
+    "ai": {
+      "label": "Tanggapan Dihasilkan AI",
+      "verified": "Diverifikasi",
+      "rejected": "Ditolak",
+      "verifyButton": "Verifikasi",
+      "rejectButton": "Tolak",
+      "noAnswer": "Belum ada respons AI yang tersedia."
+    },
+
+    "announcementModal": {
+      "title": "Pengumuman Baru",
+      "titleLabel": "Judul Pengumuman",
+      "titlePlaceholder": "Masukkan judul singkat",
+      "messageLabel": "Pesan",
+      "messagePlaceholder": "Bagikan pembaruan dengan mahasiswa...",
+      "cancelButton": "Batal",
+      "postButton": "Posting Pengumuman",
+      "postingButton": "Memposting..."
+    },
+
+    "footer": {
+      "eyebrow": "Moderasi Forum AI",
+      "pendingReview_one": "{{count}} respons menunggu tinjauan Anda.",
+      "pendingReview_other": "{{count}} respons menunggu tinjauan Anda.",
+      "allReviewed": "Semua telah ditinjau. Kerja bagus!",
+      "description": "Verifikasi atau tolak respons AI untuk memastikan akurasi bagi mahasiswa."
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} menit lalu",
+      "minute_other": "{{count}} menit lalu",
+      "hour_one": "{{count}} jam lalu",
+      "hour_other": "{{count}} jam lalu",
+      "day_one": "{{count}} hari lalu",
+      "day_other": "{{count}} hari lalu",
+      "week_one": "{{count}} minggu lalu",
+      "week_other": "{{count}} minggu lalu"
+    },
+
+    "errors": {
+      "loadGroups": "Gagal memuat grup forum dosen.",
+      "loadPosts": "Gagal memuat postingan forum dosen.",
+      "loadFailed": "Kesalahan data forum.",
+      "updateAIStatus": "Gagal memperbarui status tinjauan AI.",
+      "postAnnouncement": "Gagal memposting pengumuman."
+    },
+
+    "fallbacks": {
+      "studentName": "Mahasiswa",
+      "professorName": "Dosen"
+    }
+  },
+  "questionDetail": {
+    "header": {
+      "eyebrow": "Detail Diskusi",
+      "askedBy": "Ditanyakan oleh {{author}}"
+    },
+
+    "discussion": {
+      "title_one": "Diskusi ({{count}} balasan)",
+      "title_other": "Diskusi ({{count}} balasan)",
+      "loading": "Memuat diskusi...",
+      "loadingQuestion": "Memuat pertanyaan...",
+      "empty": "Belum ada balasan. Balas untuk memulai diskusi."
+    },
+
+    "reply": {
+      "rejectButton": "Tolak & Balas"
+    },
+
+    "actions": {
+      "cardTitle": "Tindakan Dosen",
+      "writeAnswer": "Tulis jawaban Anda",
+      "backToForum": "← Kembali ke Forum"
+    },
+
+    "stats": {
+      "cardTitle": "Statistik Utas",
+      "totalReplies": "Total Balasan",
+      "aiResponses": "Tanggapan AI",
+      "professorReplies": "Balasan Dosen"
+    },
+
+    "manualResponse": {
+      "title": "Jawaban Anda",
+      "placeholder": "Tulis jawaban Anda di sini...",
+      "submitButton": "Kirim Jawaban",
+      "sendingButton": "Mengirim...",
+      "cancelButton": "Batal"
+    },
+
+    "footer": {
+      "description": "Lanjutkan diskusi — kelas Anda bergantung pada Anda."
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} menit lalu",
+      "minute_other": "{{count}} menit lalu",
+      "hour_one": "{{count}} jam lalu",
+      "hour_other": "{{count}} jam lalu",
+      "day_one": "{{count}} hari lalu",
+      "day_other": "{{count}} hari lalu"
+    },
+
+    "errors": {
+      "loadThread": "Gagal memuat utas forum.",
+      "loadReplies": "Gagal memuat balasan.",
+      "submitReply": "Gagal mengirim balasan dosen."
+    },
+
+    "fallbacks": {
+      "studentName": "Mahasiswa",
+      "professorName": "Dosen",
+      "you": "Anda",
+      "questionNotFound": "Pertanyaan tidak ditemukan",
+      "questionUnavailable": "Pertanyaan tidak tersedia",
+      "questionNotAvailable": "Pertanyaan tidak tersedia",
+      "aiName": "D.I.Y.A AI",
+      "aiVerifiedName": "AI Diverifikasi Dosen"
     }
   }
 }

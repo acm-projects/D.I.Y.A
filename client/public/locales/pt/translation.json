@@ -1,45 +1,101 @@
 {
-  "topicAnalysis": {
-    "notFound": "Tópico não encontrado.",
-    "backToSelfCheck": "Voltar para Autoavaliação",
-    "backToAnalysis": "Voltar para Análise",
-    "badges": {
-      "forumQuestions": "{{count}} perguntas no fórum",
-      "engagement": "{{score}}% de engajamento"
+  "home": {
+    "title": "Meus Grupos",
+    "subtitle_one": "Gerenciando {{count}} grupo",
+    "subtitle_other": "Gerenciando {{count}} grupos",
+
+    "createButton": "Criar Grupo",
+
+    "loading": "Carregando seus grupos...",
+
+    "empty": {
+      "title": "Nenhum grupo ainda",
+      "subtitle": "Crie seu primeiro grupo para começar a usar o D.I.Y.A."
     },
-    "trend": {
-      "rising": "Em alta",
-      "steady": "Estável",
-      "declining": "Requer atenção"
+
+    "error": "Falha ao criar grupo.",
+
+    "groupCard": {
+      "members_one": "{{count}} Membro",
+      "members_other": "{{count}} Membros",
+      "view": "Visualizar →"
     },
-    "positives": {
-      "title": "Pontos Positivos",
-      "subtitle": "O que está indo bem"
+
+    "modal": {
+      "title": "Criar Novo Grupo",
+      "groupTitleLabel": "Título do Grupo",
+      "groupTitlePlaceholder": "ex: CS 1337 — Ciência da Computação I",
+      "descriptionLabel": "Descrição (opcional)",
+      "descriptionPlaceholder": "Breve descrição do curso ou grupo...",
+      "cancel": "Cancelar",
+      "creating": "Criando...",
+      "create": "Criar Grupo"
+    }
+  },
+  "analysis": {
+    "badge": "Insights por IA",
+    "title": "Análise do Curso",
+    "subtitle": "Informações baseadas em perguntas de alunos e padrões de participação",
+
+    "stats": {
+      "postsAnalyzed": "Posts analisados",
+      "groupsIncluded": "Grupos inclusos",
+      "topicsIdentified": "Tópicos identificados",
+      "needAttention": "Precisa de atenção"
     },
-    "concerns": {
-      "title": "Preocupações",
-      "subtitle": "Áreas de dificuldade"
+
+    "distribution": {
+      "title": "Distribuição de Perguntas",
+      "subtitle": "Volume de tópicos detectados na atividade do fórum",
+      "loading": "Analisando grupos atuais do instrutor...",
+      "empty": "Dados insuficientes para análise.",
+      "emptyDetail": "Assim que os alunos começarem a postar em seus grupos, este painel resumirá automaticamente os tópicos mais discutidos.",
+      "legendNeedsAttention": "Precisa de atenção",
+      "legendLowerVolume": "Volume baixo"
     },
-    "recommendations": {
-      "title": "Recomendações",
-      "subtitle": "Como melhorar"
+
+    "summary": {
+      "title": "Resumo da IA",
+      "loading": "Calculando atividade de tópicos a partir de posts ao vivo...",
+      "empty": "Dados insuficientes para análise.",
+      "postsSummary": "{{count}} posts em {{groups}} grupos resultaram em {{mentions}} menções a tópicos.",
+      "mostActiveTopic": "Tópico mais ativo:",
+      "mostActiveDetail": "{{name}} com {{count}} menções ({{percent}}% da discussão atual).",
+      "priorityTopics": "Tópicos Prioritários",
+      "noAttentionTopics": "Nenhum tópico acima do limite de atenção no momento.",
+      "positiveIndicators": "✓ Indicadores Positivos",
+      "positiveWithTopics": "{{topics}} mostram um volume de perguntas relativamente baixo, indicando que os materiais atuais estão funcionando bem.",
+      "positiveNoTopics": "As discussões atuais focam em tópicos que exigem mais atenção; considere reforçar os materiais principais antes do próximo checkpoint."
     },
-    "snapshot": {
-      "title": "Resumo da Turma — {{topicName}}",
-      "description": "Com base em {{count}} perguntas no fórum, a pontuação de engajamento da turma para este tópico é de {{score}}%. Foque nas preocupações acima para melhorar sua compreensão antes da próxima avaliação."
+
+    "insights": {
+      "title": "Insights de Tópicos",
+      "loading": "Gerando insights a partir de dados de discussão ao vivo...",
+      "empty": "Dados insuficientes para análise.",
+      "badgeAttention": "⚠ Atenção",
+      "badgeStrong": "✓ Consolidado",
+      "recommendedAction": "Ação Recomendada",
+      "discussionVolume": "Volume de Discussão"
+    },
+
+    "footer": {
+      "badge": "Mecanismo de Análise",
+      "title_one": "{{count}} tópico requer sua atenção.",
+      "title_other": "{{count}} tópicos requerem sua atenção.",
+      "subtitle": "Revise os tópicos destacados acima para decidir onde são necessárias explicações ou avisos adicionais."
     }
   },
   "sidebar": {
     "appSubtitle": "Portal do Aluno",
     "menuLabel": "Menu",
     "defaultName": "Aluno",
-    "defaultEmail": "aluno@universidade.edu",
+    "defaultEmail": "aluno@university.edu",
     "nav": {
       "profile": "Perfil",
       "groups": "Grupos",
-      "request": "Solicitar Horário de Monitoria",
-      "requestShort": "Monitoria",
-      "selfcheck": "Autoavaliação"
+      "request": "Solicitar Horário de Atendimento",
+      "requestShort": "Atendimento",
+      "selfcheck": "Auto-verificação"
     },
     "user": {
       "signOut": "Sair"
@@ -49,27 +105,30 @@
     "appSubtitle": "Visão do Professor",
     "navigationLabel": "Navegação",
     "nav": {
+      "home": "Início",
       "forum": "Fórum",
       "calendar": "Calendário",
       "analysis": "Análise",
       "requests": "Solicitações",
-      "editGroup": "Editar Grupo"
+      "editGroup": "Editar Grupo",
+      "profile": "Perfil"
     },
-    "signOut": "Sair"
+    "signOut": "Sair",
+    "activeGroup": "Grupo Ativo"
   },
   "login": {
     "title": "Bem-vindo de volta",
-    "subtitle": "Continue com segurança via Auth0 para acessar seu espaço de trabalho D.I.Y.A, tarefas, discussões e ferramentas de feedback.",
+    "subtitle": "Faça login com segurança via Auth0 para acessar seu espaço D.I.Y.A., tarefas e discussões.",
     "submitButton": "Entrar com Auth0",
     "signUpPrompt": "Novo no D.I.Y.A?",
-    "signUpLink": "Crie sua conta"
+    "signUpLink": "Criar conta"
   },
   "signUp": {
-    "title": "Crie sua conta",
-    "subtitle": "Comece no D.I.Y.A através do fluxo de cadastro seguro do Auth0 e prossiga para seu espaço de aprendizagem.",
+    "title": "Criar Conta",
+    "subtitle": "Comece sua jornada de aprendizado no D.I.Y.A via cadastro seguro no Auth0.",
     "role": {
-      "label": "Função da conta",
-      "description": "Escolha se esta nova conta deve ser criada como Aluno ou Professor.",
+      "label": "Função da Conta",
+      "description": "Escolha se você está criando esta conta como aluno ou professor.",
       "student": "Aluno",
       "professor": "Professor"
     },
@@ -86,37 +145,39 @@
   "groups": {
     "pageTitle": "Bem-vindo de volta, {{name}}!",
     "defaultName": "Aluno",
+    "members": "membros",
+    "posts": "posts",
     "search": {
-      "placeholder": "Buscar seus grupos por nome...",
+      "placeholder": "Buscar grupos por nome...",
       "ariaLabel": "Buscar grupos por nome"
     },
     "count": {
-      "showing": "Exibindo {{count}} de {{total}} grupos",
-      "member_one": "Você é membro de 1 grupo",
+      "showing": "Mostrando {{count}} de {{total}} grupos",
+      "member_one": "Você é membro de {{count}} grupo",
       "member_other": "Você é membro de {{count}} grupos"
     },
     "card": {
       "members_one": "{{count}} membro",
       "members_other": "{{count}} membros",
-      "posts_one": "{{count}} postagem",
-      "posts_other": "{{count}} postagens",
+      "posts_one": "{{count}} post",
+      "posts_other": "{{count}} posts",
       "viewGroup": "Ver Grupo"
     },
     "loading": "Carregando...",
     "error": {
-      "title": "Não foi possível carregar os grupos",
-      "loadGroups": "Falha ao carregar grupos.",
-      "loadPosts": "Falha ao carregar contagem de postagens do fórum."
+      "title": "Falha ao carregar grupos",
+      "loadGroups": "Erro ao carregar grupos.",
+      "loadPosts": "Falha ao carregar contagem de posts do fórum."
     },
     "empty": {
-      "title": "Nenhum grupo corresponde a \"{{query}}\"",
-      "subtitle": "Tente um nome mais curto, código da disciplina ou remova espaços extras."
+      "title": "Nenhum grupo encontrado",
+      "subtitle": "Tente usar um nome mais curto ou o código da disciplina."
     }
   },
   "forum": {
-    "pageTitle": "Fórum de {{groupName}}",
+    "pageTitle": "Página do Fórum",
     "header": {
-      "askQuestion": "Fazer uma nova pergunta",
+      "askQuestion": "Faça uma pergunta aos seus colegas e à IA do D.I.Y.A...",
       "ariaCreate": "Criar nova pergunta"
     },
     "search": {
@@ -124,109 +185,121 @@
       "ariaLabel": "Buscar perguntas"
     },
     "count": {
-      "showing": "Exibindo {{count}} de {{total}} perguntas",
+      "showing": "Mostrando {{count}} de {{total}} perguntas",
       "total_one": "{{count}} pergunta feita por seus colegas",
       "total_other": "{{count}} perguntas feitas por seus colegas"
     },
     "card": {
       "newBadge": "NOVO",
-      "replies_one": "{{count}} resposta",
-      "replies_other": "{{count}} respostas",
-      "viewReplies": "Ver respostas",
+      "replies_one": "resposta",
+      "replies_other": "respostas",
+      "viewReplies": "Ver Respostas",
       "aiVerified": "A resposta da IA para esta pergunta foi verificada pelo professor.",
       "timeAgo": {
-        "minute_one": "Há {{count}} minuto",
-        "minute_other": "Há {{count}} minutos",
-        "hour_one": "Há {{count}} hora",
-        "hour_other": "Há {{count}} horas",
-        "day_one": "Há {{count}} dia",
-        "day_other": "Há {{count}} dias",
-        "week_one": "Há {{count}} semana",
-        "week_other": "Há {{count}} semanas"
+        "minute_one": "há {{count}} minuto",
+        "minute_other": "há {{count}} minutos",
+        "hour_one": "há {{count}} hora",
+        "hour_other": "há {{count}} horas",
+        "day_one": "há {{count}} dia",
+        "day_other": "há {{count}} dias",
+        "week_one": "há {{count}} semana",
+        "week_other": "há {{count}} semanas"
       }
     },
     "loading": "Carregando...",
     "error": {
-      "title": "Não foi possível carregar as perguntas",
-      "loadQuestions": "Falha ao carregar perguntas do fórum.",
+      "title": "Falha ao carregar perguntas do fórum",
+      "loadQuestions": "Erro ao carregar perguntas do fórum.",
       "createQuestion": "Falha ao criar pergunta.",
-      "upvote": "Falha ao atualizar curtida."
+      "upvote": "Falha ao atualizar voto."
     },
     "empty": {
       "title": "Nenhuma pergunta encontrada",
-      "subtitle": "Tente outra busca ou publique a primeira pergunta deste grupo."
+      "subtitle": "Tente outro termo ou seja o primeiro a perguntar neste grupo."
     },
     "popup": {
       "title": "Fazer uma Pergunta",
       "inputPlaceholder": "Qual é a sua dúvida?",
       "imageLabel": "Imagem (opcional)",
-      "uploadImage": "Enviar imagem",
-      "changeImage": "Alterar imagem",
+      "uploadImage": "Enviar Imagem",
+      "changeImage": "Alterar Imagem",
       "cancel": "Cancelar",
-      "postButton": "Publicar Pergunta"
+      "posting": "Postando...",
+      "postButton": "Postar Pergunta"
     }
   },
   "forumThread": {
     "backToForum": "← Voltar ao Fórum",
     "question": {
-      "askedBy": "Perguntado por {{author}}",
-      "defaultTitle": "Sua pergunta",
+      "askedBy": "Perguntado por ",
+      "defaultTitle": "Sua Pergunta",
       "defaultAuthor": "Você"
     },
     "replies": {
       "loading": "Carregando discussão...",
-      "empty": "Ainda não há respostas — seja o primeiro a responder!",
+      "empty": "Nenhuma resposta ainda — seja o primeiro!",
       "professorLabel": "(Professor)",
-      "imageFallback": "(imagem)"
+      "imageFallback": "(imagem)",
+      "professor": "professor",
+      "student": "aluno",
+      "ai": "D.I.Y.A IA",
+      "profssorVerified": "IA Verificada pelo Professor"
     },
     "related": {
       "title": "Discussões Relacionadas",
       "loading": "Buscando tópicos semelhantes...",
-      "empty": "Nenhuma postagem semelhante encontrada.",
-      "untitled": "Postagem sem título",
-      "viewThread": "Ver discussão →"
+      "empty": "Nenhum post semelhante encontrado.",
+      "untitled": "Post Sem Título",
+      "viewThread": "Ver Discussão →",
+      "untitledQuestion": "Pergunta Sem Título"
     },
     "input": {
-      "placeholder": "Digite sua resposta...",
-      "removeImage": "Remover",
+      "placeholder": "Escreva sua resposta...",
+      "sending": "Enviando...",
+      "removeImage": "Remover anexo",
+      "remove": "Remover",
+      "attach": "Anexar",
       "ariaUpload": "Enviar imagem",
       "ariaSend": "Enviar resposta",
       "ariaToggleSidebarOpen": "Abrir barra lateral",
-      "ariaToggleSidebarClose": "Fechar barra lateral"
+      "ariaToggleSidebarClose": "Fechar barra lateral",
+      "fileTooLarge": "Arquivo muito grande. Use arquivos menores que 10MB.",
+      "timeOut": "Tempo limite de upload esgotado. Tente um arquivo menor.",
+      "urlError": "Não foi possível obter o link do arquivo enviado."
     },
     "errors": {
-      "loadThread": "Falha ao carregar discussão do fórum.",
+      "loadThread": "Falha ao carregar a discussão do fórum.",
       "loadReplies": "Falha ao carregar respostas.",
       "sendReply": "Falha ao enviar resposta."
     }
   },
   "officeHours": {
-    "pageTitle": "Solicitar Monitoria",
+    "pageTitle": "Solicitações de Horário de Atendimento",
     "form": {
       "title": "Nova Solicitação",
-      "subtitle": "Preencha o formulário abaixo para solicitar uma reunião com seu professor ou monitor (TA).",
-      "loading": "Carregando suas disciplinas e contatos disponíveis...",
+      "subtitle": "Preencha o formulário abaixo para agendar uma reunião com seu professor ou monitor (TA).",
+      "loading": "Carregando seus cursos e contatos...",
       "courseLabel": "Qual disciplina/grupo? *",
       "coursePlaceholder": "Selecione uma disciplina ou grupo",
-      "noGroups": "Você ainda não está inscrito em nenhum grupo de disciplina.",
-      "professorLabel": "Solicitar ao Professor ou Monitor? *",
+      "noGroups": "Você ainda não está matriculado em nenhuma disciplina.",
+      "professorLabel": "Professor ou Monitor? *",
       "professorPlaceholder": "Selecione um professor ou monitor",
-      "reasonLabel": "Qual o motivo desta solicitação? *",
-      "reasonPlaceholder": "Descreva brevemente por que você gostaria de uma reunião...",
-      "dateLabel": "Data Sugerida *",
-      "startTimeLabel": "Hora de Início (CST) *",
-      "endTimeLabel": "Hora de Término (CST) *",
+      "reasonLabel": "Motivo desta solicitação? *",
+      "reasonPlaceholder": "Explique brevemente o objetivo da reunião...",
+      "dateLabel": "Data Proposta *",
+      "startTimeLabel": "Hora de Início *",
+      "endTimeLabel": "Hora de Término *",
       "meetingTypeLabel": "Tipo de Reunião *",
       "online": "Reunião Online",
-      "inPerson": "Reunião Presencial",
+      "inPerson": "Presencial",
       "meetingLinkLabel": "Link da Reunião (opcional)",
       "meetingLinkPlaceholder": "https://zoom.us/j/...",
       "submitButton": "Enviar Solicitação"
     },
     "success": {
       "title": "Solicitação Enviada!",
-      "subtitle": "Sua solicitação de monitoria foi enviada. Você receberá uma confirmação por e-mail assim que seu professor responder.",
-      "emailNote": "Verifique seu e-mail para atualizações em ",
+      "subtitle": "Sua solicitação de horário de atendimento foi enviada. Você receberá um e-mail assim que for confirmada.",
+      "emailNote": "Verifique seu e-mail para atualizações: ",
       "submitAnother": "Enviar outra solicitação"
     },
     "requests": {
@@ -234,7 +307,7 @@
       "empty": "Nenhuma solicitação ainda. Envie sua primeira solicitação acima.",
       "online": "Online",
       "inPerson": "Presencial",
-      "meetingLink": "Link da reunião: ",
+      "meetingLink": "Link: ",
       "addToGoogle": "Adicionar ao Google Agenda",
       "addToOutlook": "Adicionar ao Outlook",
       "joinMeeting": "Entrar na Reunião",
@@ -242,33 +315,33 @@
     },
     "status": {
       "pending": "Pendente",
-      "confirmed": "Confirmado",
-      "declined": "Recusado"
+      "confirmed": "Confirmada",
+      "declined": "Recusada"
     },
     "errors": {
-      "loadProfessors": "Falha ao carregar contatos dos professores.",
+      "loadProfessors": "Falha ao carregar contatos dos instrutores.",
       "loadGroups": "Falha ao carregar grupos.",
-      "loadRequests": "Falha ao carregar suas solicitações de monitoria.",
-      "loadData": "Falha ao carregar dados de monitoria.",
+      "loadRequests": "Falha ao carregar suas solicitações de atendimento.",
+      "loadData": "Erro ao carregar dados de atendimento.",
       "noGroup": "Por favor, selecione uma disciplina ou grupo.",
-      "submit": "Falha ao enviar solicitação de monitoria."
+      "submit": "Falha ao enviar solicitação."
     }
   },
   "selfCheck": {
-    "pageTitle": "Autoavaliação",
+    "pageTitle": "Auto-verificação",
     "upload": {
-      "title": "Verifique seu trabalho",
-      "subtitle": "Envie os critérios de avaliação (rubrica) e seu trabalho para obter um relatório de nota estimado por IA.",
-      "rubricLabel": "Critérios de Avaliação",
+      "title": "Verifique seu Trabalho",
+      "subtitle": "Envie os critérios da tarefa (rubrica) e seu trabalho para obter um relatório de notas gerado por IA.",
+      "rubricLabel": "Rubrica da Tarefa",
       "rubricPlaceholder": "Clique para enviar a rubrica",
       "workLabel": "Seu Trabalho",
       "workPlaceholder": "Clique para enviar seu trabalho",
-      "analyzeButton": "Analisar meu Trabalho",
+      "analyzeButton": "Analisar Meu Trabalho",
       "analyzingButton": "Analisando..."
     },
     "analyzing": {
       "title": "Analisando seu trabalho...",
-      "subtitle": "Comparando seu envio com os critérios da rubrica"
+      "subtitle": "Comparando seu conteúdo com os critérios da rubrica."
     },
     "report": {
       "title": "Relatório de Notas",
@@ -276,58 +349,538 @@
       "areasForImprovement": "Áreas para Melhoria"
     },
     "history": {
-      "title": "Avaliações Anteriores",
-      "loading": "Carregando seu histórico de avaliações...",
-      "empty": "Nenhuma avaliação anterior. Envie seu primeiro trabalho acima para começar.",
+      "title": "Histórico de Verificações",
+      "loading": "Carregando relatórios anteriores...",
+      "empty": "Nenhum histórico encontrado. Envie sua primeira tarefa para começar.",
       "areasForImprovement": "Áreas para Melhoria"
     },
     "errors": {
-      "loadHistory": "Falha ao carregar histórico de autoavaliação.",
+      "loadHistory": "Falha ao carregar histórico de auto-verificação.",
       "analyze": "Falha ao analisar seu trabalho."
     }
   },
   "profile": {
     "sectionLabel": "Configurações do Aluno",
-    "pageTitle": "Gerencie sua conta",
-    "pageSubtitle": "Atualize suas preferências de segurança, revise os detalhes da conta e controle como o D.I.Y.A notifica você sobre atividades importantes.",
+    "pageTitle": "Gerenciar Conta",
+    "pageSubtitle": "Atualize suas preferências de segurança e controle as notificações do D.I.Y.A.",
     "status": {
       "emailVerified": "E-mail verificado",
       "emailPending": "Verificação de e-mail pendente",
-      "lastSynced": "Última sincronização em {{date}}"
+      "lastSynced": "Última sincronização"
     },
     "account": {
       "sectionLabel": "Conta",
-      "noEmail": "E-mail indisponível",
+      "noEmail": "Nenhum e-mail encontrado",
       "emailAlertsLabel": "Alertas por E-mail",
-      "forumRepliesLabel": "Respostas no Fórum",
+      "forumRepliesLabel": "Respostas do Fórum",
       "on": "Ligado",
-      "off": "Desligado"
+      "off": "Desligado",
+      "personalInfo": "Informações Pessoais",
+      "setName": "Defina seu nome para ser reconhecido por professores e colegas.",
+      "professorSetName": "Defina seu nome para ser reconhecido por alunos e colegas.",
+      "saving": "Salvando...",
+      "saveName": "Salvar Nome",
+      "saveBio": "Salvar Bio",
+      "tellMessage": "Conte-nos um pouco sobre você...",
+      "notAvailable": "Não disponível",
+      "displayName": "Nome de Exibição",
+      "enterName": "Insira seu nome",
+      "bio": "Bio",
+      "email": "Endereço de E-mail",
+      "displayNameSuccess": "Nome atualizado com sucesso.",
+      "displayNameError": "Falha ao salvar nome. Tente novamente.",
+      "bioSuccess": "Bio atualizada com sucesso.",
+      "bioError": "Falha ao salvar bio.",
+      "timezoneSuccess": "Fuso horário atualizado.",
+      "themeSuccess": "Tema atualizado.",
+      "recently": "Recentemente",
+      "professorSettings": "Configurações do Professor",
+      "emailAddress" : "Endereço de E-mail"
     },
     "security": {
       "title": "Segurança da Conta",
-      "subtitle": "Use o Auth0 para gerenciar sua senha e manter seu login seguro.",
+      "subtitle": "Gerencie sua senha e mantenha sua conta segura.",
       "passwordReset": {
-        "title": "Redefinir Senha",
-        "description": "Enviar um e-mail seguro de redefinição de senha do Auth0 para <strong>{{email}}</strong>.",
-        "fallbackEmail": "seu e-mail da conta",
+        "title": "Redefinição de Senha",
+        "description": "Enviar um e-mail seguro de redefinição de senha para: ",
+        "fallbackEmail": "e-mail da sua conta",
         "button": "Alterar Senha",
-        "buttonSending": "Enviando e-mail de redefinição...",
-        "successMessage": "E-mail de redefinição enviado para {{email}}. Verifique sua caixa de entrada para o link seguro."
+        "buttonSending": "Enviando link...",
+        "successEmail": "Um e-mail de redefinição foi enviado para {{email}}.",
+        "failEmail": "Falha ao enviar e-mail de redefinição de senha."
       }
     },
     "notifications": {
       "title": "Notificações",
-      "subtitle": "Essas preferências são carregadas diretamente do seu documento de usuário no Firestore e salvas instantaneamente ao serem alteradas.",
+      "subtitle": "Configure suas preferências de notificação.",
       "emailAlerts": {
         "title": "Alertas por E-mail",
-        "description": "Receba notificações por e-mail para atividades importantes da conta e atualizações de compromissos.",
+        "description": "Receba notificações por e-mail sobre atualizações importantes e agendamentos.",
         "successMessage": "Alertas por e-mail atualizados com sucesso."
       },
-      "forumReplies": {
+      "newForumReplies": {
         "title": "Novas Respostas no Fórum",
-        "description": "Seja notificado quando houver novas atividades ou respostas em discussões importantes para seus estudos.",
-        "successMessage": "Notificações de respostas no fórum atualizadas com sucesso."
+        "description": "Seja notificado quando alguém responder às suas discussões.",
+        "successMessage": "Notificações de respostas do fórum atualizadas."
       }
+    },
+    "preferences": {
+    "title": "Preferências",
+    "subtitle": "Personalize seu fuso horário e configurações de tema.",
+    "timezone": {
+      "label": "Fuso Horário"
+    },
+    "appearance": {
+      "label": "Tema",
+      "lightMode": "Modo Claro",
+      "darkMode": "Modo Escuro",
+      "switchButton": "Alternar para {{ mode }}",
+      "description": "Sua preferência de tema será salva no seu perfil."
+    },
+    "language": {
+      "label": "Idioma",
+      "current": "Português (Brasil)",
+      "comingSoon": "Mais idiomas em breve."
+    }
+  },
+  "dangerZone": {
+    "title": "Zona de Perigo",
+    "subtitle": "Ações permanentes que não podem ser desfeitas. Prossiga com cautela.",
+    "deleteAccount": {
+      "title": "Excluir Conta",
+      "description": "Exclua permanentemente sua conta e todos os seus dados.",
+      "button": "Solicitar Exclusão de Conta",
+      "alertMessage": "Entre em contato com um administrador para excluir sua conta."
+    }
+  }
+  },
+  "professorRequests": {
+
+    "nav": {
+      "backToForum": "← Voltar ao Fórum",
+      "calendar": "Calendário",
+      "analysis": "Análise",
+      "requests": "Solicitações",
+      "editGroup": "Editar Grupo",
+      "professorView": "Visão do Professor",
+      "signOut": "Sair"
+    },
+
+    "header": {
+      "eyebrow": "Horário de Atendimento",
+      "title": "Solicitações de Agendamento",
+      "subtitle": "Revise e agende reuniões com alunos"
+    },
+
+    "stats": {
+      "pendingRequests": "Solicitações Pendentes",
+      "thisWeek": "Esta Semana",
+      "nextWeek": "Próxima Semana"
+    },
+
+    "list": {
+      "heading": "Solicitações Recebidas",
+      "loading": "Carregando solicitações...",
+      "empty": "Nenhuma solicitação pendente no momento."
+    },
+
+    "card": {
+      "fallbackName": "Aluno",
+      "fallbackEmail": "Nenhum e-mail fornecido",
+      "requestedAgo": "Solicitado há",
+      "accept": "Aceitar",
+      "reject": "Recusar",
+      "reschedule": "Reagendar",
+      "googleCal": "Google Agenda",
+      "outlook": "Outlook",
+      "meet": "Meet"
+    },
+
+    "calendarTitle": "Atendimento — {{studentName}}",
+
+    "timeAgo": {
+      "minute_one": "há {{count}} minuto",
+      "minute_other": "há {{count}} minutos",
+      "hour_one": "há {{count}} hora",
+      "hour_other": "há {{count}} horas",
+      "day_one": "há {{count}} dia",
+      "day_other": "há {{count}} dias"
+    },
+
+    "reschedulePanel": {
+      "title": "Propor Novo Horário",
+      "dateLabel": "Data",
+      "timeLabel": "Hora",
+      "sendProposal": "Enviar Proposta",
+      "validationError": "Por favor, selecione data e hora."
+    },
+
+    "errors": {
+      "loadFailed": "Falha ao carregar solicitações.",
+      "loadPendingFailed": "Falha ao carregar solicitações pendentes.",
+      "approveFailed": "Falha ao aprovar agendamento.",
+      "rejectFailed": "Falha ao recusar agendamento.",
+      "rescheduleFailed": "Falha ao reagendar.",
+      "updateFailed": "Falha ao atualizar solicitação."
+    },
+
+    "footer": {
+      "eyebrow": "Fila de Atendimento",
+      "waiting_one": "{{count}} aluno está esperando sua resposta.",
+      "waiting_other": "{{count}} alunos estão esperando sua resposta.",
+      "description": "Revise cada solicitação para confirmar suas reuniões."
+    }
+  },
+
+  "edit": {
+    "header": {
+      "eyebrow": "Gestão de Grupos",
+      "title": "Editar Grupo",
+      "subtitle": "Gerenciar alunos e configurações do grupo"
+    },
+
+    "stats": {
+      "totalStudents": "Total de Alunos",
+      "active": "Ativos",
+      "pending": "Pendentes"
+    },
+
+    "status": {
+      "active": "Ativo",
+      "pending": "Pendente"
+    },
+
+    "loading": "Carregando lista de alunos...",
+
+    "emptyState": {
+      "noGroup": "Nenhum grupo para editar.",
+      "description": "Crie seu primeiro grupo de disciplina para gerenciar alunos e posts.",
+      "createButton": "Criar Novo Grupo",
+      "backButton": "Voltar ao Fórum"
+    },
+
+    "groupInfo": {
+      "cardTitle": "Informações do Grupo",
+      "nameLabel": "Nome do Grupo",
+      "descriptionLabel": "Descrição",
+      "saveButton": "Salvar Alterações",
+      "savingButton": "Salvando..."
+    },
+
+    "groupActions": {
+      "cardTitle": "Ações de Grupo",
+      "addStudents": "Adicionar Alunos",
+      "archiveGroup": "Arquivar Grupo"
+    },
+
+    "roster": {
+      "cardTitle": "Lista de Alunos",
+      "empty": "Nenhum aluno neste grupo ainda.",
+      "removeButton": "Remover",
+      "removeConfirm": "Tem certeza que deseja remover este aluno?"
+    },
+
+    "footer": {
+      "enrolled_one": "{{count}} aluno matriculado.",
+      "enrolled_other": "{{count}} alunos matriculados."
+    },
+
+    "addStudentModal": {
+      "title": "Adicionar Aluno",
+      "description": "Insira o e-mail do aluno. O aluno já deve ter feito login pelo menos uma vez.",
+      "namePlaceholder": "Nome do aluno (opcional)",
+      "emailPlaceholder": "aluno@escola.edu",
+      "cancelButton": "Cancelar",
+      "addButton": "Adicionar Aluno"
+    },
+
+    "createGroupModal": {
+      "title": "Criar Novo Grupo",
+      "description": "Crie um novo grupo para sua conta de professor.",
+      "titlePlaceholder": "Título do Grupo",
+      "descriptionPlaceholder": "Descrição do Grupo",
+      "cancelButton": "Cancelar",
+      "createButton": "Criar Grupo",
+      "creatingButton": "Criando..."
+    },
+
+    "archiveModal": {
+      "title": "Arquivar Grupo?",
+      "description": "Isso removerá o grupo e limpará as listas de membros.",
+      "cancelButton": "Cancelar",
+      "archiveButton": "Arquivar Grupo",
+      "archivingButton": "Arquivando..."
+    },
+
+    "errors": {
+      "loadGroups": "Falha ao carregar grupos.",
+      "loadUsers": "Falha ao carregar usuários.",
+      "loadGroupData": "Erro de dados do grupo.",
+      "noGroupSelected": "Nenhum grupo selecionado no momento.",
+      "professorNotReady": "Conta de professor ainda não está pronta. Tente novamente.",
+      "groupTitleRequired": "O título do grupo é obrigatório.",
+      "studentNotFound": "O aluno deve logar pelo menos uma vez antes de ser adicionado.",
+      "studentAlreadyInGroup": "O aluno já está neste grupo.",
+      "addStudentFailed": "Falha ao adicionar aluno.",
+      "removeStudentFailed": "Falha ao remover aluno.",
+      "saveGroupFailed": "Falha ao salvar configurações do grupo.",
+      "archiveFailed": "Falha ao arquivar grupo.",
+      "createFailed": "Houve um problema ao criar o grupo.",
+      "syncMembershipFailed": "Falha ao sincronizar participação para {{identifier}}.",
+      "empty": "Nenhum grupo para editar."
+    },
+
+    "success": {
+      "studentAdded": "Aluno adicionado com sucesso.",
+      "studentRemoved": "Aluno removido com sucesso.",
+      "groupSaved": "Configurações do grupo salvas com sucesso.",
+      "groupCreated": "Grupo criado com sucesso."
+    },
+
+    "fallbacks": {
+      "studentName": "Aluno",
+      "noEmail": "Nenhum e-mail"
+    }
+  },
+  "calendar": {
+    "header": {
+      "eyebrow": "Cronograma",
+      "title": "Calendário de Agendamentos",
+      "subtitle": "Gerencie seus horários de reuniões"
+    },
+
+    "stats": {
+      "total": "Total de Agendamentos",
+      "confirmed": "Confirmados",
+      "pending": "Pendentes",
+      "declined": "Recusados"
+    },
+
+    "status": {
+      "confirmed": "Confirmado",
+      "pending": "Pendente",
+      "declined": "Recusado"
+    },
+
+    "views": {
+      "month": "Mês",
+      "week": "Semana",
+      "day": "Dia"
+    },
+
+    "monthNames": [
+      "Janeiro", "Fevereiro", "Março", "Abril",
+      "Maio", "Junho", "Julho", "Agosto",
+      "Setembro", "Outubro", "Novembro", "Dezembro"
+    ],
+
+    "dayNames": [
+      "Dom", "Seg", "Ter", "Qua",
+      "Qui", "Sex", "Sáb"
+    ],
+
+    "calendar": {
+      "moreAppointments": "+ mais {{count}}"
+    },
+
+    "dayView": {
+      "scheduled_one": "{{count}} agendamento marcado",
+      "scheduled_other": "{{count}} agendamentos marcados"
+    },
+
+    "loading": "Carregando calendário...",
+    "empty": "Nenhum agendamento marcado ainda.",
+
+    "appointmentModal": {
+      "title": "Detalhes do Agendamento",
+      "studentLabel": "Aluno",
+      "dateTimeLabel": "Data e Hora",
+      "dateTimeAt": "{{date}} às {{time}}",
+      "reasonLabel": "Motivo",
+      "statusLabel": "Status",
+      "closeButton": "Fechar"
+    },
+
+    "footer": {
+      "eyebrow": "Visão Geral de Atendimento",
+      "confirmed_one": "Você tem {{count}} reunião confirmada em seu calendário.",
+      "confirmed_other": "Você tem {{count}} reuniões confirmadas em seu calendário."
+    },
+
+    "errors": {
+      "loadFailed": "Falha ao carregar cronograma."
+    },
+
+    "fallbacks": {
+      "studentName": "Aluno",
+      "noEmail": "Nenhum e-mail"
+    }
+  },
+  "professorForum": {
+    "header": {
+      "eyebrow": "Gestão do Fórum",
+      "subtitle": "Gerenciando quadros de discussão e respostas de IA",
+      "fallbackTitle": "Fórum do Professor"
+    },
+
+    "stats": {
+      "totalQuestions": "Total de Perguntas",
+      "aiVerified": "IA Verificada",
+      "pendingReview": "Revisão Pendente",
+      "discussionReplies": "Respostas de Discussão"
+    },
+
+    "sidebar": {
+      "statsLabel": "Estatísticas do Fórum",
+      "questions": "Perguntas",
+      "answered": "Respondidas",
+      "newAnnouncement": "Novo Comunicado"
+    },
+
+    "announcements": {
+      "sectionTitle": "Comunicados Recentes",
+      "empty": "Nenhum comunicado ainda.",
+      "postedBy": "Postado por"
+    },
+
+    "questions": {
+      "sectionTitle": "Perguntas Recentes",
+      "lastUpdated": "Última atualização:",
+      "noPostsYet": "Nenhum post ainda",
+      "loading": "Carregando fórum do professor...",
+      "empty": "Nenhuma pergunta corresponde aos filtros.",
+      "fallbackTitle": "Pergunta Sem Título",
+      "viewReplies": "Ver Todas as Respostas",
+      "reply_one": "{{count}} resposta",
+      "reply_other": "{{count}} respostas"
+    },
+
+    "filters": {
+      "allQuestions": "Todas as Perguntas",
+      "unanswered": "Sem Resposta",
+      "sortRecent": "Recentes",
+      "sortEngagement": "Engajamento"
+    },
+
+    "ai": {
+      "label": "Respostas Geradas por IA",
+      "verified": "Verificada",
+      "rejected": "Rejeitada",
+      "verifyButton": "Verificar",
+      "rejectButton": "Rejeitar",
+      "noAnswer": "Nenhuma resposta da IA disponível ainda."
+    },
+
+    "announcementModal": {
+      "title": "Novo Comunicado",
+      "titleLabel": "Título do Comunicado",
+      "titlePlaceholder": "Insira um título curto",
+      "messageLabel": "Mensagem",
+      "messagePlaceholder": "Compartilhe uma atualização com os alunos...",
+      "cancelButton": "Cancelar",
+      "postButton": "Postar Comunicado",
+      "postingButton": "Postando..."
+    },
+
+    "footer": {
+      "eyebrow": "Moderação de Fórum por IA",
+      "pendingReview_one": "{{count}} resposta está esperando sua revisão.",
+      "pendingReview_other": "{{count}} respostas estão esperando sua revisão.",
+      "allReviewed": "Tudo revisado. Ótimo trabalho!",
+      "description": "Verifique ou rejeite respostas da IA para garantir a precisão para os alunos."
+    },
+
+    "timeAgo": {
+      "minute_one": "há {{count}} minuto",
+      "minute_other": "há {{count}} minutos",
+      "hour_one": "há {{count}} hora",
+      "hour_other": "há {{count}} horas",
+      "day_one": "há {{count}} dia",
+      "day_other": "há {{count}} dias",
+      "week_one": "há {{count}} semana",
+      "week_other": "há {{count}} semanas"
+    },
+
+    "errors": {
+      "loadGroups": "Falha ao carregar grupos do fórum do professor.",
+      "loadPosts": "Falha ao carregar posts do fórum do professor.",
+      "loadFailed": "Erro de dados do fórum.",
+      "updateAIStatus": "Falha ao atualizar status de revisão da IA.",
+      "postAnnouncement": "Falha ao postar comunicado."
+    },
+
+    "fallbacks": {
+      "studentName": "Aluno",
+      "professorName": "Professor"
+    }
+  },
+  "questionDetail": {
+    "header": {
+      "eyebrow": "Detalhes da Discussão",
+      "askedBy": "Perguntado por {{author}}"
+    },
+
+    "discussion": {
+      "title_one": "Discussão ({{count}} resposta)",
+      "title_other": "Discussão ({{count}} respostas)",
+      "loading": "Carregando discussão...",
+      "loadingQuestion": "Carregando pergunta...",
+      "empty": "Nenhuma resposta ainda. Responda para iniciar a discussão."
+    },
+
+    "reply": {
+      "rejectButton": "Rejeitar e Responder"
+    },
+
+    "actions": {
+      "cardTitle": "Ações do Professor",
+      "writeAnswer": "Escreva sua resposta",
+      "backToForum": "← Voltar ao Fórum"
+    },
+
+    "stats": {
+      "cardTitle": "Estatísticas da Discussão",
+      "totalReplies": "Total de Respostas",
+      "aiResponses": "Respostas da IA",
+      "professorReplies": "Respostas do Professor"
+    },
+
+    "manualResponse": {
+      "title": "Sua Resposta",
+      "placeholder": "Escreva sua resposta aqui...",
+      "submitButton": "Enviar Resposta",
+      "sendingButton": "Enviando...",
+      "cancelButton": "Cancelar"
+    },
+
+    "footer": {
+      "description": "Mantenha a discussão ativa — sua turma conta com você."
+    },
+
+    "timeAgo": {
+      "minute_one": "há {{count}} minuto",
+      "minute_other": "há {{count}} minutos",
+      "hour_one": "há {{count}} hora",
+      "hour_other": "há {{count}} horas",
+      "day_one": "há {{count}} dia",
+      "day_other": "há {{count}} dias"
+    },
+
+    "errors": {
+      "loadThread": "Falha ao carregar discussão do fórum.",
+      "loadReplies": "Falha ao carregar respostas.",
+      "submitReply": "Falha ao enviar resposta do professor."
+    },
+
+    "fallbacks": {
+      "studentName": "Aluno",
+      "professorName": "Professor",
+      "you": "Você",
+      "questionNotFound": "Pergunta não encontrada",
+      "questionUnavailable": "Pergunta indisponível",
+      "questionNotAvailable": "Pergunta não disponível",
+      "aiName": "D.I.Y.A IA",
+      "aiVerifiedName": "IA Verificada pelo Professor"
     }
   }
 }

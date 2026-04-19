@@ -715,6 +715,172 @@
       "studentName": "Student",
       "noEmail": "No email provided"
     }
+  },
+  "professorForum": {
+    "header": {
+      "eyebrow": "Forum Management",
+      "subtitle": "Discussion board & AI answer management",
+      "fallbackTitle": "Professor Forum"
+    },
 
+    "stats": {
+      "totalQuestions": "Total Questions",
+      "aiVerified": "AI Verified",
+      "pendingReview": "Pending Review",
+      "discussionReplies": "Discussion Replies"
+    },
+
+    "sidebar": {
+      "statsLabel": "Forum Stats",
+      "questions": "Questions",
+      "answered": "Answered",
+      "newAnnouncement": "New Announcement"
+    },
+
+    "announcements": {
+      "sectionTitle": "Latest Announcements",
+      "empty": "No announcements posted yet.",
+      "postedBy": "Posted by"
+    },
+
+    "questions": {
+      "sectionTitle": "Recent Questions",
+      "lastUpdated": "Last updated:",
+      "noPostsYet": "No posts yet",
+      "loading": "Loading professor forum...",
+      "empty": "No questions match the current filter.",
+      "fallbackTitle": "Untitled question",
+      "viewReplies": "View all replies",
+      "reply_one": "{{count}} reply",
+      "reply_other": "{{count}} replies"
+    },
+
+    "filters": {
+      "allQuestions": "All Questions",
+      "unanswered": "Unanswered",
+      "sortRecent": "Recent",
+      "sortEngagement": "Most Replies"
+    },
+
+    "ai": {
+      "label": "AI Generated Answer",
+      "verified": "Verified",
+      "rejected": "Rejected",
+      "verifyButton": "Verify",
+      "rejectButton": "Reject",
+      "noAnswer": "No AI answer available yet."
+    },
+
+    "announcementModal": {
+      "title": "New Announcement",
+      "titleLabel": "Announcement Title",
+      "titlePlaceholder": "Enter a short title",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Share an update with your students...",
+      "cancelButton": "Cancel",
+      "postButton": "Post Announcement",
+      "postingButton": "Posting..."
+    },
+
+    "footer": {
+      "eyebrow": "AI Forum Management",
+      "pendingReview_one": "{{count}} answer awaiting your review.",
+      "pendingReview_other": "{{count}} answers awaiting your review.",
+      "allReviewed": "All AI answers reviewed. Great work.",
+      "description": "Verify or override AI-generated responses to keep students informed."
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} minute ago",
+      "minute_other": "{{count}} minutes ago",
+      "hour_one": "{{count}} hour ago",
+      "hour_other": "{{count}} hours ago",
+      "day_one": "{{count}} day ago",
+      "day_other": "{{count}} days ago",
+      "week_one": "{{count}} week ago",
+      "week_other": "{{count}} weeks ago"
+    },
+
+    "errors": {
+      "loadGroups": "Failed to load professor forum groups.",
+      "loadPosts": "Failed to load professor forum posts.",
+      "loadFailed": "Failed to load professor forum data.",
+      "updateAIStatus": "Failed to update AI review status.",
+      "postAnnouncement": "Failed to post announcement."
+    },
+
+    "fallbacks": {
+      "studentName": "Student",
+      "professorName": "Professor"
+    }
+  },
+  "questionDetail": {
+    "header": {
+      "eyebrow": "Question Discussion",
+      "askedBy": "Asked by {{author}}"
+    },
+
+    "discussion": {
+      "title_one": "Discussion ({{count}} reply)",
+      "title_other": "Discussion ({{count}} replies)",
+      "loading": "Loading discussion...",
+      "loadingQuestion": "Loading question...",
+      "empty": "No replies yet. You can post the first professor response below."
+    },
+
+    "reply": {
+      "rejectButton": "Reject & Reply"
+    },
+
+    "actions": {
+      "cardTitle": "Professor Actions",
+      "writeAnswer": "Write Custom Answer",
+      "backToForum": "← Back to Forum"
+    },
+
+    "stats": {
+      "cardTitle": "Thread Stats",
+      "totalReplies": "Total replies",
+      "aiResponses": "AI responses",
+      "professorReplies": "Professor replies"
+    },
+
+    "manualResponse": {
+      "title": "Your Manual Response",
+      "placeholder": "Type your answer here...",
+      "submitButton": "Submit Answer",
+      "sendingButton": "Sending...",
+      "cancelButton": "Cancel"
+    },
+
+    "footer": {
+      "description": "Keep the conversation going — your class is counting on you."
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} minute ago",
+      "minute_other": "{{count}} minutes ago",
+      "hour_one": "{{count}} hour ago",
+      "hour_other": "{{count}} hours ago",
+      "day_one": "{{count}} day ago",
+      "day_other": "{{count}} days ago"
+    },
+
+    "errors": {
+      "loadThread": "Failed to load forum thread.",
+      "loadReplies": "Failed to load replies.",
+      "submitReply": "Failed to send professor reply."
+    },
+
+    "fallbacks": {
+      "studentName": "Student",
+      "professorName": "Professor",
+      "you": "You",
+      "questionNotFound": "Question not found",
+      "questionUnavailable": "Question unavailable",
+      "questionNotAvailable": "Question not available",
+      "aiName": "D.I.Y.A AI",
+      "aiVerifiedName": "Professor Verified AI"
+    }
   }
 }

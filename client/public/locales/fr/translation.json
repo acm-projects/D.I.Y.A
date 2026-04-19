@@ -1,32 +1,88 @@
 {
-  "topicAnalysis": {
-    "notFound": "Sujet non trouvé.",
-    "backToSelfCheck": "Retour à l'auto-vérification",
-    "backToAnalysis": "Retour à l'analyse",
-    "badges": {
-      "forumQuestions": "{{count}} questions sur le forum",
-      "engagement": "{{score}}% d'engagement"
+  "home": {
+    "title": "Mes Groupes",
+    "subtitle_one": "Gère {{count}} groupe",
+    "subtitle_other": "Gère {{count}} groupes",
+
+    "createButton": "Créer un groupe",
+
+    "loading": "Chargement de vos groupes...",
+
+    "empty": {
+      "title": "Aucun groupe pour le moment",
+      "subtitle": "Créez votre premier groupe pour commencer à utiliser D.I.Y.A."
     },
-    "trend": {
-      "rising": "En hausse",
-      "steady": "Stable",
-      "declining": "Nécessite une attention particulière"
+
+    "error": "Impossible de créer le groupe.",
+
+    "groupCard": {
+      "members_one": "{{count}} membre",
+      "members_other": "{{count}} membres",
+      "view": "Voir →"
     },
-    "positives": {
-      "title": "Points positifs",
-      "subtitle": "Ce qui se passe bien"
+
+    "modal": {
+      "title": "Créer un nouveau groupe",
+      "groupTitleLabel": "Titre du groupe",
+      "groupTitlePlaceholder": "ex: CS 1337 — Informatique I",
+      "descriptionLabel": "Description (optionnel)",
+      "descriptionPlaceholder": "Brève description du cours ou du groupe...",
+      "cancel": "Annuler",
+      "creating": "Création...",
+      "create": "Créer le groupe"
+    }
+  },
+  "analysis": {
+    "badge": "Analyses par IA",
+    "title": "Analyse du Cours",
+    "subtitle": "Informations basées sur les questions des étudiants et les schémas de participation",
+
+    "stats": {
+      "postsAnalyzed": "Messages analysés",
+      "groupsIncluded": "Groupes inclus",
+      "topicsIdentified": "Sujets identifiés",
+      "needAttention": "Nécessitent attention"
     },
-    "concerns": {
-      "title": "Préoccupations",
-      "subtitle": "Zones de difficulté"
+
+    "distribution": {
+      "title": "Répartition des Questions",
+      "subtitle": "Volume de sujets détectés dans l'activité du forum",
+      "loading": "Analyse des groupes actuels de l'enseignant...",
+      "empty": "Pas assez de données pour l'analyse.",
+      "emptyDetail": "Dès que les étudiants commenceront à poser des questions, ce tableau de bord synthétisera automatiquement les sujets les plus discutés.",
+      "legendNeedsAttention": "Nécessite attention",
+      "legendLowerVolume": "Volume faible"
     },
-    "recommendations": {
-      "title": "Recommandations",
-      "subtitle": "Comment s'améliorer"
+
+    "summary": {
+      "title": "Résumé de l'IA",
+      "loading": "Calcul de l'activité par sujet...",
+      "empty": "Pas assez de données pour l'analyse.",
+      "postsSummary": "{{count}} messages dans {{groups}} groupes ont généré {{mentions}} mentions de sujets.",
+      "mostActiveTopic": "Sujet le plus actif :",
+      "mostActiveDetail": "{{name}} avec {{count}} mentions ({{percent}}% des discussions actuelles).",
+      "priorityTopics": "Sujets prioritaires",
+      "noAttentionTopics": "Aucun sujet ne dépasse actuellement le seuil d'attention.",
+      "positiveIndicators": "✓ Indicateurs positifs",
+      "positiveWithTopics": "{{topics}} montrent un volume de questions relativement faible, ce qui suggère que les supports actuels sont efficaces.",
+      "positiveNoTopics": "Les discussions actuelles se concentrent sur des sujets nécessitant une attention particulière ; envisagez de renforcer les supports de base."
     },
-    "snapshot": {
-      "title": "Aperçu de la classe — {{topicName}}",
-      "description": "Basé sur {{count}} questions de forum, le score d'engagement de la classe pour ce sujet est de {{score}}%. Concentrez-vous sur les préoccupations ci-dessus pour améliorer votre compréhension avant la prochaine évaluation."
+
+    "insights": {
+      "title": "Aperçu des Sujets",
+      "loading": "Génération de l'analyse des sujets...",
+      "empty": "Pas assez de données pour l'analyse.",
+      "badgeAttention": "⚠ Attention",
+      "badgeStrong": "✓ Maîtrisé",
+      "recommendedAction": "Action recommandée",
+      "discussionVolume": "Volume de discussion"
+    },
+
+    "footer": {
+      "badge": "Moteur d'analyse",
+      "title_one": "{{count}} sujet nécessite votre attention.",
+      "title_other": "{{count}} sujets nécessitent votre attention.",
+      "subtitle": "Consultez les sujets mis en évidence pour décider où des clarifications ou des annonces supplémentaires sont nécessaires."
     }
   },
   "sidebar": {
@@ -37,48 +93,51 @@
     "nav": {
       "profile": "Profil",
       "groups": "Groupes",
-      "request": "Demander des heures de permanence",
-      "requestShort": "Permanences",
-      "selfcheck": "Auto-vérification"
+      "request": "Demande de RDV",
+      "requestShort": "Rendez-vous",
+      "selfcheck": "Auto-évaluation"
     },
     "user": {
-      "signOut": "Se déconnecter"
+      "signOut": "Déconnexion"
     }
   },
   "professorSidebar": {
-    "appSubtitle": "Vue Professeur",
+    "appSubtitle": "Vue Enseignant",
     "navigationLabel": "Navigation",
     "nav": {
+      "home": "Accueil",
       "forum": "Forum",
       "calendar": "Calendrier",
       "analysis": "Analyse",
       "requests": "Demandes",
-      "editGroup": "Modifier le groupe"
+      "editGroup": "Modifier Groupe",
+      "profile": "Profil"
     },
-    "signOut": "Se déconnecter"
+    "signOut": "Déconnexion",
+    "activeGroup": "Groupe Actif"
   },
   "login": {
     "title": "Bon retour parmi nous",
-    "subtitle": "Continuez en toute sécurité avec Auth0 pour accéder à votre espace de travail D.I.Y.A, vos devoirs, vos discussions et vos outils de feedback.",
-    "submitButton": "Se connecter avec Auth0",
+    "subtitle": "Connectez-vous via Auth0 pour accéder à votre espace D.I.Y.A., vos devoirs et vos outils de discussion.",
+    "submitButton": "Connexion avec Auth0",
     "signUpPrompt": "Nouveau sur D.I.Y.A ?",
-    "signUpLink": "Créer votre compte"
+    "signUpLink": "Créer un compte"
   },
   "signUp": {
-    "title": "Créer votre compte",
-    "subtitle": "Commencez avec D.I.Y.A via le flux d'inscription sécurisé Auth0 et accédez à votre espace d'apprentissage.",
+    "title": "Créer un compte",
+    "subtitle": "Commencez votre parcours sur D.I.Y.A via l'inscription sécurisée Auth0.",
     "role": {
       "label": "Rôle du compte",
-      "description": "Choisissez si ce nouveau compte doit être créé en tant qu'étudiant ou professeur.",
+      "description": "Choisissez si vous créez ce compte en tant qu'étudiant ou enseignant.",
       "student": "Étudiant",
-      "professor": "Professeur"
+      "professor": "Enseignant"
     },
     "submitButton": "S'inscrire avec Auth0",
-    "loginPrompt": "Vous avez déjà un compte ?",
-    "loginLink": "Se connecter"
+    "loginPrompt": "Déjà un compte ?",
+    "loginLink": "Connexion"
   },
   "groupInvite": {
-    "title": "Invitation de groupe",
+    "title": "Invitation au groupe",
     "message": "<strong>{{adminName}}</strong> vous a invité à rejoindre <strong>{{groupName}}</strong>",
     "accept": "Accepter",
     "declined": "Refuser"
@@ -86,14 +145,16 @@
   "groups": {
     "pageTitle": "Bon retour, {{name}} !",
     "defaultName": "Étudiant",
+    "members": "membres",
+    "posts": "messages",
     "search": {
-      "placeholder": "Rechercher vos groupes par nom...",
-      "ariaLabel": "Rechercher des groupes par nom"
+      "placeholder": "Rechercher des groupes par nom...",
+      "ariaLabel": "Rechercher des groupes"
     },
     "count": {
       "showing": "Affichage de {{count}} sur {{total}} groupes",
-      "member_one": "Vous êtes membre de {{count}} groupe",
-      "member_other": "Vous êtes membre de {{count}} groupes"
+      "member_one": "Membre de {{count}} groupe",
+      "member_other": "Membre de {{count}} groupes"
     },
     "card": {
       "members_one": "{{count}} membre",
@@ -104,19 +165,19 @@
     },
     "loading": "Chargement...",
     "error": {
-      "title": "Impossible de charger les groupes",
-      "loadGroups": "Échec du chargement des groupes.",
-      "loadPosts": "Échec du chargement du nombre de messages sur le forum."
+      "title": "Échec du chargement des groupes",
+      "loadGroups": "Erreur lors du chargement des groupes.",
+      "loadPosts": "Échec du chargement du nombre de messages."
     },
     "empty": {
-      "title": "Aucun groupe ne correspond à \"{{query}}\"",
-      "subtitle": "Essayez un nom plus court, un code de cours ou supprimez les espaces superflus."
+      "title": "Aucun groupe trouvé",
+      "subtitle": "Essayez un nom plus court ou vérifiez le code du cours."
     }
   },
   "forum": {
-    "pageTitle": "Page Forum de {{groupName}}",
+    "pageTitle": "Page du Forum",
     "header": {
-      "askQuestion": "Poser une nouvelle question",
+      "askQuestion": "Posez une question à vos pairs et à l'IA D.I.Y.A...",
       "ariaCreate": "Créer une nouvelle question"
     },
     "search": {
@@ -130,111 +191,123 @@
     },
     "card": {
       "newBadge": "NOUVEAU",
-      "replies_one": "{{count}} réponse",
-      "replies_other": "{{count}} réponses",
+      "replies_one": "réponse",
+      "replies_other": "réponses",
       "viewReplies": "Voir les réponses",
-      "aiVerified": "La réponse IA à cette question a été vérifiée par le professeur.",
+      "aiVerified": "La réponse de l'IA à cette question a été vérifiée par l'enseignant.",
       "timeAgo": {
-        "minute_one": "Il y a {{count}} minute",
-        "minute_other": "Il y a {{count}} minutes",
-        "hour_one": "Il y a {{count}} heure",
-        "hour_other": "Il y a {{count}} heures",
-        "day_one": "Il y a {{count}} jour",
-        "day_other": "Il y a {{count}} jours",
-        "week_one": "Il y a {{count}} semaine",
-        "week_other": "Il y a {{count}} semaines"
+        "minute_one": "il y a {{count}} minute",
+        "minute_other": "il y a {{count}} minutes",
+        "hour_one": "il y a {{count}} heure",
+        "hour_other": "il y a {{count}} heures",
+        "day_one": "il y a {{count}} jour",
+        "day_other": "il y a {{count}} jours",
+        "week_one": "il y a {{count}} semaine",
+        "week_other": "il y a {{count}} semaines"
       }
     },
     "loading": "Chargement...",
     "error": {
-      "title": "Impossible de charger les questions du forum",
-      "loadQuestions": "Échec du chargement des questions du forum.",
+      "title": "Impossible de charger les questions",
+      "loadQuestions": "Erreur lors du chargement des questions du forum.",
       "createQuestion": "Échec de la création de la question.",
       "upvote": "Échec de la mise à jour du vote."
     },
     "empty": {
       "title": "Aucune question trouvée",
-      "subtitle": "Essayez une autre recherche ou publiez la première question de ce groupe."
+      "subtitle": "Essayez un autre mot-clé ou soyez le premier à poser une question."
     },
     "popup": {
       "title": "Poser une question",
       "inputPlaceholder": "Quelle est votre question ?",
       "imageLabel": "Image (optionnel)",
-      "uploadImage": "Télécharger une image",
-      "changeImage": "Changer l'image",
+      "uploadImage": "Téléverser une image",
+      "changeImage": "Changer d'image",
       "cancel": "Annuler",
+      "posting": "Publication...",
       "postButton": "Publier la question"
     }
   },
   "forumThread": {
-    "backToForum": "← Retour au Forum",
+    "backToForum": "← Retour au forum",
     "question": {
-      "askedBy": "Posée par {{author}}",
-      "defaultTitle": "Votre question",
+      "askedBy": "Posée par ",
+      "defaultTitle": "Votre Question",
       "defaultAuthor": "Vous"
     },
     "replies": {
       "loading": "Chargement du fil...",
-      "empty": "Aucune réponse pour le moment — soyez le premier à répondre !",
-      "professorLabel": "(Professeur)",
-      "imageFallback": "(image)"
+      "empty": "Aucune réponse pour le moment — soyez le premier !",
+      "professorLabel": "(Enseignant)",
+      "imageFallback": "(image)",
+      "professor": "enseignant",
+      "student": "étudiant",
+      "ai": "IA D.I.Y.A",
+      "profssorVerified": "IA vérifiée par l'enseignant"
     },
     "related": {
-      "title": "Discussions connexes",
+      "title": "Discussions similaires",
       "loading": "Recherche de sujets similaires...",
       "empty": "Aucun message similaire trouvé.",
       "untitled": "Message sans titre",
-      "viewThread": "Voir le fil →"
+      "viewThread": "Voir le fil →",
+      "untitledQuestion": "Question sans titre"
     },
     "input": {
-      "placeholder": "Tapez votre réponse...",
-      "removeImage": "Supprimer",
-      "ariaUpload": "Télécharger une image",
+      "placeholder": "Écrivez votre réponse...",
+      "sending": "Envoi...",
+      "removeImage": "Supprimer la pièce jointe",
+      "remove": "Supprimer",
+      "attach": "Joindre",
+      "ariaUpload": "Téléverser une image",
       "ariaSend": "Envoyer la réponse",
       "ariaToggleSidebarOpen": "Ouvrir la barre latérale",
-      "ariaToggleSidebarClose": "Fermer la barre latérale"
+      "ariaToggleSidebarClose": "Fermer la barre latérale",
+      "fileTooLarge": "Le fichier est trop volumineux. Veuillez utiliser un fichier de moins de 10 Mo.",
+      "timeOut": "Le téléversement a expiré. Veuillez essayer avec un fichier plus petit.",
+      "urlError": "Le lien du fichier téléversé n'a pas pu être récupéré."
     },
     "errors": {
-      "loadThread": "Échec du chargement du fil du forum.",
+      "loadThread": "Échec du chargement du fil.",
       "loadReplies": "Échec du chargement des réponses.",
       "sendReply": "Échec de l'envoi de la réponse."
     }
   },
   "officeHours": {
-    "pageTitle": "Demander des heures de permanence",
+    "pageTitle": "Demandes de RDV",
     "form": {
-      "title": "Nouvelle demande",
-      "subtitle": "Remplissez le formulaire ci-dessous pour demander un rendez-vous avec votre professeur ou assistant.",
-      "loading": "Chargement de vos cours et contacts disponibles...",
+      "title": "Nouvelle Demande",
+      "subtitle": "Remplissez le formulaire pour demander un rendez-vous avec votre enseignant ou assistant.",
+      "loading": "Chargement de vos cours...",
       "courseLabel": "Quel cours/groupe ? *",
-      "coursePlaceholder": "Sélectionnez un cours ou un groupe",
-      "noGroups": "Vous n'êtes inscrit dans aucun groupe de cours pour le moment.",
-      "professorLabel": "Solliciter le professeur ou l'assistant ? *",
-      "professorPlaceholder": "Sélectionnez un professeur ou un assistant",
-      "reasonLabel": "Quel est l'objet de cette demande ? *",
-      "reasonPlaceholder": "Décrivez brièvement pourquoi vous aimeriez un rendez-vous...",
+      "coursePlaceholder": "Sélectionnez un cours",
+      "noGroups": "Vous n'êtes inscrit dans aucun cours.",
+      "professorLabel": "Enseignant ou Assistant ? *",
+      "professorPlaceholder": "Sélectionnez un enseignant",
+      "reasonLabel": "Motif de la demande *",
+      "reasonPlaceholder": "Décrivez brièvement le sujet de la réunion...",
       "dateLabel": "Date proposée *",
-      "startTimeLabel": "Heure de début (CST) *",
-      "endTimeLabel": "Heure de fin (CST) *",
+      "startTimeLabel": "Heure de début *",
+      "endTimeLabel": "Heure de fin *",
       "meetingTypeLabel": "Type de réunion *",
       "online": "Réunion en ligne",
-      "inPerson": "Réunion en personne",
+      "inPerson": "En personne",
       "meetingLinkLabel": "Lien de la réunion (optionnel)",
       "meetingLinkPlaceholder": "https://zoom.us/j/...",
-      "submitButton": "Soumettre la demande"
+      "submitButton": "Envoyer la demande"
     },
     "success": {
-      "title": "Demande soumise !",
-      "subtitle": "Votre demande d'heures de permanence a été envoyée. Vous recevrez une confirmation par e-mail une fois que votre professeur aura répondu.",
-      "emailNote": "Consultez votre messagerie pour les mises à jour à ",
-      "submitAnother": "Soumettre une autre demande"
+      "title": "Demande envoyée !",
+      "subtitle": "Votre demande a été transmise. Vous recevrez un e-mail une fois confirmée.",
+      "emailNote": "Vérifiez vos e-mails pour les mises à jour : ",
+      "submitAnother": "Envoyer une autre demande"
     },
     "requests": {
-      "title": "Vos demandes",
-      "empty": "Aucune demande pour le moment. Soumettez votre première demande ci-dessus.",
+      "title": "Vos Demandes",
+      "empty": "Aucune demande pour le moment.",
       "online": "En ligne",
       "inPerson": "En personne",
-      "meetingLink": "Lien de réunion: ",
+      "meetingLink": "Lien : ",
       "addToGoogle": "Ajouter à Google Calendar",
       "addToOutlook": "Ajouter à Outlook",
       "joinMeeting": "Rejoindre la réunion",
@@ -246,88 +319,568 @@
       "declined": "Refusé"
     },
     "errors": {
-      "loadProfessors": "Échec du chargement des contacts professeurs.",
-      "loadGroups": "Échec du chargement des groupes.",
-      "loadRequests": "Échec du chargement de vos demandes de permanence.",
-      "loadData": "Échec du chargement des données d'heures de permanence.",
-      "noGroup": "Veuillez sélectionner un cours ou un groupe.",
-      "submit": "Échec de la soumission de la demande de permanence."
+      "loadProfessors": "Impossible de charger les contacts.",
+      "loadGroups": "Impossible de charger les groupes.",
+      "loadRequests": "Impossible de charger vos demandes.",
+      "loadData": "Erreur de chargement des données.",
+      "noGroup": "Veuillez sélectionner un cours.",
+      "submit": "Échec de l'envoi de la demande."
     }
   },
   "selfCheck": {
-    "pageTitle": "Auto-vérification",
+    "pageTitle": "Auto-évaluation",
     "upload": {
       "title": "Vérifiez votre travail",
-      "subtitle": "Téléchargez votre barème de notation et votre travail pour obtenir un rapport d'estimation de note par IA.",
-      "rubricLabel": "Barème du devoir",
-      "rubricPlaceholder": "Cliquez pour télécharger le barème",
-      "workLabel": "Votre travail",
-      "workPlaceholder": "Cliquez pour télécharger votre travail",
+      "subtitle": "Téléversez votre consigne et votre devoir pour obtenir un rapport de l'IA.",
+      "rubricLabel": "Barème / Consigne",
+      "rubricPlaceholder": "Cliquez pour téléverser le barème",
+      "workLabel": "Votre Travail",
+      "workPlaceholder": "Cliquez pour téléverser votre fichier",
       "analyzeButton": "Analyser mon travail",
       "analyzingButton": "Analyse en cours..."
     },
     "analyzing": {
-      "title": "Analyse de votre travail en cours...",
-      "subtitle": "Comparaison de votre soumission avec les critères du barème"
+      "title": "Analyse de votre travail...",
+      "subtitle": "Comparaison de votre contenu avec les critères du barème."
     },
     "report": {
-      "title": "Rapport de notation",
+      "title": "Rapport d'évaluation",
       "potentialGradeLabel": "Note potentielle",
-      "areasForImprovement": "Zones d'amélioration"
+      "areasForImprovement": "Axes d'amélioration"
     },
     "history": {
-      "title": "Vérifications passées",
-      "loading": "Chargement de vos vérifications précédentes...",
-      "empty": "Aucune vérification passée. Téléchargez votre premier devoir ci-dessus pour commencer.",
-      "areasForImprovement": "Zones d'amélioration"
+      "title": "Historique des vérifications",
+      "loading": "Chargement des anciens rapports...",
+      "empty": "Aucune vérification précédente. Téléversez votre premier devoir pour commencer.",
+      "areasForImprovement": "Axes d'amélioration"
     },
     "errors": {
-      "loadHistory": "Échec du chargement de l'historique d'auto-vérification.",
-      "analyze": "Échec de l'analyse de votre travail."
+      "loadHistory": "Échec du chargement de l'historique.",
+      "analyze": "Impossible d'analyser votre travail."
     }
   },
   "profile": {
-    "sectionLabel": "Paramètres étudiant",
-    "pageTitle": "Gérer votre compte",
-    "pageSubtitle": "Mettez à jour vos préférences de sécurité, examinez les détails de votre compte et contrôlez la manière dont D.I.Y.A vous informe des activités importantes.",
+    "sectionLabel": "Paramètres Étudiant",
+    "pageTitle": "Gérer le compte",
+    "pageSubtitle": "Mettez à jour vos préférences de sécurité et vos notifications.",
     "status": {
       "emailVerified": "E-mail vérifié",
       "emailPending": "Vérification de l'e-mail en attente",
-      "lastSynced": "Dernière synchronisation le {{date}}"
+      "lastSynced": "Dernière synchro"
     },
     "account": {
       "sectionLabel": "Compte",
-      "noEmail": "Aucun e-mail disponible",
-      "emailAlertsLabel": "Alertes e-mail",
+      "noEmail": "Aucun e-mail trouvé",
+      "emailAlertsLabel": "Alertes par e-mail",
       "forumRepliesLabel": "Réponses au forum",
       "on": "Activé",
-      "off": "Désactivé"
+      "off": "Désactivé",
+      "personalInfo": "Informations personnelles",
+      "setName": "Définissez votre nom pour être reconnu.",
+      "professorSetName": "Définissez votre nom professionnel.",
+      "saving": "Enregistrement...",
+      "saveName": "Enregistrer le nom",
+      "saveBio": "Enregistrer la bio",
+      "tellMessage": "Parlez-nous de vous...",
+      "notAvailable": "Non disponible",
+      "displayName": "Nom d'affichage",
+      "enterName": "Entrez votre nom",
+      "bio": "Biographie",
+      "email": "Adresse e-mail",
+      "displayNameSuccess": "Nom mis à jour avec succès.",
+      "displayNameError": "Erreur lors de l'enregistrement du nom.",
+      "bioSuccess": "Bio mise à jour avec succès.",
+      "bioError": "Erreur lors de l'enregistrement de la bio.",
+      "timezoneSuccess": "Fuseau horaire mis à jour.",
+      "themeSuccess": "Thème mis à jour.",
+      "recently": "Récemment",
+      "professorSettings": "Paramètres Enseignant",
+      "emailAddress" : "Adresse e-mail"
     },
     "security": {
       "title": "Sécurité du compte",
-      "subtitle": "Utilisez Auth0 pour gérer votre mot de passe et sécuriser votre connexion.",
+      "subtitle": "Gérez votre mot de passe.",
       "passwordReset": {
         "title": "Réinitialisation du mot de passe",
-        "description": "Envoyer un e-mail sécurisé de réinitialisation de mot de passe Auth0 à <strong>{{email}}</strong>.",
-        "fallbackEmail": "votre adresse e-mail",
+        "description": "Envoyer un e-mail de réinitialisation sécurisé : ",
+        "fallbackEmail": "l'e-mail de votre compte",
         "button": "Changer le mot de passe",
-        "buttonSending": "Envoi de l'e-mail de réinitialisation...",
-        "successMessage": "E-mail de réinitialisation envoyé à {{email}}. Consultez votre boîte de réception pour le lien sécurisé."
+        "buttonSending": "Envoi du lien...",
+        "successEmail": "E-mail envoyé à {{email}}.",
+        "failEmail": "Échec de l'envoi de l'e-mail de réinitialisation."
       }
     },
     "notifications": {
       "title": "Notifications",
-      "subtitle": "Ces préférences sont chargées directement depuis votre document utilisateur Firestore et enregistrées immédiatement après modification.",
+      "subtitle": "Configurez vos préférences.",
       "emailAlerts": {
-        "title": "Alertes E-mail",
-        "description": "Recevez des notifications par e-mail pour les activités importantes de votre compte et les mises à jour de rendez-vous.",
-        "successMessage": "Alertes e-mail mises à jour avec succès."
+        "title": "Alertes par e-mail",
+        "description": "Recevez des notifications importantes par e-mail.",
+        "successMessage": "Préférences e-mail mises à jour."
       },
-      "forumReplies": {
+      "newForumReplies": {
         "title": "Nouvelles réponses au forum",
-        "description": "Soyez averti lorsqu'il y a une nouvelle activité ou une réponse sur des discussions importantes pour vos cours.",
-        "successMessage": "Notifications de nouvelles réponses au forum mises à jour avec succès."
+        "description": "Soyez averti lorsqu'une discussion vous concerne.",
+        "successMessage": "Paramètres forum mis à jour."
       }
+    },
+    "preferences": {
+    "title": "Préférences",
+    "subtitle": "Personnalisez votre fuseau horaire et votre thème.",
+    "timezone": {
+      "label": "Fuseau horaire"
+    },
+    "appearance": {
+      "label": "Thème",
+      "lightMode": "Mode Clair",
+      "darkMode": "Mode Sombre",
+      "switchButton": "Passer en mode {{ mode }}",
+      "description": "Votre préférence de thème sera sauvegardée."
+    },
+    "language": {
+      "label": "Langue",
+      "current": "Français (FR)",
+      "comingSoon": "Plus de langues bientôt disponibles."
+    }
+  },
+  "dangerZone": {
+    "title": "Zone de Danger",
+    "subtitle": "Actions irréversibles. Soyez prudent.",
+    "deleteAccount": {
+      "title": "Supprimer le compte",
+      "description": "Effacer définitivement votre compte et vos données.",
+      "button": "Demander la suppression",
+      "alertMessage": "Veuillez contacter l'administrateur pour supprimer votre compte."
+    }
+  }
+  },
+  "professorRequests": {
+
+    "nav": {
+      "backToForum": "← Retour au forum",
+      "calendar": "Calendrier",
+      "analysis": "Analyse",
+      "requests": "Demandes",
+      "editGroup": "Modifier Groupe",
+      "professorView": "Vue Enseignant",
+      "signOut": "Déconnexion"
+    },
+
+    "header": {
+      "eyebrow": "Heures de permanence",
+      "title": "Demandes de RDV",
+      "subtitle": "Examinez et planifiez les rendez-vous des étudiants"
+    },
+
+    "stats": {
+      "pendingRequests": "Demandes en attente",
+      "thisWeek": "Cette semaine",
+      "nextWeek": "Semaine prochaine"
+    },
+
+    "list": {
+      "heading": "Demandes entrantes",
+      "loading": "Chargement...",
+      "empty": "Aucune demande en attente."
+    },
+
+    "card": {
+      "fallbackName": "Étudiant",
+      "fallbackEmail": "Aucun e-mail",
+      "requestedAgo": "Demandé il y a",
+      "accept": "Accepter",
+      "reject": "Refuser",
+      "reschedule": "Reporter",
+      "googleCal": "Google Cal",
+      "outlook": "Outlook",
+      "meet": "Réunion"
+    },
+
+    "calendarTitle": "RDV — {{studentName}}",
+
+    "timeAgo": {
+      "minute_one": "il y a {{count}} min",
+      "minute_other": "il y a {{count}} mins",
+      "hour_one": "il y a {{count}} h",
+      "hour_other": "il y a {{count}} h",
+      "day_one": "il y a {{count}} j",
+      "day_other": "il y a {{count}} j"
+    },
+
+    "reschedulePanel": {
+      "title": "Proposer un nouvel horaire",
+      "dateLabel": "Date",
+      "timeLabel": "Heure",
+      "sendProposal": "Envoyer la proposition",
+      "validationError": "Veuillez sélectionner une date et une heure."
+    },
+
+    "errors": {
+      "loadFailed": "Impossible de charger les demandes.",
+      "loadPendingFailed": "Impossible de charger les demandes en attente.",
+      "approveFailed": "Échec de l'approbation.",
+      "rejectFailed": "Échec du refus.",
+      "rescheduleFailed": "Échec du report.",
+      "updateFailed": "Échec de la mise à jour."
+    },
+
+    "footer": {
+      "eyebrow": "File d'attente",
+      "waiting_one": "{{count}} étudiant attend votre réponse.",
+      "waiting_other": "{{count}} étudiants attendent votre réponse.",
+      "description": "Examinez chaque demande pour confirmer vos rendez-vous."
+    }
+  },
+
+  "edit": {
+    "header": {
+      "eyebrow": "Gestion du groupe",
+      "title": "Modifier le groupe",
+      "subtitle": "Gérez les étudiants et les paramètres"
+    },
+
+    "stats": {
+      "totalStudents": "Total Étudiants",
+      "active": "Actifs",
+      "pending": "En attente"
+    },
+
+    "status": {
+      "active": "Actif",
+      "pending": "En attente"
+    },
+
+    "loading": "Chargement de la liste...",
+
+    "emptyState": {
+      "noGroup": "Aucun groupe à modifier.",
+      "description": "Créez votre premier groupe pour gérer les étudiants.",
+      "createButton": "Nouveau Groupe",
+      "backButton": "Retour au forum"
+    },
+
+    "groupInfo": {
+      "cardTitle": "Informations du groupe",
+      "nameLabel": "Nom du groupe",
+      "descriptionLabel": "Description",
+      "saveButton": "Enregistrer les modifications",
+      "savingButton": "Enregistrement..."
+    },
+
+    "groupActions": {
+      "cardTitle": "Actions du groupe",
+      "addStudents": "Ajouter Étudiants",
+      "archiveGroup": "Archiver le groupe"
+    },
+
+    "roster": {
+      "cardTitle": "Liste des étudiants",
+      "empty": "Aucun étudiant dans ce groupe.",
+      "removeButton": "Retirer",
+      "removeConfirm": "Voulez-vous vraiment retirer cet étudiant ?"
+    },
+
+    "footer": {
+      "enrolled_one": "{{count}} étudiant inscrit.",
+      "enrolled_other": "{{count}} étudiants inscrits."
+    },
+
+    "addStudentModal": {
+      "title": "Ajouter un étudiant",
+      "description": "Entrez l'e-mail de l'étudiant. Il doit s'être déjà connecté une fois.",
+      "namePlaceholder": "Nom (optionnel)",
+      "emailPlaceholder": "etudiant@ecole.edu",
+      "cancelButton": "Annuler",
+      "addButton": "Ajouter"
+    },
+
+    "createGroupModal": {
+      "title": "Nouveau Groupe",
+      "description": "Créez un nouveau groupe pour votre compte enseignant.",
+      "titlePlaceholder": "Titre du groupe",
+      "descriptionPlaceholder": "Description",
+      "cancelButton": "Annuler",
+      "createButton": "Créer",
+      "creatingButton": "Création..."
+    },
+
+    "archiveModal": {
+      "title": "Archiver le groupe ?",
+      "description": "Ceci supprimera le groupe de la vue active pour tous les membres.",
+      "cancelButton": "Annuler",
+      "archiveButton": "Archiver",
+      "archivingButton": "Archivage..."
+    },
+
+    "errors": {
+      "loadGroups": "Impossible de charger les groupes.",
+      "loadUsers": "Impossible de charger les utilisateurs.",
+      "loadGroupData": "Erreur de données du groupe.",
+      "noGroupSelected": "Aucun groupe sélectionné.",
+      "professorNotReady": "Compte enseignant non prêt.",
+      "groupTitleRequired": "Le titre est requis.",
+      "studentNotFound": "L'étudiant doit s'être connecté au moins une fois.",
+      "studentAlreadyInGroup": "Déjà dans le groupe.",
+      "addStudentFailed": "Échec de l'ajout.",
+      "removeStudentFailed": "Échec du retrait.",
+      "saveGroupFailed": "Échec de l'enregistrement.",
+      "archiveFailed": "Échec de l'archivage.",
+      "createFailed": "Échec de la création.",
+      "syncMembershipFailed": "Échec de synchro pour {{identifier}}.",
+      "empty": "Aucun groupe."
+    },
+
+    "success": {
+      "studentAdded": "Étudiant ajouté.",
+      "studentRemoved": "Étudiant retiré.",
+      "groupSaved": "Paramètres enregistrés.",
+      "groupCreated": "Groupe créé."
+    },
+
+    "fallbacks": {
+      "studentName": "Étudiant",
+      "noEmail": "Pas d'e-mail"
+    }
+  },
+  "calendar": {
+    "header": {
+      "eyebrow": "Planning",
+      "title": "Calendrier des RDV",
+      "subtitle": "Gérez vos horaires de réunion"
+    },
+
+    "stats": {
+      "total": "Total RDV",
+      "confirmed": "Confirmés",
+      "pending": "En attente",
+      "declined": "Refusés"
+    },
+
+    "status": {
+      "confirmed": "Confirmé",
+      "pending": "En attente",
+      "declined": "Refusé"
+    },
+
+    "views": {
+      "month": "Mois",
+      "week": "Semaine",
+      "day": "Jour"
+    },
+
+    "monthNames": [
+      "Janvier", "Février", "Mars", "Avril",
+      "Mai", "Juin", "Juillet", "Août",
+      "Septembre", "Octobre", "Novembre", "Décembre"
+    ],
+
+    "dayNames": [
+      "Dim", "Lun", "Mar", "Mer",
+      "Jeu", "Ven", "Sam"
+    ],
+
+    "calendar": {
+      "moreAppointments": "+{{count}} autres"
+    },
+
+    "dayView": {
+      "scheduled_one": "{{count}} RDV planifié",
+      "scheduled_other": "{{count}} RDV planifiés"
+    },
+
+    "loading": "Chargement du calendrier...",
+    "empty": "Aucun rendez-vous planifié.",
+
+    "appointmentModal": {
+      "title": "Détails du RDV",
+      "studentLabel": "Étudiant",
+      "dateTimeLabel": "Date & Heure",
+      "dateTimeAt": "{{date}} à {{time}}",
+      "reasonLabel": "Motif",
+      "statusLabel": "Statut",
+      "closeButton": "Fermer"
+    },
+
+    "footer": {
+      "eyebrow": "Aperçu",
+      "confirmed_one": "Vous avez {{count}} réunion confirmée.",
+      "confirmed_other": "Vous avez {{count}} réunions confirmées."
+    },
+
+    "errors": {
+      "loadFailed": "Échec du chargement du planning."
+    },
+
+    "fallbacks": {
+      "studentName": "Étudiant",
+      "noEmail": "Pas d'e-mail"
+    }
+  },
+  "professorForum": {
+    "header": {
+      "eyebrow": "Gestion du Forum",
+      "subtitle": "Modération des discussions et de l'IA",
+      "fallbackTitle": "Forum Enseignant"
+    },
+
+    "stats": {
+      "totalQuestions": "Total Questions",
+      "aiVerified": "IA Vérifiées",
+      "pendingReview": "En attente",
+      "discussionReplies": "Réponses"
+    },
+
+    "sidebar": {
+      "statsLabel": "Stats du Forum",
+      "questions": "Questions",
+      "answered": "Répondues",
+      "newAnnouncement": "Nouvelle Annonce"
+    },
+
+    "announcements": {
+      "sectionTitle": "Annonces récentes",
+      "empty": "Aucune annonce.",
+      "postedBy": "Posté par"
+    },
+
+    "questions": {
+      "sectionTitle": "Questions récentes",
+      "lastUpdated": "Mise à jour :",
+      "noPostsYet": "Aucun message",
+      "loading": "Chargement...",
+      "empty": "Aucune question trouvée.",
+      "fallbackTitle": "Question sans titre",
+      "viewReplies": "Voir les réponses",
+      "reply_one": "{{count}} réponse",
+      "reply_other": "{{count}} réponses"
+    },
+
+    "filters": {
+      "allQuestions": "Toutes",
+      "unanswered": "Sans réponse",
+      "sortRecent": "Récent",
+      "sortEngagement": "Engagement"
+    },
+
+    "ai": {
+      "label": "Réponse de l'IA",
+      "verified": "Vérifiée",
+      "rejected": "Rejetée",
+      "verifyButton": "Vérifier",
+      "rejectButton": "Rejeter",
+      "noAnswer": "Aucune réponse de l'IA."
+    },
+
+    "announcementModal": {
+      "title": "Nouvelle Annonce",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Entrez un titre court",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Partagez une mise à jour...",
+      "cancelButton": "Annuler",
+      "postButton": "Publier",
+      "postingButton": "Publication..."
+    },
+
+    "footer": {
+      "eyebrow": "Modération IA",
+      "pendingReview_one": "{{count}} réponse en attente de révision.",
+      "pendingReview_other": "{{count}} réponses en attente de révision.",
+      "allReviewed": "Tout est révisé. Bon travail !",
+      "description": "Vérifiez les réponses de l'IA pour garantir leur exactitude."
+    },
+
+    "timeAgo": {
+      "minute_one": "il y a {{count}} min",
+      "minute_other": "il y a {{count}} min",
+      "hour_one": "il y a {{count}} h",
+      "hour_other": "il y a {{count}} h",
+      "day_one": "il y a {{count}} j",
+      "day_other": "il y a {{count}} j",
+      "week_one": "il y a {{count}} sem",
+      "week_other": "il y a {{count}} sem"
+    },
+
+    "errors": {
+      "loadGroups": "Échec du chargement des groupes.",
+      "loadPosts": "Échec du chargement des messages.",
+      "loadFailed": "Erreur de données du forum.",
+      "updateAIStatus": "Échec de la mise à jour IA.",
+      "postAnnouncement": "Échec de l'annonce."
+    },
+
+    "fallbacks": {
+      "studentName": "Étudiant",
+      "professorName": "Enseignant"
+    }
+  },
+  "questionDetail": {
+    "header": {
+      "eyebrow": "Détail de la discussion",
+      "askedBy": "Posée par {{author}}"
+    },
+
+    "discussion": {
+      "title_one": "Discussion ({{count}} réponse)",
+      "title_other": "Discussion ({{count}} réponses)",
+      "loading": "Chargement...",
+      "loadingQuestion": "Chargement de la question...",
+      "empty": "Aucune réponse pour le moment."
+    },
+
+    "reply": {
+      "rejectButton": "Rejeter & Répondre"
+    },
+
+    "actions": {
+      "cardTitle": "Actions Enseignant",
+      "writeAnswer": "Écrire une réponse",
+      "backToForum": "← Retour au forum"
+    },
+
+    "stats": {
+      "cardTitle": "Stats du fil",
+      "totalReplies": "Réponses totales",
+      "aiResponses": "Réponses IA",
+      "professorReplies": "Réponses Enseignant"
+    },
+
+    "manualResponse": {
+      "title": "Votre Réponse",
+      "placeholder": "Écrivez ici...",
+      "submitButton": "Envoyer",
+      "sendingButton": "Envoi...",
+      "cancelButton": "Annuler"
+    },
+
+    "footer": {
+      "description": "Maintenez la discussion — votre classe compte sur vous."
+    },
+
+    "timeAgo": {
+      "minute_one": "il y a {{count}} min",
+      "minute_other": "il y a {{count}} min",
+      "hour_one": "il y a {{count}} h",
+      "hour_other": "il y a {{count}} h",
+      "day_one": "il y a {{count}} j",
+      "day_other": "il y a {{count}} j"
+    },
+
+    "errors": {
+      "loadThread": "Échec du chargement du fil.",
+      "loadReplies": "Échec du chargement des réponses.",
+      "submitReply": "Échec de l'envoi."
+    },
+
+    "fallbacks": {
+      "studentName": "Étudiant",
+      "professorName": "Enseignant",
+      "you": "Vous",
+      "questionNotFound": "Non trouvé",
+      "questionUnavailable": "Indisponible",
+      "questionNotAvailable": "Indisponible",
+      "aiName": "IA D.I.Y.A",
+      "aiVerifiedName": "IA vérifiée par l'enseignant"
     }
   }
 }

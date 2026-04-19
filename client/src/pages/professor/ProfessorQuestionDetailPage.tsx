@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const palette = {
   darkest: "#270115",
@@ -62,32 +63,38 @@ function getTimestampMs(value?: BackendPost["createdAt"] | BackendReply["created
   return typeof seconds === "number" ? seconds * 1000 : Date.now();
 }
 
-function formatTimeAgo(timestampMs: number): string {
-  const diffMs = Date.now() - timestampMs;
-  const minutes = Math.max(1, Math.floor(diffMs / 60000));
-
-  if (minutes < 60) {
-    return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
-  }
-
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) {
-    return `${hours} hour${hours === 1 ? "" : "s"} ago`;
-  }
-
-  const days = Math.floor(hours / 24);
-  return `${days} day${days === 1 ? "" : "s"} ago`;
-}
-
 export function ProfessorQuestionDetailPage() {
+  const { t } = useTranslation();
+  const formatTimeAgo = (timestampMs: number): string => {
+    const diffMs = Date.now() - timestampMs;
+    const minutes = Math.max(1, Math.floor(diffMs / 60000));
+
+    if (minutes < 60) {
+      // i18next automatically handles "minute_one" vs "minute_other" via the count property
+      return t("professorForum.timeAgo.minute", { count: minutes });
+    }
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) {
+      return t("professorForum.timeAgo.hour", { count: hours });
+    }
+
+    const days = Math.floor(hours / 24);
+    if (days < 7) {
+      return t("professorForum.timeAgo.day", { count: days });
+    }
+
+    const weeks = Math.floor(days / 7);
+    return t("professorForum.timeAgo.week", { count: weeks });
+  };
   const { user, logout } = useAuth0();
   const { questionId } = useParams<{ questionId: string }>();
   const navigate = useNavigate();
   const [manualAnswer, setManualAnswer] = useState("");
   const [showManualInput, setShowManualInput] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({
-    author: "Student",
-    question: "Loading question...",
+    author: t("questionDetail.fallbacks.studentName"),
+    question: t("questionDetail.discussion.loadingQuestion"),
     aiAnswer: "",
   });
   const [replies, setReplies] = useState<Reply[]>([]);
@@ -101,7 +108,7 @@ export function ProfessorQuestionDetailPage() {
     const loadThread = async () => {
       if (!questionId) {
         if (isMounted) {
-          setCurrentQuestion({ author: "Student", question: "Question not found", aiAnswer: "" });
+          setCurrentQuestion({ author: t("questionDetail.fallbacks.studentName"), question: t("questionDetail.fallbacks.questionNotFound"), aiAnswer: "" });
           setReplies([]);
           setIsLoading(false);
         }
@@ -119,11 +126,11 @@ export function ProfessorQuestionDetailPage() {
         ]);
 
         if (!postResponse.ok) {
-          throw new Error("Failed to load forum thread.");
+          throw new Error(t("questionDetail.errors.loadThread"));
         }
 
         if (!repliesResponse.ok) {
-          throw new Error("Failed to load replies.");
+          throw new Error(t("questionDetail.errors.loadReplies"));
         }
 
         const post = (await postResponse.json()) as BackendPost;
@@ -132,7 +139,7 @@ export function ProfessorQuestionDetailPage() {
 
         const userNameById = new Map<string, string>();
         users.forEach((liveUser) => {
-          const displayName = liveUser.name || liveUser.email || "Student";
+          const displayName = liveUser.name || liveUser.email || t("questionDetail.fallbacks.studentName");
           userNameById.set(liveUser.id, displayName);
           if (liveUser.authId) {
             userNameById.set(liveUser.authId, displayName);
@@ -147,7 +154,7 @@ export function ProfessorQuestionDetailPage() {
               ? (post.isVerified ? "Professor Verified AI" : "D.I.Y.A AI")
               : reply.authorId === user?.sub
                 ? "You"
-                : reply.authorName || userNameById.get(reply.authorId ?? "") || "Student",
+                : reply.authorName || userNameById.get(reply.authorId ?? "") || t("questionDetail.fallbacks.studentName"),
             message: reply.text || "",
             timestamp: formatTimeAgo(getTimestampMs(reply.createdAt)),
             isAI,
@@ -157,16 +164,16 @@ export function ProfessorQuestionDetailPage() {
 
         if (isMounted) {
           setCurrentQuestion({
-            author: post.authorId === user?.sub ? "You" : userNameById.get(post.authorId ?? "") || "Student",
-            question: post.title ?? post.content ?? "Question not available",
+            author: post.authorId === user?.sub ? "You" : userNameById.get(post.authorId ?? "") || t("questionDetail.fallbacks.studentName"),
+            question: post.title ?? post.content ?? t("questionDetail.fallbacks.questionNotFound"),
             aiAnswer: post.aiAnswer ?? "",
           });
           setReplies(mappedReplies);
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load forum thread.");
-          setCurrentQuestion({ author: "Student", question: "Question unavailable", aiAnswer: "" });
+          setError(err instanceof Error ? err.message : t("questionDetail.errors.loadThread"));
+          setCurrentQuestion({ author: t("questionDetail.fallbacks.studentName"), question: t("questionDetail.fallbacks.questionUnavailable"), aiAnswer: "" });
           setReplies([]);
         }
       } finally {
@@ -203,14 +210,14 @@ export function ProfessorQuestionDetailPage() {
         body: JSON.stringify({
           postId: questionId,
           authorId: user.sub,
-          authorName: user.name || user.email || "Professor",
+          authorName: user.name || user.email || t("questionDetail.fallbacks.professorName"),
           role: "professor",
           text,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send professor reply.");
+        throw new Error(t("questionDetail.errors.submitReply"));
       }
 
       const createdReply = (await response.json()) as BackendReply;
@@ -227,7 +234,7 @@ export function ProfessorQuestionDetailPage() {
       setManualAnswer("");
       setShowManualInput(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send professor reply.");
+      setError(err instanceof Error ? err.message : t("questionDetail.errors.submitReply"));
     } finally {
       setIsSubmitting(false);
     }
@@ -245,17 +252,17 @@ export function ProfessorQuestionDetailPage() {
           </div>
           <div>
             <div style={{ fontFamily: "Italiana, serif", fontSize: 22, letterSpacing: 2.5, color: "#fff", lineHeight: 1 }}>D.I.Y.A</div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>Professor View</div>
+            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,0.35)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 3 }}>{t("professorSidebar.appSubtitle")}</div>
           </div>
         </div>
-        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>Navigation</div>
+        <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>{t("professorSidebar.navigationLabel")}</div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           <button
             type="button"
             onClick={() => navigate("/professor/forum")}
             style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}
           >
-            ← Back to Forum
+            {t("forumThread.backToForum")}
           </button>
           {[
             { id: "calendar", label: "Calendar", path: "/professor/calendar" },
@@ -275,7 +282,7 @@ export function ProfessorQuestionDetailPage() {
           onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
           style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
         >
-          Sign out
+          {t("professorSidebar.nav.signOut")}
         </button>
       </aside>
 
@@ -289,12 +296,12 @@ export function ProfessorQuestionDetailPage() {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              Back to Forum
+              {t("forumThread.backToForum")}
             </button>
 
-            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Question Discussion</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>{t("questionDetail.header.eyebrow")}</div>
             <div style={{ fontSize: 52, fontWeight: 900, color: palette.darkest, letterSpacing: -2, lineHeight: 1.1, marginBottom: 12, maxWidth: 900 }}>{currentQuestion.question}</div>
-            <div style={{ fontSize: 16, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>Asked by {currentQuestion.author} · CS 1337 — Computer Science I</div>
+            <div style={{ fontSize: 16, fontWeight: 500, color: "rgba(92,30,38,0.5)" }}>{t("questionDetail.header.askedBy", { author: currentQuestion.author })}</div>
           </div>
         </div>
 
@@ -310,19 +317,19 @@ export function ProfessorQuestionDetailPage() {
           <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 360px", gap: 32, alignItems: "start" }}>
             <div>
               <div style={{ fontSize: 24, fontWeight: 900, color: palette.darkest, letterSpacing: -0.8, marginBottom: 24 }}>
-                Discussion ({replies.length} {replies.length === 1 ? "reply" : "replies"})
+                {t("questionDetail.discussion.title", { count: replies.length })}
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {isLoading && (
                 <div style={{ padding: "14px 16px", backgroundColor: "rgba(214,214,214,0.15)", borderRadius: 10, color: palette.deepBurgundy, fontSize: 14, fontWeight: 700 }}>
-                  Loading discussion...
+                  {t("questionDetail.discussion.loading")}
                 </div>
               )}
 
               {!isLoading && replies.length === 0 && (
                 <div style={{ padding: "14px 16px", backgroundColor: "rgba(214,214,214,0.15)", borderRadius: 10, color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 700 }}>
-                  No replies yet. You can post the first professor response below.
+                  {t("questionDetail.discussion.empty")}
                 </div>
               )}
 
@@ -354,7 +361,7 @@ export function ProfessorQuestionDetailPage() {
                           onClick={handleRejectAI}
                           style={{ padding: "6px 14px", background: "transparent", color: "#DC3545", border: "1.5px solid #DC3545", borderRadius: 8, fontSize: 11, fontWeight: 700, cursor: "pointer" }}
                         >
-                          ✗ Reject & Reply
+                          ✗ {t("questionDetail.reply.rejectButton")}
                         </button>
                       )}
                     </div>
@@ -369,25 +376,25 @@ export function ProfessorQuestionDetailPage() {
               <div style={{ backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 24px rgba(0,0,0,0.08)", marginBottom: 16 }}>
                 <div style={{ height: 5, background: `linear-gradient(90deg, ${palette.crimson}, ${palette.sage})` }} />
                 <div style={{ padding: "24px" }}>
-                  <div style={{ fontSize: 16, fontWeight: 800, color: palette.darkest, marginBottom: 16 }}>Professor Actions</div>
-                  <button onClick={() => setShowManualInput(true)} style={{ width: "100%", padding: "12px", background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`, color: "white", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 10 }}>✏️ Write Custom Answer</button>
-                  <button onClick={() => navigate("/professor/forum")} style={{ width: "100%", padding: "12px", background: "transparent", color: palette.deepBurgundy, border: "1.5px solid rgba(92,30,38,0.2)", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>← Back to Forum</button>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: palette.darkest, marginBottom: 16 }}>{t("questionDetail.actions.title")}</div>
+                  <button onClick={() => setShowManualInput(true)} style={{ width: "100%", padding: "12px", background: `linear-gradient(135deg, ${palette.crimson}, ${palette.deepBurgundy})`, color: "white", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 10 }}>✏️ {t("questionDetail.actions.writeAnswer")}</button>
+                  <button onClick={() => navigate("/professor/forum")} style={{ width: "100%", padding: "12px", background: "transparent", color: palette.deepBurgundy, border: "1.5px solid rgba(92,30,38,0.2)", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>{t("forumThread.backToForum")}</button>
                 </div>
               </div>
 
               <div style={{ backgroundColor: "#fff", borderRadius: 20, padding: "20px 24px", boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>Thread Stats</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(92,30,38,0.4)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>{t("questionDetail.stats.title")}</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>Total replies</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>{t("questionDetail.stats.totalReplies")}</span>
                     <span style={{ fontSize: 20, fontWeight: 900, color: palette.crimson }}>{replies.length}</span>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>AI responses</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>{t("questionDetail.stats.aiResponses")}</span>
                     <span style={{ fontSize: 20, fontWeight: 900, color: palette.sage }}>{aiReplyCount}</span>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>Professor replies</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy }}>{t("questionDetail.stats.professorReplies")}</span>
                     <span style={{ fontSize: 20, fontWeight: 900, color: palette.deepBurgundy }}>{professorReplyCount}</span>
                   </div>
                 </div>
@@ -399,16 +406,16 @@ export function ProfessorQuestionDetailPage() {
             <div style={{ marginTop: 32, backgroundColor: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.12)" }}>
               <div style={{ height: 5, backgroundColor: palette.sage }} />
               <div style={{ padding: "28px 32px" }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: palette.darkest, marginBottom: 16 }}>👨‍🏫 Your Manual Response</div>
+                <div style={{ fontSize: 18, fontWeight: 800, color: palette.darkest, marginBottom: 16 }}>👨‍🏫 {t("questionDetail.manualResponse.title")}</div>
                 <textarea
                   value={manualAnswer}
                   onChange={(e) => setManualAnswer(e.target.value)}
-                  placeholder="Type your answer here..."
+                  placeholder={t("questionDetail.manualResponse.placeholder")}
                   style={{ width: "100%", minHeight: 140, padding: "14px 16px", border: "1.5px solid rgba(214,214,214,0.5)", borderRadius: 12, fontSize: 15, fontFamily: "inherit", resize: "vertical", boxSizing: "border-box", outline: "none", color: palette.deepBurgundy, lineHeight: 1.6 }}
                 />
                 <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
-                  <button onClick={() => void handleSubmitManualAnswer()} disabled={!manualAnswer.trim() || isSubmitting} style={{ padding: "12px 24px", background: !manualAnswer.trim() || isSubmitting ? "rgba(122,155,118,0.35)" : `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: !manualAnswer.trim() || isSubmitting ? "not-allowed" : "pointer" }}>{isSubmitting ? "Sending..." : "Submit Answer"}</button>
-                  <button onClick={() => setShowManualInput(false)} style={{ padding: "12px 24px", background: "transparent", color: palette.deepBurgundy, border: "1.5px solid rgba(92,30,38,0.2)", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Cancel</button>
+                  <button onClick={() => void handleSubmitManualAnswer()} disabled={!manualAnswer.trim() || isSubmitting} style={{ padding: "12px 24px", background: !manualAnswer.trim() || isSubmitting ? "rgba(122,155,118,0.35)" : `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`, color: "white", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: !manualAnswer.trim() || isSubmitting ? "not-allowed" : "pointer" }}>{isSubmitting ? t("questionDetail.manualResponse.sendingButton") : t("questionDetail.manualResponse.submitButton")}</button>
+                  <button onClick={() => setShowManualInput(false)} style={{ padding: "12px 24px", background: "transparent", color: palette.deepBurgundy, border: "1.5px solid rgba(92,30,38,0.2)", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>{t("questionDetail.manualResponse.cancelButton")}</button>
                 </div>
               </div>
             </div>
@@ -418,8 +425,7 @@ export function ProfessorQuestionDetailPage() {
 
         <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "36px 64px" }}>
           <div style={{ maxWidth: 1200 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 6 }}>CS 1337 — Computer Science I</div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Keep the conversation going — your class is counting on you.</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>{t("questionDetail.footer.description")}</div>
           </div>
         </div>
       </main>

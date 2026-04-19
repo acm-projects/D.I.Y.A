@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { ProfessorSidebar } from "../../ProfessorSidebar";
 import { useProfessorGroups } from "../../ProfessorGroupContext";
+import { useTranslation } from "react-i18next";
 
 interface Question {
   id: string;
@@ -67,28 +68,6 @@ const REPLIES_API_BASE_URL = "/api/replies";
 const USERS_API_BASE_URL = "/api/users";
 const ANNOUNCEMENTS_API_BASE_URL = "/api/announcements";
 
-function getTimeAgo(createdAtMs: number): string {
-  const diffMs = Date.now() - createdAtMs;
-  const minutes = Math.max(1, Math.floor(diffMs / 60000));
-
-  if (minutes < 60) {
-    return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
-  }
-
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) {
-    return `${hours} hour${hours === 1 ? "" : "s"} ago`;
-  }
-
-  const days = Math.floor(hours / 24);
-  if (days < 7) {
-    return `${days} day${days === 1 ? "" : "s"} ago`;
-  }
-
-  const weeks = Math.floor(days / 7);
-  return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
-}
-
 function getTimestampMs(value?: BackendPost["createdAt"] | AnnouncementRecord["createdAt"]): number {
   if (!value) return Date.now();
 
@@ -124,6 +103,18 @@ function ForumIcon({ color }: { color: string }) {
 }
 
 export function ProfessorForumPage() {
+  const { t } = useTranslation();
+  const getTimeAgo = (createdAtMs: number): string => {
+    const diffMs = Date.now() - createdAtMs;
+    const minutes = Math.max(1, Math.floor(diffMs / 60000));
+    if (minutes < 60) return t("professorForum.timeAgo.minute", { count: minutes });
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return t("professorForum.timeAgo.hour", { count: hours });
+    const days = Math.floor(hours / 24);
+    if (days < 7) return t("professorForum.timeAgo.day", { count: days });
+    const weeks = Math.floor(days / 7);
+    return t("professorForum.timeAgo.week", { count: weeks });
+  };
   const navigate = useNavigate();
   const { user, logout } = useAuth0();
   const { selectedGroupId, groups } = useProfessorGroups();
@@ -156,11 +147,11 @@ export function ProfessorForumPage() {
         ]);
 
         if (!groupsResponse.ok) {
-          throw new Error("Failed to load professor forum groups.");
+          throw new Error(t("professorForum.errors.loadGroups"));
         }
 
         if (!postsResponse.ok) {
-          throw new Error("Failed to load professor forum posts.");
+          throw new Error(t("professorForum.errors.loadPosts"));
         }
 
         const allGroups = (await groupsResponse.json()) as BackendGroup[];
@@ -188,7 +179,7 @@ export function ProfessorForumPage() {
 
         const userNameById = new Map<string, string>();
         users.forEach((liveUser) => {
-          const displayName = liveUser.name || liveUser.email || "Student";
+          const displayName = liveUser.name || liveUser.email || t("professorForum.fallbacks.studentName");
           userNameById.set(liveUser.id, displayName);
           if (liveUser.authId) {
             userNameById.set(liveUser.authId, displayName);
@@ -215,10 +206,10 @@ export function ProfessorForumPage() {
         const mappedQuestions = relevantPosts
           .map((post, index) => ({
             id: post.id,
-            author: userNameById.get(post.authorId ?? "") || "Student",
-            question: post.title ?? post.content ?? "Untitled question",
+            author: userNameById.get(post.authorId ?? "") || t("professorForum.fallbacks.studentName"),
+            question: post.title ?? post.content ?? t("professorForum.questions.fallbackTitle"),
             replies: relevantRepliesByPost[index]?.length ?? 0,
-            aiAnswer: post.aiAnswer ?? "No AI answer available yet.",
+            aiAnswer: post.aiAnswer ?? t('professorForum.ai.noAnswer'),
             aiAnswerStatus: post.aiReviewStatus ?? (post.isVerified ? "verified" : "pending"),
             createdAtMs: getTimestampMs(post.createdAt),
           }))
@@ -231,14 +222,14 @@ export function ProfessorForumPage() {
         if (isMounted) {
           setQuestions(mappedQuestions);
           setAnnouncements(sortedAnnouncements);
-          setGroupTitle(selectedGroup?.title?.trim() || "Professor Forum");
+          setGroupTitle(selectedGroup?.title?.trim() || t("professorForum.header.fallbackTitle"));
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load professor forum data.");
+          setError(err instanceof Error ? err.message : t("professorForum.errors.loadFailed"));
           setQuestions([]);
           setAnnouncements([]);
-          setGroupTitle("Professor Forum");
+          setGroupTitle(t("professorForum.header.fallbackTitle"));
         }
       } finally {
         if (isMounted) {
@@ -299,12 +290,12 @@ export function ProfessorForumPage() {
         },
         body: JSON.stringify({
           isVerified: action === "verify",
-          aiReviewStatus: action === "verify" ? "verified" : "rejected",
+          aiReviewStatus: action === "verify" ? t("professorForum.ai.verified") : t("professorForum.ai.rejected"),
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update AI review status.");
+        throw new Error(t("professorForum.errors.updateAIStatus"));
       }
 
       setQuestions((currentQuestions) =>
@@ -315,7 +306,7 @@ export function ProfessorForumPage() {
         ),
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update AI review status.");
+      setError(err instanceof Error ? err.message : t("professorForum.errors.updateAIStatus"));
     }
   };
 
@@ -344,21 +335,21 @@ export function ProfessorForumPage() {
         },
         body: JSON.stringify({
           authorId: user.sub,
-          authorName: user.name || user.email || "Professor",
+          authorName: user.name || user.email || t("professorForum.fallbacks.professorName"),
           title,
           message,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to post announcement.");
+        throw new Error(t("professorForum.errors.postAnnouncement"));
       }
 
       const createdAnnouncement = (await response.json()) as AnnouncementRecord;
       setAnnouncements((currentAnnouncements) => [createdAnnouncement, ...currentAnnouncements]);
       closeAnnouncementModal();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to post announcement.");
+      setError(err instanceof Error ? err.message : t("professorForum.errors.postAnnouncement"));
     } finally {
       setIsSubmittingAnnouncement(false);
     }
@@ -372,9 +363,9 @@ export function ProfessorForumPage() {
         void logout({ logoutParams: { returnTo: window.location.origin } });
       }}>
         <div style={{ padding: "12px 12px", backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)", marginBottom: 8 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>Forum Stats</div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)", marginBottom: 4 }}>📊 {questions.length} Questions</div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>✅ {answeredCount} Answered</div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>{t("professorForum.sidebar.statusLabel")}</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)", marginBottom: 4 }}>📊 {questions.length} {t("professorForum.sidebar.questions")}</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>✅ {answeredCount} {t("professorForum.sidebar.answered")}</div>
         </div>
         <button
           type="button"
@@ -387,23 +378,23 @@ export function ProfessorForumPage() {
             e.currentTarget.style.background = `linear-gradient(135deg, ${palette.sage}, #5f8a5c)`;
           }}
         >
-          ✏️ New Announcement
+          ✏️ {t("professorForum.sidebar.newAnnouncement")}
         </button>
       </ProfessorSidebar>
 
       <main style={{ flex: 1, overflow: "auto" }}>
         <div style={{ backgroundColor: "#fff", padding: "56px 64px 52px", borderBottom: "1px solid rgba(214,214,214,0.2)" }}>
           <div style={{ maxWidth: 1400 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>Forum Management</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>{t("professorForum.header.eyebrow")}</div>
             <div style={{ fontSize: 64, fontWeight: 900, color: palette.darkest, letterSpacing: -2.5, lineHeight: 1, marginBottom: 12 }}>{groupTitle}</div>
-            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>Discussion board & AI answer management</div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "rgba(92,30,38,0.55)", marginBottom: 52 }}>{t("professorForum.header.subtitle")}</div>
 
             <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
               {[
-                { label: "Total Questions", value: questions.length, color: palette.crimson },
-                { label: "AI Verified", value: verifiedCount, color: palette.sage },
-                { label: "Pending Review", value: pendingCount, color: "#DC3545" },
-                { label: "Discussion Replies", value: totalReplies, color: palette.deepBurgundy },
+                { label: t("professorForum.stats.totalQuestions"), value: questions.length, color: palette.crimson },
+                { label: t("professorForum.stats.aiVerified"), value: verifiedCount, color: palette.sage },
+                { label: t("professorForum.stats.pendingReview"), value: pendingCount, color: "#DC3545" },
+                { label: t("professorForum.stats.discussionReplies"), value: totalReplies, color: palette.deepBurgundy },
               ].map((stat, i) => (
                 <div key={stat.label} style={{ flex: "1 1 220px", minWidth: 180, paddingRight: i < 3 ? 40 : 0, marginRight: i < 3 ? 40 : 0, borderRight: i < 3 ? "1px solid rgba(214,214,214,0.5)" : "none" }}>
                   <div style={{ fontSize: 48, fontWeight: 900, color: stat.color, letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
@@ -424,9 +415,9 @@ export function ProfessorForumPage() {
           )}
 
           <div style={{ marginBottom: 20, padding: "20px 22px", backgroundColor: "#fff", borderRadius: 14, border: "1px solid rgba(214,214,214,0.4)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)" }}>
-            <div style={{ color: palette.crimson, fontSize: 20, fontWeight: 800, marginBottom: 14 }}>Latest Announcements</div>
+            <div style={{ color: palette.crimson, fontSize: 20, fontWeight: 800, marginBottom: 14 }}>{t("professorForum.announcements.sectionTitle")}</div>
             {announcements.length === 0 ? (
-              <div style={{ color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 600 }}>No announcements posted yet.</div>
+              <div style={{ color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 600 }}>{t("professorForum.announcements.empty")}</div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {announcements.map((announcement) => (
@@ -436,7 +427,7 @@ export function ProfessorForumPage() {
                       <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(92,30,38,0.5)" }}>{getTimeAgo(getTimestampMs(announcement.createdAt))}</div>
                     </div>
                     <div style={{ fontSize: 13, fontWeight: 500, color: palette.deepBurgundy, lineHeight: 1.5, marginBottom: 8 }}>{announcement.message}</div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: palette.sage }}>Posted by {announcement.authorName}</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: palette.sage }}>{t("professorForum.announcements.postedBy")} {announcement.authorName}</div>
                   </div>
                 ))}
               </div>
@@ -444,26 +435,26 @@ export function ProfessorForumPage() {
           </div>
 
           <div style={{ marginTop: 12, marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ color: palette.darkest, fontSize: 32, fontWeight: 900, letterSpacing: -1 }}>Recent Questions</div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy, opacity: 0.7 }}>Last updated: {questions[0] ? getTimeAgo(questions[0].createdAtMs) : "No posts yet"}</div>
+            <div style={{ color: palette.darkest, fontSize: 32, fontWeight: 900, letterSpacing: -1 }}>{t("professorForum.questions.sectionTitle")}</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: palette.deepBurgundy, opacity: 0.7 }}>{t("professorForum.questions.lastUpdated")} {questions[0] ? getTimeAgo(questions[0].createdAtMs) : t("professorForum.questions.noPostsYet")}</div>
           </div>
 
           <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-            <button onClick={() => setShowOnlyUnanswered(false)} style={{ padding: "6px 12px", borderRadius: 8, border: `1px solid ${!showOnlyUnanswered ? palette.crimson : "rgba(39,1,21,0.2)"}`, backgroundColor: !showOnlyUnanswered ? palette.crimson : "transparent", color: !showOnlyUnanswered ? "white" : palette.deepBurgundy, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>All Questions</button>
-            <button onClick={() => setShowOnlyUnanswered(true)} style={{ padding: "6px 12px", borderRadius: 8, border: `1px solid ${showOnlyUnanswered ? palette.crimson : "rgba(39,1,21,0.2)"}`, backgroundColor: showOnlyUnanswered ? palette.crimson : "transparent", color: showOnlyUnanswered ? "white" : palette.deepBurgundy, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Unanswered</button>
-            <button onClick={() => setSortMode((currentSortMode) => currentSortMode === "recent" ? "engagement" : "recent")} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid rgba(39,1,21,0.2)", backgroundColor: "transparent", color: palette.deepBurgundy, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{sortMode === "recent" ? "Recent" : "Most Replies"}</button>
+            <button onClick={() => setShowOnlyUnanswered(false)} style={{ padding: "6px 12px", borderRadius: 8, border: `1px solid ${!showOnlyUnanswered ? palette.crimson : "rgba(39,1,21,0.2)"}`, backgroundColor: !showOnlyUnanswered ? palette.crimson : "transparent", color: !showOnlyUnanswered ? "white" : palette.deepBurgundy, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>{t("professorForum.filters.allQuestions")}</button>
+            <button onClick={() => setShowOnlyUnanswered(true)} style={{ padding: "6px 12px", borderRadius: 8, border: `1px solid ${showOnlyUnanswered ? palette.crimson : "rgba(39,1,21,0.2)"}`, backgroundColor: showOnlyUnanswered ? palette.crimson : "transparent", color: showOnlyUnanswered ? "white" : palette.deepBurgundy, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{t("professorForum.filters.unanswered")}</button>
+            <button onClick={() => setSortMode((currentSortMode) => currentSortMode === "recent" ? "engagement" : "recent")} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid rgba(39,1,21,0.2)", backgroundColor: "transparent", color: palette.deepBurgundy, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{sortMode === "recent" ? t("professorForum.filters.sortRecent") : t("professorForum.filters.sortEngagement")}</button>
           </div>
 
           <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 18 }}>
             {isLoading && (
               <div style={{ backgroundColor: "#fff", borderRadius: 14, padding: "20px 24px", border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: palette.deepBurgundy, fontSize: 14, fontWeight: 700 }}>
-                Loading professor forum...
+                {t("professorForum.questions.loading")}
               </div>
             )}
 
             {!isLoading && visibleQuestions.length === 0 && (
               <div style={{ backgroundColor: "#fff", borderRadius: 14, padding: "20px 24px", border: "1px solid rgba(214,214,214,0.3)", boxShadow: "0 4px 18px rgba(0,0,0,0.08)", color: "rgba(92,30,38,0.55)", fontSize: 13, fontWeight: 700 }}>
-                No questions match the current filter.
+                {t("professorForum.questions.empty")}
               </div>
             )}
 
@@ -488,7 +479,7 @@ export function ProfessorForumPage() {
                     </div>
                     <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 10px", borderRadius: 8, backgroundColor: q.replies === 0 ? "rgba(220,53,69,0.1)" : "rgba(92,30,38,0.08)" }}>
                       <ForumIcon color={q.replies === 0 ? "#DC3545" : palette.deepBurgundy} />
-                      <span>{q.replies} {q.replies === 1 ? "reply" : "replies"}</span>
+                      <span>{t("professorForum.questions.reply", { count: q.replies })}</span>
                     </div>
                     <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(92,30,38,0.5)", marginLeft: "auto" }}>🕐 {getTimeAgo(q.createdAtMs)}</div>
                   </div>
@@ -503,9 +494,9 @@ export function ProfessorForumPage() {
                     }}
                   >
                     <div style={{ fontSize: 10, fontWeight: 700, color: palette.crimson, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                      🤖 AI Generated Answer
-                      {q.aiAnswerStatus === "verified" && <span style={{ color: palette.sage }}>✓ Verified</span>}
-                      {q.aiAnswerStatus === "rejected" && <span style={{ color: "#DC3545" }}>✗ Rejected</span>}
+                      🤖 {t("professorForum.ai.label")}
+                      {q.aiAnswerStatus === "verified" && <span style={{ color: palette.sage }}>✓ {t("professorForum.ai.verified")}</span>}
+                      {q.aiAnswerStatus === "rejected" && <span style={{ color: "#DC3545" }}>✗ {t("professorForum.ai.rejected")}</span>}
                     </div>
                     <div style={{ fontSize: 13, fontWeight: 500, color: palette.deepBurgundy, lineHeight: 1.5, marginBottom: 10 }}>{q.aiAnswer}</div>
                     {q.aiAnswerStatus === "pending" && (
@@ -523,7 +514,7 @@ export function ProfessorForumPage() {
                             e.currentTarget.style.background = palette.sage;
                           }}
                         >
-                          ✓ Verify
+                          ✓ {t("professorForum.ai.verifyButton")}
                         </button>
                         <button
                           onClick={(e) => {
@@ -540,7 +531,7 @@ export function ProfessorForumPage() {
                             e.currentTarget.style.color = "#DC3545";
                           }}
                         >
-                          ✗ Reject
+                          ✗ {t("professorForum.ai.rejectButton")}
                         </button>
                       </div>
                     )}
@@ -548,7 +539,7 @@ export function ProfessorForumPage() {
 
                   <div style={{ marginTop: 14, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
                     <button onClick={() => navigate(`/professor/forum/${q.id}`)} style={{ display: "flex", alignItems: "center", gap: 6, background: "transparent", border: "none", cursor: "pointer", padding: 0 }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>View all replies</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: palette.crimson }}>{t("professorForum.questions.viewReplies")}</div>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M9 18l6-6-6-6" stroke={palette.crimson} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
@@ -563,12 +554,12 @@ export function ProfessorForumPage() {
 
         <div style={{ background: `linear-gradient(135deg, ${palette.crimson} 0%, ${palette.deepBurgundy} 100%)`, padding: "40px 64px" }}>
           <div style={{ maxWidth: 1400 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>AI Forum Management</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>{t("professorForum.footer.eyebrow")}</div>
             <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginBottom: 4 }}>
               {pendingCount > 0 ? `${pendingCount} answers awaiting your review.` : "All AI answers reviewed. Great work."}
             </div>
             <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.65)" }}>
-              Verify or override AI-generated responses to keep students informed.
+              {t("professorForum.footer.description")}
             </div>
           </div>
         </div>
@@ -577,14 +568,14 @@ export function ProfessorForumPage() {
       {showAnnouncementModal && (
         <div onClick={closeAnnouncementModal} style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
           <div onClick={(e) => e.stopPropagation()} style={{ width: "min(520px, 92vw)", backgroundColor: "#fff", borderRadius: 18, padding: "24px 24px 20px", boxShadow: "0 20px 60px rgba(0,0,0,0.28)" }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 16 }}>New Announcement</div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>Announcement Title</div>
-            <input value={announcementTitle} onChange={(e) => setAnnouncementTitle(e.target.value)} placeholder="Enter a short title" style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1px solid rgba(39,1,21,0.18)", fontSize: 14, fontWeight: 500, boxSizing: "border-box", marginBottom: 14, fontFamily: "inherit" }} />
-            <div style={{ fontSize: 12, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>Message</div>
-            <textarea value={announcementMessage} onChange={(e) => setAnnouncementMessage(e.target.value)} placeholder="Share an update with your students..." style={{ width: "100%", minHeight: 140, padding: "12px 14px", borderRadius: 10, border: "1px solid rgba(39,1,21,0.18)", fontSize: 14, fontWeight: 500, boxSizing: "border-box", resize: "vertical", marginBottom: 18, fontFamily: "inherit" }} />
+            <div style={{ fontSize: 22, fontWeight: 800, color: palette.deepBurgundy, marginBottom: 16 }}>{t("professorForum.announcementModal.title")}</div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{t("professorForum.announcementModal.titleLabel")}</div>
+            <input value={announcementTitle} onChange={(e) => setAnnouncementTitle(e.target.value)} placeholder={t("professorForum.announcementModal.titlePlaceholder")} style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1px solid rgba(39,1,21,0.18)", fontSize: 14, fontWeight: 500, boxSizing: "border-box", marginBottom: 14, fontFamily: "inherit" }} />
+            <div style={{ fontSize: 12, fontWeight: 700, color: palette.deepBurgundy, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{t("professorForum.announcementModal.messageLabel")}</div>
+            <textarea value={announcementMessage} onChange={(e) => setAnnouncementMessage(e.target.value)} placeholder={t("professorForum.announcementModal.messagePlaceholder")} style={{ width: "100%", minHeight: 140, padding: "12px 14px", borderRadius: 10, border: "1px solid rgba(39,1,21,0.18)", fontSize: 14, fontWeight: 500, boxSizing: "border-box", resize: "vertical", marginBottom: 18, fontFamily: "inherit" }} />
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
-              <button type="button" onClick={closeAnnouncementModal} style={{ padding: "10px 18px", borderRadius: 10, border: "1px solid rgba(39,1,21,0.18)", backgroundColor: "transparent", color: palette.deepBurgundy, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Cancel</button>
-              <button type="button" onClick={handlePostAnnouncement} disabled={!announcementTitle.trim() || !announcementMessage.trim() || isSubmittingAnnouncement} style={{ padding: "10px 18px", borderRadius: 10, border: "none", backgroundColor: !announcementTitle.trim() || !announcementMessage.trim() || isSubmittingAnnouncement ? "rgba(162,34,55,0.25)" : palette.crimson, color: "white", fontSize: 13, fontWeight: 700, cursor: !announcementTitle.trim() || !announcementMessage.trim() || isSubmittingAnnouncement ? "not-allowed" : "pointer" }}>{isSubmittingAnnouncement ? "Posting..." : "Post Announcement"}</button>
+              <button type="button" onClick={closeAnnouncementModal} style={{ padding: "10px 18px", borderRadius: 10, border: "1px solid rgba(39,1,21,0.18)", backgroundColor: "transparent", color: palette.deepBurgundy, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("professorForum.announcementModal.cancelButton")}</button>
+              <button type="button" onClick={handlePostAnnouncement} disabled={!announcementTitle.trim() || !announcementMessage.trim() || isSubmittingAnnouncement} style={{ padding: "10px 18px", borderRadius: 10, border: "none", backgroundColor: !announcementTitle.trim() || !announcementMessage.trim() || isSubmittingAnnouncement ? "rgba(162,34,55,0.25)" : palette.crimson, color: "white", fontSize: 13, fontWeight: 700, cursor: !announcementTitle.trim() || !announcementMessage.trim() || isSubmittingAnnouncement ? "not-allowed" : "pointer" }}>{isSubmittingAnnouncement ? t("professorForum.announcementModal.postingButton") : t("professorForum.announcementModal.postButton")}</button>
             </div>
           </div>
         </div>

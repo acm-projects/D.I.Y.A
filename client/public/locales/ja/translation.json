@@ -1,32 +1,88 @@
 {
-  "topicAnalysis": {
-    "notFound": "トピックが見つかりませんでした。",
-    "backToSelfCheck": "セルフチェックに戻る",
-    "backToAnalysis": "分析に戻る",
-    "badges": {
-      "forumQuestions": "{{count}} 件のフォーラム質問",
-      "engagement": "エンゲージメント率 {{score}}%"
+  "home": {
+    "title": "マイグループ",
+    "subtitle_one": "{{count}} 件のグループを管理中",
+    "subtitle_other": "{{count}} 件のグループを管理中",
+
+    "createButton": "グループを作成",
+
+    "loading": "グループを読み込み中...",
+
+    "empty": {
+      "title": "グループがありません",
+      "subtitle": "最初のグループを作成して、D.I.Y.A の利用を開始しましょう。"
     },
-    "trend": {
-      "rising": "上昇中",
-      "steady": "安定",
-      "declining": "注意が必要"
+
+    "error": "グループの作成に失敗しました。",
+
+    "groupCard": {
+      "members_one": "{{count}} 名のメンバー",
+      "members_other": "{{count}} 名のメンバー",
+      "view": "表示 →"
     },
-    "positives": {
-      "title": "ポジティブな点",
-      "subtitle": "順調な項目"
+
+    "modal": {
+      "title": "新規グループ作成",
+      "groupTitleLabel": "グループ名",
+      "groupTitlePlaceholder": "例: CS 1337 — コンピュータサイエンス I",
+      "descriptionLabel": "説明 (任意)",
+      "descriptionPlaceholder": "コースやグループの簡単な説明...",
+      "cancel": "キャンセル",
+      "creating": "作成中...",
+      "create": "グループを作成"
+    }
+  },
+  "analysis": {
+    "badge": "AI 分析",
+    "title": "コース分析",
+    "subtitle": "学生の質問と言動パターンに基づくインサイト",
+
+    "stats": {
+      "postsAnalyzed": "分析済み投稿",
+      "groupsIncluded": "対象グループ",
+      "topicsIdentified": "特定されたトピック",
+      "needAttention": "要注目"
     },
-    "concerns": {
-      "title": "懸念点",
-      "subtitle": "苦戦している項目"
+
+    "distribution": {
+      "title": "質問の分布",
+      "subtitle": "フォーラムの活動から検出されたトピックのボリューム",
+      "loading": "現在のグループを分析中...",
+      "empty": "分析に十分なデータがありません。",
+      "emptyDetail": "学生がグループに投稿を開始すると、このダッシュボードに議論されているトピックの要約が自動的に表示されます。",
+      "legendNeedsAttention": "要注目",
+      "legendLowerVolume": "低ボリューム"
     },
-    "recommendations": {
-      "title": "推奨事項",
-      "subtitle": "改善方法"
+
+    "summary": {
+      "title": "AI 要約",
+      "loading": "投稿からトピックのアクティビティを算出中...",
+      "empty": "分析に十分なデータがありません。",
+      "postsSummary": "{{groups}} グループ内の {{count}} 件の投稿から、{{mentions}} 件のトピックへの言及が見つかりました。",
+      "mostActiveTopic": "最も活発なトピック:",
+      "mostActiveDetail": "{{name}}（言及数 {{count}} 件、現在の議論の {{percent}}%）。",
+      "priorityTopics": "優先トピック",
+      "noAttentionTopics": "現在、注目のしきい値を超えているトピックはありません。",
+      "positiveIndicators": "✓ ポジティブな指標",
+      "positiveWithTopics": "{{topics}} は質問のボリュームが比較的少なく、現在の教材が効果的に機能していることを示唆しています。",
+      "positiveNoTopics": "現在の議論は注目が必要なトピックに集中しています。次のチェックポイントの前にコア教材を強化することを検討してください。"
     },
-    "snapshot": {
-      "title": "クラスの概況 — {{topicName}}",
-      "description": "{{count}} 件のフォーラム質問に基づくと、このトピックのクラスエンゲージメントスコアは {{score}}% です。次回の評価前に理解度を高めるため、上記の懸念点に注力してください。"
+
+    "insights": {
+      "title": "トピック・インサイト",
+      "loading": "議論データからインサイトを生成中...",
+      "empty": "分析に十分なデータがありません。",
+      "badgeAttention": "⚠ 注意",
+      "badgeStrong": "✓ 理解良好",
+      "recommendedAction": "推奨されるアクション",
+      "discussionVolume": "議論のボリューム"
+    },
+
+    "footer": {
+      "badge": "分析エンジン",
+      "title_one": "{{count}} 件のトピックがあなたの注目を必要としています。",
+      "title_other": "{{count}} 件のトピックがあなたの注目を必要としています。",
+      "subtitle": "上記の強調表示されたトピックを確認し、追加の説明や告知が必要な箇所を判断してください。"
     }
   },
   "sidebar": {
@@ -37,7 +93,7 @@
     "nav": {
       "profile": "プロフィール",
       "groups": "グループ",
-      "request": "オフィスアワーの予約",
+      "request": "面談リクエスト",
       "requestShort": "オフィスアワー",
       "selfcheck": "セルフチェック"
     },
@@ -46,77 +102,82 @@
     }
   },
   "professorSidebar": {
-    "appSubtitle": "教員用画面",
+    "appSubtitle": "教員用ビュー",
     "navigationLabel": "ナビゲーション",
     "nav": {
+      "home": "ホーム",
       "forum": "フォーラム",
       "calendar": "カレンダー",
       "analysis": "分析",
       "requests": "リクエスト",
-      "editGroup": "グループ編集"
+      "editGroup": "グループ編集",
+      "profile": "プロフィール"
     },
-    "signOut": "サインアウト"
+    "signOut": "サインアウト",
+    "activeGroup": "アクティブなグループ"
   },
   "login": {
     "title": "おかえりなさい",
-    "subtitle": "D.I.Y.Aのワークスペース、課題、ディスカッション、フィードバックツールにアクセスするため、Auth0で安全にログインしてください。",
-    "submitButton": "Auth0でログイン",
-    "signUpPrompt": "D.I.Y.Aは初めてですか？",
+    "subtitle": "Auth0 で安全にログインして、D.I.Y.A のワークスペース、課題、議論にアクセスしましょう。",
+    "submitButton": "Auth0 でログイン",
+    "signUpPrompt": "D.I.Y.A を初めて利用しますか？",
     "signUpLink": "アカウント作成"
   },
   "signUp": {
     "title": "アカウント作成",
-    "subtitle": "安全なAuth0サインアップフローを通じてD.I.Y.Aを開始し、学習ワークスペースへ進んでください。",
+    "subtitle": "Auth0 で安全に登録して、D.I.Y.A での学習を開始しましょう。",
     "role": {
-      "label": "アカウント権限",
-      "description": "新しいアカウントを学生として作成するか、教授として作成するか選択してください。",
+      "label": "アカウントの種類",
+      "description": "学生として作成するか、教員として作成するかを選択してください。",
       "student": "学生",
-      "professor": "教授"
+      "professor": "教員"
     },
-    "submitButton": "Auth0でサインアップ",
+    "submitButton": "Auth0 で登録",
     "loginPrompt": "すでにアカウントをお持ちですか？",
     "loginLink": "ログイン"
   },
   "groupInvite": {
     "title": "グループへの招待",
-    "message": "<strong>{{adminName}}</strong> さんがあなたを <strong>{{groupName}}</strong> に招待しました。",
+    "message": "<strong>{{adminName}}</strong> さんがあなたを <strong>{{groupName}}</strong> に招待しています。",
     "accept": "承認",
     "declined": "辞退"
   },
   "groups": {
     "pageTitle": "おかえりなさい、{{name}} さん！",
     "defaultName": "学生",
+    "members": "メンバー",
+    "posts": "投稿",
     "search": {
-      "placeholder": "名前でグループを検索...",
-      "ariaLabel": "グループ名で検索"
+      "placeholder": "グループ名で検索...",
+      "ariaLabel": "グループを検索"
     },
     "count": {
-      "showing": "{{total}} グループ中 {{count}} 件を表示",
-      "member_one": "1 つのグループに参加しています",
-      "member_other": "{{count}} つのグループに参加しています"
+      "showing": "{{total}} 件中 {{count}} 件のグループを表示中",
+      "member_one": "{{count}} 件のグループに参加しています",
+      "member_other": "{{count}} 件のグループに参加しています"
     },
     "card": {
-      "members_one": "メンバー {{count}} 名",
-      "members_other": "メンバー {{count}} 名",
-      "posts_one": "投稿 {{count}} 件",
-      "posts_other": "投稿 {{count}} 件",
+      "members_one": "{{count}} 名のメンバー",
+      "members_other": "{{count}} 名のメンバー",
+      "posts_one": "{{count}} 件の投稿",
+      "posts_other": "{{count}} 件の投稿",
       "viewGroup": "グループを表示"
     },
     "loading": "読み込み中...",
     "error": {
-      "title": "グループを読み込めません",
-      "loadGroups": "グループの読み込みに失敗しました。",
+      "title": "グループの読み込みに失敗",
+      "loadGroups": "グループの読み込み中にエラーが発生しました。",
       "loadPosts": "フォーラムの投稿数の取得に失敗しました。"
     },
     "empty": {
-      "title": "「{{query}}」に一致するグループが見つかりません",
-      "subtitle": "短い名前やコースコードを試すか、余計なスペースを削除してください。"
+      "title": "グループが見つかりません",
+      "subtitle": "短い名前やコースコードを試してください。"
     }
   },
   "forum": {
-    "pageTitle": "{{groupName}} フォーラム",
+    "pageTitle": "フォーラム",
     "header": {
-      "askQuestion": "新しい質問をする",
+      "askQuestion": "仲間や D.I.Y.A AI に質問してみましょう...",
       "ariaCreate": "新しい質問を作成"
     },
     "search": {
@@ -124,120 +185,132 @@
       "ariaLabel": "質問を検索"
     },
     "count": {
-      "showing": "{{total}} 件中 {{count}} 件を表示",
-      "total_one": "同級生からの 1 件の質問",
-      "total_other": "同級生からの {{count}} 件の質問"
+      "showing": "{{total}} 件中 {{count}} 件を表示中",
+      "total_one": "仲間からの質問: {{count}} 件",
+      "total_other": "仲間からの質問: {{count}} 件"
     },
     "card": {
-      "newBadge": "新規",
-      "replies_one": "返信 {{count}} 件",
-      "replies_other": "返信 {{count}} 件",
+      "newBadge": "NEW",
+      "replies_one": "件の返信",
+      "replies_other": "件の返信",
       "viewReplies": "返信を表示",
-      "aiVerified": "この質問へのAIの回答は教授によって確認済みです。",
+      "aiVerified": "この質問への AI の回答は教員によって確認済みです。",
       "timeAgo": {
-        "minute_one": "1 分前",
+        "minute_one": "{{count}} 分前",
         "minute_other": "{{count}} 分前",
-        "hour_one": "1 時間前",
+        "hour_one": "{{count}} 時間前",
         "hour_other": "{{count}} 時間前",
-        "day_one": "1 日前",
+        "day_one": "{{count}} 日前",
         "day_other": "{{count}} 日前",
-        "week_one": "1 週間前",
+        "week_one": "{{count}} 週間前",
         "week_other": "{{count}} 週間前"
       }
     },
     "loading": "読み込み中...",
     "error": {
-      "title": "フォーラムの質問を読み込めません",
-      "loadQuestions": "フォーラム質問の読み込みに失敗しました。",
+      "title": "質問の読み込みに失敗",
+      "loadQuestions": "フォーラムの質問読み込み中にエラーが発生しました。",
       "createQuestion": "質問の作成に失敗しました。",
-      "upvote": "高評価の更新に失敗しました。"
+      "upvote": "投票の更新に失敗しました。"
     },
     "empty": {
       "title": "質問が見つかりません",
-      "subtitle": "別のキーワードで検索するか、このグループで最初の質問を投稿しましょう。"
+      "subtitle": "別の単語で試すか、このグループで最初の質問を投稿しましょう。"
     },
     "popup": {
       "title": "質問する",
       "inputPlaceholder": "質問内容を入力してください",
-      "imageLabel": "画像（任意）",
+      "imageLabel": "画像 (任意)",
       "uploadImage": "画像をアップロード",
       "changeImage": "画像を変更",
       "cancel": "キャンセル",
+      "posting": "投稿中...",
       "postButton": "質問を投稿"
     }
   },
   "forumThread": {
     "backToForum": "← フォーラムに戻る",
     "question": {
-      "askedBy": "投稿者: {{author}}",
+      "askedBy": "質問者: ",
       "defaultTitle": "あなたの質問",
       "defaultAuthor": "あなた"
     },
     "replies": {
       "loading": "スレッドを読み込み中...",
-      "empty": "返信はまだありません。最初の返信を投稿しましょう！",
-      "professorLabel": "(教授)",
-      "imageFallback": "(画像)"
+      "empty": "まだ返信がありません。最初の返信を投稿しましょう！",
+      "professorLabel": "(教員)",
+      "imageFallback": "(画像)",
+      "professor": "教員",
+      "student": "学生",
+      "ai": "D.I.Y.A AI",
+      "profssorVerified": "教員確認済み AI"
     },
     "related": {
-      "title": "関連するディスカッション",
+      "title": "関連する議論",
       "loading": "類似トピックを検索中...",
-      "empty": "類似する投稿は見つかりませんでした。",
+      "empty": "類似の投稿は見つかりませんでした。",
       "untitled": "無題の投稿",
-      "viewThread": "スレッドを表示 →"
+      "viewThread": "スレッドを表示 →",
+      "untitledQuestion": "無題の質問"
     },
     "input": {
-      "placeholder": "返信を入力...",
-      "removeImage": "削除",
+      "placeholder": "返信を書く...",
+      "sending": "送信中...",
+      "removeImage": "添付ファイルを削除",
+      "remove": "削除",
+      "attach": "添付",
       "ariaUpload": "画像をアップロード",
       "ariaSend": "返信を送信",
       "ariaToggleSidebarOpen": "サイドバーを開く",
-      "ariaToggleSidebarClose": "サイドバーを閉じる"
+      "ariaToggleSidebarClose": "サイドバーを閉じる",
+      "fileTooLarge": "ファイルサイズが大きすぎます。10MB 以下のファイルを使用してください。",
+      "timeOut": "アップロードがタイムアウトしました。より小さいファイルで試してください。",
+      "urlError": "アップロードされたファイルのリンクを取得できませんでした。"
     },
     "errors": {
-      "loadThread": "フォーラムスレッドの読み込みに失敗しました。",
+      "loadThread": "スレッドの読み込みに失敗しました。",
       "loadReplies": "返信の読み込みに失敗しました。",
       "sendReply": "返信の送信に失敗しました。"
     }
   },
   "officeHours": {
-    "pageTitle": "オフィスアワーの予約",
+    "pageTitle": "面談リクエスト",
     "form": {
       "title": "新規リクエスト",
-      "subtitle": "教授やTA（ティーチング・アシスタント）との面談を予約するには、以下のフォームに入力してください。",
+      "subtitle": "教員または TA との面談を予約するには、以下のフォームに入力してください。",
       "loading": "コースと連絡先を読み込み中...",
       "courseLabel": "対象のコース/グループ *",
       "coursePlaceholder": "コースまたはグループを選択",
-      "noGroups": "現在、登録されているコースグループはありません。",
-      "professorLabel": "リクエスト先（教授/TA） *",
-      "professorPlaceholder": "教授またはTAを選択",
+      "noGroups": "現在、どのコースにも登録されていません。",
+      "professorLabel": "教員または TA *",
+      "professorPlaceholder": "担当者を選択",
       "reasonLabel": "面談の理由 *",
-      "reasonPlaceholder": "面談を希望する理由を簡潔に記入してください...",
+      "reasonPlaceholder": "面談の目的を簡単に説明してください...",
       "dateLabel": "希望日 *",
-      "startTimeLabel": "開始時間 (CST) *",
-      "endTimeLabel": "終了時間 (CST) *",
+      "startTimeLabel": "開始時間 *",
+      "endTimeLabel": "終了時間 *",
       "meetingTypeLabel": "面談形式 *",
       "online": "オンライン面談",
-      "inPerson": "対面面談",
-      "meetingLinkLabel": "会議リンク（任意）",
+      "inPerson": "対面",
+      "meetingLinkLabel": "会議リンク (任意)",
       "meetingLinkPlaceholder": "https://zoom.us/j/...",
       "submitButton": "リクエストを送信"
     },
     "success": {
-      "title": "リクエスト送信完了！",
-      "subtitle": "オフィスアワーのリクエストが送信されました。教授が対応次第、確認メールが届きます。",
-      "emailNote": "次のアドレスで更新メールを確認してください： ",
+      "title": "送信完了！",
+      "subtitle": "面談リクエストが送信されました。承認されるとメールが届きます。",
+      "emailNote": "更新情報はメールを確認してください: ",
       "submitAnother": "別のリクエストを送信"
     },
     "requests": {
       "title": "あなたのリクエスト",
-      "empty": "リクエストはまだありません。上記から最初のリクエストを送信してください。",
+      "empty": "リクエストはまだありません。上記から作成してください。",
       "online": "オンライン",
       "inPerson": "対面",
-      "meetingLink": "会議リンク: ",
+      "meetingLink": "リンク: ",
       "addToGoogle": "Google カレンダーに追加",
       "addToOutlook": "Outlook に追加",
-      "joinMeeting": "面談に参加",
+      "joinMeeting": "会議に参加",
       "timeRange": "{{start}} – {{end}}"
     },
     "status": {
@@ -246,11 +319,11 @@
       "declined": "辞退"
     },
     "errors": {
-      "loadProfessors": "教授の連絡先の読み込みに失敗しました。",
+      "loadProfessors": "連絡先の読み込みに失敗しました。",
       "loadGroups": "グループの読み込みに失敗しました。",
-      "loadRequests": "リクエスト履歴の読み込みに失敗しました。",
-      "loadData": "オフィスアワーデータの読み込みに失敗しました。",
-      "noGroup": "コースまたはグループを選択してください。",
+      "loadRequests": "リクエストの読み込みに失敗しました。",
+      "loadData": "データの読み込み中にエラーが発生しました。",
+      "noGroup": "コースを選択してください。",
       "submit": "リクエストの送信に失敗しました。"
     }
   },
@@ -258,76 +331,556 @@
     "pageTitle": "セルフチェック",
     "upload": {
       "title": "課題を確認する",
-      "subtitle": "評価基準（ルーブリック）と作成した課題をアップロードすると、AIが推定成績レポートを作成します。",
-      "rubricLabel": "課題の評価基準",
+      "subtitle": "ルーブリック（評価基準）と自分の課題をアップロードして、AI によるレポートを取得します。",
+      "rubricLabel": "評価基準 (ルーブリック)",
       "rubricPlaceholder": "クリックしてルーブリックをアップロード",
-      "workLabel": "作成した課題",
-      "workPlaceholder": "クリックして課題をアップロード",
-      "analyzeButton": "課題を分析する",
+      "workLabel": "提出物",
+      "workPlaceholder": "クリックして提出物をアップロード",
+      "analyzeButton": "分析を実行",
       "analyzingButton": "分析中..."
     },
     "analyzing": {
-      "title": "課題を分析しています...",
-      "subtitle": "提出物と評価基準を照らし合わせています"
+      "title": "分析しています...",
+      "subtitle": "評価基準と内容を照合しています。"
     },
     "report": {
-      "title": "成績レポート",
-      "potentialGradeLabel": "推定成績",
+      "title": "評価レポート",
+      "potentialGradeLabel": "予想成績",
       "areasForImprovement": "改善が必要な点"
     },
     "history": {
-      "title": "チェック履歴",
-      "loading": "履歴を読み込み中...",
-      "empty": "履歴はまだありません。課題をアップロードして分析を開始しましょう。",
+      "title": "過去のチェック履歴",
+      "loading": "レポートを読み込み中...",
+      "empty": "履歴がありません。最初の課題をアップロードしてみましょう。",
       "areasForImprovement": "改善が必要な点"
     },
     "errors": {
-      "loadHistory": "セルフチェック履歴の読み込みに失敗しました。",
-      "analyze": "課題の分析に失敗しました。"
+      "loadHistory": "履歴の読み込みに失敗しました。",
+      "analyze": "分析に失敗しました。"
     }
   },
   "profile": {
     "sectionLabel": "学生設定",
     "pageTitle": "アカウント管理",
-    "pageSubtitle": "セキュリティ設定の更新、アカウント詳細の確認、および重要な通知設定の変更が行えます。",
+    "pageSubtitle": "セキュリティ設定と通知設定を更新します。",
     "status": {
-      "emailVerified": "メールアドレス確認済み",
-      "emailPending": "メールアドレス未確認",
-      "lastSynced": "最終同期日: {{date}}"
+      "emailVerified": "メール認証済み",
+      "emailPending": "メール認証待ち",
+      "lastSynced": "最終同期"
     },
     "account": {
       "sectionLabel": "アカウント",
-      "noEmail": "メールアドレスが利用できません",
+      "noEmail": "メールアドレスが見つかりません",
       "emailAlertsLabel": "メール通知",
       "forumRepliesLabel": "フォーラムの返信",
       "on": "オン",
-      "off": "オフ"
+      "off": "オフ",
+      "personalInfo": "個人情報",
+      "setName": "教員や仲間にわかるように名前を設定してください。",
+      "professorSetName": "学生や同僚にわかるように名前を設定してください。",
+      "saving": "保存中...",
+      "saveName": "名前を保存",
+      "saveBio": "プロフィールを保存",
+      "tellMessage": "自己紹介を記入してください...",
+      "notAvailable": "利用不可",
+      "displayName": "表示名",
+      "enterName": "名前を入力",
+      "bio": "自己紹介 (Bio)",
+      "email": "メールアドレス",
+      "displayNameSuccess": "名前を更新しました。",
+      "displayNameError": "名前の保存に失敗しました。",
+      "bioSuccess": "プロフィールを更新しました。",
+      "bioError": "プロフィールの保存に失敗しました。",
+      "timezoneSuccess": "タイムゾーンを更新しました。",
+      "themeSuccess": "テーマを更新しました。",
+      "recently": "最近",
+      "professorSettings": "教員設定",
+      "emailAddress" : "メールアドレス"
     },
     "security": {
       "title": "アカウントセキュリティ",
-      "subtitle": "Auth0を使用してパスワードを管理し、ログインの安全性を確保します。",
+      "subtitle": "パスワードの管理を行います。",
       "passwordReset": {
-        "title": "パスワードの再設定",
-        "description": "<strong>{{email}}</strong> 宛に Auth0 パスワード再設定用の安全なメールを送信します。",
-        "fallbackEmail": "登録メールアドレス",
-        "button": "パスワード変更",
-        "buttonSending": "再設定メールを送信中...",
-        "successMessage": "{{email}} 宛に再設定メールを送信しました。受信トレイを確認してください。"
+        "title": "パスワードのリセット",
+        "description": "リセット用メールを送信します: ",
+        "fallbackEmail": "登録済みメールアドレス",
+        "button": "パスワードを変更",
+        "buttonSending": "送信中...",
+        "successEmail": "{{email}} にメールを送信しました。",
+        "failEmail": "リセットメールの送信に失敗しました。"
       }
     },
     "notifications": {
-      "title": "通知設定",
-      "subtitle": "これらの設定はFirestoreから直接読み込まれ、変更すると即座に保存されます。",
+      "title": "通知",
+      "subtitle": "通知設定を変更します。",
       "emailAlerts": {
         "title": "メール通知",
-        "description": "重要なアカウント活動や予約に関する更新情報をメールで受け取ります。",
-        "successMessage": "メール通知設定を更新しました。"
+        "description": "重要な更新や面談に関する通知を受け取ります。",
+        "successMessage": "通知設定を更新しました。"
       },
-      "forumReplies": {
+      "newForumReplies": {
         "title": "フォーラムの新しい返信",
-        "description": "学習に関連する重要な議論で新しい活動や返信があった場合に通知を受け取ります。",
+        "description": "自分の投稿に返信があった際に通知を受け取ります。",
         "successMessage": "フォーラム通知設定を更新しました。"
       }
+    },
+    "preferences": {
+    "title": "環境設定",
+    "subtitle": "タイムゾーンやテーマをカスタマイズします。",
+    "timezone": {
+      "label": "タイムゾーン"
+    },
+    "appearance": {
+      "label": "テーマ",
+      "lightMode": "ライトモード",
+      "darkMode": "ダークモード",
+      "switchButton": "{{ mode }} に切り替え",
+      "description": "選択したテーマが保存されます。"
+    },
+    "language": {
+      "label": "言語",
+      "current": "日本語 (JP)",
+      "comingSoon": "他の言語も順次追加予定です。"
+    }
+  },
+  "dangerZone": {
+    "title": "危険ゾーン",
+    "subtitle": "取り消し不可能なアクションです。注意して実行してください。",
+    "deleteAccount": {
+      "title": "アカウントの削除",
+      "description": "アカウントとすべてのデータを完全に削除します。",
+      "button": "削除をリクエスト",
+      "alertMessage": "アカウントを削除するには管理者に連絡してください。"
+    }
+  }
+  },
+  "professorRequests": {
+
+    "nav": {
+      "backToForum": "← フォーラムに戻る",
+      "calendar": "カレンダー",
+      "analysis": "分析",
+      "requests": "リクエスト",
+      "editGroup": "グループ編集",
+      "professorView": "教員ビュー",
+      "signOut": "サインアウト"
+    },
+
+    "header": {
+      "eyebrow": "オフィスアワー",
+      "title": "面談リクエスト",
+      "subtitle": "学生からの予約リクエストの確認と調整"
+    },
+
+    "stats": {
+      "pendingRequests": "保留中のリクエスト",
+      "thisWeek": "今週",
+      "nextWeek": "来週"
+    },
+
+    "list": {
+      "heading": "受信リクエスト",
+      "loading": "リクエストを読み込み中...",
+      "empty": "現在、保留中のリクエストはありません。"
+    },
+
+    "card": {
+      "fallbackName": "学生",
+      "fallbackEmail": "メールアドレスなし",
+      "requestedAgo": "リクエスト日時:",
+      "accept": "承認",
+      "reject": "却下",
+      "reschedule": "日程再調整",
+      "googleCal": "Google カレンダー",
+      "outlook": "Outlook",
+      "meet": "面談"
+    },
+
+    "calendarTitle": "オフィスアワー — {{studentName}}",
+
+    "timeAgo": {
+      "minute_one": "{{count}} 分前",
+      "minute_other": "{{count}} 分前",
+      "hour_one": "{{count}} 時間前",
+      "hour_other": "{{count}} 時間前",
+      "day_one": "{{count}} 日前",
+      "day_other": "{{count}} 日前"
+    },
+
+    "reschedulePanel": {
+      "title": "別日程を提案",
+      "dateLabel": "日付",
+      "timeLabel": "時間",
+      "sendProposal": "提案を送信",
+      "validationError": "日付と時間を選択してください。"
+    },
+
+    "errors": {
+      "loadFailed": "リクエストの読み込みに失敗しました。",
+      "loadPendingFailed": "保留リクエストの読み込みに失敗しました。",
+      "approveFailed": "承認に失敗しました。",
+      "rejectFailed": "却下に失敗しました。",
+      "rescheduleFailed": "日程調整に失敗しました。",
+      "updateFailed": "更新に失敗しました。"
+    },
+
+    "footer": {
+      "eyebrow": "予約待ちリスト",
+      "waiting_one": "{{count}} 名の学生があなたの返答を待っています。",
+      "waiting_other": "{{count}} 名の学生があなたの返答を待っています。",
+      "description": "各リクエストを確認して、面談予定を確定してください。"
+    }
+  },
+
+  "edit": {
+    "header": {
+      "eyebrow": "グループ管理",
+      "title": "グループの編集",
+      "subtitle": "学生とグループ設定の管理"
+    },
+
+    "stats": {
+      "totalStudents": "学生総数",
+      "active": "アクティブ",
+      "pending": "保留"
+    },
+
+    "status": {
+      "active": "アクティブ",
+      "pending": "保留"
+    },
+
+    "loading": "学生リストを読み込み中...",
+
+    "emptyState": {
+      "noGroup": "編集可能なグループがありません。",
+      "description": "最初のコースグループを作成して、学生や投稿を管理しましょう。",
+      "createButton": "新規グループ作成",
+      "backButton": "フォーラムに戻る"
+    },
+
+    "groupInfo": {
+      "cardTitle": "グループ情報",
+      "nameLabel": "グループ名",
+      "descriptionLabel": "説明",
+      "saveButton": "変更を保存",
+      "savingButton": "保存中..."
+    },
+
+    "groupActions": {
+      "cardTitle": "グループアクション",
+      "addStudents": "学生を追加",
+      "archiveGroup": "グループをアーカイブ"
+    },
+
+    "roster": {
+      "cardTitle": "登録学生リスト",
+      "empty": "このグループにはまだ学生がいません。",
+      "removeButton": "削除",
+      "removeConfirm": "この学生を削除してもよろしいですか？"
+    },
+
+    "footer": {
+      "enrolled_one": "{{count}} 名の学生が登録済み。",
+      "enrolled_other": "{{count}} 名の学生が登録済み。"
+    },
+
+    "addStudentModal": {
+      "title": "学生を追加",
+      "description": "学生のメールアドレスを入力してください。学生は一度ログインしている必要があります。",
+      "namePlaceholder": "名前 (任意)",
+      "emailPlaceholder": "student@school.edu",
+      "cancelButton": "キャンセル",
+      "addButton": "追加"
+    },
+
+    "createGroupModal": {
+      "title": "新規グループ作成",
+      "description": "教員アカウント用の新しいグループを作成します。",
+      "titlePlaceholder": "グループ名",
+      "descriptionPlaceholder": "説明",
+      "cancelButton": "キャンセル",
+      "createButton": "作成",
+      "creatingButton": "作成中..."
+    },
+
+    "archiveModal": {
+      "title": "グループをアーカイブしますか？",
+      "description": "アーカイブすると、メンバーのリストからこのグループが表示されなくなります。",
+      "cancelButton": "キャンセル",
+      "archiveButton": "アーカイブ",
+      "archivingButton": "アーカイブ中..."
+    },
+
+    "errors": {
+      "loadGroups": "グループの読み込みに失敗しました。",
+      "loadUsers": "ユーザーの読み込みに失敗しました。",
+      "loadGroupData": "グループデータの読み込みエラー。",
+      "noGroupSelected": "グループが選択されていません。",
+      "professorNotReady": "教員アカウントの準備ができていません。",
+      "groupTitleRequired": "タイトルは必須です。",
+      "studentNotFound": "学生は追加される前に一度ログインしている必要があります。",
+      "studentAlreadyInGroup": "その学生はすでにグループに参加しています。",
+      "addStudentFailed": "追加に失敗しました。",
+      "removeStudentFailed": "削除に失敗しました。",
+      "saveGroupFailed": "設定の保存に失敗しました。",
+      "archiveFailed": "アーカイブに失敗しました。",
+      "createFailed": "作成中に問題が発生しました。",
+      "syncMembershipFailed": "{{identifier}} のメンバーシップ同期に失敗しました。",
+      "empty": "編集対象がありません。"
+    },
+
+    "success": {
+      "studentAdded": "学生を追加しました。",
+      "studentRemoved": "学生を削除しました。",
+      "groupSaved": "設定を保存しました。",
+      "groupCreated": "グループを作成しました。"
+    },
+
+    "fallbacks": {
+      "studentName": "学生",
+      "noEmail": "メールアドレスなし"
+    }
+  },
+  "calendar": {
+    "header": {
+      "eyebrow": "スケジュール",
+      "title": "面談カレンダー",
+      "subtitle": "面談予定の管理"
+    },
+
+    "stats": {
+      "total": "予定総数",
+      "confirmed": "確定済み",
+      "pending": "保留中",
+      "declined": "辞退"
+    },
+
+    "status": {
+      "confirmed": "確定",
+      "pending": "保留中",
+      "declined": "辞退"
+    },
+
+    "views": {
+      "month": "月",
+      "week": "週",
+      "day": "日"
+    },
+
+    "monthNames": [
+      "1月", "2月", "3月", "4月",
+      "5月", "6月", "7月", "8月",
+      "9月", "10月", "11月", "12月"
+    ],
+
+    "dayNames": [
+      "日", "月", "火", "水",
+      "木", "金", "土"
+    ],
+
+    "calendar": {
+      "moreAppointments": "他 {{count}} 件"
+    },
+
+    "dayView": {
+      "scheduled_one": "{{count}} 件の予定あり",
+      "scheduled_other": "{{count}} 件の予定あり"
+    },
+
+    "loading": "カレンダーを読み込み中...",
+    "empty": "予定がありません。",
+
+    "appointmentModal": {
+      "title": "予定の詳細",
+      "studentLabel": "学生",
+      "dateTimeLabel": "日時",
+      "dateTimeAt": "{{date}} {{time}}",
+      "reasonLabel": "理由",
+      "statusLabel": "状態",
+      "closeButton": "閉じる"
+    },
+
+    "footer": {
+      "eyebrow": "オフィスアワー概要",
+      "confirmed_one": "カレンダーに {{count}} 件の確定した会議があります。",
+      "confirmed_other": "カレンダーに {{count}} 件の確定した会議があります。"
+    },
+
+    "errors": {
+      "loadFailed": "スケジュールの読み込みに失敗しました。"
+    },
+
+    "fallbacks": {
+      "studentName": "学生",
+      "noEmail": "メールアドレスなし"
+    }
+  },
+  "professorForum": {
+    "header": {
+      "eyebrow": "フォーラム管理",
+      "subtitle": "議論掲示板と AI 回答の管理",
+      "fallbackTitle": "教員用フォーラム"
+    },
+
+    "stats": {
+      "totalQuestions": "質問総数",
+      "aiVerified": "AI 確認済み",
+      "pendingReview": "確認待ち",
+      "discussionReplies": "議論への返信"
+    },
+
+    "sidebar": {
+      "statsLabel": "フォーラム統計",
+      "questions": "質問",
+      "answered": "回答済み",
+      "newAnnouncement": "新しいお知らせ"
+    },
+
+    "announcements": {
+      "sectionTitle": "最近のお知らせ",
+      "empty": "お知らせはありません。",
+      "postedBy": "投稿者:"
+    },
+
+    "questions": {
+      "sectionTitle": "最近の質問",
+      "lastUpdated": "最終更新:",
+      "noPostsYet": "投稿なし",
+      "loading": "読み込み中...",
+      "empty": "条件に合う質問は見つかりませんでした。",
+      "fallbackTitle": "無題の質問",
+      "viewReplies": "すべての返信を表示",
+      "reply_one": "{{count}} 件の返信",
+      "reply_other": "{{count}} 件の返信"
+    },
+
+    "filters": {
+      "allQuestions": "すべての質問",
+      "unanswered": "未回答",
+      "sortRecent": "新しい順",
+      "sortEngagement": "注目順"
+    },
+
+    "ai": {
+      "label": "AI 生成の回答",
+      "verified": "確認済み",
+      "rejected": "却下",
+      "verifyButton": "確認",
+      "rejectButton": "却下",
+      "noAnswer": "AI 回答はまだありません。"
+    },
+
+    "announcementModal": {
+      "title": "新しいお知らせ",
+      "titleLabel": "タイトル",
+      "titlePlaceholder": "短いタイトルを入力",
+      "messageLabel": "メッセージ",
+      "messagePlaceholder": "学生に共有する内容を入力...",
+      "cancelButton": "キャンセル",
+      "postButton": "投稿",
+      "postingButton": "投稿中..."
+    },
+
+    "footer": {
+      "eyebrow": "AI モデレーション",
+      "pendingReview_one": "{{count}} 件の回答があなたの確認を待っています。",
+      "pendingReview_other": "{{count}} 件の回答があなたの確認を待っています。",
+      "allReviewed": "すべての確認が完了しました。お疲れ様でした！",
+      "description": "学生への正確性を保つために、AI の回答を確認または却下してください。"
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} 分前",
+      "minute_other": "{{count}} 分前",
+      "hour_one": "{{count}} 時間前",
+      "hour_other": "{{count}} 時間前",
+      "day_one": "{{count}} 日前",
+      "day_other": "{{count}} 日前",
+      "week_one": "{{count}} 週間前",
+      "week_other": "{{count}} 週間前"
+    },
+
+    "errors": {
+      "loadGroups": "グループの読み込みに失敗しました。",
+      "loadPosts": "投稿の読み込みに失敗しました。",
+      "loadFailed": "データエラーが発生しました。",
+      "updateAIStatus": "AI 状態の更新に失敗しました。",
+      "postAnnouncement": "お知らせの投稿に失敗しました。"
+    },
+
+    "fallbacks": {
+      "studentName": "学生",
+      "professorName": "教員"
+    }
+  },
+  "questionDetail": {
+    "header": {
+      "eyebrow": "議論詳細",
+      "askedBy": "{{author}} さんの質問"
+    },
+
+    "discussion": {
+      "title_one": "議論 (返信 {{count}} 件)",
+      "title_other": "議論 (返信 {{count}} 件)",
+      "loading": "読み込み中...",
+      "loadingQuestion": "質問を読み込み中...",
+      "empty": "まだ返信がありません。回答して議論を開始しましょう。"
+    },
+
+    "reply": {
+      "rejectButton": "却下して回答"
+    },
+
+    "actions": {
+      "cardTitle": "教員用アクション",
+      "writeAnswer": "回答を書く",
+      "backToForum": "← フォーラムに戻る"
+    },
+
+    "stats": {
+      "cardTitle": "スレッド統計",
+      "totalReplies": "返信総数",
+      "aiResponses": "AI 回答数",
+      "professorReplies": "教員回答数"
+    },
+
+    "manualResponse": {
+      "title": "あなたの回答",
+      "placeholder": "ここに回答を入力してください...",
+      "submitButton": "送信",
+      "sendingButton": "送信中...",
+      "cancelButton": "キャンセル"
+    },
+
+    "footer": {
+      "description": "議論を続けましょう。学生はあなたの回答を待っています。"
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} 分前",
+      "minute_other": "{{count}} 分前",
+      "hour_one": "{{count}} 時間前",
+      "hour_other": "{{count}} 時間前",
+      "day_one": "{{count}} 日前",
+      "day_other": "{{count}} 日前"
+    },
+
+    "errors": {
+      "loadThread": "スレッドの読み込みに失敗しました。",
+      "loadReplies": "返信の読み込みに失敗しました。",
+      "submitReply": "回答の送信に失敗しました。"
+    },
+
+    "fallbacks": {
+      "studentName": "学生",
+      "professorName": "教員",
+      "you": "あなた",
+      "questionNotFound": "質問が見つかりません",
+      "questionUnavailable": "利用不可",
+      "questionNotAvailable": "利用不可",
+      "aiName": "D.I.Y.A AI",
+      "aiVerifiedName": "教員確認済み AI"
     }
   }
 }

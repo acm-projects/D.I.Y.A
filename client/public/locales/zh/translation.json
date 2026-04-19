@@ -1,32 +1,88 @@
 {
-  "topicAnalysis": {
-    "notFound": "未找到相关主题。",
-    "backToSelfCheck": "返回自测",
-    "backToAnalysis": "返回分析",
-    "badges": {
-      "forumQuestions": "{{count}} 条论坛提问",
-      "engagement": "参与度 {{score}}%"
+  "home": {
+    "title": "我的小组",
+    "subtitle_one": "正在管理 {{count}} 个小组",
+    "subtitle_other": "正在管理 {{count}} 个小组",
+
+    "createButton": "创建小组",
+
+    "loading": "正在加载您的小组...",
+
+    "empty": {
+      "title": "暂无小组",
+      "subtitle": "创建您的第一个小组来开始使用 D.I.Y.A。"
     },
-    "trend": {
-      "rising": "呈上升趋势",
-      "steady": "保持平稳",
-      "declining": "需要关注"
+
+    "error": "创建小组失败。",
+
+    "groupCard": {
+      "members_one": "{{count}} 名成员",
+      "members_other": "{{count}} 名成员",
+      "view": "查看 →"
     },
-    "positives": {
-      "title": "表现优异",
-      "subtitle": "目前进展顺利的项目"
+
+    "modal": {
+      "title": "创建新小组",
+      "groupTitleLabel": "小组标题",
+      "groupTitlePlaceholder": "例如：CS 1337 — 计算机科学 I",
+      "descriptionLabel": "描述（可选）",
+      "descriptionPlaceholder": "课程或小组的简要描述...",
+      "cancel": "取消",
+      "creating": "正在创建...",
+      "create": "创建小组"
+    }
+  },
+  "analysis": {
+    "badge": "AI 分析",
+    "title": "课程分析",
+    "subtitle": "基于学生提问和参与模式的洞察",
+
+    "stats": {
+      "postsAnalyzed": "分析的帖子数",
+      "groupsIncluded": "包含的小组",
+      "topicsIdentified": "识别的主题",
+      "needAttention": "需要关注"
     },
-    "concerns": {
-      "title": "存在问题",
-      "subtitle": "遇到困难的领域"
+
+    "distribution": {
+      "title": "提问分布",
+      "subtitle": "论坛活动中检测到的主题量",
+      "loading": "正在分析当前讲师的小组...",
+      "empty": "分析数据不足。",
+      "emptyDetail": "一旦学生开始在您的小组中发帖，此仪表板将自动总结讨论最多的主题。",
+      "legendNeedsAttention": "需要关注",
+      "legendLowerVolume": "低活跃量"
     },
-    "recommendations": {
-      "title": "改进建议",
-      "subtitle": "如何进一步提升"
+
+    "summary": {
+      "title": "AI 总结",
+      "loading": "正在从实时帖子中计算主题活跃度...",
+      "empty": "分析数据不足。",
+      "postsSummary": "在 {{groups}} 个小组中的 {{count}} 个帖子共产生了 {{mentions}} 次主题提及。",
+      "mostActiveTopic": "最活跃的主题：",
+      "mostActiveDetail": "{{name}} 共有 {{count}} 次提及（占当前讨论的 {{percent}}%）。",
+      "priorityTopics": "优先处理主题",
+      "noAttentionTopics": "目前没有主题超过关注阈值。",
+      "positiveIndicators": "✓ 正面指标",
+      "positiveWithTopics": "{{topics}} 的提问量相对较低，表明当前的教材效果良好。",
+      "positiveNoTopics": "当前的讨论集中在需要关注的主题上；考虑在下一次检查前强化核心教材。"
     },
-    "snapshot": {
-      "title": "班级概览 — {{topicName}}",
-      "description": "基于 {{count}} 条论坛提问，班级在该主题下的参与度得分为 {{score}}%。请重点关注上述存在的问题，以便在下次评估前加深理解。"
+
+    "insights": {
+      "title": "主题洞察",
+      "loading": "正在从实时讨论数据中生成洞察...",
+      "empty": "分析数据不足。",
+      "badgeAttention": "⚠ 关注",
+      "badgeStrong": "✓ 掌握良好",
+      "recommendedAction": "建议操作",
+      "discussionVolume": "讨论量"
+    },
+
+    "footer": {
+      "badge": "分析引擎",
+      "title_one": "有 {{count}} 个主题需要您的关注。",
+      "title_other": "有 {{count}} 个主题需要您的关注。",
+      "subtitle": "查看上方突出显示的主题，以决定哪些地方需要额外的解释或公告。"
     }
   },
   "sidebar": {
@@ -36,104 +92,109 @@
     "defaultEmail": "student@university.edu",
     "nav": {
       "profile": "个人资料",
-      "groups": "我的小组",
-      "request": "预约答疑时间",
-      "requestShort": "答疑预约",
-      "selfcheck": "作业自测"
+      "groups": "小组",
+      "request": "预约答疑",
+      "requestShort": "答疑时间",
+      "selfcheck": "自我检查"
     },
     "user": {
-      "signOut": "退出登录"
+      "signOut": "登出"
     }
   },
   "professorSidebar": {
-    "appSubtitle": "教师视图",
+    "appSubtitle": "教师端视图",
     "navigationLabel": "导航",
     "nav": {
+      "home": "首页",
       "forum": "论坛",
       "calendar": "日历",
-      "analysis": "数据分析",
-      "requests": "预约请求",
-      "editGroup": "编辑小组"
+      "analysis": "分析",
+      "requests": "申请列表",
+      "editGroup": "编辑小组",
+      "profile": "个人资料"
     },
-    "signOut": "退出登录"
+    "signOut": "登出",
+    "activeGroup": "当前小组"
   },
   "login": {
     "title": "欢迎回来",
-    "subtitle": "通过 Auth0 安全登录，以访问您的 D.I.Y.A 工作区、作业、讨论和反馈工具。",
-    "submitButton": "通过 Auth0 登录",
-    "signUpPrompt": "第一次使用 D.I.Y.A？",
-    "signUpLink": "创建账号"
+    "subtitle": "通过 Auth0 安全登录，访问您的 D.I.Y.A. 工作区、作业和讨论。",
+    "submitButton": "使用 Auth0 登录",
+    "signUpPrompt": "第一次使用 D.I.Y.A.？",
+    "signUpLink": "创建账户"
   },
   "signUp": {
-    "title": "创建您的账号",
-    "subtitle": "通过 Auth0 安全注册流程开启您的 D.I.Y.A 之旅，并进入您的学习工作区。",
+    "title": "创建账户",
+    "subtitle": "通过 Auth0 安全注册，开始您的 D.I.Y.A. 学习之旅。",
     "role": {
-      "label": "账号角色",
-      "description": "请选择将此新账号创建为学生还是教师。",
+      "label": "账户角色",
+      "description": "请选择您是以学生还是教师身份创建此账户。",
       "student": "学生",
-      "professor": "教师/教授"
+      "professor": "教师"
     },
-    "submitButton": "通过 Auth0 注册",
-    "loginPrompt": "已有账号？",
-    "loginLink": "立即登录"
+    "submitButton": "使用 Auth0 注册",
+    "loginPrompt": "已有账户？",
+    "loginLink": "登录"
   },
   "groupInvite": {
     "title": "小组邀请",
     "message": "<strong>{{adminName}}</strong> 邀请您加入 <strong>{{groupName}}</strong>",
-    "accept": "接受邀请",
+    "accept": "接受",
     "declined": "拒绝"
   },
   "groups": {
     "pageTitle": "欢迎回来，{{name}}！",
     "defaultName": "学生",
+    "members": "成员",
+    "posts": "帖子",
     "search": {
       "placeholder": "按名称搜索小组...",
       "ariaLabel": "按名称搜索小组"
     },
     "count": {
-      "showing": "正在显示 {{total}} 个小组中的 {{count}} 个",
-      "member_one": "您加入了 1 个小组",
-      "member_other": "您加入了 {{count}} 个小组"
+      "showing": "显示 {{total}} 个小组中的 {{count}} 个",
+      "member_one": "您是 {{count}} 个小组的成员",
+      "member_other": "您是 {{count}} 个小组的成员"
     },
     "card": {
       "members_one": "{{count}} 名成员",
       "members_other": "{{count}} 名成员",
-      "posts_one": "{{count}} 条帖子",
-      "posts_other": "{{count}} 条帖子",
+      "posts_one": "{{count}} 个帖子",
+      "posts_other": "{{count}} 个帖子",
       "viewGroup": "查看小组"
     },
     "loading": "正在加载...",
     "error": {
-      "title": "无法加载小组",
-      "loadGroups": "加载小组列表失败。",
-      "loadPosts": "加载论坛帖子数失败。"
+      "title": "加载小组失败",
+      "loadGroups": "加载您的小组时出错。",
+      "loadPosts": "无法加载论坛帖子统计。"
     },
     "empty": {
-      "title": "未找到匹配“{{query}}”的小组",
-      "subtitle": "请尝试缩短关键词、使用课程代码或删除多余的空格。"
+      "title": "未找到小组",
+      "subtitle": "请尝试使用较短的名称或课程代码。"
     }
   },
   "forum": {
-    "pageTitle": "{{groupName}} 论坛页面",
+    "pageTitle": "论坛页面",
     "header": {
-      "askQuestion": "提出新问题",
-      "ariaCreate": "创建新提问"
+      "askQuestion": "向同学和 D.I.Y.A AI 提问...",
+      "ariaCreate": "创建新问题"
     },
     "search": {
       "placeholder": "搜索问题...",
-      "ariaLabel": "搜索提问"
+      "ariaLabel": "搜索问题"
     },
     "count": {
-      "showing": "正在显示 {{total}} 个提问中的 {{count}} 个",
-      "total_one": "您的同学提出了 {{count}} 个问题",
-      "total_other": "您的同学提出了 {{count}} 个问题平衡"
+      "showing": "显示 {{total}} 个问题中的 {{count}} 个",
+      "total_one": "{{count}} 条来自同学的问题",
+      "total_other": "{{count}} 条来自同学的问题"
     },
     "card": {
-      "newBadge": "新帖",
-      "replies_one": "{{count}} 条回复",
-      "replies_other": "{{count}} 条回复",
+      "newBadge": "新内容",
+      "replies_one": "条回复",
+      "replies_other": "条回复",
       "viewReplies": "查看回复",
-      "aiVerified": "此提问的 AI 回复已通过教师审核。",
+      "aiVerified": "AI 对此问题的回答已通过教师验证。",
       "timeAgo": {
         "minute_one": "{{count}} 分钟前",
         "minute_other": "{{count}} 分钟前",
@@ -147,187 +208,679 @@
     },
     "loading": "正在加载...",
     "error": {
-      "title": "无法加载论坛问题",
-      "loadQuestions": "加载论坛提问失败。",
-      "createQuestion": "创建提问失败。",
-      "upvote": "点赞更新失败。"
+      "title": "加载论坛问题失败",
+      "loadQuestions": "加载论坛问题时出错。",
+      "createQuestion": "创建问题失败。",
+      "upvote": "更新点赞失败。"
     },
     "empty": {
-      "title": "未找到相关提问",
-      "subtitle": "请尝试其他搜索词，或在该小组中发布第一个提问。"
+      "title": "未找到问题",
+      "subtitle": "请尝试其他词汇，或成为此小组第一个提问的人。"
     },
     "popup": {
-      "title": "向大家提问",
-      "inputPlaceholder": "您的具体问题是什么？",
+      "title": "提问",
+      "inputPlaceholder": "您有什么疑问？",
       "imageLabel": "图片（可选）",
       "uploadImage": "上传图片",
-      "changeImage": "更换图片",
+      "changeImage": "更改图片",
       "cancel": "取消",
+      "posting": "正在发布...",
       "postButton": "发布问题"
     }
   },
   "forumThread": {
     "backToForum": "← 返回论坛",
     "question": {
-      "askedBy": "由 {{author}} 提问",
+      "askedBy": "提问者：",
       "defaultTitle": "您的问题",
       "defaultAuthor": "您"
     },
     "replies": {
-      "loading": "正在加载讨论串...",
-      "empty": "暂无回复 — 快来抢沙发吧！",
-      "professorLabel": "(教师)",
-      "imageFallback": "(图片)"
+      "loading": "正在加载讨论...",
+      "empty": "暂无回复 —— 抢个沙发吧！",
+      "professorLabel": "（教师）",
+      "imageFallback": "（图片）",
+      "professor": "教师",
+      "student": "学生",
+      "ai": "D.I.Y.A AI",
+      "profssorVerified": "教师验证的 AI"
     },
     "related": {
       "title": "相关讨论",
-      "loading": "正在寻找类似话题...",
-      "empty": "未找到类似帖子。",
+      "loading": "正在搜索相似主题...",
+      "empty": "未找到相似帖子。",
       "untitled": "无标题帖子",
-      "viewThread": "查看讨论串 →"
+      "viewThread": "查看讨论 →",
+      "untitledQuestion": "无标题问题"
     },
     "input": {
       "placeholder": "写下您的回复...",
-      "removeImage": "移除",
+      "sending": "正在发送...",
+      "removeImage": "移除附件",
+      "remove": "移除",
+      "attach": "附件",
       "ariaUpload": "上传图片",
       "ariaSend": "发送回复",
       "ariaToggleSidebarOpen": "打开侧边栏",
-      "ariaToggleSidebarClose": "关闭侧边栏"
+      "ariaToggleSidebarClose": "关闭侧边栏",
+      "fileTooLarge": "文件太大。请使用小于 10MB 的文件。",
+      "timeOut": "上传超时。请尝试更小的文件。",
+      "urlError": "无法获取上传文件的链接。"
     },
     "errors": {
-      "loadThread": "加载论坛讨论串失败。",
+      "loadThread": "加载论坛讨论失败。",
       "loadReplies": "加载回复失败。",
       "sendReply": "发送回复失败。"
     }
   },
   "officeHours": {
-    "pageTitle": "预约答疑时间 (Office Hours)",
+    "pageTitle": "答疑预约申请",
     "form": {
       "title": "新建预约",
-      "subtitle": "请填写下方表格，申请与您的教师或助教 (TA) 会面。",
-      "loading": "正在加载您的课程和可用联系人...",
-      "courseLabel": "针对哪门课程/小组？ *",
-      "coursePlaceholder": "选择课程或小组",
-      "noGroups": "您目前尚未加入任何课程小组。",
-      "professorLabel": "预约哪位教师或助教？ *",
-      "professorPlaceholder": "选择教师或助教",
-      "reasonLabel": "预约原因是什么？ *",
-      "reasonPlaceholder": "请简要描述您希望面谈的内容...",
+      "subtitle": "填写下方表格以安排与您的教授或助教（TA）的会议。",
+      "loading": "正在加载您的课程和联系人...",
+      "courseLabel": "针对哪个课程/小组？*",
+      "coursePlaceholder": "选择一个课程或小组",
+      "noGroups": "您目前尚未加入任何课程。",
+      "professorLabel": "选择教授或助教？*",
+      "professorPlaceholder": "选择一名教师或助教",
+      "reasonLabel": "预约原因？*",
+      "reasonPlaceholder": "简要说明会议目的...",
       "dateLabel": "建议日期 *",
-      "startTimeLabel": "开始时间 (CST) *",
-      "endTimeLabel": "结束时间 (CST) *",
-      "meetingTypeLabel": "会议形式 *",
-      "online": "线上会议",
+      "startTimeLabel": "开始时间 *",
+      "endTimeLabel": "结束时间 *",
+      "meetingTypeLabel": "会议类型 *",
+      "online": "在线会议",
       "inPerson": "线下见面",
       "meetingLinkLabel": "会议链接（可选）",
       "meetingLinkPlaceholder": "https://zoom.us/j/...",
-      "submitButton": "提交预约申请"
+      "submitButton": "提交申请"
     },
     "success": {
       "title": "申请已提交！",
-      "subtitle": "您的答疑预约申请已发送。教师回复后，您将收到电子邮件确认通知。",
-      "emailNote": "请在以下地址查看更新邮件：",
+      "subtitle": "您的答疑预约申请已发送。确认后您将收到电子邮件通知。",
+      "emailNote": "请检查您的电子邮箱以获取更新：",
       "submitAnother": "提交另一个申请"
     },
     "requests": {
-      "title": "我的预约申请",
-      "empty": "目前没有预约申请。请在上方提交您的第一个申请。",
-      "online": "线上",
+      "title": "您的申请",
+      "empty": "暂无申请。请在上方提交您的第一个申请。",
+      "online": "在线",
       "inPerson": "线下",
-      "meetingLink": "会议链接: ",
+      "meetingLink": "链接：",
       "addToGoogle": "添加到 Google 日历",
       "addToOutlook": "添加到 Outlook",
       "joinMeeting": "加入会议",
       "timeRange": "{{start}} – {{end}}"
     },
     "status": {
-      "pending": "审核中",
+      "pending": "处理中",
       "confirmed": "已确认",
       "declined": "已拒绝"
     },
     "errors": {
       "loadProfessors": "加载教师联系人失败。",
       "loadGroups": "加载小组失败。",
-      "loadRequests": "加载您的答疑申请失败。",
-      "loadData": "加载答疑数据失败。",
-      "noGroup": "请先选择一个课程或小组。",
-      "submit": "提交答疑预约申请失败。"
+      "loadRequests": "加载您的预约申请失败。",
+      "loadData": "加载答疑数据时出错。",
+      "noGroup": "请选择一个课程或小组。",
+      "submit": "提交申请失败。"
     }
   },
   "selfCheck": {
-    "pageTitle": "作业自测",
+    "pageTitle": "自我检查",
     "upload": {
       "title": "检查您的作业",
-      "subtitle": "上传作业评分标准 (Rubric) 和您的作品，以获取 AI 预估的成绩报告。",
-      "rubricLabel": "评分标准 (Rubric)",
+      "subtitle": "上传作业评分标准（Rubric）和您的作业，以获取 AI 生成的评分报告。",
+      "rubricLabel": "作业评分标准",
       "rubricPlaceholder": "点击上传评分标准",
-      "workLabel": "您的作品",
-      "workPlaceholder": "点击上传作业作品",
-      "analyzeButton": "分析我的作品",
-      "analyzingButton": "正在分析..."
+      "workLabel": "您的作业",
+      "workPlaceholder": "点击上传您的作业",
+      "analyzeButton": "分析我的作业",
+      "analyzingButton": "分析中..."
     },
     "analyzing": {
-      "title": "正在分析您的作品...",
-      "subtitle": "正在根据评分标准比对您的提交内容"
+      "title": "正在分析您的作业...",
+      "subtitle": "正在根据评分标准比对您的内容。"
     },
     "report": {
       "title": "评分报告",
-      "potentialGradeLabel": "预估得分",
-      "areasForImprovement": "可改进之处"
+      "potentialGradeLabel": "潜在评分",
+      "areasForImprovement": "待改进领域"
     },
     "history": {
-      "title": "历史记录",
-      "loading": "正在加载您的历史记录...",
-      "empty": "暂无历史记录。请在上方上传您的第一份作业以开启自测。",
-      "areasForImprovement": "可改进之处"
+      "title": "检查历史",
+      "loading": "正在加载之前的报告...",
+      "empty": "未找到历史记录。上传您的第一个作业以开始。",
+      "areasForImprovement": "待改进领域"
     },
     "errors": {
-      "loadHistory": "加载自测历史记录失败。",
-      "analyze": "分析您的作品失败。"
+      "loadHistory": "加载自检历史失败。",
+      "analyze": "分析您的作业失败。"
     }
   },
   "profile": {
     "sectionLabel": "学生设置",
-    "pageTitle": "管理您的账号",
-    "pageSubtitle": "更新您的安全首选项，查看账号详情，并管理 D.I.Y.A 如何通知您重要活动。",
+    "pageTitle": "账户管理",
+    "pageSubtitle": "更新您的安全设置并控制 D.I.Y.A. 的通知。",
     "status": {
       "emailVerified": "邮箱已验证",
-      "emailPending": "邮箱验证中",
-      "lastSynced": "最后同步于 {{date}}"
+      "emailPending": "邮箱验证待处理",
+      "lastSynced": "最后同步时间"
     },
     "account": {
-      "sectionLabel": "账号信息",
-      "noEmail": "暂无可用邮箱",
+      "sectionLabel": "账户",
+      "noEmail": "未找到邮箱",
       "emailAlertsLabel": "邮件提醒",
       "forumRepliesLabel": "论坛回复",
       "on": "开启",
-      "off": "关闭"
+      "off": "关闭",
+      "personalInfo": "个人信息",
+      "setName": "设置您的姓名以便教师和同学识别您。",
+      "professorSetName": "设置您的姓名以便学生和同事识别您。",
+      "saving": "保存中...",
+      "saveName": "保存姓名",
+      "saveBio": "保存个人简介",
+      "tellMessage": "介绍一下您自己...",
+      "notAvailable": "不可用",
+      "displayName": "显示名称",
+      "enterName": "输入您的姓名",
+      "bio": "个人简介",
+      "email": "电子邮箱",
+      "displayNameSuccess": "姓名更新成功。",
+      "displayNameError": "保存姓名失败，请重试。",
+      "bioSuccess": "个人简介更新成功。",
+      "bioError": "保存个人简介失败。",
+      "timezoneSuccess": "时区已更新。",
+      "themeSuccess": "主题已更新。",
+      "recently": "最近",
+      "professorSettings": "教师设置",
+      "emailAddress" : "电子邮箱"
     },
     "security": {
-      "title": "账号安全",
-      "subtitle": "使用 Auth0 管理您的密码并确保登录安全。",
+      "title": "账户安全",
+      "subtitle": "管理您的密码并保护您的账户。",
       "passwordReset": {
         "title": "重置密码",
-        "description": "向 <strong>{{email}}</strong> 发送安全的 Auth0 密码重置邮件。",
-        "fallbackEmail": "您的账号邮箱",
-        "button": "修改密码",
-        "buttonSending": "正在发送重置邮件...",
-        "successMessage": "密码重置邮件已发送至 {{email}}。请检查收件箱中的安全链接。"
+        "description": "向以下邮箱发送安全重置链接：",
+        "fallbackEmail": "您的账户邮箱",
+        "button": "更改密码",
+        "buttonSending": "正在发送链接...",
+        "successEmail": "重置链接已发送至 {{email}}。",
+        "failEmail": "发送密码重置邮件失败。"
       }
     },
     "notifications": {
-      "title": "通知设置",
-      "subtitle": "这些偏好设置直接从您的 Firestore 用户文档加载，并在您切换开关时立即保存。",
+      "title": "通知",
+      "subtitle": "配置您的通知偏好。",
       "emailAlerts": {
         "title": "邮件提醒",
-        "description": "接收有关重要账号活动和预约更新的电子邮件通知。",
-        "successMessage": "邮件提醒设置已成功更新。"
+        "description": "接收有关重要更新和预约的邮件通知。",
+        "successMessage": "邮件提醒更新成功。"
       },
-      "forumReplies": {
+      "newForumReplies": {
         "title": "论坛新回复",
-        "description": "当您的课程相关讨论中有新动态或回复时收到通知。",
-        "successMessage": "论坛回复通知设置已成功更新。"
+        "description": "当有人回复您的讨论时获得通知。",
+        "successMessage": "论坛回复通知更新成功。"
       }
+    },
+    "preferences": {
+    "title": "偏好设置",
+    "subtitle": "自定义您的时区和主题设置。",
+    "timezone": {
+      "label": "时区"
+    },
+    "appearance": {
+      "label": "主题",
+      "lightMode": "浅色模式",
+      "darkMode": "深色模式",
+      "switchButton": "切换到 {{ mode }}",
+      "description": "您的主题偏好将保存到您的个人资料中。"
+    },
+    "language": {
+      "label": "语言",
+      "current": "简体中文",
+      "comingSoon": "更多语言即将推出。"
+    }
+  },
+  "dangerZone": {
+    "title": "危险区域",
+    "subtitle": "无法撤销的永久性操作。请谨慎操作。",
+    "deleteAccount": {
+      "title": "删除账户",
+      "description": "永久删除您的账户及其所有数据。",
+      "button": "申请删除账户",
+      "alertMessage": "请联系管理员以删除您的账户。"
+    }
+  }
+  },
+  "professorRequests": {
+
+    "nav": {
+      "backToForum": "← 返回论坛",
+      "calendar": "日历",
+      "analysis": "分析",
+      "requests": "申请列表",
+      "editGroup": "编辑小组",
+      "professorView": "教师端视图",
+      "signOut": "登出"
+    },
+
+    "header": {
+      "eyebrow": "答疑时间",
+      "title": "会议申请",
+      "subtitle": "查看并安排与学生的会议"
+    },
+
+    "stats": {
+      "pendingRequests": "待处理申请",
+      "thisWeek": "本周",
+      "nextWeek": "下周"
+    },
+
+    "list": {
+      "heading": "收到的申请",
+      "loading": "正在加载申请...",
+      "empty": "目前没有待处理的申请。"
+    },
+
+    "card": {
+      "fallbackName": "学生",
+      "fallbackEmail": "未提供邮箱",
+      "requestedAgo": "申请于",
+      "accept": "接受",
+      "reject": "拒绝",
+      "reschedule": "改期",
+      "googleCal": "Google 日历",
+      "outlook": "Outlook",
+      "meet": "会议"
+    },
+
+    "calendarTitle": "答疑时间 — {{studentName}}",
+
+    "timeAgo": {
+      "minute_one": "{{count}} 分钟前",
+      "minute_other": "{{count}} 分钟前",
+      "hour_one": "{{count}} 小时前",
+      "hour_other": "{{count}} 小时前",
+      "day_one": "{{count}} 天前",
+      "day_other": "{{count}} 天前"
+    },
+
+    "reschedulePanel": {
+      "title": "建议新时间",
+      "dateLabel": "日期",
+      "timeLabel": "时间",
+      "sendProposal": "发送建议",
+      "validationError": "请选择日期和时间。"
+    },
+
+    "errors": {
+      "loadFailed": "加载申请失败。",
+      "loadPendingFailed": "加载待处理申请失败。",
+      "approveFailed": "批准申请失败。",
+      "rejectFailed": "拒绝申请失败。",
+      "rescheduleFailed": "改期失败。",
+      "updateFailed": "更新申请失败。"
+    },
+
+    "footer": {
+      "eyebrow": "答疑排队",
+      "waiting_one": "有 {{count}} 名学生正在等待您的答复。",
+      "waiting_other": "有 {{count}} 名学生正在等待您的答复。",
+      "description": "查看每项申请以确认您的会议。"
+    }
+  },
+
+  "edit": {
+    "header": {
+      "eyebrow": "小组管理",
+      "title": "编辑小组",
+      "subtitle": "管理学生和小组设置"
+    },
+
+    "stats": {
+      "totalStudents": "学生总数",
+      "active": "活跃",
+      "pending": "待定"
+    },
+
+    "status": {
+      "active": "活跃",
+      "pending": "待定"
+    },
+
+    "loading": "正在加载学生名单...",
+
+    "emptyState": {
+      "noGroup": "没有可编辑的小组。",
+      "description": "创建您的第一个课程小组来管理学生和帖子。",
+      "createButton": "创建新小组",
+      "backButton": "返回论坛"
+    },
+
+    "groupInfo": {
+      "cardTitle": "小组信息",
+      "nameLabel": "小组名称",
+      "descriptionLabel": "描述",
+      "saveButton": "保存更改",
+      "savingButton": "正在保存..."
+    },
+
+    "groupActions": {
+      "cardTitle": "小组操作",
+      "addStudents": "添加学生",
+      "archiveGroup": "归档小组"
+    },
+
+    "roster": {
+      "cardTitle": "学生名单",
+      "empty": "该小组中还没有学生。",
+      "removeButton": "移除",
+      "removeConfirm": "您确定要移除这名学生吗？"
+    },
+
+    "footer": {
+      "enrolled_one": "已注册 {{count}} 名学生。",
+      "enrolled_other": "已注册 {{count}} 名学生。"
+    },
+
+    "addStudentModal": {
+      "title": "添加学生",
+      "description": "输入学生的电子邮箱。该学生必须已经登录过系统至少一次。",
+      "namePlaceholder": "学生姓名（可选）",
+      "emailPlaceholder": "student@school.edu",
+      "cancelButton": "取消",
+      "addButton": "添加学生"
+    },
+
+    "createGroupModal": {
+      "title": "创建新小组",
+      "description": "为您的教师账户创建一个新小组。",
+      "titlePlaceholder": "小组标题",
+      "descriptionPlaceholder": "小组描述",
+      "cancelButton": "取消",
+      "createButton": "创建小组",
+      "creatingButton": "正在创建..."
+    },
+
+    "archiveModal": {
+      "title": "归档小组？",
+      "description": "这将移除小组并清除成员列表。",
+      "cancelButton": "取消",
+      "archiveButton": "归档小组",
+      "archivingButton": "正在归档..."
+    },
+
+    "errors": {
+      "loadGroups": "加载小组失败。",
+      "loadUsers": "加载用户失败。",
+      "loadGroupData": "小组数据错误。",
+      "noGroupSelected": "当前未选择任何小组。",
+      "professorNotReady": "教师账户尚未就绪。请重试。",
+      "groupTitleRequired": "小组标题为必填项。",
+      "studentNotFound": "学生在被添加前必须已经登录过一次。",
+      "studentAlreadyInGroup": "学生已在该小组中。",
+      "addStudentFailed": "添加失败。",
+      "removeStudentFailed": "移除失败。",
+      "saveGroupFailed": "保存小组设置失败。",
+      "archiveFailed": "归档小组失败。",
+      "createFailed": "创建小组时出现问题。",
+      "syncMembershipFailed": "无法同步 {{identifier}} 的成员身份。",
+      "empty": "没有可编辑的内容。"
+    },
+
+    "success": {
+      "studentAdded": "学生添加成功。",
+      "studentRemoved": "学生移除成功。",
+      "groupSaved": "小组设置保存成功。",
+      "groupCreated": "小组创建成功。"
+    },
+
+    "fallbacks": {
+      "studentName": "学生",
+      "noEmail": "无邮箱"
+    }
+  },
+  "calendar": {
+    "header": {
+      "eyebrow": "日程表",
+      "title": "答疑日历",
+      "subtitle": "管理您的会议安排"
+    },
+
+    "stats": {
+      "total": "预约总数",
+      "confirmed": "已确认",
+      "pending": "待处理",
+      "declined": "已拒绝"
+    },
+
+    "status": {
+      "confirmed": "已确认",
+      "pending": "待处理",
+      "declined": "已拒绝"
+    },
+
+    "views": {
+      "month": "月",
+      "week": "周",
+      "day": "日"
+    },
+
+    "monthNames": [
+      "一月", "二月", "三月", "四月",
+      "五月", "六月", "七月", "八月",
+      "九月", "十月", "十一月", "十二月"
+    ],
+
+    "dayNames": [
+      "日", "一", "二", "三",
+      "四", "五", "六"
+    ],
+
+    "calendar": {
+      "moreAppointments": "还有 {{count}} 个预约"
+    },
+
+    "dayView": {
+      "scheduled_one": "已安排 {{count}} 个预约",
+      "scheduled_other": "已安排 {{count}} 个预约"
+    },
+
+    "loading": "正在加载日历...",
+    "empty": "目前没有已安排的预约。",
+
+    "appointmentModal": {
+      "title": "预约详情",
+      "studentLabel": "学生",
+      "dateTimeLabel": "日期和时间",
+      "dateTimeAt": "{{date}} 于 {{time}}",
+      "reasonLabel": "原因",
+      "statusLabel": "状态",
+      "closeButton": "关闭"
+    },
+
+    "footer": {
+      "eyebrow": "答疑概览",
+      "confirmed_one": "您的日历中有 {{count}} 个已确认的会议。",
+      "confirmed_other": "您的日历中有 {{count}} 个已确认的会议。"
+    },
+
+    "errors": {
+      "loadFailed": "加载日程失败。"
+    },
+
+    "fallbacks": {
+      "studentName": "学生",
+      "noEmail": "无邮箱"
+    }
+  },
+  "professorForum": {
+    "header": {
+      "eyebrow": "论坛管理",
+      "subtitle": "管理讨论板和 AI 回答",
+      "fallbackTitle": "教师论坛"
+    },
+
+    "stats": {
+      "totalQuestions": "问题总数",
+      "aiVerified": "AI 已验证",
+      "pendingReview": "待审核",
+      "discussionReplies": "讨论回复"
+    },
+
+    "sidebar": {
+      "statsLabel": "论坛统计",
+      "questions": "问题",
+      "answered": "已回答",
+      "newAnnouncement": "发布新公告"
+    },
+
+    "announcements": {
+      "sectionTitle": "最近公告",
+      "empty": "暂无公告。",
+      "postedBy": "发布者："
+    },
+
+    "questions": {
+      "sectionTitle": "最近问题",
+      "lastUpdated": "最后更新：",
+      "noPostsYet": "暂无帖子",
+      "loading": "正在加载教师论坛...",
+      "empty": "没有符合过滤条件的问题。",
+      "fallbackTitle": "无标题问题",
+      "viewReplies": "查看所有回复",
+      "reply_one": "{{count}} 条回复",
+      "reply_other": "{{count}} 条回复"
+    },
+
+    "filters": {
+      "allQuestions": "所有问题",
+      "unanswered": "未回答",
+      "sortRecent": "按时间",
+      "sortEngagement": "按热度"
+    },
+
+    "ai": {
+      "label": "AI 生成的回答",
+      "verified": "已验证",
+      "rejected": "已拒绝",
+      "verifyButton": "验证",
+      "rejectButton": "拒绝",
+      "noAnswer": "目前没有 AI 回答。"
+    },
+
+    "announcementModal": {
+      "title": "发布新公告",
+      "titleLabel": "公告标题",
+      "titlePlaceholder": "输入简短的标题",
+      "messageLabel": "内容",
+      "messagePlaceholder": "与学生分享更新信息...",
+      "cancelButton": "取消",
+      "postButton": "发布公告",
+      "postingButton": "正在发布..."
+    },
+
+    "footer": {
+      "eyebrow": "AI 论坛审核",
+      "pendingReview_one": "有 {{count}} 条回答正等待您的审核。",
+      "pendingReview_other": "有 {{count}} 条回答正等待您的审核。",
+      "allReviewed": "全部审核完毕。辛苦了！",
+      "description": "验证或拒绝 AI 回答，以确保向学生提供准确的信息。"
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} 分钟前",
+      "minute_other": "{{count}} 分钟前",
+      "hour_one": "{{count}} 小时前",
+      "hour_other": "{{count}} 小时前",
+      "day_one": "{{count}} 天前",
+      "day_other": "{{count}} 天前",
+      "week_one": "{{count}} 周前",
+      "week_other": "{{count}} 周前"
+    },
+
+    "errors": {
+      "loadGroups": "加载教师论坛小组失败。",
+      "loadPosts": "加载教师论坛帖子失败。",
+      "loadFailed": "论坛数据错误。",
+      "updateAIStatus": "更新 AI 审核状态失败。",
+      "postAnnouncement": "发布公告失败。"
+    },
+
+    "fallbacks": {
+      "studentName": "学生",
+      "professorName": "教师"
+    }
+  },
+  "questionDetail": {
+    "header": {
+      "eyebrow": "讨论详情",
+      "askedBy": "{{author}} 的提问"
+    },
+
+    "discussion": {
+      "title_one": "讨论（{{count}} 条回复）",
+      "title_other": "讨论（{{count}} 条回复）",
+      "loading": "正在加载讨论...",
+      "loadingQuestion": "正在加载问题...",
+      "empty": "暂无回复。回复以开始讨论。"
+    },
+
+    "reply": {
+      "rejectButton": "拒绝并回复"
+    },
+
+    "actions": {
+      "cardTitle": "教师操作",
+      "writeAnswer": "写下您的回答",
+      "backToForum": "← 返回论坛"
+    },
+
+    "stats": {
+      "cardTitle": "帖子统计",
+      "totalReplies": "回复总数",
+      "aiResponses": "AI 回答数",
+      "professorReplies": "教师回复数"
+    },
+
+    "manualResponse": {
+      "title": "您的回答",
+      "placeholder": "在此输入您的回答...",
+      "submitButton": "发送回答",
+      "sendingButton": "正在发送...",
+      "cancelButton": "取消"
+    },
+
+    "footer": {
+      "description": "保持讨论活跃 —— 您的班级正期待您的解答。"
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} 分钟前",
+      "minute_other": "{{count}} 分钟前",
+      "hour_one": "{{count}} 小时前",
+      "hour_other": "{{count}} 小时前",
+      "day_one": "{{count}} 天前",
+      "day_other": "{{count}} 天前"
+    },
+
+    "errors": {
+      "loadThread": "加载论坛讨论失败。",
+      "loadReplies": "加载回复失败。",
+      "submitReply": "提交教师回复失败。"
+    },
+
+    "fallbacks": {
+      "studentName": "学生",
+      "professorName": "教师",
+      "you": "您",
+      "questionNotFound": "未找到问题",
+      "questionUnavailable": "问题不可用",
+      "questionNotAvailable": "问题不可用",
+      "aiName": "D.I.Y.A AI",
+      "aiVerifiedName": "教师验证的 AI"
     }
   }
 }

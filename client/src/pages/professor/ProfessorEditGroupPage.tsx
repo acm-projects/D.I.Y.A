@@ -492,7 +492,7 @@ export function ProfessorEditGroupPage() {
         </div>
         <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.28)", letterSpacing: 1.5, textTransform: "uppercase", padding: "0 8px", marginBottom: 8 }}>{t("professorSidebar.navigationLabel")}</div>
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>← Back to Forum</button>
+          <button type="button" onClick={() => navigate("/professor/forum")} style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 10, border: "none", backgroundColor: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("forumThread.backToForum")}</button>
           {[
             { id: "calendar", label: t("professorSidebar.nav.calendar"), path: "/professor/calendar" },
             { id: "analysis", label: t("professorSidebar.nav.analysis"), path: "/professor/analysis" },
@@ -559,7 +559,7 @@ export function ProfessorEditGroupPage() {
               </div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 <button type="button" onClick={() => setShowCreateGroupModal(true)} disabled={!currentProfessorUser || isCreatingGroup} style={{ padding: "10px 18px", backgroundColor: !currentProfessorUser || isCreatingGroup ? "rgba(122,155,118,0.35)" : palette.sage, color: "white", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: !currentProfessorUser || isCreatingGroup ? "not-allowed" : "pointer" }}>{t("edit.emptyState.createButton")}</button>
-                <button type="button" onClick={() => navigate("/professor/forum")} style={{ padding: "10px 18px", backgroundColor: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("forum.forumThread.backToForum")}</button>
+                <button type="button" onClick={() => navigate("/professor/forum")} style={{ padding: "10px 18px", backgroundColor: "transparent", color: palette.deepBurgundy, border: "1px solid rgba(92,30,38,0.24)", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{t("forumThread.backToForum")}</button>
               </div>
             </div>
           )}

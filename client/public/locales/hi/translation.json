@@ -1,32 +1,88 @@
 {
-  "topicAnalysis": {
-    "notFound": "विषय नहीं मिला।",
-    "backToSelfCheck": "स्व-जाँच पर वापस जाएँ",
-    "backToAnalysis": "विश्लेषण पर वापस जाएँ",
-    "badges": {
-      "forumQuestions": "{{count}} फ़ोरम प्रश्न",
-      "engagement": "{{score}}% जुड़ाव"
+  "home": {
+    "title": "मेरे ग्रुप",
+    "subtitle_one": "{{count}} ग्रुप का प्रबंधन",
+    "subtitle_other": "{{count}} ग्रुप्स का प्रबंधन",
+
+    "createButton": "ग्रुप बनाएं",
+
+    "loading": "आपके ग्रुप लोड हो रहे हैं...",
+
+    "empty": {
+      "title": "अभी तक कोई ग्रुप नहीं है",
+      "subtitle": "D.I.Y.A के साथ शुरुआत करने के लिए अपना पहला ग्रुप बनाएं।"
     },
-    "trend": {
-      "rising": "बढ़ रहा है",
-      "steady": "स्थिर",
-      "declining": "ध्यान देने की आवश्यकता है"
+
+    "error": "ग्रुप बनाने में विफल।",
+
+    "groupCard": {
+      "members_one": "{{count}} सदस्य",
+      "members_other": "{{count}} सदस्य",
+      "view": "देखें →"
     },
-    "positives": {
-      "title": "सकारात्मक पक्ष",
-      "subtitle": "क्या अच्छा चल रहा है"
+
+    "modal": {
+      "title": "नया ग्रुप बनाएं",
+      "groupTitleLabel": "ग्रुप का शीर्षक",
+      "groupTitlePlaceholder": "जैसे: CS 1337 — कंप्यूटर साइंस I",
+      "descriptionLabel": "विवरण (वैकल्पिक)",
+      "descriptionPlaceholder": "कोर्स या ग्रुप का संक्षिप्त विवरण...",
+      "cancel": "रद्द करें",
+      "creating": "बनाया जा रहा है...",
+      "create": "ग्रुप बनाएं"
+    }
+  },
+  "analysis": {
+    "badge": "AI-संचालित विश्लेषण",
+    "title": "कोर्स विश्लेषण",
+    "subtitle": "छात्रों के प्रश्नों और भागीदारी के पैटर्न पर आधारित जानकारी",
+
+    "stats": {
+      "postsAnalyzed": "विश्लेषित पोस्ट",
+      "groupsIncluded": "शामिल ग्रुप",
+      "topicsIdentified": "पहचाने गए विषय",
+      "needAttention": "ध्यान देने की आवश्यकता"
     },
-    "concerns": {
-      "title": "चिंताएँ",
-      "subtitle": "कठिनाई के क्षेत्र"
+
+    "distribution": {
+      "title": "प्रश्नों का वितरण",
+      "subtitle": "फोरम गतिविधि से पहचाने गए विषयों की मात्रा",
+      "loading": "प्रशिक्षक के वर्तमान ग्रुप्स का विश्लेषण किया जा रहा है...",
+      "empty": "विश्लेषण के लिए पर्याप्त डेटा नहीं है।",
+      "emptyDetail": "जैसे ही छात्र आपके ग्रुप्स में पोस्ट करना शुरू करेंगे, यह डैशबोर्ड स्वचालित रूप से सबसे चर्चित विषयों का सारांश दिखाएगा।",
+      "legendNeedsAttention": "ध्यान देने की आवश्यकता",
+      "legendLowerVolume": "कम मात्रा"
     },
-    "recommendations": {
-      "title": "सुझाव",
-      "subtitle": "सुधार कैसे करें"
+
+    "summary": {
+      "title": "AI सारांश",
+      "loading": "लाइव पोस्ट से विषय गतिविधि की गणना की जा रही है...",
+      "empty": "विश्लेषण के लिए पर्याप्त डेटा नहीं है।",
+      "postsSummary": "{{groups}} ग्रुप्स में {{count}} पोस्ट से विषयों के {{mentions}} उल्लेख मिले हैं।",
+      "mostActiveTopic": "सबसे सक्रिय विषय:",
+      "mostActiveDetail": "{{count}} उल्लेखों के साथ {{name}} (वर्तमान चर्चा का {{percent}}%)।",
+      "priorityTopics": "प्राथमिकता वाले विषय",
+      "noAttentionTopics": "वर्तमान में कोई भी विषय ध्यान देने की सीमा से बाहर नहीं है।",
+      "positiveIndicators": "✓ सकारात्मक संकेतक",
+      "positiveWithTopics": "{{topics}} में प्रश्नों की मात्रा तुलनात्मक रूप से कम है, जो दर्शाता है कि वर्तमान सामग्री अच्छा काम कर रही है।",
+      "positiveNoTopics": "वर्तमान चर्चा उन विषयों पर केंद्रित है जिन्हें अधिक ध्यान की आवश्यकता है; अगले चेकपॉइंट से पहले मुख्य सामग्रियों को मजबूत करने पर विचार करें।"
     },
-    "snapshot": {
-      "title": "कक्षा स्नैपशॉट — {{topicName}}",
-      "description": "{{count}} फ़ोरम प्रश्नों के आधार पर, इस विषय के लिए कक्षा जुड़ाव स्कोर {{score}}% है। अगले मूल्यांकन से पहले अपनी समझ सुधारने के लिए ऊपर दी गई चिंताओं पर ध्यान दें।"
+
+    "insights": {
+      "title": "विषय अंतर्दृष्टि",
+      "loading": "लाइव चर्चा डेटा से अंतर्दृष्टि तैयार की जा रही है...",
+      "empty": "विश्लेषण के लिए पर्याप्त डेटा नहीं है।",
+      "badgeAttention": "⚠ ध्यान दें",
+      "badgeStrong": "✓ मजबूत",
+      "recommendedAction": "अनुशंसित कार्रवाई",
+      "discussionVolume": "चर्चा की मात्रा"
+    },
+
+    "footer": {
+      "badge": "विश्लेषण इंजन",
+      "title_one": "{{count}} विषय पर आपके ध्यान की आवश्यकता है।",
+      "title_other": "{{count}} विषयों पर आपके ध्यान की आवश्यकता है।",
+      "subtitle": "यह तय करने के लिए ऊपर दिए गए हाइलाइट किए गए विषयों की समीक्षा करें कि अतिरिक्त स्पष्टीकरण या घोषणाओं की आवश्यकता कहाँ है।"
     }
   },
   "sidebar": {
@@ -36,10 +92,10 @@
     "defaultEmail": "student@university.edu",
     "nav": {
       "profile": "प्रोफ़ाइल",
-      "groups": "समूह",
-      "request": "ऑफिस आवर्स के लिए अनुरोध करें",
+      "groups": "ग्रुप",
+      "request": "ऑफिस आवर्स का अनुरोध",
       "requestShort": "ऑफिस आवर्स",
-      "selfcheck": "स्व-जाँच"
+      "selfcheck": "स्वयं जाँच"
     },
     "user": {
       "signOut": "साइन आउट"
@@ -49,27 +105,30 @@
     "appSubtitle": "प्रोफेसर दृश्य",
     "navigationLabel": "नेविगेशन",
     "nav": {
-      "forum": "फ़ोरम",
+      "home": "होम",
+      "forum": "फोरम",
       "calendar": "कैलेंडर",
       "analysis": "विश्लेषण",
       "requests": "अनुरोध",
-      "editGroup": "समूह संपादित करें"
+      "editGroup": "ग्रुप संपादित करें",
+      "profile": "प्रोफ़ाइल"
     },
-    "signOut": "साइन आउट"
+    "signOut": "साइन आउट",
+    "activeGroup": "सक्रिय ग्रुप"
   },
   "login": {
     "title": "वापसी पर स्वागत है",
-    "subtitle": "अपने D.I.Y.A कार्यक्षेत्र, असाइनमेंट, चर्चाओं और फीडबैक टूल तक पहुँचने के लिए Auth0 के साथ सुरक्षित रूप से आगे बढ़ें।",
+    "subtitle": "अपने D.I.Y.A वर्कस्पेस, असाइनमेंट और चर्चाओं तक पहुँचने के लिए Auth0 के माध्यम से सुरक्षित रूप से लॉग इन करें।",
     "submitButton": "Auth0 के साथ लॉग इन करें",
     "signUpPrompt": "D.I.Y.A पर नए हैं?",
-    "signUpLink": "अपना खाता बनाएँ"
+    "signUpLink": "खाता बनाएं"
   },
   "signUp": {
-    "title": "अपना खाता बनाएँ",
-    "subtitle": "सुरक्षित Auth0 साइनअप प्रक्रिया के माध्यम से D.I.Y.A के साथ शुरुआत करें और अपने लर्निंग कार्यक्षेत्र में प्रवेश करें।",
+    "title": "खाता बनाएं",
+    "subtitle": "सुरक्षित Auth0 साइनअप के माध्यम से D.I.Y.A पर अपनी सीखने की यात्रा शुरू करें।",
     "role": {
       "label": "खाता भूमिका",
-      "description": "चुनें कि यह नया खाता छात्र के रूप में बनाया जाना चाहिए या प्रोफेसर के रूप में।",
+      "description": "चुनें कि आप यह खाता छात्र के रूप में बनाना चाहते हैं या प्रोफेसर के रूप में।",
       "student": "छात्र",
       "professor": "प्रोफेसर"
     },
@@ -78,46 +137,48 @@
     "loginLink": "लॉग इन करें"
   },
   "groupInvite": {
-    "title": "समूह आमंत्रण",
-    "message": "<strong>{{adminName}}</strong> ने आपको <strong>{{groupName}}</strong> में शामिल होने के लिए आमंत्रित किया है",
+    "title": "ग्रुप आमंत्रण",
+    "message": "<strong>{{adminName}}</strong> ने आपको <strong>{{groupName}}</strong> में शामिल होने के लिए आमंत्रित किया है।",
     "accept": "स्वीकार करें",
     "declined": "अस्वीकार करें"
   },
   "groups": {
     "pageTitle": "वापसी पर स्वागत है, {{name}}!",
     "defaultName": "छात्र",
+    "members": "सदस्य",
+    "posts": "पोस्ट",
     "search": {
-      "placeholder": "नाम से अपने समूह खोजें...",
-      "ariaLabel": "नाम से समूह खोजें"
+      "placeholder": "नाम से ग्रुप खोजें...",
+      "ariaLabel": "नाम से ग्रुप खोजें"
     },
     "count": {
-      "showing": "{{total}} में से {{count}} समूह दिखाए जा रहे हैं",
-      "member_one": "आप {{count}} समूह के सदस्य हैं",
-      "member_other": "आप {{count}} समूहों के सदस्य हैं"
+      "showing": "{{total}} में से {{count}} ग्रुप दिखाए जा रहे हैं",
+      "member_one": "आप {{count}} ग्रुप के सदस्य हैं",
+      "member_other": "आप {{count}} ग्रुप्स के सदस्य हैं"
     },
     "card": {
       "members_one": "{{count}} सदस्य",
       "members_other": "{{count}} सदस्य",
       "posts_one": "{{count}} पोस्ट",
       "posts_other": "{{count}} पोस्ट",
-      "viewGroup": "समूह देखें"
+      "viewGroup": "ग्रुप देखें"
     },
     "loading": "लोड हो रहा है...",
     "error": {
-      "title": "समूह लोड करने में असमर्थ",
-      "loadGroups": "समूह लोड करने में विफल।",
-      "loadPosts": "फ़ोरम पोस्ट संख्या लोड करने में विफल।"
+      "title": "ग्रुप लोड करने में विफल",
+      "loadGroups": "ग्रुप लोड करने में त्रुटि।",
+      "loadPosts": "फोरम पोस्ट की संख्या लोड करने में विफल।"
     },
     "empty": {
-      "title": "\"{{query}}\" से मिलता-जुलता कोई समूह नहीं मिला",
-      "subtitle": "कोई छोटा नाम, कोर्स कोड आज़माएँ, या अतिरिक्त स्पेस हटा दें।"
+      "title": "कोई ग्रुप नहीं मिला",
+      "subtitle": "छोटा नाम या कोर्स कोड आज़माएं।"
     }
   },
   "forum": {
-    "pageTitle": "{{groupName}} फ़ोरम पेज",
+    "pageTitle": "फोरम पेज",
     "header": {
-      "askQuestion": "एक नया प्रश्न पूछें",
-      "ariaCreate": "नया प्रश्न बनाएँ"
+      "askQuestion": "अपने साथियों और D.I.Y.A AI से प्रश्न पूछें...",
+      "ariaCreate": "नया प्रश्न बनाएं"
     },
     "search": {
       "placeholder": "प्रश्न खोजें...",
@@ -125,19 +186,19 @@
     },
     "count": {
       "showing": "{{total}} में से {{count}} प्रश्न दिखाए जा रहे हैं",
-      "total_one": "आपके सहपाठियों द्वारा पूछा गया {{count}} प्रश्न",
-      "total_other": "आपके सहपाठियों द्वारा पूछे गए {{count}} प्रश्न"
+      "total_one": "आपके साथियों द्वारा पूछा गया {{count}} प्रश्न",
+      "total_other": "आपके साथियों द्वारा पूछे गए {{count}} प्रश्न"
     },
     "card": {
       "newBadge": "नया",
-      "replies_one": "{{count}} उत्तर",
-      "replies_other": "{{count}} उत्तर",
+      "replies_one": "उत्तर",
+      "replies_other": "उत्तर",
       "viewReplies": "उत्तर देखें",
-      "aiVerified": "इस प्रश्न के AI उत्तर को प्रोफेसर द्वारा सत्यापित किया गया है।",
+      "aiVerified": "इस प्रश्न का AI उत्तर प्रोफेसर द्वारा सत्यापित किया गया है।",
       "timeAgo": {
         "minute_one": "{{count}} मिनट पहले",
         "minute_other": "{{count}} मिनट पहले",
-        "hour_one": "{{count}} घंटा पहले",
+        "hour_one": "{{count}} घंटे पहले",
         "hour_other": "{{count}} घंटे पहले",
         "day_one": "{{count}} दिन पहले",
         "day_other": "{{count}} दिन पहले",
@@ -147,118 +208,130 @@
     },
     "loading": "लोड हो रहा है...",
     "error": {
-      "title": "फ़ोरम प्रश्न लोड करने में असमर्थ",
-      "loadQuestions": "फ़ोरम प्रश्न लोड करने में विफल।",
+      "title": "फोरम के प्रश्न लोड करने में विफल",
+      "loadQuestions": "फोरम के प्रश्न लोड करने में त्रुटि।",
       "createQuestion": "प्रश्न बनाने में विफल।",
-      "upvote": "अपवोट अपडेट करने में विफल।"
+      "upvote": "वोट अपडेट करने में विफल।"
     },
     "empty": {
       "title": "कोई प्रश्न नहीं मिला",
-      "subtitle": "कोई अन्य खोज आज़माएँ या इस समूह के लिए पहला प्रश्न पोस्ट करें।"
+      "subtitle": "कोई दूसरा शब्द आज़माएं या इस ग्रुप का पहला प्रश्न पूछें।"
     },
     "popup": {
-      "title": "एक प्रश्न पूछें",
+      "title": "प्रश्न पूछें",
       "inputPlaceholder": "आपका प्रश्न क्या है?",
       "imageLabel": "छवि (वैकल्पिक)",
       "uploadImage": "छवि अपलोड करें",
       "changeImage": "छवि बदलें",
       "cancel": "रद्द करें",
+      "posting": "पोस्ट किया जा रहा है...",
       "postButton": "प्रश्न पोस्ट करें"
     }
   },
   "forumThread": {
-    "backToForum": "← फ़ोरम पर वापस जाएँ",
+    "backToForum": "← फोरम पर वापस जाएं",
     "question": {
-      "askedBy": "{{author}} द्वारा पूछा गया",
+      "askedBy": "पूछा गया: ",
       "defaultTitle": "आपका प्रश्न",
       "defaultAuthor": "आप"
     },
     "replies": {
       "loading": "थ्रेड लोड हो रहा है...",
-      "empty": "अभी तक कोई उत्तर नहीं है — प्रतिक्रिया देने वाले पहले व्यक्ति बनें!",
+      "empty": "अभी तक कोई उत्तर नहीं है — पहले व्यक्ति बनें!",
       "professorLabel": "(प्रोफेसर)",
-      "imageFallback": "(छवि)"
+      "imageFallback": "(छवि)",
+      "professor": "प्रोफेसर",
+      "student": "छात्र",
+      "ai": "D.I.Y.A AI",
+      "profssorVerified": "प्रोफेसर द्वारा सत्यापित AI"
     },
     "related": {
-      "title": "संबंधित चर्चाएँ",
-      "loading": "समान विषय खोजे जा रहे हैं...",
+      "title": "संबंधित चर्चाएं",
+      "loading": "समान विषयों की खोज की जा रही है...",
       "empty": "कोई समान पोस्ट नहीं मिली।",
       "untitled": "बिना शीर्षक वाली पोस्ट",
-      "viewThread": "थ्रेड देखें →"
+      "viewThread": "थ्रेड देखें →",
+      "untitledQuestion": "बिना शीर्षक वाला प्रश्न"
     },
     "input": {
-      "placeholder": "अपना उत्तर टाइप करें...",
-      "removeImage": "हटाएँ",
+      "placeholder": "अपना उत्तर लिखें...",
+      "sending": "भेजा जा रहा है...",
+      "removeImage": "अटैचमेंट हटाएं",
+      "remove": "हटाएं",
+      "attach": "अटैच करें",
       "ariaUpload": "छवि अपलोड करें",
       "ariaSend": "उत्तर भेजें",
       "ariaToggleSidebarOpen": "साइडबार खोलें",
-      "ariaToggleSidebarClose": "साइडबार बंद करें"
+      "ariaToggleSidebarClose": "साइडबार बंद करें",
+      "fileTooLarge": "फ़ाइल बहुत बड़ी है। कृपया 10MB से छोटी फ़ाइल का उपयोग करें।",
+      "timeOut": "अपलोड का समय समाप्त हो गया। कृपया छोटी फ़ाइल आज़माएं।",
+      "urlError": "अपलोड की गई फ़ाइल का लिंक प्राप्त नहीं किया जा सका।"
     },
     "errors": {
-      "loadThread": "फ़ोरम थ्रेड लोड करने में विफल।",
+      "loadThread": "फोरम थ्रेड लोड करने में विफल।",
       "loadReplies": "उत्तर लोड करने में विफल।",
       "sendReply": "उत्तर भेजने में विफल।"
     }
   },
   "officeHours": {
-    "pageTitle": "ऑफिस आवर्स के लिए अनुरोध करें",
+    "pageTitle": "ऑफिस आवर्स अनुरोध",
     "form": {
       "title": "नया अनुरोध",
-      "subtitle": "अपने प्रोफेसर या टीए (TA) के साथ मीटिंग के लिए अनुरोध करने के लिए नीचे दिया गया फॉर्म भरें।",
-      "loading": "आपके कोर्स और उपलब्ध संपर्क लोड हो रहे हैं...",
-      "courseLabel": "कौन सा कोर्स/समूह? *",
-      "coursePlaceholder": "एक कोर्स या समूह चुनें",
-      "noGroups": "आप अभी तक किसी भी कोर्स समूह में नामांकित नहीं हैं।",
-      "professorLabel": "प्रोफेसर या टीए से अनुरोध कर रहे हैं? *",
+      "subtitle": "अपने प्रोफेसर या टीए (TA) के साथ मीटिंग के लिए नीचे दिया गया फॉर्म भरें।",
+      "loading": "आपके कोर्स और संपर्क लोड हो रहे हैं...",
+      "courseLabel": "कौन सा कोर्स/ग्रुप? *",
+      "coursePlaceholder": "एक कोर्स या ग्रुप चुनें",
+      "noGroups": "आप अभी तक किसी भी कोर्स में नामांकित नहीं हैं।",
+      "professorLabel": "प्रोफेसर या टीए? *",
       "professorPlaceholder": "एक प्रोफेसर या टीए चुनें",
-      "reasonLabel": "यह अनुरोध किसलिए है? *",
-      "reasonPlaceholder": "संक्षेप में बताएं कि आप क्यों मिलना चाहते हैं...",
+      "reasonLabel": "इस अनुरोध का कारण? *",
+      "reasonPlaceholder": "मीटिंग का कारण संक्षेप में बताएं...",
       "dateLabel": "प्रस्तावित तिथि *",
-      "startTimeLabel": "प्रारंभ समय (CST) *",
-      "endTimeLabel": "समाप्ति समय (CST) *",
+      "startTimeLabel": "प्रारंभ समय *",
+      "endTimeLabel": "समाप्ति समय *",
       "meetingTypeLabel": "मीटिंग का प्रकार *",
       "online": "ऑनलाइन मीटिंग",
-      "inPerson": "व्यक्तिगत मीटिंग",
+      "inPerson": "व्यक्तिगत रूप से (In-person)",
       "meetingLinkLabel": "मीटिंग लिंक (वैकल्पिक)",
       "meetingLinkPlaceholder": "https://zoom.us/j/...",
-      "submitButton": "अनुरोध जमा करें"
+      "submitButton": "अनुरोध सबमिट करें"
     },
     "success": {
-      "title": "अनुरोध जमा कर दिया गया!",
-      "subtitle": "आपका ऑफिस आवर्स अनुरोध भेज दिया गया है। आपके प्रोफेसर के जवाब देने के बाद आपको एक ईमेल पुष्टिकरण प्राप्त होगा।",
-      "emailNote": "पडेट के लिए अपना ईमेल यहाँ देखें:",
-      "submitAnother": "एक और अनुरोध जमा करें"
+      "title": "अनुरोध सबमिट हो गया!",
+      "subtitle": "आपका ऑफिस आवर्स अनुरोध भेज दिया गया है। पुष्टि होने पर आपको एक ईमेल मिलेगा।",
+      "emailNote": "अपडेट के लिए अपना ईमेल देखें: ",
+      "submitAnother": "एक और अनुरोध भेजें"
     },
     "requests": {
       "title": "आपके अनुरोध",
-      "empty": "अभी तक कोई अनुरोध नहीं है। ऊपर अपना पहला अनुरोध जमा करें।",
+      "empty": "अभी तक कोई अनुरोध नहीं है। ऊपर अपना पहला अनुरोध सबमिट करें।",
       "online": "ऑनलाइन",
-      "inPerson": "व्यक्तिगत",
-      "meetingLink": "मीटिंग लिंक: ",
-      "addToGoogle": "गूगल कैलेंडर में जोड़ें",
-      "addToOutlook": "आउटलुक में जोड़ें",
+      "inPerson": "व्यक्तिगत रूप से",
+      "meetingLink": "लिंक: ",
+      "addToGoogle": "Google कैलेंडर में जोड़ें",
+      "addToOutlook": "Outlook में जोड़ें",
       "joinMeeting": "मीटिंग में शामिल हों",
       "timeRange": "{{start}} – {{end}}"
     },
     "status": {
-      "pending": "लंबित",
-      "confirmed": "पुष्टि की गई",
-      "declined": "अस्वीकार कर दिया गया"
+      "pending": "लंबित (Pending)",
+      "confirmed": "पुष्ट (Confirmed)",
+      "declined": "अस्वीकृत"
     },
     "errors": {
-      "loadProfessors": "प्रोफेसर संपर्क लोड करने में विफल।",
-      "loadGroups": "समूह लोड करने में विफल।",
-      "loadRequests": "आपके ऑफिस ऑवर अनुरोध लोड करने में विफल।",
-      "loadData": "ऑफिस ऑवर डेटा लोड करने में विफल।",
-      "noGroup": "कृपया एक कोर्स या समूह चुनें।",
-      "submit": "ऑफिस ऑवर अनुरोध जमा करने में विफल।"
+      "loadProfessors": "प्रोफेसर संपर्कों को लोड करने में विफल।",
+      "loadGroups": "ग्रुप लोड करने में विफल।",
+      "loadRequests": "आपके अनुरोधों को लोड करने में विफल।",
+      "loadData": "डेटा लोड करने में त्रुटि।",
+      "noGroup": "कृपया एक कोर्स चुनें।",
+      "submit": "अनुरोध सबमिट करने में विफल।"
     }
   },
   "selfCheck": {
-    "pageTitle": "स्व-जाँच",
+    "pageTitle": "स्वयं जाँच (Self-Check)",
     "upload": {
-      "title": "अपने काम की जाँच करें",
-      "subtitle": "AI-अनुमानित ग्रेड रिपोर्ट प्राप्त करने के लिए अपना असाइनमेंट रूब्रिक और अपना काम अपलोड करें।",
+      "title": "अपने काम को सत्यापित करें",
+      "subtitle": "AI-संचालित रिपोर्ट प्राप्त करने के लिए अपना असाइनमेंट रूब्रिक और अपना काम अपलोड करें।",
       "rubricLabel": "असाइनमेंट रूब्रिक",
       "rubricPlaceholder": "रूब्रिक अपलोड करने के लिए क्लिक करें",
       "workLabel": "आपका काम",
@@ -268,7 +341,7 @@
     },
     "analyzing": {
       "title": "आपके काम का विश्लेषण किया जा रहा है...",
-      "subtitle": "रूब्रिक मानदंडों के साथ आपके सबमिशन की तुलना की जा रही है"
+      "subtitle": "रूब्रिक मानदंडों के साथ आपकी सामग्री की तुलना की जा रही है।"
     },
     "report": {
       "title": "ग्रेड रिपोर्ट",
@@ -277,57 +350,537 @@
     },
     "history": {
       "title": "पिछली जाँचें",
-      "loading": "आपकी पिछली जाँचें लोड हो रही हैं...",
-      "empty": "अभी तक कोई पिछली जाँच नहीं है। शुरू करने के लिए ऊपर अपना पहला असाइनमेंट अपलोड करें।",
+      "loading": "पिछली रिपोर्ट लोड की जा रही हैं...",
+      "empty": "कोई पिछली जाँच नहीं मिली। शुरू करने के लिए अपना पहला असाइनमेंट अपलोड करें।",
       "areasForImprovement": "सुधार के क्षेत्र"
     },
     "errors": {
-      "loadHistory": "स्व-जाँच इतिहास लोड करने में विफल।",
+      "loadHistory": "स्वयं जाँच इतिहास लोड करने में विफल।",
       "analyze": "आपके काम का विश्लेषण करने में विफल।"
     }
   },
   "profile": {
     "sectionLabel": "छात्र सेटिंग्स",
-    "pageTitle": "अपना खाता प्रबंधित करें",
-    "pageSubtitle": "अपनी सुरक्षा प्राथमिकताओं को अपडेट करें, अपने खाते के विवरण की समीक्षा करें और यह नियंत्रित करें कि D.I.Y.A आपको महत्वपूर्ण गतिविधि के बारे में कैसे सूचित करता है।",
+    "pageTitle": "खाता प्रबंधित करें",
+    "pageSubtitle": "अपनी सुरक्षा प्राथमिकताएं अपडेट करें और D.I.Y.A सूचनाओं को नियंत्रित करें।",
     "status": {
       "emailVerified": "ईमेल सत्यापित",
       "emailPending": "ईमेल सत्यापन लंबित",
-      "lastSynced": "अंतिम सिंक {{date}}"
+      "lastSynced": "अंतिम बार सिंक किया गया"
     },
     "account": {
       "sectionLabel": "खाता",
-      "noEmail": "कोई ईमेल उपलब्ध नहीं",
+      "noEmail": "कोई ईमेल नहीं मिला",
       "emailAlertsLabel": "ईमेल अलर्ट",
-      "forumRepliesLabel": "फ़ोरम उत्तर",
+      "forumRepliesLabel": "फोरम के उत्तर",
       "on": "चालू",
-      "off": "बंद"
+      "off": "बंद",
+      "personalInfo": "व्यक्तिगत जानकारी",
+      "setName": "प्रोफेसरों और साथियों द्वारा पहचाने जाने के लिए अपना नाम सेट करें।",
+      "professorSetName": "छात्रों और सहकर्मियों द्वारा पहचाने जाने के लिए अपना नाम सेट करें।",
+      "saving": "सहेजा जा रहा है...",
+      "saveName": "नाम सहेजें",
+      "saveBio": "बायो सहेजें",
+      "tellMessage": "अपने बारे में हमें कुछ बताएं...",
+      "notAvailable": "उपलब्ध नहीं",
+      "displayName": "प्रदर्शित नाम",
+      "enterName": "अपना नाम दर्ज करें",
+      "bio": "बायो (Bio)",
+      "email": "ईमेल पता",
+      "displayNameSuccess": "नाम सफलतापूर्वक अपडेट किया गया।",
+      "displayNameError": "नाम सहेजने में विफल। कृपया पुन: प्रयास करें।",
+      "bioSuccess": "बायो सफलतापूर्वक अपडेट किया गया।",
+      "bioError": "बायो सहेजने में विफल।",
+      "timezoneSuccess": "समय क्षेत्र अपडेट किया गया।",
+      "themeSuccess": "थीम अपडेट की गई।",
+      "recently": "हाल ही में",
+      "professorSettings": "प्रोफेसर सेटिंग्स",
+      "emailAddress" : "ईमेल पता"
     },
     "security": {
       "title": "खाता सुरक्षा",
-      "subtitle": "अपना पासवर्ड प्रबंधित करने और अपने लॉगिन को सुरक्षित रखने के लिए Auth0 का उपयोग करें।",
+      "subtitle": "अपना पासवर्ड प्रबंधित करें और अपना खाता सुरक्षित रखें।",
       "passwordReset": {
         "title": "पासवर्ड रीसेट",
-        "description": "<strong>{{email}}</strong> पर एक सुरक्षित Auth0 पासवर्ड रीसेट ईमेल भेजें।",
+        "description": "एक सुरक्षित पासवर्ड रीसेट ईमेल भेजें: ",
         "fallbackEmail": "आपका खाता ईमेल",
         "button": "पासवर्ड बदलें",
-        "buttonSending": "रीसेट ईमेल भेजा जा रहा है...",
-        "successMessage": "{{email}} पर पासवर्ड रीसेट ईमेल भेज दिया गया है। सुरक्षित लिंक के लिए अपना इनबॉक्स चेक करें।"
+        "buttonSending": "रीसेट लिंक भेजा जा रहा है...",
+        "successEmail": "{{email}} पर ईमेल भेजा गया है।",
+        "failEmail": "पासवर्ड रीसेट ईमेल भेजने में विफल।"
       }
     },
     "notifications": {
       "title": "सूचनाएं",
-      "subtitle": "ये प्राथमिकताएं सीधे आपके Firestore उपयोगकर्ता दस्तावेज़ से लोड होती हैं और आपके द्वारा टॉगल किए जाने पर तुरंत सहेजी जाती हैं।",
+      "subtitle": "अपनी सूचना प्राथमिकताएं कॉन्फ़िगर करें।",
       "emailAlerts": {
         "title": "ईमेल अलर्ट",
-        "description": "महत्वपूर्ण खाता गतिविधि और नियुक्तियों से संबंधित अपडेट के लिए ईमेल सूचनाएं प्राप्त करें।",
+        "description": "महत्वपूर्ण अपडेट और अपॉइंटमेंट के बारे में सूचनाएं प्राप्त करें।",
         "successMessage": "ईमेल अलर्ट सफलतापूर्वक अपडेट किए गए।"
       },
-      "forumReplies": {
-        "title": "नए फ़ोरम उत्तर",
-        "description": "जब आपके कोर्सवर्क के लिए महत्वपूर्ण चर्चाओं में कोई नई गतिविधि या उत्तर हो तो सूचित किया जाए।",
-        "successMessage": "नई फ़ोरम उत्तर सूचनाएं सफलतापूर्वक अपडेट की गईं।"
+      "newForumReplies": {
+        "title": "फोरम के नए उत्तर",
+        "description": "जब कोई आपकी चर्चा का उत्तर दे तो सूचित किया जाए।",
+        "successMessage": "फोरम उत्तर सूचनाएं अपडेट की गईं।"
       }
+    },
+    "preferences": {
+    "title": "प्राथमिकताएं",
+    "subtitle": "अपना समय क्षेत्र और थीम सेटिंग्स कस्टमाइज़ करें।",
+    "timezone": {
+      "label": "समय क्षेत्र"
+    },
+    "appearance": {
+      "label": "थीम",
+      "lightMode": "लाइट मोड",
+      "darkMode": "डार्क मोड",
+      "switchButton": "{{ mode }} पर स्विच करें",
+      "description": "आपकी थीम प्राथमिकता आपकी प्रोफ़ाइल में सहेजी जाएगी।"
+    },
+    "language": {
+      "label": "भाषा",
+      "current": "हिंदी (भारत)",
+      "comingSoon": "अधिक भाषाएं जल्द ही आ रही हैं।"
+    }
+  },
+  "dangerZone": {
+    "title": "डेंजर ज़ोन",
+    "subtitle": "स्थायी कार्रवाइयां जिन्हें वापस नहीं लिया जा सकता। सावधानी से आगे बढ़ें।",
+    "deleteAccount": {
+      "title": "खाता हटाएं",
+      "description": "अपना खाता और अपना सारा डेटा स्थायी रूप से मिटा दें।",
+      "button": "खाता हटाने का अनुरोध करें",
+      "alertMessage": "अपना खाता हटाने के लिए कृपया व्यवस्थापक (Admin) से संपर्क करें।"
+    }
+  }
+  },
+  "professorRequests": {
+
+    "nav": {
+      "backToForum": "← फोरम पर वापस जाएं",
+      "calendar": "कैलेंडर",
+      "analysis": "विश्लेषण",
+      "requests": "अनुरोध",
+      "editGroup": "ग्रुप संपादित करें",
+      "professorView": "प्रोफेसर दृश्य",
+      "signOut": "साइन आउट"
+    },
+
+    "header": {
+      "eyebrow": "ऑफिस आवर्स",
+      "title": "अपॉइंटमेंट अनुरोध",
+      "subtitle": "छात्रों के मिलने के अनुरोधों की समीक्षा और शेड्यूलिंग करें"
+    },
+
+    "stats": {
+      "pendingRequests": "लंबित अनुरोध",
+      "thisWeek": "इस सप्ताह",
+      "nextWeek": "अगले सप्ताह"
+    },
+
+    "list": {
+      "heading": "आने वाले अनुरोध",
+      "loading": "अनुरोध लोड हो रहे हैं...",
+      "empty": "वर्तमान में कोई लंबित अनुरोध नहीं है।"
+    },
+
+    "card": {
+      "fallbackName": "छात्र",
+      "fallbackEmail": "कोई ईमेल प्रदान नहीं किया गया",
+      "requestedAgo": "अनुरोध किया गया",
+      "accept": "स्वीकार करें",
+      "reject": "अस्वीकार करें",
+      "reschedule": "पुनर्निर्धारित (Reschedule) करें",
+      "googleCal": "Google Cal",
+      "outlook": "Outlook",
+      "meet": "Meet"
+    },
+
+    "calendarTitle": "ऑफिस आवर्स — {{studentName}}",
+
+    "timeAgo": {
+      "minute_one": "{{count}} मिनट पहले",
+      "minute_other": "{{count}} मिनट पहले",
+      "hour_one": "{{count}} घंटे पहले",
+      "hour_other": "{{count}} घंटे पहले",
+      "day_one": "{{count}} दिन पहले",
+      "day_other": "{{count}} दिन पहले"
+    },
+
+    "reschedulePanel": {
+      "title": "नए समय का प्रस्ताव दें",
+      "dateLabel": "तिथि",
+      "timeLabel": "समय",
+      "sendProposal": "प्रस्ताव भेजें",
+      "validationError": "कृपया तिथि और समय चुनें।"
+    },
+
+    "errors": {
+      "loadFailed": "अनुरोधों को लोड करने में विफल।",
+      "loadPendingFailed": "लंबित अनुरोधों को लोड करने में विफल।",
+      "approveFailed": "अपॉइंटमेंट स्वीकृत करने में विफल।",
+      "rejectFailed": "अपॉइंटमेंट अस्वीकार करने में विफल।",
+      "rescheduleFailed": "पुनर्निर्धारित करने में विफल।",
+      "updateFailed": "अनुरोध अपडेट करने में विफल।"
+    },
+
+    "footer": {
+      "eyebrow": "ऑफिस आवर्स कतार (Queue)",
+      "waiting_one": "{{count}} छात्र आपकी प्रतिक्रिया की प्रतीक्षा कर रहा है।",
+      "waiting_other": "{{count}} छात्र आपकी प्रतिक्रिया की प्रतीक्षा कर रहे हैं।",
+      "description": "अपनी मीटिंग्स की पुष्टि करने के लिए प्रत्येक अनुरोध की समीक्षा करें।"
+    }
+  },
+
+  "edit": {
+    "header": {
+      "eyebrow": "ग्रुप प्रबंधन",
+      "title": "ग्रुप संपादित करें",
+      "subtitle": "छात्रों और ग्रुप सेटिंग्स का प्रबंधन करें"
+    },
+
+    "stats": {
+      "totalStudents": "कुल छात्र",
+      "active": "सक्रिय",
+      "pending": "लंबित"
+    },
+
+    "status": {
+      "active": "सक्रिय",
+      "pending": "लंबित"
+    },
+
+    "loading": "छात्र सूची लोड की जा रही है...",
+
+    "emptyState": {
+      "noGroup": "संपादित करने के लिए कोई ग्रुप नहीं है।",
+      "description": "छात्रों और पोस्ट को प्रबंधित करने के लिए अपना पहला कोर्स ग्रुप बनाएं।",
+      "createButton": "नया ग्रुप बनाएं",
+      "backButton": "फोरम पर वापस जाएं"
+    },
+
+    "groupInfo": {
+      "cardTitle": "ग्रुप जानकारी",
+      "nameLabel": "ग्रुप का नाम",
+      "descriptionLabel": "विवरण",
+      "saveButton": "परिवर्तन सहेजें",
+      "savingButton": "सहेजा जा रहा है..."
+    },
+
+    "groupActions": {
+      "cardTitle": "ग्रुप कार्रवाइयां",
+      "addStudents": "छात्र जोड़ें",
+      "archiveGroup": "ग्रुप को आर्काइव करें"
+    },
+
+    "roster": {
+      "cardTitle": "छात्र सूची (Roster)",
+      "empty": "इस ग्रुप में अभी तक कोई छात्र नहीं है।",
+      "removeButton": "हटाएं",
+      "removeConfirm": "क्या आप वाकई इस छात्र को हटाना चाहते हैं?"
+    },
+
+    "footer": {
+      "enrolled_one": "{{count}} छात्र नामांकित है।",
+      "enrolled_other": "{{count}} छात्र नामांकित हैं।"
+    },
+
+    "addStudentModal": {
+      "title": "छात्र जोड़ें",
+      "description": "छात्र का ईमेल दर्ज करें। छात्र को कम से कम एक बार लॉग इन किया हुआ होना चाहिए।",
+      "namePlaceholder": "छात्र का नाम (वैकल्पिक)",
+      "emailPlaceholder": "student@school.edu",
+      "cancelButton": "रद्द करें",
+      "addButton": "छात्र जोड़ें"
+    },
+
+    "createGroupModal": {
+      "title": "नया ग्रुप बनाएं",
+      "description": "अपने प्रोफेसर खाते के लिए एक नया ग्रुप बनाएं।",
+      "titlePlaceholder": "ग्रुप का शीर्षक",
+      "descriptionPlaceholder": "ग्रुप का विवरण",
+      "cancelButton": "रद्द करें",
+      "createButton": "ग्रुप बनाएं",
+      "creatingButton": "बनाया जा रहा है..."
+    },
+
+    "archiveModal": {
+      "title": "क्या ग्रुप को आर्काइव करना है?",
+      "description": "यह ग्रुप को हटा देगा और सदस्यों की सूचियों से साफ़ कर देगा।",
+      "cancelButton": "रद्द करें",
+      "archiveButton": "ग्रुप आर्काइव करें",
+      "archivingButton": "आर्काइव किया जा रहा है..."
+    },
+
+    "errors": {
+      "loadGroups": "ग्रुप लोड करने में विफल।",
+      "loadUsers": "उपयोगकर्ताओं को लोड करने में विफल।",
+      "loadGroupData": "ग्रुप डेटा लोड करने में त्रुटि।",
+      "noGroupSelected": "वर्तमान में कोई ग्रुप चयनित नहीं है।",
+      "professorNotReady": "प्रोफेसर खाता अभी तैयार नहीं है। कृपया पुन: प्रयास करें।",
+      "groupTitleRequired": "ग्रुप का शीर्षक आवश्यक है।",
+      "studentNotFound": "जोड़ने से पहले छात्र को कम से कम एक बार लॉग इन करना होगा।",
+      "studentAlreadyInGroup": "छात्र पहले से ही इस ग्रुप में है।",
+      "addStudentFailed": "छात्र को जोड़ने में विफल।",
+      "removeStudentFailed": "छात्र को हटाने में विफल।",
+      "saveGroupFailed": "ग्रुप सेटिंग्स सहेजने में विफल।",
+      "archiveFailed": "ग्रुप को आर्काइव करने में विफल।",
+      "createFailed": "ग्रुप बनाने में समस्या आई।",
+      "syncMembershipFailed": "{{identifier}} के लिए सदस्यता सिंक करने में विफल।",
+      "empty": "संपादित करने के लिए कोई ग्रुप नहीं।"
+    },
+
+    "success": {
+      "studentAdded": "छात्र सफलतापूर्वक जोड़ दिया गया।",
+      "studentRemoved": "छात्र सफलतापूर्वक हटा दिया गया।",
+      "groupSaved": "ग्रुप सेटिंग्स सफलतापूर्वक सहेजी गईं।",
+      "groupCreated": "ग्रुप सफलतापूर्वक बनाया गया।"
+    },
+
+    "fallbacks": {
+      "studentName": "छात्र",
+      "noEmail": "कोई ईमेल नहीं"
+    }
+  },
+  "calendar": {
+    "header": {
+      "eyebrow": "शेड्यूल",
+      "title": "अपॉइंटमेंट कैलेंडर",
+      "subtitle": "अपने मीटिंग शेड्यूल का प्रबंधन करें"
+    },
+
+    "stats": {
+      "total": "कुल अपॉइंटमेंट",
+      "confirmed": "पुष्ट (Confirmed)",
+      "pending": "लंबित",
+      "declined": "अस्वीकृत"
+    },
+
+    "status": {
+      "confirmed": "पुष्ट",
+      "pending": "लंबित",
+      "declined": "अस्वीकृत"
+    },
+
+    "views": {
+      "month": "महीना",
+      "week": "सप्ताह",
+      "day": "दिन"
+    },
+
+    "monthNames": [
+      "जनवरी", "फ़रवरी", "मार्च", "अप्रैल",
+      "मई", "जून", "जुलाई", "अगस्त",
+      "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"
+    ],
+
+    "dayNames": [
+      "रवि", "सोम", "मंगल", "बुध",
+      "गुरु", "शुक्र", "शनि"
+    ],
+
+    "calendar": {
+      "moreAppointments": "+{{count}} और"
+    },
+
+    "dayView": {
+      "scheduled_one": "{{count}} अपॉइंटमेंट निर्धारित है",
+      "scheduled_other": "{{count}} अपॉइंटमेंट निर्धारित हैं"
+    },
+
+    "loading": "कैलेंडर लोड हो रहा है...",
+    "empty": "अभी तक कोई अपॉइंटमेंट निर्धारित नहीं है।",
+
+    "appointmentModal": {
+      "title": "अपॉइंटमेंट विवरण",
+      "studentLabel": "छात्र",
+      "dateTimeLabel": "तिथि और समय",
+      "dateTimeAt": "{{date}} को {{time}} पर",
+      "reasonLabel": "कारण",
+      "statusLabel": "स्थिति (Status)",
+      "closeButton": "बंद करें"
+    },
+
+    "footer": {
+      "eyebrow": "ऑफिस आवर्स अवलोकन",
+      "confirmed_one": "वर्तमान में आपके पास {{count}} पुष्ट मीटिंग है।",
+      "confirmed_other": "वर्तमान में आपके पास {{count}} पुष्ट मीटिंग्स हैं।"
+    },
+
+    "errors": {
+      "loadFailed": "शेड्यूल लोड करने में विफल।"
+    },
+
+    "fallbacks": {
+      "studentName": "छात्र",
+      "noEmail": "कोई ईमेल नहीं"
+    }
+  },
+  "professorForum": {
+    "header": {
+      "eyebrow": "फोरम प्रबंधन",
+      "subtitle": "चर्चा बोर्ड और AI उत्तरों का प्रबंधन",
+      "fallbackTitle": "प्रोफेसर फोरम"
+    },
+
+    "stats": {
+      "totalQuestions": "कुल प्रश्न",
+      "aiVerified": "AI सत्यापित",
+      "pendingReview": "समीक्षा लंबित",
+      "discussionReplies": "चर्चा के उत्तर"
+    },
+
+    "sidebar": {
+      "statsLabel": "फोरम आंकड़े",
+      "questions": "प्रश्न",
+      "answered": "उत्तर दिए गए",
+      "newAnnouncement": "नई घोषणा"
+    },
+
+    "announcements": {
+      "sectionTitle": "हालिया घोषणाएं",
+      "empty": "अभी तक कोई घोषणा नहीं।",
+      "postedBy": "द्वारा पोस्ट किया गया"
+    },
+
+    "questions": {
+      "sectionTitle": "हालिया प्रश्न",
+      "lastUpdated": "अंतिम अपडेट:",
+      "noPostsYet": "अभी तक कोई पोस्ट नहीं",
+      "loading": "प्रोफेसर फोरम लोड हो रहा है...",
+      "empty": "फिल्टर से मेल खाता कोई प्रश्न नहीं मिला।",
+      "fallbackTitle": "बिना शीर्षक वाला प्रश्न",
+      "viewReplies": "सभी उत्तर देखें",
+      "reply_one": "{{count}} उत्तर",
+      "reply_other": "{{count}} उत्तर"
+    },
+
+    "filters": {
+      "allQuestions": "सभी प्रश्न",
+      "unanswered": "बिना उत्तर वाले",
+      "sortRecent": "हालिया",
+      "sortEngagement": "जुड़ाव"
+    },
+
+    "ai": {
+      "label": "AI जनरेटेड उत्तर",
+      "verified": "सत्यापित",
+      "rejected": "अस्वीकृत",
+      "verifyButton": "सत्यापित करें",
+      "rejectButton": "अस्वीकार करें",
+      "noAnswer": "अभी तक कोई AI उत्तर उपलब्ध नहीं है।"
+    },
+
+    "announcementModal": {
+      "title": "नई घोषणा",
+      "titleLabel": "घोषणा शीर्षक",
+      "titlePlaceholder": "एक संक्षिप्त शीर्षक दर्ज करें",
+      "messageLabel": "संदेश",
+      "messagePlaceholder": "छात्रों के साथ कोई अपडेट साझा करें...",
+      "cancelButton": "रद्द करें",
+      "postButton": "घोषणा पोस्ट करें",
+      "postingButton": "पोस्ट की जा रही है..."
+    },
+
+    "footer": {
+      "eyebrow": "AI फोरम मॉडरेशन",
+      "pendingReview_one": "{{count}} उत्तर आपकी समीक्षा की प्रतीक्षा कर रहा है।",
+      "pendingReview_other": "{{count}} उत्तर आपकी समीक्षा की प्रतीक्षा कर रहे हैं।",
+      "allReviewed": "सब कुछ समीक्षा कर लिया गया है। शानदार काम!",
+      "description": "सटीकता सुनिश्चित करने के लिए AI उत्तरों को सत्यापित या अस्वीकृत करें।"
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} मिनट पहले",
+      "minute_other": "{{count}} मिनट पहले",
+      "hour_one": "{{count}} घंटे पहले",
+      "hour_other": "{{count}} घंटे पहले",
+      "day_one": "{{count}} दिन पहले",
+      "day_other": "{{count}} दिन पहले",
+      "week_one": "{{count}} सप्ताह पहले",
+      "week_other": "{{count}} सप्ताह पहले"
+    },
+
+    "errors": {
+      "loadGroups": "प्रोफेसर फोरम ग्रुप लोड करने में विफल।",
+      "loadPosts": "प्रोफेसर फोरम पोस्ट लोड करने में विफल।",
+      "loadFailed": "फोरम डेटा लोड करने में त्रुटि।",
+      "updateAIStatus": "AI समीक्षा स्थिति अपडेट करने में विफल।",
+      "postAnnouncement": "घोषणा पोस्ट करने में विफल।"
+    },
+
+    "fallbacks": {
+      "studentName": "छात्र",
+      "professorName": "प्रोफेसर"
+    }
+  },
+  "questionDetail": {
+    "header": {
+      "eyebrow": "चर्चा विवरण",
+      "askedBy": "{{author}} ने पूछा"
+    },
+
+    "discussion": {
+      "title_one": "चर्चा ({{count}} उत्तर)",
+      "title_other": "चर्चा ({{count}} उत्तर)",
+      "loading": "चर्चा लोड हो रही है...",
+      "loadingQuestion": "प्रश्न लोड किया जा रहा है...",
+      "empty": "अभी तक कोई उत्तर नहीं है। चर्चा शुरू करने के लिए उत्तर दें।"
+    },
+
+    "reply": {
+      "rejectButton": "अस्वीकार करें और उत्तर दें"
+    },
+
+    "actions": {
+      "cardTitle": "प्रोफेसर कार्रवाइयां",
+      "writeAnswer": "अपना उत्तर लिखें",
+      "backToForum": "← फोरम पर वापस जाएं"
+    },
+
+    "stats": {
+      "cardTitle": "थ्रेड आंकड़े",
+      "totalReplies": "कुल उत्तर",
+      "aiResponses": "AI प्रतिक्रियाएं",
+      "professorReplies": "प्रोफेसर उत्तर"
+    },
+
+    "manualResponse": {
+      "title": "आपका उत्तर",
+      "placeholder": "अपना उत्तर यहाँ लिखें...",
+      "submitButton": "उत्तर सबमिट करें",
+      "sendingButton": "भेजा जा रहा है...",
+      "cancelButton": "रद्द करें"
+    },
+
+    "footer": {
+      "description": "चर्चा जारी रखें — आपकी क्लास आप पर निर्भर है।"
+    },
+
+    "timeAgo": {
+      "minute_one": "{{count}} मिनट पहले",
+      "minute_other": "{{count}} मिनट पहले",
+      "hour_one": "{{count}} घंटे पहले",
+      "hour_other": "{{count}} घंटे पहले",
+      "day_one": "{{count}} दिन पहले",
+      "day_other": "{{count}} दिन पहले"
+    },
+
+    "errors": {
+      "loadThread": "फोरम थ्रेड लोड करने में विफल।",
+      "loadReplies": "उत्तर लोड करने में विफल।",
+      "submitReply": "प्रोफेसर उत्तर सबमिट करने में विफल।"
+    },
+
+    "fallbacks": {
+      "studentName": "छात्र",
+      "professorName": "प्रोफेसर",
+      "you": "आप",
+      "questionNotFound": "प्रश्न नहीं मिला",
+      "questionUnavailable": "प्रश्न उपलब्ध नहीं है",
+      "questionNotAvailable": "प्रश्न उपलब्ध नहीं है",
+      "aiName": "D.I.Y.A AI",
+      "aiVerifiedName": "प्रोफेसर द्वारा सत्यापित AI"
     }
   }
 }

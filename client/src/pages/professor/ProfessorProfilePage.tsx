@@ -308,13 +308,13 @@ export function ProfessorProfilePage() {
 
               <div className="grid min-w-[200px] gap-2 rounded-3xl border border-[#efe1e5] bg-[#fcf8f9] p-4 shadow-sm">
                 <div>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8c6d76]">Account</div>
+                  <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8c6d76]">{t("profile.account.sectionLabel")}</div>
                   <div className="mt-1 text-lg font-bold text-[#5C1E26]">{displayLabel || email || t("signUp.role.professor")}</div>
                   {displayLabel && <div className="mt-0.5 break-all text-sm text-[#6d5560]">{email}</div>}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="rounded-2xl bg-white px-3 py-2 text-left shadow-sm">
-                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.emailAlerts.label")}</div>
+                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.account.emailAlertsLabel")}</div>
                     <div className="mt-1 text-lg font-black text-[#270115]">{notificationPreferences.emailAlerts ? t("profile.account.on") : t("profile.account.off")}</div>
                   </div>
                   <div className="rounded-2xl bg-white px-3 py-2 text-left shadow-sm">
@@ -497,16 +497,16 @@ export function ProfessorProfilePage() {
                 </select>
               </div>
               <div className="rounded-2xl border border-[#efe1e5] bg-[#fcf8f9] p-4">
-                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.appearance.label")}</label>
+                <label className="block text-xs font-bold uppercase tracking-[0.18em] text-[#8c6d76]">{t("profile.preferences.appearance.label")}</label>
                 <div className="mt-2 flex items-center gap-3">
                   <Palette size={18} className="text-[#6b4f7a]" />
-                  <span className="text-sm font-semibold text-[#5C1E26]">{theme === "light" ? t("profile.appearance.lightMode") : t("profile.appearance.darkMode")}</span>
+                  <span className="text-sm font-semibold text-[#5C1E26]">{theme === "light" ? t("profile.preferences.appearance.lightMode") : t("profile.preferences.appearance.darkMode")}</span>
                   <button
                     type="button"
                     onClick={() => void handleToggleTheme()}
                     className="ml-auto rounded-xl border border-[#d7c2c7] bg-white px-3 py-1.5 text-xs font-bold text-[#5C1E26] transition hover:bg-[#f8f1f3]"
                   >
-                    Switch to {theme === "light" ? t("profile.appearance.darkMode") : t("profile.appearance.lightMode")}
+                    Switch to {theme === "light" ? t("profile.preferences.appearance.darkMode") : t("profile.preferences.appearance.lightMode")}
                   </button>
                 </div>
                 <p className="mt-2 text-xs text-[#8c6d76]">Theme preference is saved and applied across all pages.</p>
